@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    compileSdk = 30
-    buildToolsVersion = "30.0.3"
+    compileSdk = AppConfig.COMPILE_SDK_VERSION
+    buildToolsVersion = AppConfig.BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId = "com.alxnophis.jetpackcomposeapp"
-        minSdk = 23
-        targetSdk = 30
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = AppConfig.APPLICATION_ID
+        minSdk = AppConfig.MIN_SDK_VERSION
+        targetSdk = AppConfig.TARGET_SDK_VERSION
+        versionCode = AppConfig.VERSION_CODE
+        versionName = AppConfig.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -22,6 +22,8 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
             isMinifyEnabled = false
         }
         release {
@@ -29,35 +31,40 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = AppConfig.sourceCompatJavaVersion
+        targetCompatibility = AppConfig.targetCompatJavaVersion
     }
+
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = AppConfig.kotlinOptionJavaVersion
         useIR = true
     }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
-        kotlinCompilerVersion = "1.4.32"
+        kotlinCompilerExtensionVersion = Version.ANDROIDX_COMPOSE
     }
 }
 
 dependencies {
+    implementation(Dep.ANDROIDX_ACTIVITY_COMPOSE)
+    implementation(Dep.ANDROIDX_APP_COMPAT)
+    implementation(Dep.ANDROIDX_COMPOSE_UI)
+    implementation(Dep.ANDROIDX_COMPOSE_MATERIAL)
+    implementation(Dep.ANDROIDX_COMPOSE_UI_TOOLING)
+    implementation(Dep.ANDROIDX_CORE_KTX)
+    implementation(Dep.ANDROIDX_LIFECYCLE)
+    implementation(Dep.GOOGLE_MATERIAL)
+    implementation(Dep.KOTLIN_STDLIB)
 
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("com.google.android.material:material:1.3.0")
-    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.3.0-alpha06")
-    testImplementation("junit:junit:4.+")
-    androidTestImplementation("androidx.test.ext:junit:1.1.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
+    testImplementation(Dep.JUNIT)
+
+    androidTestImplementation(Dep.ANDROIDX_COMPOSE_TEST)
+    androidTestImplementation(Dep.ANDROIDX_ESPRESSO)
+    androidTestImplementation(Dep.ANDROIDX_JUNIT)
 }
