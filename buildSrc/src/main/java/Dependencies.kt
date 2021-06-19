@@ -18,14 +18,14 @@ object AppConfig {
 object Version {
     const val ANDROIDX_APP_COMPAT = "1.2.0"
     const val ANDROIDX_CORE_KTX = "1.3.2"
-    const val ANDROIDX_COMPOSE = "1.0.0-beta07"
-    const val ANDROIDX_ACTIVITY_COMPOSE = "1.3.0-alpha08"
+    const val ANDROIDX_COMPOSE = "1.0.0-beta09"
+    const val ANDROIDX_ACTIVITY_COMPOSE = "1.3.0-beta02"
     const val ANDROIDX_ESPRESSO = "3.3.0"
     const val ANDROIDX_LIFECYCLE = "2.3.1"
     const val ANDROIDX_JUNIT = "1.1.2"
     const val GOOGLE_MATERIAL = "1.3.0"
-    const val GRADLE = "7.0.0-beta02"
-    const val KOTLIN = "1.4.32"
+    const val GRADLE = "7.0.0-beta04"
+    const val KOTLIN = "1.5.10"
     const val JUNIT = "4.+"
 }
 
