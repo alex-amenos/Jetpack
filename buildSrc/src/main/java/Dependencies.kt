@@ -57,6 +57,7 @@ private object Version {
     const val ANDROIDX_TEST_RUNNER = "1.3.0"
     const val ANDROIDX_VECTOR_DRAWABLE = "1.0.1"
     const val ANDROIDX_SECURITY_CRYPTO_VERSION = "1.0.0"
+    const val ARROW = "1.0.1"
     const val COROUTINES = "1.5.2"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
     const val JUNIT = "4.13.2"
@@ -67,7 +68,7 @@ private object Version {
     const val LEAK_CANARY = "2.7"
     const val PERMISSION_DISPATCHER = "4.9.1"
     const val TIMBER = "5.0.1"
-    const val UNIFLOW = "1.0.10"
+    const val TURBINE = "0.7.0"
 }
 
 object Dep {
@@ -106,6 +107,10 @@ object Dep {
     const val ANDROIDX_TEST_RUNNER = "androidx.test:runner:${Version.ANDROIDX_TEST_RUNNER}"
     const val ANDROIDX_TEST_RULES = "androidx.test:rules:${Version.ANDROIDX_TEST_RULES}"
     const val ANDROIDX_VECTOR_DRAWABLE = "androidx.vectordrawable:vectordrawable:${Version.ANDROIDX_VECTOR_DRAWABLE}"
+    const val ARROW_CORE = "io.arrow-kt:arrow-core:${Version.ARROW}"
+    const val ARROW_FX_COROUTINES = "io.arrow-kt:arrow-fx-coroutines:${Version.ARROW}"
+    const val ARROW_META = "io.arrow-kt:arrow-meta:${Version.ARROW}"
+    const val ARROW_OPTICS = "io.arrow-kt:arrow-optics:${Version.ARROW}"
     const val COROUTINES_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.COROUTINES}"
     const val COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Version.COROUTINES}"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.COROUTINES}"
@@ -127,5 +132,6 @@ object Dep {
     const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:${Version.LEAK_CANARY}"
     const val PERMISSION_DISPATCHER = "com.github.permissions-dispatcher:permissionsdispatcher:${Version.PERMISSION_DISPATCHER}"
     const val PERMISSION_DISPATCHER_PROCESSOR = "com.github.permissions-dispatcher:permissionsdispatcher-processor:${Version.PERMISSION_DISPATCHER}"
+    const val TURBINE = "app.cash.turbine:turbine:${Version.TURBINE}"
     const val TIMBER = "com.jakewharton.timber:timber:${Version.TIMBER}"
 }

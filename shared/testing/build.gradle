@@ -4,6 +4,7 @@ dependencies {
     implementation project(Modules.SHARED_CORE)
 
     implementation Dep.ANDROIDX_ARCH_CORE_TESTING
+    implementation Dep.COROUTINES_CORE
     implementation Dep.COROUTINES_TEST
     implementation Dep.JUNIT
     implementation Dep.JUNIT_JUPITER_API
