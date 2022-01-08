@@ -34,6 +34,7 @@ object Modules {
 
     const val SHARED_CORE = ":shared:core"
     const val SHARED_ROUTER = ":shared:router"
+    const val SHARED_TESTING = ":shared:testing"
 }
 
 private object Version {

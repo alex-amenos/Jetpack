@@ -2,6 +2,6 @@ apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
 
 dependencies {
     implementation project(Modules.SHARED_CORE)
-//    implementation project(Modules.SHARED_ROUTER)
-//    testImplementation project(Modules.SHARED_TESTING)
+    implementation project(Modules.SHARED_ROUTER)
+    testImplementation project(Modules.SHARED_TESTING)
 }

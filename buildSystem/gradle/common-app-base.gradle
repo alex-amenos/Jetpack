@@ -100,7 +100,7 @@ android {
 dependencies {
     // Shared Modules
     implementation project(Modules.SHARED_CORE)
-//    implementation project(Modules.SHARED_ROUTER)
+    implementation project(Modules.SHARED_ROUTER)
 
     // Others
     implementation Dep.ANDROIDX_APPCOMPAT

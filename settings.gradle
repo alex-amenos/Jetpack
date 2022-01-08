@@ -4,4 +4,4 @@ include ':feature:authentication'
 // Shared modules
 include ":shared:core"
 include ":shared:router"
-include ':shared:router'
+include ':shared:testing'
