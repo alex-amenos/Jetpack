@@ -1,0 +1,14 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
+
+dependencies {
+    implementation project(Modules.SHARED_CORE)
+
+    implementation Dep.ANDROIDX_ARCH_CORE_TESTING
+    implementation Dep.COROUTINES_TEST
+    implementation Dep.JUNIT
+    implementation Dep.JUNIT_JUPITER_API
+    implementation Dep.JUNIT_JUPITER_PARAMS
+
+    runtimeOnly Dep.JUNIT_VINTAGE_ENGINE
+    runtimeOnly Dep.JUNIT_JUPITER_ENGINE
+}

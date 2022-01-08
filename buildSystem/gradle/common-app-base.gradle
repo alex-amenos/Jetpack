@@ -1,0 +1,123 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion AppConfig.COMPILE_SDK_VERSION
+    buildToolsVersion AppConfig.BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        applicationId AppConfig.APPLICATION_ID
+        minSdkVersion AppConfig.MIN_SDK_VERSION
+        targetSdkVersion AppConfig.TARGET_SDK_VERSION
+        versionCode AppVersion.CODE
+        versionName AppVersion.NAME
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled false
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            testCoverageEnabled false
+            minifyEnabled false
+            ext.enableCrashlytics = false
+        }
+        release {
+            debuggable false
+            testCoverageEnabled false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def project = "caelum"
+            def apkExtension = ".apk"
+            def SEP = "_"
+            def buildType = name
+            def versionName = variant.versionName
+            def versionCode = versionCode
+            def date = new Date()
+            def formattedDate = date.format('ddMMyy_HHmm')
+            def newApkName = project + SEP + buildType +
+                    SEP + versionCode + SEP + versionName +
+                    SEP + formattedDate + apkExtension
+            outputFileName = new File(newApkName)
+        }
+        if (variant.buildType.name == "debug") {
+            variant.mergedFlavor.resourceConfigurations.add("xxhdpi")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility AppConfig.sourceCompat
+        targetCompatibility AppConfig.targetCompat
+    }
+
+    kotlinOptions {
+        jvmTarget = AppConfig.kotlinOption
+    }
+
+    testOptions {
+        execution "ANDROIDX_TEST_ORCHESTRATOR"
+        animationsDisabled true
+    }
+
+    lintOptions {
+        checkDependencies true
+        checkReleaseBuilds false
+        ignoreTestSources true
+        xmlOutput file("$buildDir/reports/lint/lint-results.xml")
+        htmlOutput file("$buildDir/reports/lint/lint-results.html")
+        abortOnError false
+        disable "LogNotTimber",
+                "StringFormatInTimber",
+                "ThrowableNotAtBeginning",
+                "BinaryOperationInTimber",
+                "TimberArgCount",
+                "TimberArgTypes",
+                "TimberTagLength",
+                "TimberExceptionLogging"
+    }
+}
+
+dependencies {
+    // Shared Modules
+    implementation project(Modules.SHARED_CORE)
+    implementation project(Modules.SHARED_ROUTER)
+
+    // Others
+    implementation Dep.ANDROIDX_APPCOMPAT
+    implementation Dep.ANDROIDX_COMPOSE_ACTIVITY
+    implementation Dep.ANDROIDX_COMPOSE_RUNTIME
+    implementation Dep.KOIN_ANDROID
+
+    testImplementation Dep.JUNIT_JUPITER_API
+    testImplementation Dep.JUNIT_JUPITER_PARAMS
+    testImplementation Dep.KOIN_TEST
+
+    testRuntimeOnly Dep.JUNIT_JUPITER_ENGINE
+
+    androidTestImplementation Dep.ANDROIDX_TEST_JUNIT
+    androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
+    androidTestImplementation Dep.ANDROIDX_TEST_RULES
+    androidTestImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
+
+    androidTestUtil Dep.ANDROIDX_ORCHESTRATOR
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.alxnophis.jetpack.authentication">
+
+    <application android:supportsRtl="true">
+        <activity
+            android:name=".ui.view.AuthenticationActivity"
+            android:exported="true"
+            android:theme="@style/CoreTheme"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="MissingClass">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="alxjetpack"
+                    android:scheme="app" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

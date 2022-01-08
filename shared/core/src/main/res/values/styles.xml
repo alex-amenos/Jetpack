@@ -1,0 +1,31 @@
+<resources>
+
+    <style name="CoreTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/core_white</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorOnSurface">@color/accent</item>
+        <item name="android:windowBackground">@color/core_white</item>
+        <item name="android:colorControlNormal">@color/core_white</item>
+        <item name="colorControlNormal">@color/core_white</item>
+        <item name="colorError">@color/core_red</item>
+    </style>
+
+    <style name="CoreTheme.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="CoreTheme.FullScreen">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="CoreTheme.FullScreen.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+</resources>

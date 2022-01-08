@@ -1,0 +1,6 @@
+# Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+#json_key_file("")
+
+# Package
+package_name("com.alxnophis.jetpack")
+

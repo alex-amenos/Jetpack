@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        google()
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31'
+        classpath "org.jetbrains.kotlinx:kover:0.5.0-RC"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:10.2.0"
+        classpath "com.android.tools.build:gradle:7.0.4"
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.39.0"
+        classpath "com.adarshr:gradle-test-logger-plugin:2.0.0"
+        classpath "de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        maven { url 'https://maven.google.com' }
+        mavenCentral()
+    }
+
+    tasks.withType(Test) {
+        testLogging {
+            exceptionFormat "full"
+            events "started", "skipped", "passed", "failed"
+            showStandardStreams true
+            outputs.upToDateWhen { false }
+        }
+    }
+}
+
+subprojects {
+    apply from: "$rootDir/buildSystem/gradle/ktlint.gradle"
+    apply from: "$rootDir/buildSystem/gradle/dependency-updates.gradle"
+}
+
+task clean(type: Delete) {
+    delete buildDir
+}
+
+task installGitHook(type: Copy) {
+    from new File(rootProject.rootDir, 'buildSystem/githooks/prepare-commit-msg')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    fileMode 0755
+}
+
+tasks.getByPath(':app:preBuild').dependsOn installGitHook
+
+apply plugin: 'android-reporting'
+apply plugin: 'kover'

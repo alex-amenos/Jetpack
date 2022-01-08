@@ -1,6 +1,17 @@
+# OS-specific files
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+### Android ###
 # Built application files
 *.apk
-*.aar
 *.ap_
 *.aab
 
@@ -14,10 +25,9 @@
 bin/
 gen/
 out/
-#  Uncomment the following line in case you need and you don't have the release build type files in your app
-# release/
 
 # Gradle files
+.gradle
 .gradle/
 build/
 
@@ -36,36 +46,33 @@ proguard/
 # Android Studio captures folder
 captures/
 
-# IntelliJ
+# NDK
+obj/
+
+# IntelliJ IDEA
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/assetWizardSettings.xml
-.idea/dictionaries
-.idea/libraries
-# Android Studio 3 in .gitignore file.
-.idea/caches
-.idea/modules.xml
-# Comment next line if keeping position of elements in Navigation Editor is relevant for you
-.idea/navEditor.xml
+*.iws
+/out/
+
+# User-specific configurations
+.idea/
+.idea/*
 
 # Keystore files
-# Uncomment the following lines if you do not want to check your keystore files in.
-#*.jks
-#*.keystore
+*.jks
+*.keystore
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
-.cxx/
-
-# Google Services (e.g. APIs or Firebase)
-# google-services.json
 
 # Freeline
 freeline.py
 freeline/
 freeline_project_description.json
+
+# Package Files #
+*.war
+*.ear
 
 # fastlane
 fastlane/report.xml
@@ -83,3 +90,9 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+### Android Patch ###
+gen-external-apklibs
+
+### Gemfile
+Gemfile.lock
