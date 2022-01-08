@@ -125,16 +125,16 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     /**
-     * Using runBlockingTest test returns an error:
+     * Using runBlockingTest test returns error:
      * This job has not completed yet: java.lang.IllegalStateException: This job has not completed yet
      *
      * Current Solution: Use runBlocking
      *
      * Issue: https://github.com/Kotlin/kotlinx.coroutines/issues/1204
-     * Future solution: kotlin 1.6.0 using runTest
+     * Future solution: kotlin 1.6.0 using runTest (issues with Turbine 3th party)
      */
     @Test
-    fun `WHEN Authenticate event and correct credentials on state THEN navigate to next step`() {
+    fun `WHEN Authenticate event and correct credentials on state THEN validate loading state sequence and navigate to next step`() {
         runBlocking {
             whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD)
@@ -165,16 +165,16 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     /**
-     * Using runBlockingTest test returns an error:
+     * Using runBlockingTest test returns error:
      * This job has not completed yet: java.lang.IllegalStateException: This job has not completed yet
      *
      * Current Solution: Use runBlocking
      *
      * Issue: https://github.com/Kotlin/kotlinx.coroutines/issues/1204
-     * Future solution: kotlin 1.6.0 using runTest
+     * Future solution: kotlin 1.6.0 using runTest (issues with Turbine 3th party)
      */
     @Test
-    fun `WHEN Authenticate event and incorrect credentials on state THEN navigate to next step`() {
+    fun `WHEN Authenticate event and incorrect credentials THEN validate loading and error state sequence`() {
         runBlocking {
             whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD)
