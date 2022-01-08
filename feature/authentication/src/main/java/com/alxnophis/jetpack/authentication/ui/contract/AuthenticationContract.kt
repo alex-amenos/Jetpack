@@ -7,7 +7,7 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 
 internal sealed class AuthenticationEvent : UiEvent {
-    object Authenticate: AuthenticationEvent()
+    object Authenticate : AuthenticationEvent()
     object ErrorDismissed : AuthenticationEvent()
     object ToggleAuthenticationMode : AuthenticationEvent()
     data class EmailChanged(val email: String) : AuthenticationEvent()
@@ -15,7 +15,7 @@ internal sealed class AuthenticationEvent : UiEvent {
 }
 
 internal sealed class AuthenticationEffect : UiEffect {
-    object NavigateToNextStep: AuthenticationEffect()
+    object NavigateToNextStep : AuthenticationEffect()
 }
 
 internal data class AuthenticationState(
@@ -29,8 +29,8 @@ internal data class AuthenticationState(
 
     fun isFormValid(): Boolean {
         return password.isNotEmpty() &&
-                email.isNotEmpty() &&
-                (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
+            email.isNotEmpty() &&
+            (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
     }
 }
 
