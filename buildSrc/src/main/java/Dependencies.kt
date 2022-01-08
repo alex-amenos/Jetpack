@@ -33,8 +33,7 @@ object Modules {
     const val FEATURE_AUTHENTICATION = ":feature:authentication"
 
     const val SHARED_CORE = ":shared:core"
-//    const val SHARED_ROUTER = ":shared:router"
-//    const val SHARED_TESTING = ":shared:testing"
+    const val SHARED_ROUTER = ":shared:router"
 }
 
 private object Version {

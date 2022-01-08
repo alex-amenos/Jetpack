@@ -25,10 +25,12 @@ android {
         debug {
             debuggable true
             minifyEnabled false
+            buildConfigField 'String', 'APP_PACKAGE_NAME', '"' + AppConfig.APP_PACKAGE_NAME_DEBUG + '"'
         }
         release {
             debuggable false
             minifyEnabled true
+            buildConfigField 'String', 'APP_PACKAGE_NAME', '"' + AppConfig.APP_PACKAGE_NAME + '"'
         }
     }
 
