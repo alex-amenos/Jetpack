@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# Automatically adds branch name to a commit message.
+#
+NAME=$(git rev-parse --abbrev-ref HEAD)
+CONTENT="$(cat "$1")"
+
+echo "[$NAME]"' '"${CONTENT}" > "$1"
+

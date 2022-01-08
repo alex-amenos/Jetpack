@@ -1,0 +1,263 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+
+skip_docs
+default_platform(:android)
+
+############
+# Assemble #
+############
+
+def buildDebug()
+    begin
+        gradle(task: "assembleDebug", flags: "--profile", print_command_output: false)
+        UI.success("✅ assembleDebug finished")
+    rescue => ex
+        UI.error("❌ assembleDebug - Something went wrong: #{ex}")
+    end
+end
+
+def buildRelease()
+    begin
+        gradle(task: "assembleRelease", flags: "--profile", print_command_output: false)
+        UI.success("✅ assembleRelease finished")
+    rescue => ex
+        UI.error("❌ assembleRelease - Something went wrong: #{ex}")
+    end
+end
+
+#########
+# Tests #
+#########
+
+def debugUnitTest()
+    begin
+        gradle(task: "testDebugUnitTest", flags: "--profile", print_command_output: true)
+        UI.success("✅ testDebugUnitTest finished")
+    rescue => ex
+        UI.error("❌ testDebugUnitTest - Something went wrong: #{ex}")
+    end
+end
+
+def debugUnitTestOffline()
+    begin
+        gradle(task: "testDebugUnitTest", flags: "--profile --offline", print_command_output: true)
+        UI.success("✅ testDebugUnitTest finished")
+    rescue => ex
+        UI.error("❌ testDebugUnitTest - Something went wrong: #{ex}")
+    end
+end
+
+def debugAndroidTests()
+    begin
+        gradle(task: "connectedDebugAndroidTest", flags: "--profile", print_command_output: true)
+        UI.success("✅ connectedDebugAndroidTest finished")
+    rescue => ex
+        UI.error("❌ connectedDebugAndroidTest - Something went wrong: #{ex}")
+    end
+end
+
+def androidTest()
+    begin
+        gradle(task: "connectedCheck", print_command_output: true)
+        UI.success("✅ connectedCheck finished")
+    rescue => ex
+        UI.error("❌ connectedCheck - Something went wrong: #{ex}")
+    end
+end
+
+###########
+# Quality #
+###########
+
+# ktlintFormat will find & try to fix all of the code
+# that isn’t following the Kotlin Style Guide.
+#
+def ktlintFormat()
+    begin
+        gradle(task: "ktlintFormat", print_command_output: true)
+        UI.success("✅ ktlintFormat finished")
+    rescue => ex
+        UI.error("❌ ktlintFormat - Something went wrong: #{ex}")
+    end
+end
+
+# ktlint will ensure that the code is following the official Kotlin Style Guide,
+# it will fail otherwise.
+#
+def ktlint()
+    begin
+        gradle(task: "ktlintCheck", print_command_output: true)
+        UI.success("✅ ktlintCheck finished")
+    rescue => ex
+        UI.error("❌ ktlintCheck - Something went wrong: #{ex}")
+    end
+end
+
+def androidLint()
+    begin
+        gradle(task: ":app:lint", flags: "--profile --offline")
+        UI.success("✅ androidLint finished")
+    rescue => ex
+        UI.error("❌ AndroidLint - Something went wrong: #{ex}")
+    end
+end
+
+def codeCoverage()
+    begin
+        gradle(task: "koverReport")
+        UI.success("✅ CodeCoverage finished")
+    rescue => ex
+        UI.error("❌ CodeCoverage - Something went wrong: #{ex}")
+    end
+end
+
+#########
+# Other #
+#########
+
+def clean()
+    begin
+      gradle(task: "clean", print_command_output: false)
+      UI.success("✅ clean finished")
+    rescue => ex
+      UI.error("❌ Clean project - Something went wrong: #{ex}")
+    end
+end
+
+def uninstallAllApps()
+    begin
+      gradle(task: "uninstallAll", print_command_output: true)
+      UI.success("✅ uninstallAll finished")
+    rescue => ex
+      UI.error("❌ uninstallAll - Something went wrong: #{ex}")
+    end
+end
+
+def optimizeDrawableResources()
+    begin
+      sh "../buildSystem/scripts/avocado.sh"
+      UI.success("✅ avocado finished")
+    rescue => ex
+      UI.error("❌ Error optimizing drawable resources with Avocado. - Something went wrong: #{ex}")
+      UI.message("ℹ️ Avocado information on: https://github.com/alexjlockwood/avocado")
+    end
+end
+
+def dependencyUpdates()
+    begin
+        gradle(task: "dependencyUpdates", print_command_output: true)
+        UI.success("✅ Check Library Dependencies finished")
+    rescue => ex
+        UI.error("❌ Error checking the ligrary dependencies. - Something went wrong: #{ex}")
+    end
+end
+
+#########
+# Lanes #
+#########
+
+platform :android do
+
+    ############
+    # Assemble #
+    ############
+
+    desc "Assemble DEBUG"
+    lane :assembleDebug do
+        buildDebug()
+    end
+
+    desc "Assemble RELEASE"
+    lane :assembleRelease do
+        clean()
+        buildRelease()
+    end
+
+    #########
+    # Tests #
+    #########
+
+    desc "Runs all the tests"
+    lane :tests do
+        debugUnitTest()
+        debugAndroidTests()
+    end
+
+    desc "Run all Unit tests"
+    lane :unitTests do
+        debugUnitTest()
+    end
+
+    desc "Runs all the tests"
+    lane :unitTestsOffline do
+        debugUnitTestOffline()
+    end
+
+    desc "Runs all android tests"
+    lane :androidTests do
+        debugAndroidTests()
+    end
+
+    desc "Android Test Orchestrator"
+    lane :testOrchestrator do
+        androidTest()
+    end
+
+    ###########
+    # Quality #
+    ###########
+
+    desc "Check all the quality process to the project and fix if it is possible"
+    lane :quality do
+        debugUnitTestOffline()
+        ktlintFormat()
+        ktlint()
+    end
+
+    desc "Check android linter"
+    lane :androidLint do
+        androidLint()
+    end
+
+    desc "Analise code with ktlint"
+    lane :ktlints do
+        ktlintFormat()
+        ktlint()
+    end
+
+    desc "Code Coverage"
+    lane :coverage do
+        codeCoverage()
+    end
+
+    #########
+    # Other #
+    #########
+
+    desc "Clean project"
+    lane :clean do
+        clean()
+    end
+
+    desc "Remove all app installations"
+    lane :uninstallAll do
+        uninstallAllApps()
+    end
+
+    desc "Avocado - Vector Drawable optimization tool"
+    lane :avocado do
+        optimizeDrawableResources()
+    end
+
+    desc "Check library dependencies"
+    lane :dependencyUpdates do
+        dependencyUpdates()
+    end
+
+end

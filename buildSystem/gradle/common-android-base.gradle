@@ -1,0 +1,156 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.adarshr.test-logger'
+apply plugin: 'de.mannodermaus.android-junit5'
+
+android {
+    compileSdkVersion AppConfig.COMPILE_SDK_VERSION
+    buildToolsVersion AppConfig.BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        minSdkVersion AppConfig.MIN_SDK_VERSION
+        targetSdkVersion AppConfig.TARGET_SDK_VERSION
+        versionCode AppVersion.CODE
+        versionName AppVersion.NAME
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE
+    }
+
+    testOptions {
+        execution "ANDROIDX_TEST_ORCHESTRATOR"
+        animationsDisabled true
+        unitTests.all {
+            if (name == "testDebugUnitTest") {
+                kover {
+                    enabled = true
+                    binaryReportFile.set(file("$buildDir/reports/kover/debug-report.bin"))
+                    includes = ['com.alxnophis.jetpack.*']
+                    excludes = []
+                }
+            }
+        }
+    }
+
+    lintOptions {
+        checkDependencies true
+        checkReleaseBuilds false
+        ignoreTestSources true
+        xmlOutput file("$buildDir/reports/lint/lint-results.xml")
+        htmlOutput file("$buildDir/reports/lint/lint-results.html")
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+        disable "LogNotTimber",
+                "StringFormatInTimber",
+                "ThrowableNotAtBeginning",
+                "BinaryOperationInTimber",
+                "TimberArgCount",
+                "TimberArgTypes",
+                "TimberTagLength",
+                "TimberExceptionLogging"
+    }
+
+    compileOptions {
+        sourceCompatibility AppConfig.sourceCompat
+        targetCompatibility AppConfig.targetCompat
+    }
+
+    kotlinOptions {
+        jvmTarget = AppConfig.kotlinOption
+    }
+
+    packagingOptions {
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/storage_debug.kotlin_module'
+    }
+}
+
+dependencies {
+    implementation Dep.ANDROIDX_ANNOTATIONS
+    implementation Dep.ANDROIDX_ACTIVITY
+    implementation Dep.ANDROIDX_APPCOMPAT
+    implementation Dep.ANDROIDX_ARCH_CORE_COMMON
+    implementation Dep.ANDROIDX_ARCH_CORE_RUNTIME
+    implementation Dep.ANDROIDX_COMPOSE_ACTIVITY
+    implementation Dep.ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT
+    implementation Dep.ANDROIDX_COMPOSE_ANIMATION
+    implementation Dep.ANDROIDX_COMPOSE_FOUNDATION
+    implementation Dep.ANDROIDX_COMPOSE_FOUNDATION_LAYOUT
+    implementation Dep.ANDROIDX_COMPOSE_MATERIAL
+    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_CORE
+    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_EXTENDED
+    implementation Dep.ANDROIDX_COMPOSE_NAVIGATION
+    implementation Dep.ANDROIDX_COMPOSE_RUNTIME
+    implementation Dep.ANDROIDX_COMPOSE_RUNTIME_LIVEDATA
+    implementation Dep.ANDROIDX_COMPOSE_UI
+    implementation Dep.ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW
+    implementation Dep.ANDROIDX_COMPOSE_VIEWMODEL
+    implementation Dep.ANDROIDX_CONSTRAINT_LAYOUT
+    implementation Dep.ANDROIDX_CORE_KTX
+    implementation Dep.ANDROIDX_LIFECYCLE_EXTENSION
+    implementation Dep.ANDROIDX_LIFECYCLE_COMMON
+    implementation Dep.ANDROIDX_LIFECYCLE_LIVEDATA
+    implementation Dep.ANDROIDX_LIFECYCLE_RUNTIME
+    implementation Dep.ANDROIDX_LIFECYCLE_VIEWMODEL
+    implementation Dep.COROUTINES_CORE
+    implementation Dep.COROUTINES_ANDROID
+    implementation Dep.KOIN_ANDROID
+    implementation Dep.KOIN_ANDROID_COMPOSE
+    implementation Dep.PERMISSION_DISPATCHER
+    implementation Dep.GOOGLE_ANDROID_MATERIAL
+    implementation Dep.TIMBER
+
+    debugImplementation Dep.ANDROIDX_COMPOSE_UI_TOOLING
+    debugImplementation Dep.LEAK_CANARY
+
+    kapt Dep.ANDROIDX_LIFECYCLE_COMPILER
+    kapt Dep.PERMISSION_DISPATCHER_PROCESSOR
+
+    testImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
+    testImplementation Dep.COROUTINES_TEST
+    testImplementation Dep.KOIN_TEST
+    testImplementation Dep.MOCKITO
+    testImplementation Dep.MOCKITO_INLINE
+    testImplementation Dep.MOCKITO_KOTLIN
+    testImplementation Dep.JUNIT_JUPITER_API
+    testImplementation Dep.JUNIT_JUPITER_PARAMS
+
+    testRuntimeOnly Dep.JUNIT_JUPITER_ENGINE
+
+    androidTestImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
+    androidTestImplementation Dep.ANDROIDX_COMPOSE_UI_TEST
+    androidTestImplementation Dep.ANDROIDX_TEST_JUNIT
+    androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
+    androidTestImplementation Dep.ANDROIDX_TEST_RULES
+    androidTestImplementation Dep.KOIN_TEST
+
+    androidTestUtil Dep.ANDROIDX_ORCHESTRATOR
+}

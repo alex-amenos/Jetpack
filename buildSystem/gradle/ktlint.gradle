@@ -1,0 +1,11 @@
+apply plugin: "org.jlleitschuh.gradle.ktlint"
+
+ktlint {
+    debug = true
+    reporters {
+        reporter "plain"
+        reporter "checkstyle"
+        reporter "html"
+    }
+    outputColorName = "RED"
+}

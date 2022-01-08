@@ -1,0 +1,30 @@
+apply from: "$rootDir/buildSystem/gradle/common-app-base.gradle"
+
+android {
+
+    signingConfigs {
+        release {
+            keyAlias ALX_KEY_ALIAS
+            keyPassword ALX_KEY_PASSWORD
+            storeFile file(ALX_STORE_FILE)
+            storePassword ALX_STORE_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            testCoverageEnabled false
+            minifyEnabled false
+        }
+        release {
+            signingConfig signingConfigs.release
+            debuggable false
+            testCoverageEnabled false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
