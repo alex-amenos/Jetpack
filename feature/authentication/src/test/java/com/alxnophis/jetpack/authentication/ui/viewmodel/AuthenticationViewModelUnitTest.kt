@@ -24,7 +24,7 @@ import org.mockito.kotlin.whenever
 internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     companion object {
-        private const val EMAIL = "your@email.com"
+        private const val EMAIL = "my@email.com"
         private const val PASSWORD = "123456789Aab"
     }
 
