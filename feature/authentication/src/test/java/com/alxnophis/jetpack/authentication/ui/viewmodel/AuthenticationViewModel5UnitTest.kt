@@ -17,6 +17,7 @@ import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -121,6 +122,7 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
         }
     }
 
+    @Disabled
     @Test
     fun `WHEN updated password and PasswordChanged event THEN validate state change`() {
         runTest {
