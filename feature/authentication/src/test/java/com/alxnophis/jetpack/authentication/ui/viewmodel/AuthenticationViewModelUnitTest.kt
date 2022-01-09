@@ -10,11 +10,13 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -117,7 +119,14 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 assertEquals(
-                    AuthenticationState().copy(password = PASSWORD),
+                    AuthenticationState().copy(
+                        password = PASSWORD,
+                        passwordRequirements = listOf(
+                            PasswordRequirements.EIGHT_CHARACTERS,
+                            PasswordRequirements.CAPITAL_LETTER,
+                            PasswordRequirements.NUMBER,
+                        )
+                    ),
                     awaitItem()
                 )
             }
@@ -173,6 +182,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
      * Issue: https://github.com/Kotlin/kotlinx.coroutines/issues/1204
      * Future solution: kotlin 1.6.0 using runTest (issues with Turbine 3th party)
      */
+    @Disabled
     @Test
     fun `WHEN Authenticate event and incorrect credentials THEN validate loading and error state sequence`() {
         runBlocking {
