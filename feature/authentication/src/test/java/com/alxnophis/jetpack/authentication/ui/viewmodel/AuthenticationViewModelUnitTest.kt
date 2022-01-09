@@ -16,7 +16,6 @@ import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -146,7 +145,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     fun `WHEN Authenticate event and correct credentials on state THEN validate loading state sequence and navigate to next step`() {
         runBlocking {
             whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(Unit.right())
-            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD)
+            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = AuthenticationViewModel(
                 initialState,
                 useCaseAuthenticateMock
@@ -182,12 +181,11 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
      * Issue: https://github.com/Kotlin/kotlinx.coroutines/issues/1204
      * Future solution: kotlin 1.6.0 using runTest (issues with Turbine 3th party)
      */
-    @Disabled
     @Test
     fun `WHEN Authenticate event and incorrect credentials THEN validate loading and error state sequence`() {
         runBlocking {
             whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
-            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD)
+            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = AuthenticationViewModel(
                 initialState,
                 useCaseAuthenticateMock
@@ -197,13 +195,16 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 assertEquals(
-                    initialState.copy(isLoading = true),
+                    initialState.copy(isLoading = true, error = null),
                     awaitItem()
                 )
                 assertEquals(
                     initialState.copy(isLoading = false, error = R.string.authentication_auth_error),
                     awaitItem()
                 )
+            }
+            viewModel.effect.test {
+                expectNoEvents()
             }
         }
     }

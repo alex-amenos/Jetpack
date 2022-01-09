@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.testing.extension
+package com.alxnophis.jetpack.testing.extensions
 
 import android.annotation.SuppressLint
 import androidx.annotation.VisibleForTesting
