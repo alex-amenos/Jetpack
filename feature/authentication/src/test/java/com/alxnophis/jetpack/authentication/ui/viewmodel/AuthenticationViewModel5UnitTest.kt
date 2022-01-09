@@ -1,7 +1,3 @@
-/**
- * Commented because using JUnit 5 fails randomly remotely
- */
-/*
 package com.alxnophis.jetpack.authentication.ui.viewmodel
 
 import app.cash.turbine.test
@@ -21,8 +17,8 @@ import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -111,7 +107,7 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN updated email and EmailChanged event THEN validate state change`() {
-        testScope.runTest {
+        runTest {
             viewModel.setEvent(AuthenticationEvent.EmailChanged(EMAIL))
 
             advanceUntilIdle()
@@ -127,7 +123,7 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN updated password and PasswordChanged event THEN validate state change`() {
-        testScope.runTest {
+        runTest {
             viewModel.setEvent(AuthenticationEvent.PasswordChanged(PASSWORD))
 
             advanceUntilIdle()
@@ -155,11 +151,10 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
      *
      * FYI: The test fails on remote and not on local
      */
-    @Disabled
     @Test
     fun `WHEN Authenticate event and correct credentials on state THEN validate loading state sequence and navigate to next step`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(Unit.right())
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = AuthenticationViewModel(
                 initialState,
@@ -191,8 +186,8 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN Authenticate event and incorrect credentials THEN validate loading and error state sequence`() {
-        testScope.runTest {
-            whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
+        runTest {
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(AuthenticationError.WrongAuthentication.left())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = AuthenticationViewModel(
                 initialState,
@@ -219,4 +214,3 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
         }
     }
 }
-*/
