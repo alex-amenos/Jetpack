@@ -167,15 +167,15 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             advanceUntilIdle()
 
             viewModel.uiState.testFix {
-                    assertEquals(
-                        initialState.copy(isLoading = true),
-                        awaitItem()
-                    )
-                    assertEquals(
-                        initialState.copy(isLoading = false),
-                        awaitItem()
-                    )
-                }
+                assertEquals(
+                    initialState.copy(isLoading = true),
+                    awaitItem()
+                )
+                assertEquals(
+                    initialState.copy(isLoading = false),
+                    awaitItem()
+                )
+            }
             viewModel.effect.test {
                 assertEquals(
                     AuthenticationEffect.NavigateToNextStep,
