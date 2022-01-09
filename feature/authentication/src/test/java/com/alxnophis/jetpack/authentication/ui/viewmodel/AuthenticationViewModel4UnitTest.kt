@@ -11,19 +11,17 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
-import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
+import com.alxnophis.jetpack.testing.base.BaseViewModel4UnitTest
 import com.alxnophis.jetpack.testing.extensions.testFix
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
+internal class AuthenticationViewModel4UnitTest : BaseViewModel4UnitTest() {
 
     companion object {
         private const val EMAIL = "my@email.com"
@@ -40,7 +38,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     @Test
     fun `WHEN start THEN validate initial state`() {
-        runTest {
+        testCoroutineRule.runTest {
             viewModel.uiState.test {
                 assertEquals(AuthenticationState(), awaitItem())
             }
@@ -49,7 +47,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     @Test
     fun `WHEN signIn state and ToggleAuthenticationMode event THEN validate state is signUp`() {
-        runTest {
+        testCoroutineRule.runTest {
             viewModel.setEvent(AuthenticationEvent.ToggleAuthenticationMode)
 
             advanceUntilIdle()
@@ -65,7 +63,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     @Test
     fun `WHEN signUp state and ToggleAuthenticationMode event THEN validate state is signIn`() {
-        runTest {
+        testCoroutineRule.runTest {
             val viewModel = AuthenticationViewModel(
                 AuthenticationState().copy(authenticationMode = AuthenticationMode.SIGN_UP),
                 useCaseAuthenticateMock
@@ -86,7 +84,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     @Test
     fun `WHEN error state and ErrorDismissed event THEN validate dismissed error`() {
-        runTest {
+        testCoroutineRule.runTest {
             val viewModel = AuthenticationViewModel(
                 AuthenticationState().copy(error = 1),
                 useCaseAuthenticateMock
@@ -107,7 +105,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     @Test
     fun `WHEN updated email and EmailChanged event THEN validate state change`() {
-        testScope.runTest {
+        testCoroutineRule.runTest {
             viewModel.setEvent(AuthenticationEvent.EmailChanged(EMAIL))
 
             advanceUntilIdle()
@@ -123,7 +121,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     @Test
     fun `WHEN updated password and PasswordChanged event THEN validate state change`() {
-        testScope.runTest {
+        testCoroutineRule.runTest {
             viewModel.setEvent(AuthenticationEvent.PasswordChanged(PASSWORD))
 
             advanceUntilIdle()
@@ -144,17 +142,9 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
         }
     }
 
-    /**
-     * RunTest migration: https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-test/MIGRATION.md
-     * RunTest documentation: https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/run-test.html
-     * Turbine issues: https://github.com/cashapp/turbine/issues/42
-     *
-     * FYI: The test fails on remote and not on local
-     */
-    @Disabled
     @Test
     fun `WHEN Authenticate event and correct credentials on state THEN validate loading state sequence and navigate to next step`() {
-        runTest {
+        testCoroutineRule.runTest {
             whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = AuthenticationViewModel(
@@ -187,7 +177,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     @Test
     fun `WHEN Authenticate event and incorrect credentials THEN validate loading and error state sequence`() {
-        testScope.runTest {
+        testCoroutineRule.runTest {
             whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = AuthenticationViewModel(

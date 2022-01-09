@@ -16,7 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantExecutorExtension::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class BaseViewModelUnitTest {
+abstract class BaseViewModel5UnitTest {
 
     val testDispatcher = StandardTestDispatcher()
     val testScope = TestScope(testDispatcher)

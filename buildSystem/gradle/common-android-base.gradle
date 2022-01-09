@@ -146,6 +146,7 @@ dependencies {
     testImplementation Dep.MOCKITO
     testImplementation Dep.MOCKITO_INLINE
     testImplementation Dep.MOCKITO_KOTLIN
+    testImplementation Dep.JUNIT
     testImplementation Dep.JUNIT_JUPITER_API
     testImplementation Dep.JUNIT_JUPITER_PARAMS
     testImplementation Dep.TURBINE
