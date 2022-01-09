@@ -17,6 +17,7 @@ import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -145,7 +146,7 @@ internal class AuthenticationViewModel4UnitTest : BaseViewModel4UnitTest() {
     @Test
     fun `WHEN Authenticate event and correct credentials on state THEN validate loading state sequence and navigate to next step`() {
         testCoroutineRule.runTest {
-            whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(Unit.right())
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = AuthenticationViewModel(
                 initialState,
@@ -178,7 +179,7 @@ internal class AuthenticationViewModel4UnitTest : BaseViewModel4UnitTest() {
     @Test
     fun `WHEN Authenticate event and incorrect credentials THEN validate loading and error state sequence`() {
         testCoroutineRule.runTest {
-            whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(AuthenticationError.WrongAuthentication.left())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = AuthenticationViewModel(
                 initialState,
