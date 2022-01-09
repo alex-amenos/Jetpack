@@ -68,7 +68,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
     protected fun setState(reduce: State.() -> State) {
         val newState = currentState.reduce()
         Timber.d("## Set new state: $newState")
-        viewModelScope.launch { _uiState.value = newState }
+        _uiState.value = newState
     }
 
     /**
