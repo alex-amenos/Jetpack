@@ -46,7 +46,7 @@ class AuthenticationActivity : BaseActivity() {
                 AuthenticationScreen(
                     modifier = Modifier.fillMaxWidth(),
                     authenticationState = state,
-                    handleEvent = viewModel::handleEvent
+                    handleEvent = viewModel::setEvent
                 )
             }
         }

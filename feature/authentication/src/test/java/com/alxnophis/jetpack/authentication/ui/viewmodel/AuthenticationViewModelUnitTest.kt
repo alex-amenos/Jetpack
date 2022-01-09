@@ -49,7 +49,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN signIn state and ToggleAuthenticationMode event THEN validate state is signUp`() {
         runBlockingTest {
-            viewModel.handleEvent(AuthenticationEvent.ToggleAuthenticationMode)
+            viewModel.setEvent(AuthenticationEvent.ToggleAuthenticationMode)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -68,7 +68,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.handleEvent(AuthenticationEvent.ToggleAuthenticationMode)
+            viewModel.setEvent(AuthenticationEvent.ToggleAuthenticationMode)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -87,7 +87,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.handleEvent(AuthenticationEvent.ErrorDismissed)
+            viewModel.setEvent(AuthenticationEvent.ErrorDismissed)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -101,7 +101,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN updated email and EmailChanged event THEN validate state change`() {
         runBlockingTest {
-            viewModel.handleEvent(AuthenticationEvent.EmailChanged(EMAIL))
+            viewModel.setEvent(AuthenticationEvent.EmailChanged(EMAIL))
 
             viewModel.uiState.test {
                 assertEquals(
@@ -116,7 +116,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN updated password and PasswordChanged event THEN validate state change`() {
         runBlockingTest {
-            viewModel.handleEvent(AuthenticationEvent.PasswordChanged(PASSWORD))
+            viewModel.setEvent(AuthenticationEvent.PasswordChanged(PASSWORD))
 
             viewModel.uiState.test {
                 assertEquals(
@@ -153,7 +153,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.handleEvent(AuthenticationEvent.Authenticate)
+            viewModel.setEvent(AuthenticationEvent.Authenticate)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -193,7 +193,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.handleEvent(AuthenticationEvent.Authenticate)
+            viewModel.setEvent(AuthenticationEvent.Authenticate)
 
             viewModel.uiState.test {
                 assertEquals(
