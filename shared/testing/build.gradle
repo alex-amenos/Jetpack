@@ -9,6 +9,7 @@ dependencies {
     implementation Dep.JUNIT
     implementation Dep.JUNIT_JUPITER_API
     implementation Dep.JUNIT_JUPITER_PARAMS
+    implementation Dep.TURBINE
 
     runtimeOnly Dep.JUNIT_VINTAGE_ENGINE
     runtimeOnly Dep.JUNIT_JUPITER_ENGINE
