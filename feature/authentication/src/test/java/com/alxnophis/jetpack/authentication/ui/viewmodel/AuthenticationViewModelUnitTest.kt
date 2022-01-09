@@ -12,9 +12,9 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
-import com.alxnophis.jetpack.testing.extensions.testFix
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
@@ -144,13 +144,9 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     /**
-     * Using runBlockingTest test returns error:
-     * This job has not completed yet: java.lang.IllegalStateException: This job has not completed yet
+     * RunTest migration: https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-test/MIGRATION.md
+     * RunTest documentation: https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/run-test.html
      *
-     * Current Solution: Use runBlocking
-     *
-     * Issue: https://github.com/Kotlin/kotlinx.coroutines/issues/1204
-     * Future solution: kotlin 1.6.0 using runTest (issues with Turbine 3th party)
      */
     @Test
     fun `WHEN Authenticate event and correct credentials on state THEN validate loading state sequence and navigate to next step`() {
@@ -166,16 +162,19 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
             advanceUntilIdle()
 
-            viewModel.uiState.testFix {
-                assertEquals(
-                    initialState.copy(isLoading = true),
-                    awaitItem()
-                )
-                assertEquals(
-                    initialState.copy(isLoading = false),
-                    awaitItem()
-                )
-            }
+            viewModel
+                .uiState
+                .distinctUntilChanged { old, new -> old.toString() == new.toString() }
+                .test {
+                    assertEquals(
+                        initialState.copy(isLoading = true),
+                        awaitItem()
+                    )
+                    assertEquals(
+                        initialState.copy(isLoading = false),
+                        awaitItem()
+                    )
+                }
             viewModel.effect.test {
                 assertEquals(
                     AuthenticationEffect.NavigateToNextStep,
