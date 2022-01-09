@@ -53,17 +53,20 @@ internal class AuthenticationViewModel(
 
     private fun updatePassword(newPassword: String) {
         val requirements = mutableListOf<PasswordRequirements>()
-        if (currentState.password.length >= MIN_PASSWORD_LENGTH) {
+        if (newPassword.length >= MIN_PASSWORD_LENGTH) {
             requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
         }
-        if (currentState.password.any { it.isUpperCase() }) {
+        if (newPassword.any { it.isUpperCase() }) {
             requirements.add(PasswordRequirements.CAPITAL_LETTER)
         }
-        if (currentState.password.any { it.isDigit() }) {
+        if (newPassword.any { it.isDigit() }) {
             requirements.add(PasswordRequirements.NUMBER)
         }
         setState {
-            copy(password = newPassword)
+            copy(
+                password = newPassword,
+                passwordRequirements = requirements.toList()
+            )
         }
     }
 

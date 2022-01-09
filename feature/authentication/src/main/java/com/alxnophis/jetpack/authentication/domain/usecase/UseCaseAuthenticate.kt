@@ -9,7 +9,7 @@ import kotlinx.coroutines.delay
 class UseCaseAuthenticate {
 
     companion object {
-        const val AUTHORIZED_EMAIL = "user@gmail.com"
+        const val AUTHORIZED_EMAIL = "your@email.com"
         const val AUTHORIZED_PASSWORD = "12345678Aab"
     }
 

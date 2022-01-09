@@ -39,7 +39,7 @@ object Modules {
 
 private object Version {
     const val ANDROIDX_ANNOTATIONS = "1.2.0"
-    const val ANDROIDX_ACTIVITY = "1.3.1"
+    const val ANDROIDX_ACTIVITY = "1.4.0"
     const val ANDROIDX_APPCOMPAT = "1.3.1"
     const val ANDROIDX_ARCH_CORE_COMMON = "2.1.0"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "2.1.0"
