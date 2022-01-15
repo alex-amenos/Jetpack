@@ -85,7 +85,7 @@ fun AuthenticationErrorDialog(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp, end = 8.dp),
+                    .padding(bottom = 4.dp, end = 8.dp),
                 contentAlignment = Alignment.CenterEnd,
             ) {
                 TextButton(
