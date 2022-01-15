@@ -2,7 +2,6 @@ package com.alxnophis.jetpack.authentication.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.authentication.R
-import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
@@ -11,7 +10,6 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
