@@ -10,6 +10,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -81,12 +82,8 @@ internal class AuthenticationViewModel(
             }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
-                    setState {
-                        copy(isLoading = false)
-                    }
-                    setEffect {
-                        AuthenticationEffect.NavigateToNextStep
-                    }
+                    setState { copy(isLoading = false) }
+                        .also { setEffect { AuthenticationEffect.NavigateToNextStep } }
                 },
                 {
                     setState {
