@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.authentication.ui.view
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import com.alxnophis.jetpack.authentication.di.injectAuthentication
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
@@ -15,6 +16,7 @@ import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@ExperimentalComposeUiApi
 class AuthenticationActivity : BaseActivity() {
 
     private val viewModel: AuthenticationViewModel by viewModel()

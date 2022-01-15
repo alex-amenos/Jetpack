@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -35,9 +37,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
@@ -53,7 +57,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 
-@OptIn(ExperimentalAnimationApi::class)
+@ExperimentalComposeUiApi
 @Composable
 internal fun AuthenticationForm(
     modifier: Modifier = Modifier,
@@ -200,6 +204,7 @@ fun EmailInput(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 fun PasswordInput(
     modifier: Modifier = Modifier,
@@ -207,6 +212,7 @@ fun PasswordInput(
     onPasswordChanged: (email: String) -> Unit,
     onDoneClicked: () -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     val isPasswordHidden: MutableState<Boolean> = remember { mutableStateOf(true) }
     TextField(
         modifier = modifier,
@@ -251,6 +257,7 @@ fun PasswordInput(
         keyboardActions = KeyboardActions(
             onDone = {
                 onDoneClicked()
+                keyboardController?.hide()
             }
         )
     )
@@ -313,6 +320,7 @@ fun PasswordRequirementsView(
     }
 }
 
+@ExperimentalComposeUiApi
 @Composable
 fun AuthenticationButton(
     modifier: Modifier = Modifier,
@@ -320,9 +328,11 @@ fun AuthenticationButton(
     enableAuthentication: Boolean,
     onAuthenticate: () -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     Button(
         modifier = modifier,
         onClick = {
+            keyboardController?.hide()
             onAuthenticate()
         },
         enabled = enableAuthentication
@@ -372,6 +382,7 @@ fun ToggleAuthenticationMode(
     }
 }
 
+@ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
 private fun AuthenticationSighInFormPreview() {
@@ -392,6 +403,7 @@ private fun AuthenticationSighInFormPreview() {
     }
 }
 
+@ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
 private fun AuthenticationSignUpFormPreview() {
