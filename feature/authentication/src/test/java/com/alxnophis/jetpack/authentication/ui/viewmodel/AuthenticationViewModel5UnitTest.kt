@@ -144,16 +144,8 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
         }
     }
 
-    /**
-     * RunTest migration: https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-test/MIGRATION.md
-     * RunTest documentation: https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/run-test.html
-     * Turbine issues: https://github.com/cashapp/turbine/issues/42
-     *
-     * FYI: The test fails on remote and not on local
-     */
-    @Disabled
     @Test
-    fun `WHEN Authenticate event and correct credentials on state THEN validate loading state sequence and navigate to next step`() {
+    fun `WHEN Authenticate event and correct credentials on state THEN navigate to next step`() {
         runTest {
             whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(success(Unit))
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
@@ -166,13 +158,9 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
 
             advanceUntilIdle()
 
-            viewModel.uiState.testFix {
+            viewModel.uiState.test {
                 assertEquals(
                     initialState.copy(isLoading = true),
-                    awaitItem()
-                )
-                assertEquals(
-                    initialState.copy(isLoading = false),
                     awaitItem()
                 )
             }

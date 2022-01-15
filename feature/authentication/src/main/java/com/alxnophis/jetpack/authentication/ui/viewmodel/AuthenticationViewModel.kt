@@ -81,8 +81,7 @@ internal class AuthenticationViewModel(
             }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
-                    setState { copy(isLoading = false) }
-                        .also { setEffect { AuthenticationEffect.NavigateToNextStep } }
+                    setEffect { AuthenticationEffect.NavigateToNextStep }
                 },
                 {
                     setState {
