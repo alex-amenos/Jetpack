@@ -1,8 +1,6 @@
 package com.alxnophis.jetpack.authentication.ui.viewmodel
 
 import app.cash.turbine.test
-import arrow.core.left
-import arrow.core.right
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
@@ -13,6 +11,8 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModel4UnitTest
 import com.alxnophis.jetpack.testing.extensions.testFix
+import kotlin.Result.Companion.failure
+import kotlin.Result.Companion.success
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -146,7 +146,7 @@ internal class AuthenticationViewModel4UnitTest : BaseViewModel4UnitTest() {
     @Test
     fun `WHEN Authenticate event and correct credentials on state THEN validate loading state sequence and navigate to next step`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(Unit.right())
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(success(Unit))
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = AuthenticationViewModel(
                 initialState,
@@ -179,7 +179,7 @@ internal class AuthenticationViewModel4UnitTest : BaseViewModel4UnitTest() {
     @Test
     fun `WHEN Authenticate event and incorrect credentials THEN validate loading and error state sequence`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(AuthenticationError.WrongAuthentication.left())
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(failure(AuthenticationError.WrongAuthentication))
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = AuthenticationViewModel(
                 initialState,

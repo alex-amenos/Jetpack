@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.authentication.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import arrow.core.Either
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
@@ -12,6 +11,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -84,25 +84,25 @@ internal class AuthenticationViewModel(
             authenticateUser(currentState.email, currentState.password).fold(
                 {
                     setState {
-                        copy(
-                            isLoading = false,
-                            error = R.string.authentication_auth_error
-                        )
-                    }
-                },
-                {
-                    setState {
                         copy(isLoading = false)
                     }
                     setEffect {
                         AuthenticationEffect.NavigateToNextStep
+                    }
+                },
+                {
+                    setState {
+                        copy(
+                            isLoading = false,
+                            error = R.string.authentication_auth_error
+                        )
                     }
                 }
             )
         }
     }
 
-    private suspend fun authenticateUser(email: String, password: String): Either<AuthenticationError, Unit> =
+    private suspend fun authenticateUser(email: String, password: String): Result<Unit> =
         withContext(Dispatchers.IO) {
             useCaseAuthenticate.invoke(email, password)
         }

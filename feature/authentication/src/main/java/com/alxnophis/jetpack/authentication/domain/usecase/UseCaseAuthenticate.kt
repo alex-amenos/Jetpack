@@ -1,9 +1,9 @@
 package com.alxnophis.jetpack.authentication.domain.usecase
 
-import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
+import kotlin.Result.Companion.failure
+import kotlin.Result.Companion.success
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 
 class UseCaseAuthenticate {
@@ -16,11 +16,15 @@ class UseCaseAuthenticate {
     suspend operator fun invoke(
         email: String,
         password: String
-    ): Either<AuthenticationError.WrongAuthentication, Unit> {
-        delay(3000L)
-        return when {
-            email == AUTHORIZED_EMAIL && password == AUTHORIZED_PASSWORD -> Unit.right()
-            else -> AuthenticationError.WrongAuthentication.left()
+    ): Result<Unit> =
+        coroutineScope {
+            delay(3000L)
+            when {
+                hasAuthorization(email, password) -> success(Unit)
+                else -> failure(AuthenticationError.WrongAuthentication)
+            }
         }
-    }
+
+    private fun hasAuthorization(email: String, password: String): Boolean =
+        email == AUTHORIZED_EMAIL && password == AUTHORIZED_PASSWORD
 }

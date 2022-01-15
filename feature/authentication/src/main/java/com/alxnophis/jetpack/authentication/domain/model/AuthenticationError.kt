@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.authentication.domain.model
 
-sealed class AuthenticationError {
+sealed class AuthenticationError : Throwable() {
     object WrongAuthentication : AuthenticationError()
-    object GenericError : AuthenticationError()
 }

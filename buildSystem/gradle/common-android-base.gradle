@@ -122,9 +122,6 @@ dependencies {
     implementation Dep.ANDROIDX_LIFECYCLE_LIVEDATA
     implementation Dep.ANDROIDX_LIFECYCLE_RUNTIME
     implementation Dep.ANDROIDX_LIFECYCLE_VIEWMODEL
-    implementation Dep.ARROW_CORE
-    implementation Dep.ARROW_OPTICS
-    implementation Dep.ARROW_FX_COROUTINES
     implementation Dep.COROUTINES_CORE
     implementation Dep.COROUTINES_ANDROID
     implementation Dep.KOIN_ANDROID
@@ -137,7 +134,6 @@ dependencies {
     debugImplementation Dep.LEAK_CANARY
 
     kapt Dep.ANDROIDX_LIFECYCLE_COMPILER
-    kapt Dep.ARROW_META
     kapt Dep.PERMISSION_DISPATCHER_PROCESSOR
 
     testImplementation Dep.ANDROIDX_ARCH_CORE_TESTING

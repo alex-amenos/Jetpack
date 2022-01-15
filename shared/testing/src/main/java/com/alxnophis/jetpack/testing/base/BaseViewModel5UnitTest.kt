@@ -13,9 +13,9 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 
+@ExperimentalCoroutinesApi
 @VisibleForTesting
 @ExtendWith(InstantExecutorExtension::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class BaseViewModel5UnitTest {
 
@@ -33,5 +33,5 @@ abstract class BaseViewModel5UnitTest {
     }
 
     fun runTest(block: suspend TestScope.() -> Unit) =
-        this.testScope.runTest { block() }
+        testScope.runTest { block() }
 }

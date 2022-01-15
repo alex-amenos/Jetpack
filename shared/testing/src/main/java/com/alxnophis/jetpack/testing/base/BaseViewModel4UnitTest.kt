@@ -2,11 +2,12 @@ package com.alxnophis.jetpack.testing.base
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.alxnophis.jetpack.testing.rules.TestCoroutineRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.rules.TestRule
 
+@ExperimentalCoroutinesApi
 abstract class BaseViewModel4UnitTest {
 
     @get:Rule
