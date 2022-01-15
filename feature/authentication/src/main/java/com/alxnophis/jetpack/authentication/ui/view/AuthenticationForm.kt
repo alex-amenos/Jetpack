@@ -348,14 +348,11 @@ fun ToggleAuthenticationMode(
     toggleAuthentication: () -> Unit
 ) {
     Surface(
-        modifier = modifier
-            .padding(top = 16.dp),
+        modifier = modifier,
         elevation = 8.dp
     ) {
         TextButton(
-            modifier = Modifier
-                .background(MaterialTheme.colors.surface)
-                .padding(8.dp),
+            modifier = Modifier.background(MaterialTheme.colors.surface),
             onClick = {
                 toggleAuthentication()
             }
