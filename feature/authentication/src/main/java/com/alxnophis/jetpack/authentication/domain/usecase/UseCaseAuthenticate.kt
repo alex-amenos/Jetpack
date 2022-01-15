@@ -8,11 +8,6 @@ import kotlinx.coroutines.delay
 
 class UseCaseAuthenticate {
 
-    companion object {
-        const val AUTHORIZED_EMAIL = "my@email.com"
-        const val AUTHORIZED_PASSWORD = "12345678Aab"
-    }
-
     suspend operator fun invoke(
         email: String,
         password: String
@@ -27,4 +22,9 @@ class UseCaseAuthenticate {
 
     private fun hasAuthorization(email: String, password: String): Boolean =
         email == AUTHORIZED_EMAIL && password == AUTHORIZED_PASSWORD
+
+    companion object {
+        const val AUTHORIZED_EMAIL = "my@email.com"
+        const val AUTHORIZED_PASSWORD = "12345678Aab"
+    }
 }

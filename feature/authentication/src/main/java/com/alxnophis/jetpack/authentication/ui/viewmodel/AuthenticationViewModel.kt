@@ -18,10 +18,6 @@ internal class AuthenticationViewModel(
     private val useCaseAuthenticate: UseCaseAuthenticate,
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState, AuthenticationEffect>(initialState) {
 
-    companion object {
-        private const val MIN_PASSWORD_LENGTH = 8
-    }
-
     override fun handleEvent(event: AuthenticationEvent) =
         when (event) {
             AuthenticationEvent.Authenticate -> authenticate()
@@ -99,4 +95,8 @@ internal class AuthenticationViewModel(
         withContext(Dispatchers.IO) {
             useCaseAuthenticate.invoke(email, password)
         }
+
+    companion object {
+        private const val MIN_PASSWORD_LENGTH = 8
+    }
 }

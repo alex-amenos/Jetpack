@@ -10,13 +10,11 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModel5UnitTest
-import com.alxnophis.jetpack.testing.extensions.testFix
 import kotlin.Result.Companion.failure
 import kotlin.Result.Companion.success
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -24,11 +22,6 @@ import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
 internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
-
-    companion object {
-        private const val EMAIL = "my@email.com"
-        private const val PASSWORD = "123456789Aab"
-    }
 
     private val useCaseAuthenticateMock: UseCaseAuthenticate = mock()
     private val viewModel by lazy {
@@ -176,12 +169,12 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN Authenticate event and incorrect credentials THEN validate loading and error state sequence`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(failure(AuthenticationError.WrongAuthentication))
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = AuthenticationViewModel(
                 initialState,
                 useCaseAuthenticateMock
             )
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(failure(AuthenticationError.WrongAuthentication))
 
             viewModel.setEvent(AuthenticationEvent.Authenticate)
 
@@ -201,5 +194,10 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
                 expectNoEvents()
             }
         }
+    }
+
+    companion object {
+        private const val EMAIL = "my@email.com"
+        private const val PASSWORD = "123456789Aab"
     }
 }
