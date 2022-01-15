@@ -7,6 +7,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -30,4 +31,7 @@ abstract class BaseViewModel5UnitTest {
     fun tearDown() {
         Dispatchers.resetMain()
     }
+
+    fun runTest(block: suspend TestScope.() -> Unit) =
+        this.testScope.runTest { block() }
 }

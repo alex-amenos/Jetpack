@@ -16,7 +16,6 @@ import com.alxnophis.jetpack.testing.extensions.testFix
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -198,7 +197,7 @@ internal class AuthenticationViewModel5UnitTest : BaseViewModel5UnitTest() {
 
             advanceUntilIdle()
 
-            viewModel.uiState.test {
+            viewModel.uiState.testFix {
                 assertEquals(
                     initialState.copy(isLoading = true, error = null),
                     awaitItem()
