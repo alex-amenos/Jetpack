@@ -24,12 +24,25 @@ import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 @ExperimentalComposeUiApi
 @Composable
 internal fun AuthenticationScreen(
-    modifier: Modifier = Modifier,
+    authenticationState: AuthenticationState,
+    handleEvent: (event: AuthenticationEvent) -> Unit,
+) {
+    CoreTheme {
+        Authentication(
+            authenticationState,
+            handleEvent
+        )
+    }
+}
+
+@ExperimentalComposeUiApi
+@Composable
+internal fun Authentication(
     authenticationState: AuthenticationState,
     handleEvent: (event: AuthenticationEvent) -> Unit,
 ) {
     Box(
-        modifier = modifier,
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         AuthenticationForm(
@@ -116,12 +129,8 @@ fun AuthenticationErrorDialog(
 @ExperimentalComposeUiApi
 @Composable
 private fun AuthenticationFormPreview() {
-    val previewState = AuthenticationState(isLoading = true)
-    CoreTheme {
-        AuthenticationScreen(
-            modifier = Modifier.fillMaxSize(),
-            authenticationState = previewState,
-            handleEvent = {}
-        )
-    }
+    AuthenticationScreen(
+        authenticationState = AuthenticationState(),
+        handleEvent = {}
+    )
 }
