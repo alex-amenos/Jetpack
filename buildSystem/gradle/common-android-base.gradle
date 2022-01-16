@@ -131,6 +131,7 @@ dependencies {
     implementation Dep.TIMBER
 
     debugImplementation Dep.ANDROIDX_COMPOSE_UI_TOOLING
+    debugImplementation Dep.ANDROIDX_COMPOSE_UI_TEST_MANIFEST
     debugImplementation Dep.LEAK_CANARY
 
     kapt Dep.ANDROIDX_LIFECYCLE_COMPILER
