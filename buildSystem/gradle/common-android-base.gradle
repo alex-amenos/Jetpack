@@ -58,25 +58,6 @@ android {
         }
     }
 
-    lintOptions {
-        checkDependencies true
-        checkReleaseBuilds false
-        ignoreTestSources true
-        xmlOutput file("$buildDir/reports/lint/lint-results.xml")
-        htmlOutput file("$buildDir/reports/lint/lint-results.html")
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
-        disable "LogNotTimber",
-                "StringFormatInTimber",
-                "ThrowableNotAtBeginning",
-                "BinaryOperationInTimber",
-                "TimberArgCount",
-                "TimberArgTypes",
-                "TimberTagLength",
-                "TimberExceptionLogging"
-    }
-
     compileOptions {
         sourceCompatibility AppConfig.sourceCompat
         targetCompatibility AppConfig.targetCompat
@@ -86,12 +67,35 @@ android {
         jvmTarget = AppConfig.kotlinOption
     }
 
+    lint {
+        abortOnError false
+        checkDependencies true
+        checkReleaseBuilds false
+        ignoreTestSources true
+        htmlOutput file("$buildDir/reports/lint/lint-results.html")
+        xmlOutput file("$buildDir/reports/lint/lint-results.xml")
+        disable += [
+                'LogNotTimber',
+                'StringFormatInTimber',
+                'ThrowableNotAtBeginning',
+                'BinaryOperationInTimber',
+                'TimberArgCount',
+                'TimberArgTypes',
+                'TimberTagLength',
+                'TimberExceptionLogging'
+        ]
+    }
+
     packagingOptions {
-        exclude 'META-INF/AL2.0'
-        exclude 'META-INF/LICENSE.md'
-        exclude 'META-INF/LICENSE-notice.md'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/storage_debug.kotlin_module'
+        resources {
+            excludes += [
+                    'META-INF/AL2.0',
+                    'META-INF/LICENSE.md',
+                    'META-INF/LICENSE-notice.md',
+                    'META-INF/LGPL2.1',
+                    'META-INF/storage_debug.kotlin_module'
+            ]
+        }
     }
 }
 
