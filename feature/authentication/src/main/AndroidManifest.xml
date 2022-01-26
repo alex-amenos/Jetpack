@@ -22,10 +22,14 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="alxjetpack"
+                    android:host="jetpack"
                     android:scheme="app" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.view.AuthorizedActivity"
+            android:exported="true"
+            android:theme="@style/CoreTheme" />
     </application>
 
 </manifest>

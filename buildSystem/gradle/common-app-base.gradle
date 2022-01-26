@@ -79,21 +79,35 @@ android {
         animationsDisabled true
     }
 
-    lintOptions {
+    lint {
+        abortOnError false
         checkDependencies true
         checkReleaseBuilds false
         ignoreTestSources true
-        xmlOutput file("$buildDir/reports/lint/lint-results.xml")
         htmlOutput file("$buildDir/reports/lint/lint-results.html")
-        abortOnError false
-        disable "LogNotTimber",
-                "StringFormatInTimber",
-                "ThrowableNotAtBeginning",
-                "BinaryOperationInTimber",
-                "TimberArgCount",
-                "TimberArgTypes",
-                "TimberTagLength",
-                "TimberExceptionLogging"
+        xmlOutput file("$buildDir/reports/lint/lint-results.xml")
+        disable += [
+                'LogNotTimber',
+                'StringFormatInTimber',
+                'ThrowableNotAtBeginning',
+                'BinaryOperationInTimber',
+                'TimberArgCount',
+                'TimberArgTypes',
+                'TimberTagLength',
+                'TimberExceptionLogging'
+        ]
+    }
+
+    packagingOptions {
+        resources {
+            excludes += [
+                    'META-INF/AL2.0',
+                    'META-INF/LICENSE.md',
+                    'META-INF/LICENSE-notice.md',
+                    'META-INF/LGPL2.1',
+                    'META-INF/storage_debug.kotlin_module'
+            ]
+        }
     }
 }
 

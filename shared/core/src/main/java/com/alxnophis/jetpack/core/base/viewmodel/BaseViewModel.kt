@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -17,10 +16,9 @@ import timber.log.Timber
  * POST: https://proandroiddev.com/mvi-architecture-with-kotlin-flows-and-channels-d36820b2028d
  * REPOSITORY: https://github.com/yusufceylan/MVI-Playground
  */
-abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect> : ViewModel() {
-
-    private val initialState: State by lazy { createInitialState() }
-    abstract fun createInitialState(): State
+abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect>(
+    initialState: State
+) : ViewModel() {
 
     val currentState: State
         get() = uiState.value

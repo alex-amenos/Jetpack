@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="authentication_requirement_characters">At least 8 characters</string>
+    <string name="authentication_requirement_capital">At least 1 upper-case letter</string>
+    <string name="authentication_requirement_digit">At least 1 digit</string>
+    <string name="authentication_default_error">Ups! Something was wrong</string>
+    <string name="authentication_auth_error">You are not authorization. Review the written user and password.</string>
+    <string name="authentication_label_sign_in_to_account">Sign In to your account</string>
+    <string name="authentication_label_sign_up_for_account">Sign Up for an account</string>
+    <string name="authentication_label_email">Email</string>
+    <string name="authentication_label_password">Password</string>
+    <string name="authentication_cd_show_password">Show Password</string>
+    <string name="authentication_cd_hide_password">Hide Password</string>
+    <string name="authentication_password_requirement_satisfied">%s, satisfied</string>
+    <string name="authentication_password_requirement_not_satisfied">%s, needed</string>
+    <string name="authentication_action_sign_up">Sign Up</string>
+    <string name="authentication_action_sign_in">Sign In</string>
+    <string name="authentication_action_need_account">Need an account?</string>
+    <string name="authentication_action_already_have_account">Already have an account?</string>
+    <string name="authentication_error_title">Whoops</string>
+    <string name="authentication_error_action">OK</string>
+    <string name="authentication_authorized">Congratulations, you are authorized!</string>
+</resources>
