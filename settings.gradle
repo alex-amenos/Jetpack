@@ -5,3 +5,4 @@ include ':feature:authentication'
 include ":shared:core"
 include ":shared:router"
 include ':shared:testing'
+include ':feature:settings'
