@@ -1,8 +1,8 @@
 include ":app"
 // Feature modules
 include ':feature:authentication'
+include ':feature:settings'
 // Shared modules
 include ":shared:core"
 include ":shared:router"
 include ':shared:testing'
-include ':feature:settings'
