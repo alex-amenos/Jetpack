@@ -47,7 +47,9 @@ internal fun SettingsList(
             rememberScrollState()
         )
     ) {
-        TopAppBar {
+        TopAppBar(
+            backgroundColor = MaterialTheme.colors.surface
+        ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = stringResource(id = R.string.settings_cd_go_back)
@@ -56,7 +58,6 @@ internal fun SettingsList(
             Text(
                 text = stringResource(id = R.string.settings_title),
                 fontSize = 18.sp,
-                color = MaterialTheme.colors.onPrimary,
             )
         }
     }
