@@ -178,7 +178,7 @@ fun EmailInput(
         modifier = modifier,
         value = email,
         singleLine = true,
-        onValueChange = { email -> onEmailChanged(email) },
+        onValueChange = { emailChanged -> onEmailChanged(emailChanged) },
         label = {
             Text(
                 text = stringResource(R.string.authentication_label_email),
