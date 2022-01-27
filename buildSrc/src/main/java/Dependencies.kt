@@ -44,7 +44,7 @@ private object Version {
     const val ANDROIDX_APPCOMPAT = "1.3.1"
     const val ANDROIDX_ARCH_CORE_COMMON = "2.1.0"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "2.1.0"
-    const val ANDROIDX_COMPOSE = "1.1.0-rc01"
+    const val ANDROIDX_COMPOSE = "1.1.0-rc03"
     const val ANDROID_COMPOSE_CONSTRAINT_LAYOUT = "1.0.0-rc02"
     const val ANDROIDX_COMPOSE_NAVIGATION = "2.4.0-rc01"
     const val ANDROIDX_CONSTRAINT_LAYOUT = "2.1.1"
