@@ -7,5 +7,8 @@
     <string name="settings_cd_go_back">Go back to the previous screen</string>
     <string name="settings_cd_notifications_enabled">Notifications Enabled</string>
     <string name="settings_cd_notifications_disabled">Notifications Disabled</string>
-    <string name="settings_enable_notifications">Enable Notifications</string>
+    <string name="settings_cd_hints_enabled">Hints Enabled</string>
+    <string name="settings_cd_hints_disabled">Hints Disabled</string>
+    <string name="settings_option_notifications">Enable Notifications</string>
+    <string name="settings_option_hints">Show Hints</string>
 </resources>

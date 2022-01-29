@@ -54,9 +54,16 @@ internal fun SettingsList(
         SettingsTopBar()
         SettingsNotification(
             modifier = Modifier.fillMaxWidth(),
-            title = stringResource(id = R.string.settings_enable_notifications),
+            title = stringResource(id = R.string.settings_option_notifications),
             checked = state.notificationsEnabled,
             onToggleNotificationSettings = { handleEvent(SettingsEvent.SetNotifications) }
+        )
+        Divider()
+        SettingsHintItem(
+            modifier = Modifier.fillMaxWidth(),
+            title = stringResource(id = R.string.settings_option_hints),
+            checked = state.hintsEnabled,
+            onShowHintTootled = { handleEvent(SettingsEvent.SetHint) }
         )
         Divider()
     }
