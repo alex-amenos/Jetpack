@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -33,7 +35,8 @@ internal fun SettingsScreen(
     CoreTheme {
         SettingsList(
             modifier = Modifier.fillMaxSize(),
-            state = settingsState
+            state = settingsState,
+            handleEvent = handleEvent
         )
     }
 }
@@ -41,14 +44,21 @@ internal fun SettingsScreen(
 @Composable
 internal fun SettingsList(
     modifier: Modifier,
-    state: SettingsState
+    state: SettingsState,
+    handleEvent: (event: SettingsEvent) -> Unit,
 ) {
     Column(
-        modifier = modifier.verticalScroll(
-            rememberScrollState()
-        )
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
     ) {
         SettingsTopBar()
+        SettingsNotification(
+            modifier = Modifier.fillMaxWidth(),
+            title = stringResource(id = R.string.settings_enable_notifications),
+            checked = state.notificationsEnabled,
+            onToggleNotificationSettings = { handleEvent(SettingsEvent.SetNotifications) }
+        )
+        Divider()
     }
 }
 
