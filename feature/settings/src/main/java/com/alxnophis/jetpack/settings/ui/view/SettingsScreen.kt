@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.settings.ui.view
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
@@ -47,19 +48,27 @@ internal fun SettingsList(
             rememberScrollState()
         )
     ) {
-        TopAppBar(
-            backgroundColor = MaterialTheme.colors.surface
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = stringResource(id = R.string.settings_cd_go_back)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = stringResource(id = R.string.settings_title),
-                fontSize = 18.sp,
-            )
-        }
+        SettingsTopBar()
+    }
+}
+
+@Composable
+internal fun SettingsTopBar() {
+    TopAppBar(
+        backgroundColor = MaterialTheme.colors.surface,
+        contentPadding = PaddingValues(start = 12.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.ArrowBack,
+            contentDescription = stringResource(id = R.string.settings_cd_go_back),
+            tint = MaterialTheme.colors.onSurface
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = stringResource(id = R.string.settings_title),
+            color = MaterialTheme.colors.onSurface,
+            fontSize = 18.sp,
+        )
     }
 }
 
