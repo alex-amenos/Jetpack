@@ -52,6 +52,7 @@ internal fun SettingsList(
             .verticalScroll(rememberScrollState())
     ) {
         SettingsTopBar()
+        Divider()
         SettingsNotificationItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_notifications),
