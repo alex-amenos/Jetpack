@@ -52,7 +52,7 @@ internal fun SettingsList(
             .verticalScroll(rememberScrollState())
     ) {
         SettingsTopBar()
-        SettingsNotification(
+        SettingsNotificationItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_notifications),
             checked = state.notificationsEnabled,

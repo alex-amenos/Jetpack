@@ -20,7 +20,7 @@ import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
 
 @Composable
-internal fun SettingsNotification(
+internal fun SettingsNotificationItem(
     modifier: Modifier = Modifier,
     title: String,
     checked: Boolean,
@@ -60,9 +60,9 @@ internal fun SettingsNotification(
 @Preview(showBackground = true)
 @ExperimentalComposeUiApi
 @Composable
-private fun SettingsNotificationPreview() {
+private fun SettingsNotificationItemPreview() {
     CoreTheme {
-        SettingsNotification(
+        SettingsNotificationItem(
             modifier = Modifier.fillMaxWidth(),
             title = "Lorem ipsum dolor sit amet",
             checked = true,

@@ -60,7 +60,7 @@ fun SettingsHintItem(
 @Preview(showBackground = true)
 @ExperimentalComposeUiApi
 @Composable
-private fun SettingsNotificationPreview() {
+private fun SettingsHintItemPreview() {
     CoreTheme {
         SettingsHintItem(
             modifier = Modifier.fillMaxWidth(),
