@@ -69,9 +69,8 @@ internal fun SettingsList(
         SettingsManageSubscriptionItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_manage_subscription),
-        ) {
-
-        }
+            onSubscriptionClicked = {}
+        )
         Divider()
         SettingsSectionSpacer(
             modifier = Modifier.fillMaxWidth()
