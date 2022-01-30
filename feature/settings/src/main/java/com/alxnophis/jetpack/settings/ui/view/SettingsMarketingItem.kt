@@ -2,9 +2,7 @@ package com.alxnophis.jetpack.settings.ui.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.RadioButton
@@ -31,13 +29,12 @@ internal fun SettingsMarketingItem(
     val options = stringArrayResource(R.array.settings_options_marketing_choice)
     SettingsItem(modifier = modifier) {
         Column(
-            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.Start
         ) {
             Text(
+                modifier = Modifier.padding(16.dp),
                 text = stringResource(R.string.settings_option_marketing),
             )
-            Spacer(modifier = Modifier.height(10.dp))
             options.forEachIndexed { index, option ->
                 Row(
                     modifier = Modifier
@@ -54,7 +51,7 @@ internal fun SettingsMarketingItem(
                             role = Role.RadioButton,
                         )
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
                 ) {
                     RadioButton(
                         selected = selectedOption.id == index,
