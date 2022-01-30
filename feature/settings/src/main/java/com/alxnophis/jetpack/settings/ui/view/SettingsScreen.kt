@@ -66,6 +66,16 @@ internal fun SettingsList(
             onShowHintTootled = { handleEvent(SettingsEvent.SetHint) }
         )
         Divider()
+        SettingsManageSubscriptionItem(
+            modifier = Modifier.fillMaxWidth(),
+            title = stringResource(id = R.string.settings_option_manage_subscription),
+        ) {
+
+        }
+        Divider()
+        SettingsSectionSpacer(
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 

@@ -9,6 +9,7 @@
     <string name="settings_cd_notifications_disabled">Notifications Disabled</string>
     <string name="settings_cd_hints_enabled">Hints Enabled</string>
     <string name="settings_cd_hints_disabled">Hints Disabled</string>
+    <string name="settings_cd_open_subscription">Open Subscription Management</string>
     <string name="settings_option_notifications">Enable Notifications</string>
     <string name="settings_option_hints">Show Hints</string>
 </resources>
