@@ -76,6 +76,14 @@ internal fun SettingsList(
         SettingsSectionSpacer(
             modifier = Modifier.fillMaxWidth()
         )
+        SettingsMarketingItem(
+            modifier = Modifier.fillMaxWidth(),
+            selectedOption = state.marketingOption,
+            onOptionSelected = { marketingOption ->
+                handleEvent(SettingsEvent.SetMarketingOption(marketingOption))
+            }
+        )
+        Divider()
     }
 }
 

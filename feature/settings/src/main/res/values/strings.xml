@@ -12,4 +12,10 @@
     <string name="settings_cd_open_subscription">Open Subscription Management</string>
     <string name="settings_option_notifications">Enable Notifications</string>
     <string name="settings_option_hints">Show Hints</string>
+    <string name="settings_option_marketing">Receive marketing emails?</string>
+    <string name="settings_option_manage_subscription">Manage Subscription</string>
+    <string-array name="settings_options_marketing_choice">
+        <item>Opt-in for marketing emails</item>
+        <item>Don\'t send me emails</item>
+    </string-array>
 </resources>
