@@ -2,12 +2,10 @@ package com.alxnophis.jetpack.core.base.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -16,7 +14,7 @@ import timber.log.Timber
  * POST: https://proandroiddev.com/mvi-architecture-with-kotlin-flows-and-channels-d36820b2028d
  * REPOSITORY: https://github.com/yusufceylan/MVI-Playground
  */
-abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect>(
+abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     initialState: State
 ) : ViewModel() {
 
@@ -28,9 +26,6 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
 
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
     val event = _event.asSharedFlow()
-
-    private val _effect: Channel<Effect> = Channel()
-    val effect = _effect.receiveAsFlow()
 
     init {
         subscribeEvents()
@@ -68,14 +63,5 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
         val newState = currentState.reduce()
         Timber.d("## Set new state: $newState")
         _uiState.value = newState
-    }
-
-    /**
-     * Set new Effect
-     */
-    protected fun setEffect(builder: () -> Effect) {
-        val effectValue = builder()
-        Timber.d("## Set a new effect: $effectValue")
-        viewModelScope.launch { _effect.send(effectValue) }
     }
 }

@@ -2,7 +2,6 @@ package com.alxnophis.jetpack.authentication.ui.contract
 
 import androidx.annotation.StringRes
 import com.alxnophis.jetpack.authentication.R
-import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 
@@ -14,17 +13,14 @@ internal sealed class AuthenticationEvent : UiEvent {
     data class PasswordChanged(val password: String) : AuthenticationEvent()
 }
 
-internal sealed class AuthenticationEffect : UiEffect {
-    object NavigateToNextStep : AuthenticationEffect()
-}
-
 internal data class AuthenticationState(
     val authenticationMode: AuthenticationMode = AuthenticationMode.SIGN_IN,
     val email: String = "",
     val password: String = "",
     val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
-    val error: Int? = null
+    val error: Int? = null,
+    val isUserAuthorized: Boolean = false
 ) : UiState {
 
     fun isFormValid(): Boolean {

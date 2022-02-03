@@ -3,7 +3,6 @@ package com.alxnophis.jetpack.authentication.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
@@ -16,7 +15,7 @@ import kotlinx.coroutines.withContext
 internal class AuthenticationViewModel(
     initialState: AuthenticationState = AuthenticationState(),
     private val useCaseAuthenticate: UseCaseAuthenticate,
-) : BaseViewModel<AuthenticationEvent, AuthenticationState, AuthenticationEffect>(initialState) {
+) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
 
     override fun handleEvent(event: AuthenticationEvent) =
         when (event) {
@@ -77,13 +76,19 @@ internal class AuthenticationViewModel(
             }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
-                    setEffect { AuthenticationEffect.NavigateToNextStep }
+                    setState {
+                        copy(
+                            isLoading = false,
+                            isUserAuthorized = true
+                        )
+                    }
                 },
                 {
                     setState {
                         copy(
                             isLoading = false,
-                            error = R.string.authentication_auth_error
+                            error = R.string.authentication_auth_error,
+                            isUserAuthorized = false
                         )
                     }
                 }

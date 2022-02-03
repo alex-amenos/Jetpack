@@ -4,7 +4,6 @@ import app.cash.turbine.test
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
@@ -184,9 +183,16 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
             advanceUntilIdle()
 
-            viewModel.effect.testFix {
+            viewModel.uiState.testFix {
                 assertEquals(
-                    AuthenticationEffect.NavigateToNextStep,
+                    initialState.copy(isLoading = true),
+                    awaitItem()
+                )
+                assertEquals(
+                    initialState.copy(
+                        isLoading = false,
+                        isUserAuthorized = true
+                    ),
                     awaitItem()
                 )
                 expectNoEvents()
@@ -209,14 +215,18 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             advanceUntilIdle()
 
             viewModel.uiState.test {
-                expectMostRecentItem()
                 assertEquals(
-                    initialState.copy(isLoading = false, error = R.string.authentication_auth_error),
+                    initialState.copy(isLoading = true),
                     awaitItem()
                 )
-                expectNoEvents()
-            }
-            viewModel.effect.test {
+                assertEquals(
+                    initialState.copy(
+                        isLoading = false,
+                        error = R.string.authentication_auth_error,
+                        isUserAuthorized = false
+                    ),
+                    awaitItem()
+                )
                 expectNoEvents()
             }
         }

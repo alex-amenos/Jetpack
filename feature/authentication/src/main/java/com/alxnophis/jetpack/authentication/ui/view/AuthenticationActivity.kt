@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.ui.ExperimentalComposeUiApi
 import com.alxnophis.jetpack.authentication.di.injectAuthentication
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.base.activity.BaseActivity
@@ -20,19 +19,7 @@ class AuthenticationActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectAuthentication()
-        initEventObservers()
         initStateObservers()
-    }
-
-    private fun initEventObservers() = repeatOnLifecycleResumed {
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                AuthenticationEffect.NavigateToNextStep -> {
-                    this.finish()
-                    navigateToAuthorizedScreen()
-                }
-            }
-        }
     }
 
     private fun initStateObservers() = repeatOnLifecycleResumed {
@@ -43,10 +30,18 @@ class AuthenticationActivity : BaseActivity() {
 
     private fun renderState(state: AuthenticationState) {
         setContent {
-            AuthenticationScreen(
-                authenticationState = state,
-                handleEvent = viewModel::setEvent
-            )
+            when {
+                state.isUserAuthorized -> {
+                    this.finish()
+                    navigateToAuthorizedScreen()
+                }
+                else -> {
+                    AuthenticationScreen(
+                        authenticationState = state,
+                        handleEvent = viewModel::setEvent
+                    )
+                }
+            }
         }
     }
 
