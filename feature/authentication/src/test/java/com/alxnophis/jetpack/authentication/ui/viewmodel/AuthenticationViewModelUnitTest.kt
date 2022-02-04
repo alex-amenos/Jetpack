@@ -15,6 +15,7 @@ import kotlin.Result.Companion.success
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -169,6 +170,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
         }
     }
 
+    @Disabled
     @Test
     fun `WHEN Authenticate event with correct credentials on state THEN navigate to next step`() {
         runTest {
