@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.settings.ui.contract
 
 import androidx.annotation.StringRes
-import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
@@ -12,8 +11,6 @@ internal sealed class SettingsEvent : UiEvent {
     data class SetMarketingOption(val marketingOption: MarketingOption) : SettingsEvent()
     data class SetTheme(val theme: Theme) : SettingsEvent()
 }
-
-internal sealed class SettingsEffect : UiEffect
 
 internal data class SettingsState(
     val notificationsEnabled: Boolean = false,

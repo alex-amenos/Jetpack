@@ -16,14 +16,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectSettings()
-        initEventObservers()
         initStateObservers()
-    }
-
-    private fun initEventObservers() = repeatOnLifecycleResumed {
-        viewModel.effect.collect { _ ->
-            // TODO
-        }
     }
 
     private fun initStateObservers() = repeatOnLifecycleResumed {
