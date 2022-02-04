@@ -14,13 +14,13 @@ internal class SettingsViewModel(
 
     override fun handleEvent(event: SettingsEvent) =
         when (event) {
-            is SettingsEvent.SetNotifications -> toogleNotifications()
-            is SettingsEvent.SetHint -> toogleHint()
+            is SettingsEvent.SetNotifications -> toggleNotifications()
+            is SettingsEvent.SetHint -> toggleHint()
             is SettingsEvent.SetMarketingOption -> setMarketing(event.marketingOption)
             is SettingsEvent.SetTheme -> setTheme(event.theme)
         }
 
-    private fun toogleNotifications() {
+    private fun toggleNotifications() {
         viewModelScope.launch {
             setState {
                 copy(notificationsEnabled = !this.notificationsEnabled)
@@ -28,7 +28,7 @@ internal class SettingsViewModel(
         }
     }
 
-    private fun toogleHint() {
+    private fun toggleHint() {
         viewModelScope.launch {
             setState {
                 copy(hintsEnabled = !this.hintsEnabled)

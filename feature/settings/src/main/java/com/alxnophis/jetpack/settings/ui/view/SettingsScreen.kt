@@ -84,6 +84,16 @@ internal fun SettingsList(
             }
         )
         Divider()
+        SettingsThemeItem(
+            modifier = Modifier.fillMaxWidth(),
+            selectedTheme = state.themeOption,
+            onOptionSelected = { theme ->
+                handleEvent(SettingsEvent.SetTheme(theme))
+            }
+        )
+        SettingsSectionSpacer(
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
