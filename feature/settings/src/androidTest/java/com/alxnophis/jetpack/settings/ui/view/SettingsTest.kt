@@ -1,8 +1,6 @@
 package com.alxnophis.jetpack.settings.ui.view
 
 import androidx.annotation.StringRes
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
@@ -14,28 +12,45 @@ import org.junit.runner.RunWith
 class SettingsTest : BaseComposeTest() {
 
     @Test
-    fun enable_notifications_settings_is_displayed() {
-        assertSettingIsDisplayedWithState(
-            R.string.settings_option_notifications
-        ) {
-            composeTestRule.setContent {
-                SettingsScreen(
-                    settingsState = SettingsState().copy(notificationsEnabled = true),
-                    appVersion = APP_VERSION,
-                    handleEvent = {}
-                )
-            }
-        }
+    fun settings_enable_notifications_is_displayed() {
+        assertSettingsStringIsDisplayed(R.string.settings_option_notifications)
     }
 
-    private fun assertSettingIsDisplayedWithState(
-        @StringRes title: Int,
-        content: () -> Unit
+    @Test
+    fun settings_show_hints_is_displayed() {
+        assertSettingsStringIsDisplayed(R.string.settings_option_hints)
+    }
+
+    @Test
+    fun settings_subscription_is_displayed() {
+        assertSettingsStringIsDisplayed(R.string.settings_option_manage_subscription)
+    }
+
+    @Test
+    fun settings_theme_is_displayed() {
+        assertSettingsStringIsDisplayed(R.string.settings_option_theme)
+    }
+
+    @Test
+    fun settings_marketing_is_displayed() {
+        assertSettingsStringIsDisplayed(R.string.settings_option_marketing)
+    }
+
+    @Test
+    fun settings_version_is_displayed() {
+        assertSettingsStringIsDisplayed(R.string.settings_app_version)
+    }
+
+    private fun assertSettingsStringIsDisplayed(
+        @StringRes stringResource: Int,
     ) {
-        content()
-        composeTestRule
-            .onNodeWithText(targetContext.getString(title))
-            .assertIsDisplayed()
+        assertStringIsDisplayedWith(stringResource) {
+            SettingsScreen(
+                settingsState = SettingsState(),
+                appVersion = APP_VERSION,
+                handleEvent = {}
+            )
+        }
     }
 
     companion object {
