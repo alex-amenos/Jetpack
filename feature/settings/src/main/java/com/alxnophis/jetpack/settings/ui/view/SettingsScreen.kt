@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.settings.ui.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -113,7 +114,10 @@ internal fun SettingsTopBar() {
         Icon(
             imageVector = Icons.Default.ArrowBack,
             contentDescription = stringResource(id = R.string.settings_cd_go_back),
-            tint = MaterialTheme.colors.onSurface
+            tint = MaterialTheme.colors.onSurface,
+            modifier = Modifier.clickable {
+
+            }
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
@@ -128,8 +132,10 @@ internal fun SettingsTopBar() {
 @ExperimentalComposeUiApi
 @Composable
 private fun SettingsScreenPreview() {
-    SettingsScreen(
-        settingsState = SettingsState(),
-        handleEvent = {}
-    )
+    CoreTheme {
+        SettingsScreen(
+            settingsState = SettingsState(),
+            handleEvent = {}
+        )
+    }
 }

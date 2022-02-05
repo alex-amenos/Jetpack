@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
 
 @Composable
@@ -39,8 +40,10 @@ internal fun SettingsAppVersion(
 @ExperimentalComposeUiApi
 @Composable
 private fun SettingsAppVersionPreview() {
-    SettingsAppVersion(
-        modifier = Modifier.fillMaxWidth(),
-        appVersion = "1.0.1"
-    )
+    CoreTheme {
+        SettingsAppVersion(
+            modifier = Modifier.fillMaxWidth(),
+            appVersion = "1.0.1"
+        )
+    }
 }
