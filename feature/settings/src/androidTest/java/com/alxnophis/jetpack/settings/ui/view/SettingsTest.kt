@@ -6,12 +6,12 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
-import com.alxnophis.jetpack.testing.base.BaseAndroidTest
+import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class SettingsTest : BaseAndroidTest() {
+class SettingsTest : BaseComposeTest() {
 
     @Test
     fun enable_notifications_settings_is_displayed() {

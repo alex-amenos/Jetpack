@@ -10,6 +10,6 @@ abstract class BaseComposeTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    val instrumentationContext: Context
-        get() = InstrumentationRegistry.getInstrumentation().context
+    val targetContext: Context
+        get() = InstrumentationRegistry.getInstrumentation().targetContext
 }
