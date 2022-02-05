@@ -50,7 +50,7 @@ internal fun SettingsManageSubscriptionItem(
 @Preview(showBackground = true)
 @ExperimentalComposeUiApi
 @Composable
-private fun SettingsManageSubscriptionItem() {
+private fun SettingsManageSubscriptionItemPreview() {
     CoreTheme {
         SettingsManageSubscriptionItem(
             modifier = Modifier.fillMaxWidth(),

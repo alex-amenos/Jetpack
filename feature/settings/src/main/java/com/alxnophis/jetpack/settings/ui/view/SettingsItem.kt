@@ -12,8 +12,7 @@ internal fun SettingsItem(
     content: @Composable () -> Unit,
 ) {
     Surface(
-        modifier = modifier
-            .heightIn(min = 56.dp)
+        modifier = modifier.heightIn(min = 56.dp)
     ) {
         content()
     }
