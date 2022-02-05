@@ -15,7 +15,7 @@ android {
         versionCode AppVersion.CODE
         versionName AppVersion.NAME
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
         consumerProguardFiles 'proguard-rules.pro'
@@ -41,11 +41,19 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE
+        kotlinCompilerVersion Version.KOTLIN
+    }
+
+    compileOptions {
+        sourceCompatibility AppConfig.sourceCompat
+        targetCompatibility AppConfig.targetCompat
+    }
+
+    kotlinOptions {
+        jvmTarget = AppConfig.kotlinOption
     }
 
     testOptions {
-        execution "ANDROIDX_TEST_ORCHESTRATOR"
-        animationsDisabled true
         unitTests.all {
             if (name == "testDebugUnitTest") {
                 kover {
@@ -56,15 +64,6 @@ android {
                 }
             }
         }
-    }
-
-    compileOptions {
-        sourceCompatibility AppConfig.sourceCompat
-        targetCompatibility AppConfig.targetCompat
-    }
-
-    kotlinOptions {
-        jvmTarget = AppConfig.kotlinOption
     }
 
     lint {
@@ -160,6 +159,6 @@ dependencies {
     androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
     androidTestImplementation Dep.ANDROIDX_TEST_RULES
     androidTestImplementation Dep.KOIN_TEST
-
-    androidTestUtil Dep.ANDROIDX_ORCHESTRATOR
+    androidTestImplementation Dep.MOCKITO_KOTLIN
+    androidTestImplementation Dep.MOCKITO_ANDROID
 }

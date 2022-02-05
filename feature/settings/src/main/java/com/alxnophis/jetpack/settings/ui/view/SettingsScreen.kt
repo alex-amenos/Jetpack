@@ -33,12 +33,14 @@ import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 @Composable
 internal fun SettingsScreen(
     settingsState: SettingsState,
+    appVersion: String = LocalContext.current.getVersion(),
     handleEvent: (event: SettingsEvent) -> Unit,
 ) {
     CoreTheme {
         SettingsList(
             modifier = Modifier.fillMaxSize(),
             state = settingsState,
+            appVersion = appVersion,
             handleEvent = handleEvent
         )
     }
@@ -48,6 +50,7 @@ internal fun SettingsScreen(
 internal fun SettingsList(
     modifier: Modifier,
     state: SettingsState,
+    appVersion: String,
     handleEvent: (event: SettingsEvent) -> Unit,
 ) {
     Column(
@@ -99,7 +102,7 @@ internal fun SettingsList(
         )
         SettingsAppVersion(
             modifier = Modifier.fillMaxWidth(),
-            appVersion = LocalContext.current.getVersion()
+            appVersion = appVersion
         )
         Divider()
     }
@@ -116,7 +119,6 @@ internal fun SettingsTopBar() {
             contentDescription = stringResource(id = R.string.settings_cd_go_back),
             tint = MaterialTheme.colors.onSurface,
             modifier = Modifier.clickable {
-
             }
         )
         Spacer(modifier = Modifier.width(16.dp))
@@ -135,7 +137,8 @@ private fun SettingsScreenPreview() {
     CoreTheme {
         SettingsScreen(
             settingsState = SettingsState(),
-            handleEvent = {}
+            appVersion = "1.0.0",
+            handleEvent = {},
         )
     }
 }

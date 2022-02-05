@@ -204,11 +204,6 @@ platform :android do
         debugAndroidTests()
     end
 
-    desc "Android Test Orchestrator"
-    lane :testOrchestrator do
-        androidTest()
-    end
-
     ###########
     # Quality #
     ###########
