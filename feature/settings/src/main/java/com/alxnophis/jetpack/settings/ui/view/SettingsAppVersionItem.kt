@@ -44,4 +44,3 @@ private fun SettingsAppVersionPreview() {
         appVersion = "1.0.1"
     )
 }
-
