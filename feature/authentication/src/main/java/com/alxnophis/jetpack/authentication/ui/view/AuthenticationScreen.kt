@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.authentication.R
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 
@@ -25,7 +25,7 @@ import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 @Composable
 internal fun AuthenticationScreen(
     authenticationState: AuthenticationState,
-    handleEvent: (event: AuthenticationEvent) -> Unit,
+    handleEvent: (viewAction: AuthenticationViewAction) -> Unit,
 ) {
     CoreTheme {
         Authentication(
@@ -39,7 +39,7 @@ internal fun AuthenticationScreen(
 @Composable
 internal fun Authentication(
     authenticationState: AuthenticationState,
-    handleEvent: (event: AuthenticationEvent) -> Unit,
+    handleEvent: (viewAction: AuthenticationViewAction) -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -58,16 +58,16 @@ internal fun Authentication(
                 false
             },
             onEmailChanged = { email ->
-                handleEvent(AuthenticationEvent.EmailChanged(email))
+                handleEvent(AuthenticationViewAction.EmailChanged(email))
             },
             onPasswordChanged = { password ->
-                handleEvent(AuthenticationEvent.PasswordChanged(password))
+                handleEvent(AuthenticationViewAction.PasswordChanged(password))
             },
             onAuthenticate = {
-                handleEvent(AuthenticationEvent.Authenticate)
+                handleEvent(AuthenticationViewAction.Authenticate)
             },
             onToggleMode = {
-                handleEvent(AuthenticationEvent.ToggleAuthenticationMode)
+                handleEvent(AuthenticationViewAction.ToggleAuthenticationMode)
             }
         )
         authenticationState.error?.let { error ->
@@ -75,7 +75,7 @@ internal fun Authentication(
                 errorRes = error,
                 dismissError = {
                     handleEvent(
-                        AuthenticationEvent.ErrorDismissed
+                        AuthenticationViewAction.ErrorDismissed
                     )
                 }
             )

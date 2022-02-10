@@ -3,7 +3,7 @@ package com.alxnophis.jetpack.authentication.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
@@ -15,15 +15,15 @@ import kotlinx.coroutines.withContext
 internal class AuthenticationViewModel(
     initialState: AuthenticationState = AuthenticationState(),
     private val useCaseAuthenticate: UseCaseAuthenticate,
-) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
+) : BaseViewModel<AuthenticationViewAction, AuthenticationState>(initialState) {
 
-    override fun handleAction(action: AuthenticationEvent) =
-        when (action) {
-            AuthenticationEvent.Authenticate -> authenticate()
-            AuthenticationEvent.ErrorDismissed -> dismissError()
-            AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-            is AuthenticationEvent.EmailChanged -> updateEmail(action.email)
-            is AuthenticationEvent.PasswordChanged -> updatePassword(action.password)
+    override fun handleAction(viewAction: AuthenticationViewAction) =
+        when (viewAction) {
+            AuthenticationViewAction.Authenticate -> authenticate()
+            AuthenticationViewAction.ErrorDismissed -> dismissError()
+            AuthenticationViewAction.ToggleAuthenticationMode -> toggleAuthenticationMode()
+            is AuthenticationViewAction.EmailChanged -> updateEmail(viewAction.email)
+            is AuthenticationViewAction.PasswordChanged -> updatePassword(viewAction.password)
         }
 
     private fun toggleAuthenticationMode() {

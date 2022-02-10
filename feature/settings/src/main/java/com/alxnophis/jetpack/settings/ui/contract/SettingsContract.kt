@@ -5,11 +5,11 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiAction
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
 
-internal sealed class SettingsEvent : UiAction {
-    object SetNotifications : SettingsEvent()
-    object SetHint : SettingsEvent()
-    data class SetMarketingOption(val marketingOption: MarketingOption) : SettingsEvent()
-    data class SetTheme(val theme: Theme) : SettingsEvent()
+internal sealed class SettingsViewAction : UiAction {
+    object SetNotifications : SettingsViewAction()
+    object SetHint : SettingsViewAction()
+    data class SetMarketingOption(val marketingOption: MarketingOption) : SettingsViewAction()
+    data class SetTheme(val theme: Theme) : SettingsViewAction()
 }
 
 internal data class SettingsState(

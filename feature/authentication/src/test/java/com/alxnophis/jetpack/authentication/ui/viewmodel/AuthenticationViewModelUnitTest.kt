@@ -4,7 +4,7 @@ import app.cash.turbine.test
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
@@ -48,7 +48,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN signIn state and ToggleAuthenticationMode event THEN validate state is signUp`() {
         runTest {
-            viewModel.setAction(AuthenticationEvent.ToggleAuthenticationMode)
+            viewModel.setAction(AuthenticationViewAction.ToggleAuthenticationMode)
 
             advanceUntilIdle()
 
@@ -70,7 +70,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.setAction(AuthenticationEvent.ToggleAuthenticationMode)
+            viewModel.setAction(AuthenticationViewAction.ToggleAuthenticationMode)
 
             advanceUntilIdle()
 
@@ -92,7 +92,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.setAction(AuthenticationEvent.ErrorDismissed)
+            viewModel.setAction(AuthenticationViewAction.ErrorDismissed)
 
             advanceUntilIdle()
 
@@ -109,7 +109,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN updated email and EmailChanged event THEN validate state change`() {
         runTest {
-            viewModel.setAction(AuthenticationEvent.EmailChanged(EMAIL))
+            viewModel.setAction(AuthenticationViewAction.EmailChanged(EMAIL))
 
             advanceUntilIdle()
 
@@ -126,7 +126,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN updated password and PasswordChanged event THEN validate state change`() {
         runTest {
-            viewModel.setAction(AuthenticationEvent.PasswordChanged(PASSWORD))
+            viewModel.setAction(AuthenticationViewAction.PasswordChanged(PASSWORD))
 
             advanceUntilIdle()
 
@@ -157,7 +157,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.setAction(AuthenticationEvent.Authenticate)
+            viewModel.setAction(AuthenticationViewAction.Authenticate)
 
             advanceUntilIdle()
 
@@ -181,7 +181,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.setAction(AuthenticationEvent.Authenticate)
+            viewModel.setAction(AuthenticationViewAction.Authenticate)
 
             advanceUntilIdle()
 
@@ -212,7 +212,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             )
             whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(failure(AuthenticationError.WrongAuthentication))
 
-            viewModel.setAction(AuthenticationEvent.Authenticate)
+            viewModel.setAction(AuthenticationViewAction.Authenticate)
 
             advanceUntilIdle()
 

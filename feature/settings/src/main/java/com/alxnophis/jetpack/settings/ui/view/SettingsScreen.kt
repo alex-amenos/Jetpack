@@ -27,14 +27,14 @@ import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
-import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
+import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 
 @Composable
 internal fun SettingsScreen(
     settingsState: SettingsState,
     appVersion: String = LocalContext.current.getVersion(),
-    handleEvent: (event: SettingsEvent) -> Unit,
+    handleEvent: (viewAction: SettingsViewAction) -> Unit,
 ) {
     CoreTheme {
         SettingsList(
@@ -51,7 +51,7 @@ internal fun SettingsList(
     modifier: Modifier,
     state: SettingsState,
     appVersion: String,
-    handleEvent: (event: SettingsEvent) -> Unit,
+    handleEvent: (viewAction: SettingsViewAction) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -63,14 +63,14 @@ internal fun SettingsList(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_notifications),
             checked = state.notificationsEnabled,
-            onToggleNotificationSettings = { handleEvent(SettingsEvent.SetNotifications) }
+            onToggleNotificationSettings = { handleEvent(SettingsViewAction.SetNotifications) }
         )
         Divider()
         SettingsHintItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_hints),
             checked = state.hintsEnabled,
-            onShowHintTootled = { handleEvent(SettingsEvent.SetHint) }
+            onShowHintTootled = { handleEvent(SettingsViewAction.SetHint) }
         )
         Divider()
         SettingsManageSubscriptionItem(
@@ -86,7 +86,7 @@ internal fun SettingsList(
             modifier = Modifier.fillMaxWidth(),
             selectedOption = state.marketingOption,
             onOptionSelected = { marketingOption ->
-                handleEvent(SettingsEvent.SetMarketingOption(marketingOption))
+                handleEvent(SettingsViewAction.SetMarketingOption(marketingOption))
             }
         )
         Divider()
@@ -94,7 +94,7 @@ internal fun SettingsList(
             modifier = Modifier.fillMaxWidth(),
             selectedTheme = state.themeOption,
             onOptionSelected = { theme ->
-                handleEvent(SettingsEvent.SetTheme(theme))
+                handleEvent(SettingsViewAction.SetTheme(theme))
             }
         )
         SettingsSectionSpacer(
