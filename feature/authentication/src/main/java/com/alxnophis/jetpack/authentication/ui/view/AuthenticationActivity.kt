@@ -38,7 +38,7 @@ class AuthenticationActivity : BaseActivity() {
                 else -> {
                     AuthenticationScreen(
                         authenticationState = state,
-                        handleEvent = viewModel::setEvent
+                        handleEvent = viewModel::setAction
                     )
                 }
             }

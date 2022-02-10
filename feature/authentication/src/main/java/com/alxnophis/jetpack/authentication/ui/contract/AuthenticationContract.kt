@@ -2,10 +2,10 @@ package com.alxnophis.jetpack.authentication.ui.contract
 
 import androidx.annotation.StringRes
 import com.alxnophis.jetpack.authentication.R
-import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
+import com.alxnophis.jetpack.core.base.viewmodel.UiAction
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 
-internal sealed class AuthenticationEvent : UiEvent {
+internal sealed class AuthenticationEvent : UiAction {
     object Authenticate : AuthenticationEvent()
     object ErrorDismissed : AuthenticationEvent()
     object ToggleAuthenticationMode : AuthenticationEvent()

@@ -48,7 +48,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN signIn state and ToggleAuthenticationMode event THEN validate state is signUp`() {
         runTest {
-            viewModel.setEvent(AuthenticationEvent.ToggleAuthenticationMode)
+            viewModel.setAction(AuthenticationEvent.ToggleAuthenticationMode)
 
             advanceUntilIdle()
 
@@ -70,7 +70,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.setEvent(AuthenticationEvent.ToggleAuthenticationMode)
+            viewModel.setAction(AuthenticationEvent.ToggleAuthenticationMode)
 
             advanceUntilIdle()
 
@@ -92,7 +92,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.setEvent(AuthenticationEvent.ErrorDismissed)
+            viewModel.setAction(AuthenticationEvent.ErrorDismissed)
 
             advanceUntilIdle()
 
@@ -109,7 +109,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN updated email and EmailChanged event THEN validate state change`() {
         runTest {
-            viewModel.setEvent(AuthenticationEvent.EmailChanged(EMAIL))
+            viewModel.setAction(AuthenticationEvent.EmailChanged(EMAIL))
 
             advanceUntilIdle()
 
@@ -126,7 +126,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN updated password and PasswordChanged event THEN validate state change`() {
         runTest {
-            viewModel.setEvent(AuthenticationEvent.PasswordChanged(PASSWORD))
+            viewModel.setAction(AuthenticationEvent.PasswordChanged(PASSWORD))
 
             advanceUntilIdle()
 
@@ -157,7 +157,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.setEvent(AuthenticationEvent.Authenticate)
+            viewModel.setAction(AuthenticationEvent.Authenticate)
 
             advanceUntilIdle()
 
@@ -181,7 +181,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                 useCaseAuthenticateMock
             )
 
-            viewModel.setEvent(AuthenticationEvent.Authenticate)
+            viewModel.setAction(AuthenticationEvent.Authenticate)
 
             advanceUntilIdle()
 
@@ -212,7 +212,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             )
             whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(failure(AuthenticationError.WrongAuthentication))
 
-            viewModel.setEvent(AuthenticationEvent.Authenticate)
+            viewModel.setAction(AuthenticationEvent.Authenticate)
 
             advanceUntilIdle()
 

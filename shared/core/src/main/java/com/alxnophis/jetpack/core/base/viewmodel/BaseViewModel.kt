@@ -11,10 +11,10 @@ import timber.log.Timber
 
 /**
  * MVI Architecture with Kotlin Flows and Channels by Yusuf Ceylan
- * POST: https://proandroiddev.com/mvi-architecture-with-kotlin-flows-and-channels-d36820b2028d
- * REPOSITORY: https://github.com/yusufceylan/MVI-Playground
+ * POST Idea: https://proandroiddev.com/mvi-architecture-with-kotlin-flows-and-channels-d36820b2028d
+ * REPOSITORY idea: https://github.com/yusufceylan/MVI-Playground
  */
-abstract class BaseViewModel<Event : UiEvent, State : UiState>(
+abstract class BaseViewModel<Action : UiAction, State : UiState>(
     initialState: State
 ) : ViewModel() {
 
@@ -24,40 +24,40 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
 
-    private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
-    val event = _event.asSharedFlow()
+    private val _action: MutableSharedFlow<Action> = MutableSharedFlow()
+    val action = _action.asSharedFlow()
 
     init {
-        subscribeEvents()
+        subscribeActions()
     }
 
     /**
-     * Start listening to Event
+     * Start listening to Action
      */
-    private fun subscribeEvents() {
+    private fun subscribeActions() {
         viewModelScope.launch {
-            event.collect {
-                handleEvent(it)
+            action.collect {
+                handleAction(it)
             }
         }
     }
 
     /**
-     * Handle each event
+     * Handle each Action
      */
-    abstract fun handleEvent(event: Event)
+    abstract fun handleAction(action: Action)
 
     /**
-     * Set new Event
+     * Set new Action
      */
-    fun setEvent(event: Event) {
-        val newEvent = event
-        Timber.d("## Set new event: $newEvent")
-        viewModelScope.launch { _event.emit(newEvent) }
+    fun setAction(action: Action) {
+        val newAction = action
+        Timber.d("## Set new action: $newAction")
+        viewModelScope.launch { _action.emit(newAction) }
     }
 
     /**
-     * Set new Ui State
+     * Set new State
      */
     protected fun setState(reduce: State.() -> State) {
         val newState = currentState.reduce()

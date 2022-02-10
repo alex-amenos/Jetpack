@@ -29,7 +29,7 @@ class SettingsActivity : AppCompatActivity() {
         setContent {
             SettingsScreen(
                 settingsState = state,
-                handleEvent = viewModel::setEvent
+                handleEvent = viewModel::setAction
             )
         }
     }
