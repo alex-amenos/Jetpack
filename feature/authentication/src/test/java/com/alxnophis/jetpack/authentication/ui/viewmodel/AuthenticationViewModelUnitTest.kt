@@ -4,9 +4,9 @@ import app.cash.turbine.test
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModel5UnitTest
 import com.alxnophis.jetpack.testing.extensions.testFix
@@ -15,7 +15,6 @@ import kotlin.Result.Companion.success
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -169,8 +168,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             }
         }
     }
-
-    @Disabled
+    
     @Test
     fun `WHEN Authenticate event with correct credentials on state THEN navigate to next step`() {
         runTest {
