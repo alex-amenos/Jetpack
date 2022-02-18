@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.settings.ui.view
+package com.alxnophis.jetpack.settings.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
 import com.alxnophis.jetpack.settings.di.injectSettings
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
+import com.alxnophis.jetpack.settings.ui.view.SettingsScreen
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {

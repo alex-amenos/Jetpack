@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name=".ui.view.SettingsActivity"
+            android:name=".ui.SettingsActivity"
             android:exported="true"
             android:theme="@style/CoreTheme">
             <intent-filter>
