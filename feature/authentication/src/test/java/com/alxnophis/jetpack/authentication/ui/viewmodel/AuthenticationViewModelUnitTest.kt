@@ -168,7 +168,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             }
         }
     }
-    
+
     @Test
     fun `WHEN Authenticate event with correct credentials on state THEN navigate to next step`() {
         runTest {
