@@ -16,9 +16,7 @@ internal fun SettingsSectionSpacer(
         modifier = modifier
             .height(48.dp)
             .background(
-                MaterialTheme.colors.onSurface.copy(
-                    alpha = 0.12f
-                )
+                MaterialTheme.colors.onSurface.copy(alpha = 0.12f)
             )
     )
 }
