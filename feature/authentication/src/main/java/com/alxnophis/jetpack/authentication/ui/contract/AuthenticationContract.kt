@@ -2,8 +2,12 @@ package com.alxnophis.jetpack.authentication.ui.contract
 
 import androidx.annotation.StringRes
 import com.alxnophis.jetpack.authentication.R
+import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.base.viewmodel.UiAction
+import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
+
+internal sealed class AuthenticationEffect : UiEffect
 
 internal sealed class AuthenticationViewAction : UiAction {
     object Authenticate : AuthenticationViewAction()
@@ -15,8 +19,8 @@ internal sealed class AuthenticationViewAction : UiAction {
 
 internal data class AuthenticationState(
     val authenticationMode: AuthenticationMode = AuthenticationMode.SIGN_IN,
-    val email: String = "",
-    val password: String = "",
+    val email: String = EMPTY,
+    val password: String = EMPTY,
     val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
     val error: Int? = null,

@@ -2,8 +2,11 @@ package com.alxnophis.jetpack.settings.ui.contract
 
 import androidx.annotation.StringRes
 import com.alxnophis.jetpack.core.base.viewmodel.UiAction
+import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
+
+internal sealed class SettingsEffect : UiEffect
 
 internal sealed class SettingsViewAction : UiAction {
     object SetNotifications : SettingsViewAction()

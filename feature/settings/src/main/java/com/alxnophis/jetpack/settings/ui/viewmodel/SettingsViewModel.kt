@@ -3,14 +3,15 @@ package com.alxnophis.jetpack.settings.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
-import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
+import com.alxnophis.jetpack.settings.ui.contract.SettingsEffect
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
+import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
 import com.alxnophis.jetpack.settings.ui.contract.Theme
 import kotlinx.coroutines.launch
 
 internal class SettingsViewModel(
     initialState: SettingsState = SettingsState(),
-) : BaseViewModel<SettingsViewAction, SettingsState>(initialState) {
+) : BaseViewModel<SettingsViewAction, SettingsState, SettingsEffect>(initialState) {
 
     override fun handleAction(viewAction: SettingsViewAction) =
         when (viewAction) {

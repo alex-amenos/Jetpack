@@ -3,19 +3,22 @@ package com.alxnophis.jetpack.authentication.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 internal class AuthenticationViewModel(
     initialState: AuthenticationState = AuthenticationState(),
+    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
     private val useCaseAuthenticate: UseCaseAuthenticate,
-) : BaseViewModel<AuthenticationViewAction, AuthenticationState>(initialState) {
+) : BaseViewModel<AuthenticationViewAction, AuthenticationState, AuthenticationEffect>(initialState) {
 
     override fun handleAction(viewAction: AuthenticationViewAction) =
         when (viewAction) {
@@ -27,11 +30,9 @@ internal class AuthenticationViewModel(
         }
 
     private fun toggleAuthenticationMode() {
-        val authenticationMode = currentState.authenticationMode
-        val newAuthenticationMode = if (authenticationMode == AuthenticationMode.SIGN_IN) {
-            AuthenticationMode.SIGN_UP
-        } else {
-            AuthenticationMode.SIGN_IN
+        val newAuthenticationMode = when (currentState.authenticationMode) {
+            AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
+            else -> AuthenticationMode.SIGN_IN
         }
         setState {
             copy(authenticationMode = newAuthenticationMode)
@@ -97,7 +98,7 @@ internal class AuthenticationViewModel(
     }
 
     private suspend fun authenticateUser(email: String, password: String): Result<Unit> =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcherIO) {
             useCaseAuthenticate.invoke(email, password)
         }
 
