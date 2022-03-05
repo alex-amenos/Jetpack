@@ -13,7 +13,7 @@ android {
         versionCode AppVersion.CODE
         versionName AppVersion.NAME
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled false
@@ -37,7 +37,6 @@ android {
     }
 
     buildFeatures {
-        viewBinding true
         compose true
     }
 
@@ -72,11 +71,6 @@ android {
 
     kotlinOptions {
         jvmTarget = AppConfig.kotlinOption
-    }
-
-    testOptions {
-        execution "ANDROIDX_TEST_ORCHESTRATOR"
-        animationsDisabled true
     }
 
     lint {
@@ -132,6 +126,4 @@ dependencies {
     androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
     androidTestImplementation Dep.ANDROIDX_TEST_RULES
     androidTestImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
-
-    androidTestUtil Dep.ANDROIDX_ORCHESTRATOR
 }

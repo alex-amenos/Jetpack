@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Settings</string>
+    <string name="settings_light">Light</string>
+    <string name="settings_dark">Dark</string>
+    <string name="settings_system">System</string>
+    <string name="settings_cd_go_back">Go back to the previous screen</string>
+    <string name="settings_cd_notifications_enabled">Notifications Enabled</string>
+    <string name="settings_cd_notifications_disabled">Notifications Disabled</string>
+    <string name="settings_cd_hints_enabled">Hints Enabled</string>
+    <string name="settings_cd_hints_disabled">Hints Disabled</string>
+    <string name="settings_cd_open_subscription">Open Subscription Management</string>
+    <string name="settings_cd_select_theme">Select theme</string>
+    <string name="settings_option_notifications">Enable Notifications</string>
+    <string name="settings_option_hints">Show Hints</string>
+    <string name="settings_option_marketing">Receive marketing emails?</string>
+    <string name="settings_option_manage_subscription">Manage Subscription</string>
+    <string name="settings_option_theme">Theme</string>
+    <string name="settings_app_version">App version</string>
+    <string-array name="settings_options_marketing_choice">
+        <item>Opt-in for marketing emails</item>
+        <item>Don\'t send me emails</item>
+    </string-array>
+</resources>

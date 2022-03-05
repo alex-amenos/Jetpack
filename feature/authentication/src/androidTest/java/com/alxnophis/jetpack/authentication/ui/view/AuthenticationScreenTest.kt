@@ -14,7 +14,7 @@ class AuthenticationScreenTest : BaseComposeTest() {
     private val screenState = AuthenticationState()
 
     @Test
-    fun Sign_In_Title_Displayed_By_Default() {
+    fun sign_in_title_displayed_by_default() {
         composeTestRule.setContent {
             AuthenticationScreen(
                 authenticationState = screenState,
@@ -23,7 +23,7 @@ class AuthenticationScreenTest : BaseComposeTest() {
         }
 
         composeTestRule
-            .onNodeWithText(instrumentationContext.getString(R.string.authentication_label_sign_in_to_account))
+            .onNodeWithText(targetContext.getString(R.string.authentication_label_sign_in_to_account))
             .assertIsDisplayed()
     }
 }

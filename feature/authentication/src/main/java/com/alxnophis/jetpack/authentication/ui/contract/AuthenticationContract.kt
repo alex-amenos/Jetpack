@@ -2,29 +2,29 @@ package com.alxnophis.jetpack.authentication.ui.contract
 
 import androidx.annotation.StringRes
 import com.alxnophis.jetpack.authentication.R
+import com.alxnophis.jetpack.core.base.constants.EMPTY
+import com.alxnophis.jetpack.core.base.viewmodel.UiAction
 import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
-import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 
-internal sealed class AuthenticationEvent : UiEvent {
-    object Authenticate : AuthenticationEvent()
-    object ErrorDismissed : AuthenticationEvent()
-    object ToggleAuthenticationMode : AuthenticationEvent()
-    data class EmailChanged(val email: String) : AuthenticationEvent()
-    data class PasswordChanged(val password: String) : AuthenticationEvent()
-}
+internal sealed class AuthenticationEffect : UiEffect
 
-internal sealed class AuthenticationEffect : UiEffect {
-    object NavigateToNextStep : AuthenticationEffect()
+internal sealed class AuthenticationViewAction : UiAction {
+    object Authenticate : AuthenticationViewAction()
+    object ErrorDismissed : AuthenticationViewAction()
+    object ToggleAuthenticationMode : AuthenticationViewAction()
+    data class EmailChanged(val email: String) : AuthenticationViewAction()
+    data class PasswordChanged(val password: String) : AuthenticationViewAction()
 }
 
 internal data class AuthenticationState(
     val authenticationMode: AuthenticationMode = AuthenticationMode.SIGN_IN,
-    val email: String = "",
-    val password: String = "",
+    val email: String = EMPTY,
+    val password: String = EMPTY,
     val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
-    val error: Int? = null
+    val error: Int? = null,
+    val isUserAuthorized: Boolean = false
 ) : UiState {
 
     fun isFormValid(): Boolean {
