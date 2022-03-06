@@ -8,6 +8,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.view.AuthenticationScreen
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.base.activity.BaseActivity
+import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleStarted
 import com.alxnophis.jetpack.router.features.RouterAuthentication
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,7 +26,7 @@ class AuthenticationActivity : BaseActivity() {
         initStateObserver()
     }
 
-    private fun initEffectObserver() = repeatOnLifecycleStarted {
+    private fun initEffectObserver() = repeatOnLifecycleResumed {
         viewModel.effect.collect { effect ->
             Timber.d("Authentication effect: $effect")
         }

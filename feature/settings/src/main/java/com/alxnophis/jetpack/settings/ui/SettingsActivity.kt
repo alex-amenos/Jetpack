@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleStarted
 import com.alxnophis.jetpack.settings.di.injectSettings
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
@@ -22,7 +23,7 @@ class SettingsActivity : AppCompatActivity() {
         initStateObserver()
     }
 
-    private fun initEffectObserver() = repeatOnLifecycleStarted {
+    private fun initEffectObserver() = repeatOnLifecycleResumed {
         viewModel.effect.collect { effect ->
             Timber.d("Settings effect: $effect")
         }
