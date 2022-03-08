@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
@@ -18,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
+import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 
 @Composable
 fun SettingsHintItem(
@@ -43,7 +45,8 @@ fun SettingsHintItem(
                     role = Role.Checkbox
                 )
                 .semantics { stateDescription = hintsEnabledState }
-                .padding(16.dp),
+                .padding(16.dp)
+                .testTag(TAG_CHECK_ITEM),
         ) {
             Text(
                 text = title,

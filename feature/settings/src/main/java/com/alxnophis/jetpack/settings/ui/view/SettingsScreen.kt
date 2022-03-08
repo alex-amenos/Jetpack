@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
-import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
+import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
 
 @Composable
 internal fun SettingsScreen(

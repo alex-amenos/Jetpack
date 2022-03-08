@@ -18,7 +18,10 @@ abstract class BaseComposeTest {
     val targetContext: Context
         get() = InstrumentationRegistry.getInstrumentation().targetContext
 
-    fun assertStringIsDisplayedWith(
+    val context: Context
+        get() = InstrumentationRegistry.getInstrumentation().context
+
+    fun assertStringDisplayedWith(
         @StringRes stringResource: Int,
         composable: @Composable () -> Unit,
     ) {
