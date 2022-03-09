@@ -7,7 +7,9 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiAction
 import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 
-internal sealed class AuthenticationEffect : UiEffect
+internal sealed class AuthenticationEffect : UiEffect {
+    object UserAuthorized : AuthenticationEffect()
+}
 
 internal sealed class AuthenticationViewAction : UiAction {
     object Authenticate : AuthenticationViewAction()
@@ -24,7 +26,6 @@ internal data class AuthenticationState(
     val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
     val error: Int? = null,
-    val isUserAuthorized: Boolean = false
 ) : UiState {
 
     fun isFormValid(): Boolean {

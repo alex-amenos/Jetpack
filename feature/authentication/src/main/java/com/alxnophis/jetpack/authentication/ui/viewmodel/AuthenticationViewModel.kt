@@ -78,10 +78,10 @@ internal class AuthenticationViewModel(
             authenticateUser(currentState.email, currentState.password).fold(
                 {
                     setState {
-                        copy(
-                            isLoading = false,
-                            isUserAuthorized = true
-                        )
+                        copy(isLoading = false)
+                    }
+                    setEffect {
+                        AuthenticationEffect.UserAuthorized
                     }
                 },
                 {
@@ -89,7 +89,6 @@ internal class AuthenticationViewModel(
                         copy(
                             isLoading = false,
                             error = R.string.authentication_auth_error,
-                            isUserAuthorized = false
                         )
                     }
                 }

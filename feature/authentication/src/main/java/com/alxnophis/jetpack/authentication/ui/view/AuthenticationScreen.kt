@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -17,20 +18,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.authentication.R
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
+import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import org.koin.androidx.compose.getViewModel
 
 @ExperimentalComposeUiApi
 @Composable
 internal fun AuthenticationScreen(
-    authenticationState: AuthenticationState,
-    handleEvent: (viewAction: AuthenticationViewAction) -> Unit,
+    viewModel: AuthenticationViewModel = getViewModel()
 ) {
     CoreTheme {
+        val state = viewModel.uiState.collectAsState().value
         Authentication(
-            authenticationState,
-            handleEvent
+            state,
+            viewModel::setAction
         )
     }
 }
@@ -129,8 +132,10 @@ fun AuthenticationErrorDialog(
 @ExperimentalComposeUiApi
 @Composable
 private fun AuthenticationFormPreview() {
-    AuthenticationScreen(
-        authenticationState = AuthenticationState(),
-        handleEvent = {}
-    )
+    CoreTheme {
+        Authentication(
+            authenticationState = AuthenticationState(),
+            handleEvent = {},
+        )
+    }
 }

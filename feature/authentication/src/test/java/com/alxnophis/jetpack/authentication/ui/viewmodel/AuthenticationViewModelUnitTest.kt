@@ -6,6 +6,7 @@ import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate.Companion.AUTHORIZED_EMAIL
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate.Companion.AUTHORIZED_PASSWORD
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
@@ -176,7 +177,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     }
 
     @Test
-    fun `WHEN Authenticate event with correct credentials on state THEN navigate to next step`() {
+    fun `WHEN Authenticate event with correct credentials THEN update state accordingly`() {
         runTest {
             whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(success(Unit))
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
@@ -194,10 +195,26 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                     awaitItem()
                 )
                 assertEquals(
-                    initialState.copy(
-                        isLoading = false,
-                        isUserAuthorized = true
-                    ),
+                    initialState.copy(isLoading = false),
+                    awaitItem()
+                )
+                expectNoEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `WHEN Authenticate event with correct credentials THEN navigate to next step`() {
+        runTest {
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(success(Unit))
+            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
+            val viewModel = viewModelMother(initialState = initialState)
+
+            viewModel.setAction(AuthenticationViewAction.Authenticate)
+
+            viewModel.effect.test {
+                assertEquals(
+                    AuthenticationEffect.UserAuthorized,
                     awaitItem()
                 )
                 expectNoEvents()
@@ -227,7 +244,6 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                     initialState.copy(
                         isLoading = false,
                         error = R.string.authentication_auth_error,
-                        isUserAuthorized = false
                     ),
                     awaitItem()
                 )
