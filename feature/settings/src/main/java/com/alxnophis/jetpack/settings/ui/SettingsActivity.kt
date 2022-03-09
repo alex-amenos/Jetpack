@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
 import com.alxnophis.jetpack.settings.di.injectSettings
-import com.alxnophis.jetpack.settings.ui.view.SettingsScreen
+import com.alxnophis.jetpack.settings.ui.view.Settings
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import timber.log.Timber
 
@@ -29,7 +29,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun renderContent() {
         setContent {
-            SettingsScreen()
+            Settings()
         }
     }
 }

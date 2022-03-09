@@ -26,12 +26,12 @@ import org.koin.androidx.compose.getViewModel
 
 @ExperimentalComposeUiApi
 @Composable
-internal fun AuthenticationScreen(
+internal fun Authentication(
     viewModel: AuthenticationViewModel = getViewModel()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        Authentication(
+        AuthenticationScreen(
             state,
             viewModel::setAction
         )
@@ -40,7 +40,7 @@ internal fun AuthenticationScreen(
 
 @ExperimentalComposeUiApi
 @Composable
-internal fun Authentication(
+internal fun AuthenticationScreen(
     authenticationState: AuthenticationState,
     handleEvent: (viewAction: AuthenticationViewAction) -> Unit,
 ) {
@@ -133,7 +133,7 @@ fun AuthenticationErrorDialog(
 @Composable
 private fun AuthenticationFormPreview() {
     CoreTheme {
-        Authentication(
+        AuthenticationScreen(
             authenticationState = AuthenticationState(),
             handleEvent = {},
         )

@@ -34,14 +34,13 @@ import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-internal fun SettingsScreen(
+internal fun Settings(
     viewModel: SettingsViewModel = getViewModel(),
     appVersion: String = LocalContext.current.getVersion()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        SettingsList(
-            modifier = Modifier.fillMaxSize(),
+        SettingsScreen(
             state = state,
             appVersion = appVersion,
             handleEvent = viewModel::setAction
@@ -50,14 +49,14 @@ internal fun SettingsScreen(
 }
 
 @Composable
-internal fun SettingsList(
-    modifier: Modifier,
+internal fun SettingsScreen(
     state: SettingsState,
     appVersion: String,
     handleEvent: (viewAction: SettingsViewAction) -> Unit,
 ) {
     Column(
-        modifier = modifier
+        modifier = Modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         SettingsTopBar()
@@ -138,8 +137,7 @@ internal fun SettingsTopBar() {
 @Composable
 private fun SettingsScreenPreview() {
     CoreTheme {
-        SettingsList(
-            modifier = Modifier.fillMaxSize(),
+        SettingsScreen(
             state = SettingsState(),
             appVersion = "1.0.0",
             handleEvent = {}
