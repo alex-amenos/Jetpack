@@ -10,10 +10,10 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
-import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_TOGGLE_ITEM
+import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -52,77 +52,52 @@ class SettingsTest : BaseComposeTest() {
     }
 
     @Test
-    fun enabled_notifications_toggles_unselected_state() {
-        setSettingsContentWith(
-            SettingsState(notificationsEnabled = false)
-        )
+    fun enabled_notifications_toggles_state() {
+        setSettingsContent()
+        composeTestRule
+            .onNodeWithTag(TAG_TOGGLE_ITEM)
+            .assertIsOff()
         composeTestRule
             .onNodeWithText(context.getString(R.string.settings_option_notifications))
             .performClick()
         composeTestRule
             .onNodeWithTag(TAG_TOGGLE_ITEM)
-            .assertIsOff()
+            .assertIsOn()
     }
 
     @Test
-    fun enable_notifications_toggles_selected_state() {
-        setSettingsContentWith(
-            SettingsState(notificationsEnabled = true)
-        )
+    fun show_hints_toggles_state() {
+        setSettingsContent()
+        composeTestRule
+            .onNodeWithTag(TAG_CHECK_ITEM)
+            .assertIsOff()
         composeTestRule
             .onNodeWithText(context.getString(R.string.settings_option_hints))
             .performClick()
         composeTestRule
-            .onNodeWithTag(TAG_TOGGLE_ITEM)
-            .assertIsOn()
-    }
-
-    @Test
-    fun show_hints_toggles_unselected_state() {
-        setSettingsContentWith(
-            SettingsState(hintsEnabled = true)
-        )
-        composeTestRule
             .onNodeWithTag(TAG_CHECK_ITEM)
             .assertIsOn()
     }
 
     @Test
-    fun show_hints_toggles_selected_state() {
-        setSettingsContentWith(
-            SettingsState(hintsEnabled = true)
-        )
-        composeTestRule
-            .onNodeWithTag(TAG_CHECK_ITEM)
-            .assertIsOn()
-    }
-
-    @Test
-    fun marketing_options_toggles_selected_state() {
-        setSettingsContentWith(
-            SettingsState(marketingOption = MarketingOption.ALLOWED)
-        )
+    fun marketing_options_toggles_state() {
+        setSettingsContent()
         composeTestRule
             .onNodeWithTag(TAG_MARKETING_OPTION + MarketingOption.ALLOWED.id)
             .assertIsSelected()
-    }
-
-    @Test
-    fun marketing_options_toggles_unselected_state() {
-        setSettingsContentWith(
-            SettingsState(marketingOption = MarketingOption.NOT_ALLOWED)
-        )
+        composeTestRule
+            .onNodeWithText(context.resources.getStringArray(R.array.settings_options_marketing_choice)[1])
+            .performClick()
         composeTestRule
             .onNodeWithTag(TAG_MARKETING_OPTION + MarketingOption.NOT_ALLOWED.id)
             .assertIsSelected()
     }
 
-    private fun setSettingsContentWith(state: SettingsState) {
+    private fun setSettingsContent() {
         composeTestRule.setContent {
             SettingsScreen(
-                settingsState = state,
-                appVersion = APP_VERSION,
-                handleEvent = {}
+                viewModel = SettingsViewModel(),
+                appVersion = APP_VERSION
             )
         }
     }
@@ -132,9 +107,8 @@ class SettingsTest : BaseComposeTest() {
     ) {
         assertStringDisplayedWith(stringResource) {
             SettingsScreen(
-                settingsState = SettingsState(),
+                viewModel = SettingsViewModel(),
                 appVersion = APP_VERSION,
-                handleEvent = {}
             )
         }
     }

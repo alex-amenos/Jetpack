@@ -13,12 +13,12 @@ internal class SettingsViewModel(
     initialState: SettingsState = SettingsState(),
 ) : BaseViewModel<SettingsViewAction, SettingsState, SettingsEffect>(initialState) {
 
-    override fun handleAction(viewAction: SettingsViewAction) =
-        when (viewAction) {
+    override fun handleAction(action: SettingsViewAction) =
+        when (action) {
             is SettingsViewAction.SetNotifications -> toggleNotifications()
             is SettingsViewAction.SetHint -> toggleHint()
-            is SettingsViewAction.SetMarketingOption -> setMarketing(viewAction.marketingOption)
-            is SettingsViewAction.SetTheme -> setTheme(viewAction.theme)
+            is SettingsViewAction.SetMarketingOption -> setMarketing(action.marketingOption)
+            is SettingsViewAction.SetTheme -> setTheme(action.theme)
         }
 
     private fun toggleNotifications() {

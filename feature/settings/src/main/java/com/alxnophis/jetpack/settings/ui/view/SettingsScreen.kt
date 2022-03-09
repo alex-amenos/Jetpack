@@ -17,6 +17,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,19 +30,21 @@ import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
+import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun SettingsScreen(
-    settingsState: SettingsState,
-    appVersion: String = LocalContext.current.getVersion(),
-    handleEvent: (viewAction: SettingsViewAction) -> Unit,
+    viewModel: SettingsViewModel = getViewModel(),
+    appVersion: String = LocalContext.current.getVersion()
 ) {
     CoreTheme {
+        val state = viewModel.uiState.collectAsState().value
         SettingsList(
             modifier = Modifier.fillMaxSize(),
-            state = settingsState,
+            state = state,
             appVersion = appVersion,
-            handleEvent = handleEvent
+            handleEvent = viewModel::setAction
         )
     }
 }
@@ -135,10 +138,11 @@ internal fun SettingsTopBar() {
 @Composable
 private fun SettingsScreenPreview() {
     CoreTheme {
-        SettingsScreen(
-            settingsState = SettingsState(),
+        SettingsList(
+            modifier = Modifier.fillMaxSize(),
+            state = SettingsState(),
             appVersion = "1.0.0",
-            handleEvent = {},
+            handleEvent = {}
         )
     }
 }

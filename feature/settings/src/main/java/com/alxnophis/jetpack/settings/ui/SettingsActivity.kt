@@ -5,9 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
-import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleStarted
 import com.alxnophis.jetpack.settings.di.injectSettings
-import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.view.SettingsScreen
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import timber.log.Timber
@@ -20,7 +18,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         injectSettings()
         initEffectObserver()
-        initStateObserver()
+        renderContent()
     }
 
     private fun initEffectObserver() = repeatOnLifecycleResumed {
@@ -29,18 +27,9 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun initStateObserver() = repeatOnLifecycleStarted {
-        viewModel.uiState.collect { state ->
-            renderState(state)
-        }
-    }
-
-    private fun renderState(state: SettingsState) {
+    private fun renderContent() {
         setContent {
-            SettingsScreen(
-                settingsState = state,
-                handleEvent = viewModel::setAction
-            )
+            SettingsScreen()
         }
     }
 }
