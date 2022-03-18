@@ -74,7 +74,7 @@ internal fun SettingsScreen(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_hints),
             checked = state.hintsEnabled,
-            onShowHintTootled = { handleEvent(SettingsViewAction.SetHint) }
+            onShowHintToggled = { handleEvent(SettingsViewAction.SetHint) }
         )
         Divider()
         SettingsManageSubscriptionItem(

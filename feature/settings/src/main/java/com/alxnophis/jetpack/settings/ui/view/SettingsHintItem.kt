@@ -23,10 +23,10 @@ import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 
 @Composable
 fun SettingsHintItem(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: String,
     checked: Boolean,
-    onShowHintTootled: () -> Unit,
+    onShowHintToggled: () -> Unit,
 ) {
     val hintsEnabledState = if (checked) {
         stringResource(id = R.string.settings_cd_hints_enabled)
@@ -41,7 +41,7 @@ fun SettingsHintItem(
             modifier = Modifier
                 .toggleable(
                     value = checked,
-                    onValueChange = { onShowHintTootled() },
+                    onValueChange = { onShowHintToggled() },
                     role = Role.Checkbox
                 )
                 .semantics { stateDescription = hintsEnabledState }
@@ -69,7 +69,7 @@ private fun SettingsHintItemPreview() {
             modifier = Modifier.fillMaxWidth(),
             title = "Lorem ipsum dolor sit amet",
             checked = true,
-            onShowHintTootled = {}
+            onShowHintToggled = {}
         )
     }
 }

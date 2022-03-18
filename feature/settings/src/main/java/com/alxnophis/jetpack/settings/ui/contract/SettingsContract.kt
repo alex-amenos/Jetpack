@@ -9,7 +9,7 @@ import com.alxnophis.jetpack.settings.R
 internal sealed class SettingsEffect : UiEffect
 
 internal sealed class SettingsViewAction : UiAction {
-    object ManageSubscription: SettingsViewAction()
+    object ManageSubscription : SettingsViewAction()
     object SetNotifications : SettingsViewAction()
     object SetHint : SettingsViewAction()
     data class SetMarketingOption(val marketingOption: MarketingOption) : SettingsViewAction()

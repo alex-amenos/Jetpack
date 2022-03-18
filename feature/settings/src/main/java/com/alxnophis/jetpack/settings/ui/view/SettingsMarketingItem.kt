@@ -24,7 +24,7 @@ import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
 
 @Composable
 internal fun SettingsMarketingItem(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     selectedOption: MarketingOption,
     onOptionSelected: (position: MarketingOption) -> Unit
 ) {

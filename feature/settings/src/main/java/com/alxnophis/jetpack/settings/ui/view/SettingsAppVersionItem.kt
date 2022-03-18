@@ -17,7 +17,7 @@ import com.alxnophis.jetpack.settings.R
 
 @Composable
 internal fun SettingsAppVersion(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     appVersion: String
 ) {
     SettingsItem(modifier = modifier) {
