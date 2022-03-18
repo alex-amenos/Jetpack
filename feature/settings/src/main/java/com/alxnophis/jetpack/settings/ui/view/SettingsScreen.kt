@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.settings.ui.view
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -54,6 +55,7 @@ internal fun SettingsScreen(
     appVersion: String,
     handleEvent: (viewAction: SettingsViewAction) -> Unit,
 ) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -78,7 +80,12 @@ internal fun SettingsScreen(
         SettingsManageSubscriptionItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_manage_subscription),
-            onSubscriptionClicked = {}
+            onSubscriptionClicked = {
+                Toast
+                    .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
+                    .show()
+                handleEvent(SettingsViewAction.ManageSubscription)
+            }
         )
         Divider()
         SettingsSectionSpacer(
