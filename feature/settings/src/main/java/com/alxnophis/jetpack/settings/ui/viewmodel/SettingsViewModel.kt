@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.settings.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEffect
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
@@ -13,13 +14,18 @@ internal class SettingsViewModel(
     initialState: SettingsState = SettingsState(),
 ) : BaseViewModel<SettingsViewAction, SettingsState, SettingsEffect>(initialState) {
 
-    override fun handleAction(viewAction: SettingsViewAction) =
-        when (viewAction) {
+    override fun handleAction(action: SettingsViewAction) =
+        when (action) {
+            is SettingsViewAction.ManageSubscription -> manageSubscription()
             is SettingsViewAction.SetNotifications -> toggleNotifications()
             is SettingsViewAction.SetHint -> toggleHint()
-            is SettingsViewAction.SetMarketingOption -> setMarketing(viewAction.marketingOption)
-            is SettingsViewAction.SetTheme -> setTheme(viewAction.theme)
+            is SettingsViewAction.SetMarketingOption -> setMarketing(action.marketingOption)
+            is SettingsViewAction.SetTheme -> setTheme(action.theme)
         }
+
+    private fun manageSubscription() {
+        doNothing()
+    }
 
     private fun toggleNotifications() {
         viewModelScope.launch {

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
@@ -18,13 +19,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
+import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 
 @Composable
 fun SettingsHintItem(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: String,
     checked: Boolean,
-    onShowHintTootled: () -> Unit,
+    onShowHintToggled: () -> Unit,
 ) {
     val hintsEnabledState = if (checked) {
         stringResource(id = R.string.settings_cd_hints_enabled)
@@ -39,11 +41,12 @@ fun SettingsHintItem(
             modifier = Modifier
                 .toggleable(
                     value = checked,
-                    onValueChange = { onShowHintTootled() },
+                    onValueChange = { onShowHintToggled() },
                     role = Role.Checkbox
                 )
                 .semantics { stateDescription = hintsEnabledState }
-                .padding(16.dp),
+                .padding(16.dp)
+                .testTag(TAG_CHECK_ITEM),
         ) {
             Text(
                 text = title,
@@ -66,7 +69,7 @@ private fun SettingsHintItemPreview() {
             modifier = Modifier.fillMaxWidth(),
             title = "Lorem ipsum dolor sit amet",
             checked = true,
-            onShowHintTootled = {}
+            onShowHintToggled = {}
         )
     }
 }

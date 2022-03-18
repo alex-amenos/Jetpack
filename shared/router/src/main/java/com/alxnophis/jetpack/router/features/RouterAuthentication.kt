@@ -5,9 +5,9 @@ import com.alxnophis.jetpack.router.base.loadIntentOrNull
 
 object RouterAuthentication : DynamicFeature<Intent> {
 
-    private const val MODULE_ACTIVITY_PATH = "com.alxnophis.jetpack.authentication.ui.view"
-    private const val ACTIVITY_AUTHENTICATION = "$MODULE_ACTIVITY_PATH.AuthenticationActivity"
-    private const val ACTIVITY_AUTHORIZED = "$MODULE_ACTIVITY_PATH.AuthorizedActivity"
+    private const val PACKAGE_NAME = "com.alxnophis.jetpack.authentication.ui"
+    private const val ACTIVITY_AUTHENTICATION = "$PACKAGE_NAME.AuthenticationActivity"
+    private const val ACTIVITY_AUTHORIZED = "$PACKAGE_NAME.AuthorizedActivity"
 
     override val dynamicStart: Intent?
         get() = ACTIVITY_AUTHENTICATION.loadIntentOrNull()

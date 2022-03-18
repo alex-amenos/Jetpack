@@ -1,7 +1,8 @@
-package com.alxnophis.jetpack.authentication.ui.view
+package com.alxnophis.jetpack.authentication.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import com.alxnophis.jetpack.authentication.ui.view.AuthorizedScreen
 import com.alxnophis.jetpack.core.base.activity.BaseActivity
 
 class AuthorizedActivity : BaseActivity() {

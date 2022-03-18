@@ -17,24 +17,20 @@ fun AppCompatActivity.repeatOnLifecycle(
     block: (suspend () -> Unit)? = null,
 ) {
     lifecycleScope.launch {
-        lifecycle.repeatOnLifecycle(lifecycleState) {
-            launch {
-                block?.let { it() }
-            }
+        repeatOnLifecycle(lifecycleState) {
+            block?.let { it() }
         }
     }
 }
 
 fun AppCompatActivity.repeatOnLifecycleStarted(
-    lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     block: (suspend () -> Unit)? = null,
 ) {
-    this.repeatOnLifecycle(lifecycleState, block)
+    this.repeatOnLifecycle(Lifecycle.State.STARTED, block)
 }
 
 fun AppCompatActivity.repeatOnLifecycleResumed(
-    lifecycleState: Lifecycle.State = Lifecycle.State.RESUMED,
     block: (suspend () -> Unit)? = null,
 ) {
-    this.repeatOnLifecycle(lifecycleState, block)
+    this.repeatOnLifecycle(Lifecycle.State.RESUMED, block)
 }

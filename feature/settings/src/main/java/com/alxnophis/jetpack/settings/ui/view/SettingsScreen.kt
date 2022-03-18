@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.settings.ui.view
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +18,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,34 +29,36 @@ import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
-import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
+import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
+import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-internal fun SettingsScreen(
-    settingsState: SettingsState,
-    appVersion: String = LocalContext.current.getVersion(),
-    handleEvent: (viewAction: SettingsViewAction) -> Unit,
+internal fun Settings(
+    viewModel: SettingsViewModel = getViewModel(),
+    appVersion: String = LocalContext.current.getVersion()
 ) {
     CoreTheme {
-        SettingsList(
-            modifier = Modifier.fillMaxSize(),
-            state = settingsState,
+        val state = viewModel.uiState.collectAsState().value
+        SettingsScreen(
+            state = state,
             appVersion = appVersion,
-            handleEvent = handleEvent
+            handleEvent = viewModel::setAction
         )
     }
 }
 
 @Composable
-internal fun SettingsList(
-    modifier: Modifier,
+internal fun SettingsScreen(
     state: SettingsState,
     appVersion: String,
     handleEvent: (viewAction: SettingsViewAction) -> Unit,
 ) {
+    val context = LocalContext.current
     Column(
-        modifier = modifier
+        modifier = Modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         SettingsTopBar()
@@ -70,13 +74,18 @@ internal fun SettingsList(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_hints),
             checked = state.hintsEnabled,
-            onShowHintTootled = { handleEvent(SettingsViewAction.SetHint) }
+            onShowHintToggled = { handleEvent(SettingsViewAction.SetHint) }
         )
         Divider()
         SettingsManageSubscriptionItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_manage_subscription),
-            onSubscriptionClicked = {}
+            onSubscriptionClicked = {
+                Toast
+                    .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
+                    .show()
+                handleEvent(SettingsViewAction.ManageSubscription)
+            }
         )
         Divider()
         SettingsSectionSpacer(
@@ -136,9 +145,9 @@ internal fun SettingsTopBar() {
 private fun SettingsScreenPreview() {
     CoreTheme {
         SettingsScreen(
-            settingsState = SettingsState(),
+            state = SettingsState(),
             appVersion = "1.0.0",
-            handleEvent = {},
+            handleEvent = {}
         )
     }
 }

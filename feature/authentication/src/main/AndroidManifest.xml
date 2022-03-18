@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.view.AuthorizedActivity"
+            android:name=".ui.AuthorizedActivity"
             android:exported="false"
             android:theme="@style/CoreTheme" />
     </application>

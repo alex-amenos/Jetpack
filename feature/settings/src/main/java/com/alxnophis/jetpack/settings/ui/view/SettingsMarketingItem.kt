@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -19,10 +20,11 @@ import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
+import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
 
 @Composable
 internal fun SettingsMarketingItem(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     selectedOption: MarketingOption,
     onOptionSelected: (position: MarketingOption) -> Unit
 ) {
@@ -51,7 +53,8 @@ internal fun SettingsMarketingItem(
                             role = Role.RadioButton,
                         )
                         .fillMaxWidth()
-                        .padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+                        .padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 12.dp)
+                        .testTag(TAG_MARKETING_OPTION + index),
                 ) {
                     RadioButton(
                         selected = selectedOption.id == index,

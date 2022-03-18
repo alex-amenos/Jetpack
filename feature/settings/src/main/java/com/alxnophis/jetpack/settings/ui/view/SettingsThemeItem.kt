@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -26,7 +27,7 @@ import com.alxnophis.jetpack.settings.ui.contract.Theme
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun SettingsThemeItem(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     selectedTheme: Theme,
     onOptionSelected: (option: Theme) -> Unit,
 ) {
@@ -39,12 +40,14 @@ internal fun SettingsThemeItem(
                     onClickLabel = stringResource(R.string.settings_cd_select_theme)
                 )
                 .padding(16.dp)
+                .testTag(SettingsTags.TAG_SELECT_THEME)
         ) {
             Text(
                 modifier = Modifier.weight(1f),
                 text = stringResource(R.string.settings_option_theme)
             )
             Text(
+                modifier = Modifier.testTag(SettingsTags.TAG_THEME),
                 text = stringResource(selectedTheme.label)
             )
         }
@@ -52,14 +55,15 @@ internal fun SettingsThemeItem(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             offset = DpOffset(x = 16.dp, y = 0.dp),
-            properties = PopupProperties(usePlatformDefaultWidth = true)
+            properties = PopupProperties(usePlatformDefaultWidth = true),
         ) {
             Theme.values().forEach { theme ->
                 DropdownMenuItem(
                     onClick = {
                         onOptionSelected(theme)
                         expanded = false
-                    }
+                    },
+                    modifier = Modifier.testTag(SettingsTags.TAG_THEME_OPTION + theme)
                 ) {
                     Text(text = stringResource(theme.label))
                 }
