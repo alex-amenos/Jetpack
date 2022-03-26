@@ -95,7 +95,7 @@ class SettingsTest : BaseComposeTest() {
 
     private fun setSettingsContent() {
         composeTestRule.setContent {
-            Settings(
+            SettingsComposable(
                 viewModel = SettingsViewModel(),
                 appVersion = APP_VERSION
             )
@@ -106,7 +106,7 @@ class SettingsTest : BaseComposeTest() {
         @StringRes stringResource: Int,
     ) {
         assertStringDisplayedWith(stringResource) {
-            Settings(
+            SettingsComposable(
                 viewModel = SettingsViewModel(),
                 appVersion = APP_VERSION,
             )

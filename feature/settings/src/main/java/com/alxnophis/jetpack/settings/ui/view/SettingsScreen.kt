@@ -35,7 +35,7 @@ import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-internal fun Settings(
+internal fun SettingsComposable(
     viewModel: SettingsViewModel = getViewModel(),
     appVersion: String = LocalContext.current.getVersion()
 ) {

@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
 import com.alxnophis.jetpack.settings.di.injectSettings
-import com.alxnophis.jetpack.settings.ui.view.Settings
+import com.alxnophis.jetpack.settings.ui.view.SettingsComposable
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import timber.log.Timber
 
@@ -17,19 +17,19 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectSettings()
-        initEffectObserver()
+        initSideEffectObserver()
         renderContent()
     }
 
-    private fun initEffectObserver() = repeatOnLifecycleResumed {
-        viewModel.effect.collect { effect ->
-            Timber.d("Settings effect: $effect")
+    private fun initSideEffectObserver() = repeatOnLifecycleResumed {
+        viewModel.sideEffect.collect { effect ->
+            Timber.d("Settings side effect: $effect")
         }
     }
 
     private fun renderContent() {
         setContent {
-            Settings()
+            SettingsComposable()
         }
     }
 }
