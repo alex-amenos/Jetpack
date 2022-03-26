@@ -212,7 +212,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
             viewModel.setAction(AuthenticationViewAction.Authenticate)
 
-            viewModel.effect.test {
+            viewModel.sideEffect.test {
                 assertEquals(
                     AuthenticationEffect.UserAuthorized,
                     awaitItem()

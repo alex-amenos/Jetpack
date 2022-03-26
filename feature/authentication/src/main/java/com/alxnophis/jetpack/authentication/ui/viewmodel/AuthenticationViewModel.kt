@@ -80,7 +80,7 @@ internal class AuthenticationViewModel(
                     setState {
                         copy(isLoading = false)
                     }
-                    setEffect {
+                    setSideEffect {
                         AuthenticationEffect.UserAuthorized
                     }
                 },

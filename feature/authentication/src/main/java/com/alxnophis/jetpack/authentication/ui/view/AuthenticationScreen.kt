@@ -26,7 +26,7 @@ import org.koin.androidx.compose.getViewModel
 
 @ExperimentalComposeUiApi
 @Composable
-internal fun Authentication(
+internal fun AuthenticationComposable(
     viewModel: AuthenticationViewModel = getViewModel()
 ) {
     CoreTheme {
@@ -94,9 +94,7 @@ fun AuthenticationErrorDialog(
 ) {
     AlertDialog(
         modifier = modifier,
-        onDismissRequest = {
-            dismissError()
-        },
+        onDismissRequest = { dismissError() },
         buttons = {
             Box(
                 modifier = Modifier
@@ -105,9 +103,7 @@ fun AuthenticationErrorDialog(
                 contentAlignment = Alignment.CenterEnd,
             ) {
                 TextButton(
-                    onClick = {
-                        dismissError()
-                    },
+                    onClick = { dismissError() },
                 ) {
                     Text(
                         text = stringResource(R.string.authentication_error_action),
