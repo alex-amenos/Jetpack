@@ -6,26 +6,10 @@
     <application android:supportsRtl="true">
         <activity
             android:name=".ui.AuthenticationActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/CoreTheme"
             android:windowSoftInputMode="adjustPan"
-            tools:ignore="MissingClass">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="auth"
-                    android:scheme="app" />
-            </intent-filter>
-        </activity>
+            tools:ignore="MissingClass" />
         <activity
             android:name=".ui.AuthorizedActivity"
             android:exported="false"

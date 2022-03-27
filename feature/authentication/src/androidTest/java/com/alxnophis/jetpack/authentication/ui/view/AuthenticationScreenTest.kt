@@ -18,7 +18,7 @@ class AuthenticationScreenTest : BaseComposeTest() {
         composeTestRule.setContent {
             AuthenticationScreen(
                 authenticationState = screenState,
-                handleEvent = {}
+                onViewAction = {}
             )
         }
 

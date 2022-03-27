@@ -1,7 +1,9 @@
 package com.alxnophis.jetpack.authentication.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import com.alxnophis.jetpack.authentication.R
+import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
@@ -17,16 +19,17 @@ import kotlinx.coroutines.withContext
 internal class AuthenticationViewModel(
     initialState: AuthenticationState = AuthenticationState(),
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcherDefault: CoroutineDispatcher = Dispatchers.Default,
     private val useCaseAuthenticate: UseCaseAuthenticate,
 ) : BaseViewModel<AuthenticationViewAction, AuthenticationState, AuthenticationEffect>(initialState) {
 
-    override fun handleAction(viewAction: AuthenticationViewAction) =
-        when (viewAction) {
+    override fun handleAction(action: AuthenticationViewAction) =
+        when (action) {
             AuthenticationViewAction.Authenticate -> authenticate()
             AuthenticationViewAction.ErrorDismissed -> dismissError()
             AuthenticationViewAction.ToggleAuthenticationMode -> toggleAuthenticationMode()
-            is AuthenticationViewAction.EmailChanged -> updateEmail(viewAction.email)
-            is AuthenticationViewAction.PasswordChanged -> updatePassword(viewAction.password)
+            is AuthenticationViewAction.EmailChanged -> updateEmail(action.email)
+            is AuthenticationViewAction.PasswordChanged -> updatePassword(action.password)
         }
 
     private fun toggleAuthenticationMode() {
@@ -46,44 +49,36 @@ internal class AuthenticationViewModel(
     }
 
     private fun updatePassword(newPassword: String) {
-        val requirements = mutableListOf<PasswordRequirements>()
-        if (newPassword.length >= MIN_PASSWORD_LENGTH) {
-            requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
-        }
-        if (newPassword.any { it.isUpperCase() }) {
-            requirements.add(PasswordRequirements.CAPITAL_LETTER)
-        }
-        if (newPassword.any { it.isDigit() }) {
-            requirements.add(PasswordRequirements.NUMBER)
-        }
-        setState {
-            copy(
-                password = newPassword,
-                passwordRequirements = requirements.toList()
-            )
+        viewModelScope.launch {
+            val requirements = mutableListOf<PasswordRequirements>()
+            withContext(dispatcherDefault) {
+                if (newPassword.length >= MIN_PASSWORD_LENGTH) {
+                    requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
+                }
+                if (newPassword.any { it.isUpperCase() }) {
+                    requirements.add(PasswordRequirements.CAPITAL_LETTER)
+                }
+                if (newPassword.any { it.isDigit() }) {
+                    requirements.add(PasswordRequirements.NUMBER)
+                }
+            }
+            setState {
+                copy(
+                    password = newPassword,
+                    passwordRequirements = requirements.toList()
+                )
+            }
         }
     }
 
     private fun dismissError() {
-        setState {
-            copy(error = null)
-        }
+        setState { copy(error = null) }
     }
 
     private fun authenticate() {
         viewModelScope.launch {
-            setState {
-                copy(isLoading = true)
-            }
+            setState { copy(isLoading = true) }
             authenticateUser(currentState.email, currentState.password).fold(
-                {
-                    setState {
-                        copy(isLoading = false)
-                    }
-                    setSideEffect {
-                        AuthenticationEffect.UserAuthorized
-                    }
-                },
                 {
                     setState {
                         copy(
@@ -91,12 +86,16 @@ internal class AuthenticationViewModel(
                             error = R.string.authentication_auth_error,
                         )
                     }
+                },
+                {
+                    setState { copy(isLoading = false) }
+                    setSideEffect { AuthenticationEffect.UserAuthorized }
                 }
             )
         }
     }
 
-    private suspend fun authenticateUser(email: String, password: String): Result<Unit> =
+    private suspend fun authenticateUser(email: String, password: String): Either<AuthenticationError, Unit> =
         withContext(dispatcherIO) {
             useCaseAuthenticate.invoke(email, password)
         }

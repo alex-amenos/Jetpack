@@ -44,5 +44,5 @@ jobs:
       - name: Upload Release APK
         uses: actions/upload-artifact@v2
         with:
-          name: CaelumSignedApp
+          name: JetpackSignedApp
           path: ${{steps.sign_app.outputs.signedReleaseFile}}

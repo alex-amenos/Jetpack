@@ -1,6 +1,8 @@
 package com.alxnophis.jetpack.authentication.ui.viewmodel
 
 import app.cash.turbine.test
+import arrow.core.left
+import arrow.core.right
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
@@ -12,8 +14,6 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModel5UnitTest
-import kotlin.Result.Companion.failure
-import kotlin.Result.Companion.success
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
@@ -157,7 +157,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN Authenticate event started THEN show loading state`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(success(Unit))
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -179,7 +179,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN Authenticate event with correct credentials THEN update state accordingly`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(success(Unit))
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -206,7 +206,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN Authenticate event with correct credentials THEN navigate to next step`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(success(Unit))
+            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -227,7 +227,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
         runTest {
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = viewModelMother(initialState = initialState)
-            whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(failure(AuthenticationError.WrongAuthentication))
+            whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
 
             viewModel.setAction(AuthenticationViewAction.Authenticate)
 
@@ -255,10 +255,12 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     private fun viewModelMother(
         initialState: AuthenticationState = initialAuthenticationState,
         dispatcherIO: TestDispatcher = testDispatcher,
+        dispatcherDefault: TestDispatcher = testDispatcher,
         useCaseAuthenticate: UseCaseAuthenticate = useCaseAuthenticateMock
     ) = AuthenticationViewModel(
         initialState,
         dispatcherIO,
+        dispatcherDefault,
         useCaseAuthenticate
     )
 

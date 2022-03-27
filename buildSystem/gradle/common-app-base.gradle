@@ -46,7 +46,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def project = "caelum"
+            def project = "jetpack"
             def apkExtension = ".apk"
             def SEP = "_"
             def buildType = name

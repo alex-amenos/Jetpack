@@ -1,0 +1,5 @@
+<resources>
+    <string name="home_title">Jetpack Project</string>
+    <string name="home_cd_go_back">Go back to the previous screen</string>
+    <string name="home_error_loading_navigation_items">Error loading the navigation items</string>
+</resources>

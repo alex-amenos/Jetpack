@@ -6,9 +6,12 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
 
-internal sealed class SettingsEffect : UiEffect
+internal sealed class SettingsSideEffect : UiEffect {
+    object Finish : SettingsSideEffect()
+}
 
 internal sealed class SettingsViewAction : UiAction {
+    object Finish : SettingsViewAction()
     object ManageSubscription : SettingsViewAction()
     object SetNotifications : SettingsViewAction()
     object SetHint : SettingsViewAction()
