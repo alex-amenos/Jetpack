@@ -6,9 +6,9 @@ import androidx.activity.viewModels
 import com.alxnophis.jetpack.core.base.activity.BaseActivity
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
 import com.alxnophis.jetpack.settings.di.injectSettings
+import com.alxnophis.jetpack.settings.ui.contract.SettingsSideEffect
 import com.alxnophis.jetpack.settings.ui.view.SettingsComposable
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
-import timber.log.Timber
 
 class SettingsActivity : BaseActivity() {
 
@@ -23,7 +23,9 @@ class SettingsActivity : BaseActivity() {
 
     private fun initSideEffectObserver() = repeatOnLifecycleResumed {
         viewModel.sideEffect.collect { effect ->
-            Timber.d("Settings side effect: $effect")
+            when (effect) {
+                is SettingsSideEffect.Finish -> this.finish()
+            }
         }
     }
 

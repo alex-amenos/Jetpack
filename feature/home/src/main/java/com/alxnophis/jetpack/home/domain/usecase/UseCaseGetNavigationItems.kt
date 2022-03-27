@@ -18,13 +18,16 @@ class UseCaseGetNavigationItems {
         }
     )
 
+    // TODO - Update Home navigation here
     companion object {
         private val authentication = NavigationItem(
             name = "Authentication",
+            description = "Authentication form with SignUp and SignIn",
             intent = RouterAuthentication.dynamicStart
         )
         private val settings = NavigationItem(
             name = "Settings",
+            description = "Settings options screen",
             intent = RouterSettings.dynamicStart
         )
     }

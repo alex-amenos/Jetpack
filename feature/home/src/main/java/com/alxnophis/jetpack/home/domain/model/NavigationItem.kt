@@ -4,5 +4,6 @@ import android.content.Intent
 
 data class NavigationItem(
     val name: String,
+    val description: String,
     val intent: Intent?
 )

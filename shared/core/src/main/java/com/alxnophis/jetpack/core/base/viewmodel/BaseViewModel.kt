@@ -64,16 +64,20 @@ abstract class BaseViewModel<Action : UiAction, State : UiState, SideEffect : Ui
      */
     fun setAction(action: Action) {
         Timber.d("## Set new action: $action")
-        viewModelScope.launch { _action.emit(action) }
+        viewModelScope.launch {
+            _action.emit(action)
+        }
     }
 
     /**
      * Set new State
      */
     protected fun setState(reduce: State.() -> State) {
-        val newState = currentState.reduce()
-        Timber.d("## Set new state: $newState")
-        _uiState.update { newState }
+        _uiState.update {
+            currentState
+                .reduce()
+                .also { Timber.d("## Set new state: $it") }
+        }
     }
 
     /**
@@ -82,6 +86,8 @@ abstract class BaseViewModel<Action : UiAction, State : UiState, SideEffect : Ui
     protected fun setSideEffect(builder: () -> SideEffect) {
         val newSideEffect = builder()
         Timber.d("## Set new SideEffect: $newSideEffect")
-        viewModelScope.launch { _sideEffect.send(newSideEffect) }
+        viewModelScope.launch {
+            _sideEffect.send(newSideEffect)
+        }
     }
 }

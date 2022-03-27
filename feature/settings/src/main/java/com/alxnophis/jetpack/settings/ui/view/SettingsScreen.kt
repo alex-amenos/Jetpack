@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.settings.ui.view
 
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -23,6 +23,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +45,7 @@ internal fun SettingsComposable(
         SettingsScreen(
             state = state,
             appVersion = appVersion,
-            handleEvent = viewModel::setAction
+            onViewAction = viewModel::setAction
         )
     }
 }
@@ -53,7 +54,7 @@ internal fun SettingsComposable(
 internal fun SettingsScreen(
     state: SettingsState,
     appVersion: String,
-    handleEvent: (viewAction: SettingsViewAction) -> Unit,
+    onViewAction: (viewAction: SettingsViewAction) -> Unit,
 ) {
     val context = LocalContext.current
     Column(
@@ -61,20 +62,20 @@ internal fun SettingsScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        SettingsTopBar()
+        SettingsTopBar(onViewAction)
         Divider()
         SettingsNotificationItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_notifications),
             checked = state.notificationsEnabled,
-            onToggleNotificationSettings = { handleEvent(SettingsViewAction.SetNotifications) }
+            onToggleNotificationSettings = { onViewAction(SettingsViewAction.SetNotifications) }
         )
         Divider()
         SettingsHintItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_hints),
             checked = state.hintsEnabled,
-            onShowHintToggled = { handleEvent(SettingsViewAction.SetHint) }
+            onShowHintToggled = { onViewAction(SettingsViewAction.SetHint) }
         )
         Divider()
         SettingsManageSubscriptionItem(
@@ -84,7 +85,7 @@ internal fun SettingsScreen(
                 Toast
                     .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
                     .show()
-                handleEvent(SettingsViewAction.ManageSubscription)
+                onViewAction(SettingsViewAction.ManageSubscription)
             }
         )
         Divider()
@@ -95,7 +96,7 @@ internal fun SettingsScreen(
             modifier = Modifier.fillMaxWidth(),
             selectedOption = state.marketingOption,
             onOptionSelected = { marketingOption ->
-                handleEvent(SettingsViewAction.SetMarketingOption(marketingOption))
+                onViewAction(SettingsViewAction.SetMarketingOption(marketingOption))
             }
         )
         Divider()
@@ -103,7 +104,7 @@ internal fun SettingsScreen(
             modifier = Modifier.fillMaxWidth(),
             selectedTheme = state.themeOption,
             onOptionSelected = { theme ->
-                handleEvent(SettingsViewAction.SetTheme(theme))
+                onViewAction(SettingsViewAction.SetTheme(theme))
             }
         )
         SettingsSectionSpacer(
@@ -118,23 +119,28 @@ internal fun SettingsScreen(
 }
 
 @Composable
-internal fun SettingsTopBar() {
+internal fun SettingsTopBar(
+    onViewAction: (viewAction: SettingsViewAction) -> Unit,
+) {
     TopAppBar(
-        backgroundColor = MaterialTheme.colors.surface,
+        backgroundColor = MaterialTheme.colors.primaryVariant,
         contentPadding = PaddingValues(start = 12.dp)
     ) {
-        Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = stringResource(id = R.string.settings_cd_go_back),
-            tint = MaterialTheme.colors.onSurface,
-            modifier = Modifier.clickable {
-            }
-        )
+        IconButton(
+            onClick = { onViewAction.invoke(SettingsViewAction.Finish) }
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = stringResource(id = R.string.settings_cd_go_back),
+                tint = MaterialTheme.colors.onPrimary,
+            )
+        }
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = stringResource(id = R.string.settings_title),
-            color = MaterialTheme.colors.onSurface,
+            color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
         )
     }
 }
@@ -147,7 +153,7 @@ private fun SettingsScreenPreview() {
         SettingsScreen(
             state = SettingsState(),
             appVersion = "1.0.0",
-            handleEvent = {}
+            onViewAction = {}
         )
     }
 }
