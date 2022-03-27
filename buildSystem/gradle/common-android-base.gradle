@@ -125,6 +125,7 @@ dependencies {
     implementation Dep.ANDROIDX_LIFECYCLE_LIVEDATA
     implementation Dep.ANDROIDX_LIFECYCLE_RUNTIME
     implementation Dep.ANDROIDX_LIFECYCLE_VIEWMODEL
+    implementation(platform(Dep.ARROW_STACK))
     implementation Dep.ARROW_CORE
     implementation Dep.ARROW_FX_COROUTINES
     implementation Dep.COROUTINES_CORE
@@ -134,7 +135,6 @@ dependencies {
     implementation Dep.PERMISSION_DISPATCHER
     implementation Dep.GOOGLE_ANDROID_MATERIAL
     implementation Dep.TIMBER
-    implementation(platform(Dep.ARROW_STACK))
 
     debugImplementation Dep.ANDROIDX_COMPOSE_UI_TOOLING
     debugImplementation Dep.ANDROIDX_COMPOSE_UI_TEST_MANIFEST
