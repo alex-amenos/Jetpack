@@ -1,24 +1,27 @@
 package com.alxnophis.jetpack.authentication.domain.usecase
 
+import arrow.core.Either
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
-import kotlin.Result.Companion.failure
-import kotlin.Result.Companion.success
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 
 class UseCaseAuthenticate {
 
-    suspend operator fun invoke(
+    suspend fun invoke(
         email: String,
         password: String
-    ): Result<Unit> =
-        coroutineScope {
-            delay(3000L)
-            when {
-                hasAuthorization(email, password) -> success(Unit)
-                else -> failure(AuthenticationError.WrongAuthentication)
+    ): Either<AuthenticationError, Unit> = Either.catch(
+        { AuthenticationError.WrongAuthentication },
+        {
+            coroutineScope {
+                delay(3000L)
+                when {
+                    hasAuthorization(email, password) -> Unit
+                    else -> throw AuthenticationError.WrongAuthentication
+                }
             }
         }
+    )
 
     private fun hasAuthorization(email: String, password: String): Boolean =
         email == AUTHORIZED_EMAIL && password == AUTHORIZED_PASSWORD

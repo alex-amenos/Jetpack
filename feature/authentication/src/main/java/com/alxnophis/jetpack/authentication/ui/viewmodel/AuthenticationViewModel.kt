@@ -1,7 +1,9 @@
 package com.alxnophis.jetpack.authentication.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import com.alxnophis.jetpack.authentication.R
+import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
@@ -86,25 +88,21 @@ internal class AuthenticationViewModel(
             authenticateUser(currentState.email, currentState.password).fold(
                 {
                     setState {
-                        copy(isLoading = false)
-                    }
-                    setSideEffect {
-                        AuthenticationEffect.UserAuthorized
-                    }
-                },
-                {
-                    setState {
                         copy(
                             isLoading = false,
                             error = R.string.authentication_auth_error,
                         )
                     }
+                },
+                {
+                    setState { copy(isLoading = false) }
+                    setSideEffect { AuthenticationEffect.UserAuthorized }
                 }
             )
         }
     }
 
-    private suspend fun authenticateUser(email: String, password: String): Result<Unit> =
+    private suspend fun authenticateUser(email: String, password: String): Either<AuthenticationError, Unit> =
         withContext(dispatcherIO) {
             useCaseAuthenticate.invoke(email, password)
         }
