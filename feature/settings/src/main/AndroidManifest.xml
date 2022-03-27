@@ -5,24 +5,8 @@
     <application>
         <activity
             android:name=".ui.SettingsActivity"
-            android:exported="true"
-            android:theme="@style/CoreTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="settings"
-                    android:scheme="app" />
-            </intent-filter>
-        </activity>
+            android:exported="false"
+            android:theme="@style/CoreTheme" />
     </application>
 
 </manifest>

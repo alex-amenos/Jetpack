@@ -20,13 +20,13 @@ internal class AuthenticationViewModel(
     private val useCaseAuthenticate: UseCaseAuthenticate,
 ) : BaseViewModel<AuthenticationViewAction, AuthenticationState, AuthenticationEffect>(initialState) {
 
-    override fun handleAction(viewAction: AuthenticationViewAction) =
-        when (viewAction) {
+    override fun handleAction(action: AuthenticationViewAction) =
+        when (action) {
             AuthenticationViewAction.Authenticate -> authenticate()
             AuthenticationViewAction.ErrorDismissed -> dismissError()
             AuthenticationViewAction.ToggleAuthenticationMode -> toggleAuthenticationMode()
-            is AuthenticationViewAction.EmailChanged -> updateEmail(viewAction.email)
-            is AuthenticationViewAction.PasswordChanged -> updatePassword(viewAction.password)
+            is AuthenticationViewAction.EmailChanged -> updateEmail(action.email)
+            is AuthenticationViewAction.PasswordChanged -> updatePassword(action.password)
         }
 
     private fun toggleAuthenticationMode() {
@@ -34,14 +34,18 @@ internal class AuthenticationViewModel(
             AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
             else -> AuthenticationMode.SIGN_IN
         }
-        setState {
-            copy(authenticationMode = newAuthenticationMode)
+        viewModelScope.launch {
+            setState {
+                copy(authenticationMode = newAuthenticationMode)
+            }
         }
     }
 
     private fun updateEmail(newEmail: String) {
-        setState {
-            copy(email = newEmail)
+        viewModelScope.launch {
+            setState {
+                copy(email = newEmail)
+            }
         }
     }
 
@@ -56,17 +60,21 @@ internal class AuthenticationViewModel(
         if (newPassword.any { it.isDigit() }) {
             requirements.add(PasswordRequirements.NUMBER)
         }
-        setState {
-            copy(
-                password = newPassword,
-                passwordRequirements = requirements.toList()
-            )
+        viewModelScope.launch {
+            setState {
+                copy(
+                    password = newPassword,
+                    passwordRequirements = requirements.toList()
+                )
+            }
         }
     }
 
     private fun dismissError() {
-        setState {
-            copy(error = null)
+        viewModelScope.launch {
+            setState {
+                copy(error = null)
+            }
         }
     }
 

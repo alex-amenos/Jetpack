@@ -1,5 +1,6 @@
 include ":app"
 // Feature modules
+include ':feature:home'
 include ':feature:authentication'
 include ':feature:settings'
 // Shared modules

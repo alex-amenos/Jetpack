@@ -12,9 +12,9 @@
         android:theme="@style/CoreTheme">
 
         <!--
-       Specify requirement for Apache HTTP Legacy library:
-         If your app is targeting API level 28 (Android 9.0) or above, you must include
-         the following declaration within the <application> element of AndroidManifest.xml.
+         Specify requirement for Apache HTTP Legacy library:
+           If your app is targeting API level 28 (Android 9.0) or above, you must include
+           the following declaration within the <application> element of AndroidManifest.xml.
         -->
         <uses-library
             android:name="org.apache.http.legacy"

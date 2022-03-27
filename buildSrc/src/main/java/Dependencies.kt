@@ -30,6 +30,7 @@ object AppConfig {
 object Modules {
     const val APP = ":app"
 
+    const val FEATURE_HOME = ":feature:home"
     const val FEATURE_AUTHENTICATION = ":feature:authentication"
     const val FEATURE_SETTINGS = ":feature:settings"
 
@@ -57,6 +58,7 @@ private object Version {
     const val ANDROIDX_TEST_RUNNER = "1.3.0"
     const val ANDROIDX_VECTOR_DRAWABLE = "1.0.1"
     const val ANDROIDX_SECURITY_CRYPTO_VERSION = "1.0.0"
+    const val ARROW = "1.0.1"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
     const val JUNIT = "4.13.2"
     const val JUNIT_JUPITER = "5.8.2"
@@ -107,6 +109,10 @@ object Dep {
     const val ANDROIDX_TEST_RUNNER = "androidx.test:runner:${Version.ANDROIDX_TEST_RUNNER}"
     const val ANDROIDX_TEST_RULES = "androidx.test:rules:${Version.ANDROIDX_TEST_RULES}"
     const val ANDROIDX_VECTOR_DRAWABLE = "androidx.vectordrawable:vectordrawable:${Version.ANDROIDX_VECTOR_DRAWABLE}"
+    const val ARROW_STACK = "io.arrow-kt:arrow-stack:${Version.ARROW}"
+    const val ARROW_CORE = "io.arrow-kt:arrow-core"
+    const val ARROW_FX_COROUTINES = "io.arrow-kt:arrow-fx-coroutines"
+    const val ARROR_META = "io.arrow-kt:arrow-meta:${Version.ARROW}"
     const val COROUTINES_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.KOTLIN_COROUTINES}"
     const val COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Version.KOTLIN_COROUTINES}"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.KOTLIN_COROUTINES}"
