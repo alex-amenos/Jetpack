@@ -255,10 +255,12 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     private fun viewModelMother(
         initialState: AuthenticationState = initialAuthenticationState,
         dispatcherIO: TestDispatcher = testDispatcher,
+        dispatcherDefault: TestDispatcher = testDispatcher,
         useCaseAuthenticate: UseCaseAuthenticate = useCaseAuthenticateMock
     ) = AuthenticationViewModel(
         initialState,
         dispatcherIO,
+        dispatcherDefault,
         useCaseAuthenticate
     )
 

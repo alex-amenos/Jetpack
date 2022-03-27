@@ -19,6 +19,7 @@ import kotlinx.coroutines.withContext
 internal class AuthenticationViewModel(
     initialState: AuthenticationState = AuthenticationState(),
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcherDefault: CoroutineDispatcher = Dispatchers.Default,
     private val useCaseAuthenticate: UseCaseAuthenticate,
 ) : BaseViewModel<AuthenticationViewAction, AuthenticationState, AuthenticationEffect>(initialState) {
 
@@ -36,33 +37,31 @@ internal class AuthenticationViewModel(
             AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
             else -> AuthenticationMode.SIGN_IN
         }
-        viewModelScope.launch {
-            setState {
-                copy(authenticationMode = newAuthenticationMode)
-            }
+        setState {
+            copy(authenticationMode = newAuthenticationMode)
         }
     }
 
     private fun updateEmail(newEmail: String) {
-        viewModelScope.launch {
-            setState {
-                copy(email = newEmail)
-            }
+        setState {
+            copy(email = newEmail)
         }
     }
 
     private fun updatePassword(newPassword: String) {
-        val requirements = mutableListOf<PasswordRequirements>()
-        if (newPassword.length >= MIN_PASSWORD_LENGTH) {
-            requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
-        }
-        if (newPassword.any { it.isUpperCase() }) {
-            requirements.add(PasswordRequirements.CAPITAL_LETTER)
-        }
-        if (newPassword.any { it.isDigit() }) {
-            requirements.add(PasswordRequirements.NUMBER)
-        }
         viewModelScope.launch {
+            val requirements = mutableListOf<PasswordRequirements>()
+            withContext(dispatcherDefault) {
+                if (newPassword.length >= MIN_PASSWORD_LENGTH) {
+                    requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
+                }
+                if (newPassword.any { it.isUpperCase() }) {
+                    requirements.add(PasswordRequirements.CAPITAL_LETTER)
+                }
+                if (newPassword.any { it.isDigit() }) {
+                    requirements.add(PasswordRequirements.NUMBER)
+                }
+            }
             setState {
                 copy(
                     password = newPassword,
@@ -73,18 +72,12 @@ internal class AuthenticationViewModel(
     }
 
     private fun dismissError() {
-        viewModelScope.launch {
-            setState {
-                copy(error = null)
-            }
-        }
+        setState { copy(error = null) }
     }
 
     private fun authenticate() {
         viewModelScope.launch {
-            setState {
-                copy(isLoading = true)
-            }
+            setState { copy(isLoading = true) }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
                     setState {
