@@ -125,6 +125,8 @@ dependencies {
     implementation Dep.ANDROIDX_LIFECYCLE_LIVEDATA
     implementation Dep.ANDROIDX_LIFECYCLE_RUNTIME
     implementation Dep.ANDROIDX_LIFECYCLE_VIEWMODEL
+    implementation Dep.ARROW_CORE
+    implementation Dep.ARROW_FX_COROUTINES
     implementation Dep.COROUTINES_CORE
     implementation Dep.COROUTINES_ANDROID
     implementation Dep.KOIN_ANDROID
@@ -133,16 +135,14 @@ dependencies {
     implementation Dep.GOOGLE_ANDROID_MATERIAL
     implementation Dep.TIMBER
     implementation(platform(Dep.ARROW_STACK))
-    implementation Dep.ARROW_CORE
-    implementation Dep.ARROW_FX_COROUTINES
 
     debugImplementation Dep.ANDROIDX_COMPOSE_UI_TOOLING
     debugImplementation Dep.ANDROIDX_COMPOSE_UI_TEST_MANIFEST
     debugImplementation Dep.LEAK_CANARY
 
     kapt Dep.ANDROIDX_LIFECYCLE_COMPILER
-    kapt Dep.PERMISSION_DISPATCHER_PROCESSOR
     kapt Dep.ARROR_META
+    kapt Dep.PERMISSION_DISPATCHER_PROCESSOR
 
     testImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
     testImplementation Dep.COROUTINES_TEST
