@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.alxnophis.jetpack.authentication">
+    package="com.alxnophis.jetpack.posts">
 
     <application android:supportsRtl="true">
         <activity
-            android:name=".ui.AuthenticationActivity"
+            android:name=".ui.PostsActivity"
             android:exported="false"
             android:theme="@style/CoreTheme"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui.AuthorizedActivity"
-            android:exported="false"
-            android:theme="@style/CoreTheme" />
     </application>
 
 </manifest>
