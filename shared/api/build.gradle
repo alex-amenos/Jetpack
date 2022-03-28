@@ -1,0 +1,8 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
+
+dependencies {
+    implementation Dep.OKHTTP
+    implementation Dep.OKHTTP_LOGGING_INTERCEPTOR
+    implementation Dep.RETROFIT
+    implementation Dep.RETROFIT_CONVERTER_MOSHI
+}

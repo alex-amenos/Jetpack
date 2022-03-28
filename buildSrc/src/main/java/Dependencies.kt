@@ -35,6 +35,7 @@ object Modules {
     const val FEATURE_SETTINGS = ":feature:settings"
 
     const val SHARED_CORE = ":shared:core"
+    const val SHARED_API = ":shared:api"
     const val SHARED_ROUTER = ":shared:router"
     const val SHARED_TESTING = ":shared:testing"
 }
@@ -68,7 +69,9 @@ private object Version {
     const val MOSHI = "1.12.0"
     const val MOCKITO = "4.0.0"
     const val LEAK_CANARY = "2.7"
+    const val OKHTTP = "4.9.3"
     const val PERMISSION_DISPATCHER = "4.9.1"
+    const val RETROFIT = "2.9.0"
     const val TIMBER = "5.0.1"
     const val TURBINE = "0.7.0"
 }
@@ -135,6 +138,10 @@ object Dep {
     const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:${Version.LEAK_CANARY}"
     const val PERMISSION_DISPATCHER = "com.github.permissions-dispatcher:permissionsdispatcher:${Version.PERMISSION_DISPATCHER}"
     const val PERMISSION_DISPATCHER_PROCESSOR = "com.github.permissions-dispatcher:permissionsdispatcher-processor:${Version.PERMISSION_DISPATCHER}"
+    const val RETROFIT = "com.squareup.retrofit2:retrofit:${Version.RETROFIT}"
+    const val RETROFIT_CONVERTER_MOSHI = "com.squareup.retrofit2:converter-moshi:${Version.RETROFIT}"
+    const val OKHTTP = "com.squareup.okhttp3:okhttp:${Version.OKHTTP}"
+    const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Version.OKHTTP}"
     const val TURBINE = "app.cash.turbine:turbine:${Version.TURBINE}"
     const val TIMBER = "com.jakewharton.timber:timber:${Version.TIMBER}"
 }

@@ -1,1 +1,5 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
+
+dependencies {
+    implementation project(Modules.SHARED_API)
+}
