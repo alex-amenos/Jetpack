@@ -1,11 +1,12 @@
 package com.alxnophis.jetpack.api.jsonplaceholder
 
-import com.alxnophis.jetpack.api.jsonplaceholder.model.Post
-import retrofit2.Response
+import com.alxnophis.jetpack.api.jsonplaceholder.model.ErrorResponse
+import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
+import com.haroldadmin.cnradapter.NetworkResponse
 
 class JsonPlaceholderApiImpl(
     private val service: JsonPlaceholderRetrofitService
 ) : JsonPlaceholderApi {
 
-    override suspend fun getPost(): Response<List<Post>> = service.getPosts()
+    override suspend fun getPost(): NetworkResponse<List<PostApiModel>, ErrorResponse> = service.getPosts()
 }

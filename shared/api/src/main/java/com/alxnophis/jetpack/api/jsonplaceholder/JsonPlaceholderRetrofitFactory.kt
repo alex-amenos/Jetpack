@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.api.jsonplaceholder
 
+import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,6 +18,7 @@ object JsonPlaceholderRetrofitFactory {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(buildOkHttpClient())
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(JsonPlaceholderRetrofitService::class.java)

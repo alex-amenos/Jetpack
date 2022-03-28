@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.api.jsonplaceholder.model
+package com.alxnophis.jetpack.posts.domain.model
 
 data class Post(
     val id: Int,
@@ -6,3 +6,4 @@ data class Post(
     val title: String,
     val body: String
 )
+

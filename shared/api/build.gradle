@@ -5,4 +5,5 @@ dependencies {
     implementation Dep.OKHTTP_LOGGING_INTERCEPTOR
     implementation Dep.RETROFIT
     implementation Dep.RETROFIT_CONVERTER_MOSHI
+    implementation Dep.NETWORK_RESPONSE_ADAPTER
 }

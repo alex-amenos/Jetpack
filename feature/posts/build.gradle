@@ -3,3 +3,10 @@ apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 android {
     resourcePrefix 'posts'
 }
+
+dependencies {
+    implementation project(Modules.SHARED_API)
+
+    implementation Dep.NETWORK_RESPONSE_ADAPTER
+    implementation Dep.RETROFIT
+}

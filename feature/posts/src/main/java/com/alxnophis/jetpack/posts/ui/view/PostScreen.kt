@@ -15,6 +15,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -22,22 +23,41 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.posts.R
+import com.alxnophis.jetpack.posts.ui.contract.PostsState
+import com.alxnophis.jetpack.posts.ui.contract.PostsViewAction
+import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-internal fun PostsComposable() {
+internal fun PostsComposable(
+    viewModel: PostsViewModel = getViewModel()
+) {
     CoreTheme {
-        PostScreen()
+        val state = viewModel.uiState.collectAsState().value
+        PostScreen(
+            state,
+            viewModel::setAction
+        )
     }
 }
 
 @Composable
-internal fun PostScreen() {
+internal fun PostScreen(
+    state: PostsState,
+    onViewAction: (viewAction: PostsViewAction) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         PostsTopBar()
+        Text(
+            text = state.posts.toString(),
+            color = MaterialTheme.colors.primary,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Normal,
+        )
     }
 }
 
@@ -49,7 +69,7 @@ internal fun PostsTopBar(
         contentPadding = PaddingValues(start = 12.dp)
     ) {
         IconButton(
-            onClick = {  }
+            onClick = { }
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
