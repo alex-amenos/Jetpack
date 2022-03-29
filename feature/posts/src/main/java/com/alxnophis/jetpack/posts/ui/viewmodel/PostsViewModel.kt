@@ -21,7 +21,7 @@ internal class PostsViewModel(
     initialState: PostsState = PostsState(),
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
     private val postsUseCase: PostsUseCase,
-    ) : BaseViewModel<PostsViewAction, PostsState, PostsSideEffect>(initialState) {
+) : BaseViewModel<PostsViewAction, PostsState, PostsSideEffect>(initialState) {
 
     init {
         handleAction(PostsViewAction.GetPosts)
@@ -30,6 +30,7 @@ internal class PostsViewModel(
     override fun handleAction(action: PostsViewAction) {
         when (action) {
             PostsViewAction.GetPosts -> renderPosts()
+            PostsViewAction.Finish -> setSideEffect { PostsSideEffect.Finish }
             is PostsViewAction.DismissError -> dismissError(action.errorId)
         }
     }

@@ -12,6 +12,7 @@ internal sealed class PostsSideEffect : UiEffect {
 
 internal sealed class PostsViewAction : UiAction {
     object GetPosts : PostsViewAction()
+    object Finish : PostsViewAction()
     data class DismissError(val errorId: Long) : PostsViewAction()
 }
 

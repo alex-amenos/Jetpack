@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.alxnophis.jetpack.core.ui.composable.CoreLoadingDialog
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
@@ -51,7 +52,8 @@ internal fun PostScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        PostsTopBar()
+        PostsTopBar(onViewAction)
+        CoreLoadingDialog(isLoading = state.isLoading)
         Text(
             text = state.posts.toString(),
             color = MaterialTheme.colors.primary,
@@ -63,13 +65,14 @@ internal fun PostScreen(
 
 @Composable
 internal fun PostsTopBar(
+    onViewAction: (viewAction: PostsViewAction) -> Unit,
 ) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primaryVariant,
         contentPadding = PaddingValues(start = 12.dp)
     ) {
         IconButton(
-            onClick = { }
+            onClick = { onViewAction.invoke(PostsViewAction.Finish) }
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
