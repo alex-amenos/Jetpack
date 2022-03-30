@@ -100,6 +100,7 @@ object Dep {
     const val ANDROIDX_COMPOSE_RUNTIME = "androidx.compose.runtime:runtime:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_RUNTIME_LIVEDATA = "androidx.compose.runtime:runtime-livedata:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI = "androidx.compose.ui:ui:${Version.ANDROIDX_COMPOSE}"
+    const val ANDROIDX_COMPOSE_UI_UTIL = "androidx.compose.ui:ui-util:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI_TEST = "androidx.compose.ui:ui-test-junit4:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI_TEST_MANIFEST = "androidx.compose.ui:ui-test-manifest:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI_TOOLING = "androidx.compose.ui:ui-tooling:${Version.ANDROIDX_COMPOSE}"

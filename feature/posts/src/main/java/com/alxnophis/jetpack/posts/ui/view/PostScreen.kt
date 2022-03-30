@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreLoadingDialog
+import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.posts.R
@@ -70,7 +71,10 @@ internal fun PostScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             PostsTopBar(onViewAction)
-            PostList(state)
+            PostList(
+                modifier = Modifier.fillMaxSize(),
+                state = state
+            )
             CoreLoadingDialog(isLoading = state.isLoading)
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
@@ -110,13 +114,16 @@ internal fun PostsTopBar(
 }
 
 @Composable
-internal fun PostList(state: PostsState) {
+internal fun PostList(
+    modifier: Modifier,
+    state: PostsState
+) {
     val listState = rememberLazyListState()
     LazyColumn(
         state = listState,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.surface),
+        modifier = modifier
+            .background(MaterialTheme.colors.surface)
+            .drawVerticalScrollbar(listState),
         contentPadding = PaddingValues(16.dp)
     ) {
         items(
