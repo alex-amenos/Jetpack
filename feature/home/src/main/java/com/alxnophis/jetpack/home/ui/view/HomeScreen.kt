@@ -69,7 +69,7 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             HomeTopBar()
-            NavigationScreens(state, onViewAction)
+            SectionsList(state, onViewAction)
         }
         state.error?.let { error: Int ->
             CoreErrorDialog(
@@ -98,7 +98,7 @@ internal fun HomeTopBar() {
 }
 
 @Composable
-internal fun NavigationScreens(
+internal fun SectionsList(
     state: HomeState,
     onViewAction: (viewAction: HomeViewAction) -> Unit
 ) {
