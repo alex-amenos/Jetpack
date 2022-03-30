@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -34,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
-import com.alxnophis.jetpack.core.ui.composable.CoreLoadingDialog
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
@@ -43,6 +43,9 @@ import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.posts.ui.contract.PostsViewAction
 import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -73,9 +76,9 @@ internal fun PostScreen(
             PostsTopBar(onViewAction)
             PostList(
                 modifier = Modifier.fillMaxSize(),
-                state = state
+                state = state,
+                onViewAction = onViewAction,
             )
-            CoreLoadingDialog(isLoading = state.isLoading)
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
                     errorMessage = stringResource(error.messageId),
@@ -116,46 +119,63 @@ internal fun PostsTopBar(
 @Composable
 internal fun PostList(
     modifier: Modifier,
-    state: PostsState
+    state: PostsState,
+    onViewAction: (viewAction: PostsViewAction) -> Unit,
 ) {
     val listState = rememberLazyListState()
-    LazyColumn(
-        state = listState,
-        modifier = modifier
-            .background(MaterialTheme.colors.surface)
-            .drawVerticalScrollbar(listState),
-        contentPadding = PaddingValues(16.dp)
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(state.isLoading),
+        onRefresh = { onViewAction.invoke(PostsViewAction.GetPosts) },
     ) {
-        items(
-            items = state.posts,
-            itemContent = { item: Post ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(vertical = 8.dp),
-                ) {
-                    Text(
-                        modifier = Modifier.wrapContentSize(),
-                        text = item.title.replaceFirstChar { it.uppercase() },
-                        color = MaterialTheme.colors.primary,
-                        fontSize = 25.sp,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                    Text(
+        LazyColumn(
+            state = listState,
+            modifier = modifier
+                .background(MaterialTheme.colors.surface)
+                .drawVerticalScrollbar(listState),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(
+                items = state.posts,
+                itemContent = { item: Post ->
+                    Column(
                         modifier = Modifier
-                            .wrapContentSize()
-                            .padding(top = 8.dp, bottom = 16.dp),
-                        text = item.body.replaceFirstChar { it.uppercase() },
-                        textAlign = TextAlign.Justify,
-                        color = MaterialTheme.colors.onSurface,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Light,
-                    )
-                    Divider(color = Color.LightGray)
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(vertical = 8.dp),
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .placeholder(
+                                    visible = state.isLoading,
+                                    color = Color.Gray,
+                                    shape = RoundedCornerShape(4.dp),
+                                ),
+                            text = item.title.replaceFirstChar { it.uppercase() },
+                            color = MaterialTheme.colors.primary,
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(top = 8.dp, bottom = 16.dp)
+                                .placeholder(
+                                    visible = state.isLoading,
+                                    color = Color.Gray,
+                                    shape = RoundedCornerShape(4.dp),
+                                ),
+                            text = item.body.replaceFirstChar { it.uppercase() },
+                            textAlign = TextAlign.Justify,
+                            color = MaterialTheme.colors.onSurface,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Light,
+                        )
+                        Divider(color = Color.LightGray)
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }
 

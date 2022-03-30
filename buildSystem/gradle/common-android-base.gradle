@@ -116,7 +116,6 @@ dependencies {
     implementation Dep.ANDROIDX_COMPOSE_RUNTIME
     implementation Dep.ANDROIDX_COMPOSE_RUNTIME_LIVEDATA
     implementation Dep.ANDROIDX_COMPOSE_UI
-    implementation Dep.ANDROIDX_COMPOSE_UI_UTIL
     implementation Dep.ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW
     implementation Dep.ANDROIDX_COMPOSE_VIEWMODEL
     implementation Dep.ANDROIDX_CONSTRAINT_LAYOUT

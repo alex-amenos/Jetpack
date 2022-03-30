@@ -14,6 +14,7 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsViewAction
 import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -68,6 +69,7 @@ internal class PostsViewModel(
     }
 
     private suspend fun getPosts(): Either<PostsError, List<Post>> = withContext(dispatcherIO) {
+        delay(3000) // testing purposes
         postsUseCase.invoke()
     }
 

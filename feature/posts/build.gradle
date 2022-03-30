@@ -9,4 +9,6 @@ dependencies {
 
     implementation Dep.NETWORK_RESPONSE_ADAPTER
     implementation Dep.RETROFIT
+    implementation Dep.GOOGLE_ACCOMPANITS_SWIPEREFRESH
+    implementation Dep.GOOGLE_ACCOMPANITS_PLACEHOLDER
 }
