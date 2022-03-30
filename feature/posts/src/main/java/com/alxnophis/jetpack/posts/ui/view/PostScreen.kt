@@ -117,6 +117,7 @@ internal fun PostList(state: PostsState) {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.surface),
+        contentPadding = PaddingValues(16.dp)
     ) {
         items(
             items = state.posts,
@@ -125,12 +126,10 @@ internal fun PostList(state: PostsState) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
+                        .padding(vertical = 8.dp),
                 ) {
                     Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 16.dp),
+                        modifier = Modifier.wrapContentSize(),
                         text = item.title.replaceFirstChar { it.uppercase() },
                         color = MaterialTheme.colors.primary,
                         fontSize = 25.sp,
@@ -139,7 +138,6 @@ internal fun PostList(state: PostsState) {
                     Text(
                         modifier = Modifier
                             .wrapContentSize()
-                            .padding(horizontal = 16.dp)
                             .padding(top = 8.dp, bottom = 16.dp),
                         text = item.body.replaceFirstChar { it.uppercase() },
                         textAlign = TextAlign.Justify,
