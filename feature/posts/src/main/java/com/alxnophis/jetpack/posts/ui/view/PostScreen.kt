@@ -109,7 +109,6 @@ internal fun PostsTopBar(
     }
 }
 
-
 @Composable
 internal fun PostList(state: PostsState) {
     val listState = rememberLazyListState()
