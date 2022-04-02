@@ -15,7 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -137,43 +137,57 @@ internal fun PostList(
             items(
                 items = state.posts,
                 itemContent = { item: Post ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(vertical = 8.dp),
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .placeholder(
-                                    visible = state.isLoading,
-                                    color = Color.Gray,
-                                    shape = RoundedCornerShape(4.dp),
-                                ),
-                            text = item.title.replaceFirstChar { it.uppercase() },
-                            color = MaterialTheme.colors.primary,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                        Text(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(top = 8.dp, bottom = 16.dp)
-                                .placeholder(
-                                    visible = state.isLoading,
-                                    color = Color.Gray,
-                                    shape = RoundedCornerShape(4.dp),
-                                ),
-                            text = item.body.replaceFirstChar { it.uppercase() },
-                            textAlign = TextAlign.Justify,
-                            color = MaterialTheme.colors.onSurface,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light,
-                        )
-                        Divider(color = Color.LightGray)
-                    }
+                    CardPostItem(state, item)
                 }
+            )
+        }
+    }
+}
+
+@Composable
+private fun CardPostItem(
+    state: PostsState,
+    item: Post
+) {
+    Card(
+        elevation = 10.dp,
+        modifier = Modifier
+            .padding(vertical = 16.dp)
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(16.dp),
+        ) {
+            Text(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .placeholder(
+                        visible = state.isLoading,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(4.dp),
+                    ),
+                text = item.title.replaceFirstChar { it.uppercase() },
+                color = MaterialTheme.colors.primary,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(top = 8.dp, bottom = 16.dp)
+                    .placeholder(
+                        visible = state.isLoading,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(4.dp),
+                    ),
+                text = item.body.replaceFirstChar { it.uppercase() },
+                textAlign = TextAlign.Justify,
+                color = MaterialTheme.colors.onSurface,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Light,
             )
         }
     }
