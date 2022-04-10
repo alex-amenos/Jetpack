@@ -3,5 +3,6 @@ apply from: "$rootDir/buildSystem/gradle/common-app-base.gradle"
 dependencies {
     implementation project(Modules.FEATURE_HOME)
     implementation project(Modules.FEATURE_AUTHENTICATION)
+    implementation project(Modules.FEATURE_POSTS)
     implementation project(Modules.FEATURE_SETTINGS)
 }

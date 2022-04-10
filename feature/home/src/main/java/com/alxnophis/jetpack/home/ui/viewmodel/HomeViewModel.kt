@@ -7,9 +7,9 @@ import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.domain.usecase.UseCaseGetNavigationItems
-import com.alxnophis.jetpack.home.ui.contract.HomeSideEffect
+import com.alxnophis.jetpack.home.ui.contract.HomeEffect
 import com.alxnophis.jetpack.home.ui.contract.HomeState
-import com.alxnophis.jetpack.home.ui.contract.HomeViewAction
+import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,17 +19,17 @@ internal class HomeViewModel(
     initialState: HomeState = HomeState(),
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
     private val useCaseGetNavigationItems: UseCaseGetNavigationItems
-) : BaseViewModel<HomeViewAction, HomeState, HomeSideEffect>(initialState) {
+) : BaseViewModel<HomeEvent, HomeState, HomeEffect>(initialState) {
 
     init {
-        setAction(HomeViewAction.LoadNavigationItems)
+        setEvent(HomeEvent.LoadNavigationItems)
     }
 
-    override fun handleAction(action: HomeViewAction) {
-        when (action) {
-            HomeViewAction.ErrorDismissed -> dismissError()
-            HomeViewAction.LoadNavigationItems -> loadNavigationItems()
-            is HomeViewAction.NavigateTo -> setSideEffect { HomeSideEffect.NavigateTo(action.intent) }
+    override fun handleEvent(event: HomeEvent) {
+        when (event) {
+            HomeEvent.ErrorDismissed -> dismissError()
+            HomeEvent.LoadNavigationItems -> loadNavigationItems()
+            is HomeEvent.NavigateTo -> setEffect { HomeEffect.NavigateTo(event.intent) }
         }
     }
 

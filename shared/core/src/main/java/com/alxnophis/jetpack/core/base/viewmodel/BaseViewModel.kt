@@ -23,7 +23,7 @@ import timber.log.Timber
  *    https://medium.com/proandroiddev/sending-view-model-events-to-the-ui-eef76bdd632c
  */
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class BaseViewModel<Action : UiAction, State : UiState, SideEffect : UiEffect>(
+abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect>(
     initialState: State
 ) : ViewModel() {
 
@@ -33,39 +33,39 @@ abstract class BaseViewModel<Action : UiAction, State : UiState, SideEffect : Ui
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
 
-    private val _action: MutableSharedFlow<Action> = MutableSharedFlow()
-    val uiAction = _action.asSharedFlow()
+    private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
+    val uiEvent = _event.asSharedFlow()
 
-    private val _sideEffect: Channel<SideEffect> = Channel(Channel.BUFFERED)
-    val sideEffect = _sideEffect.receiveAsFlow()
+    private val _effect: Channel<Effect> = Channel(Channel.BUFFERED)
+    val effect = _effect.receiveAsFlow()
 
     init {
-        subscribeActions()
+        subscribeEvents()
     }
 
     /**
-     * Start listening to Action
+     * Start listening to Event
      */
-    private fun subscribeActions() {
+    private fun subscribeEvents() {
         viewModelScope.launch {
-            uiAction.collect {
-                handleAction(it)
+            uiEvent.collect {
+                handleEvent(it)
             }
         }
     }
 
     /**
-     * Handle each Action
+     * Handle each Event
      */
-    abstract fun handleAction(action: Action)
+    abstract fun handleEvent(event: Event)
 
     /**
-     * Set new Action
+     * Set new Event
      */
-    fun setAction(action: Action) {
-        Timber.d("## Set new action: $action")
+    fun setEvent(event: Event) {
+        Timber.d("## Set new event: $event")
         viewModelScope.launch {
-            _action.emit(action)
+            _event.emit(event)
         }
     }
 
@@ -83,11 +83,11 @@ abstract class BaseViewModel<Action : UiAction, State : UiState, SideEffect : Ui
     /**
      * Set new Side Effect
      */
-    protected fun setSideEffect(builder: () -> SideEffect) {
-        val newSideEffect = builder()
-        Timber.d("## Set new SideEffect: $newSideEffect")
+    protected fun setEffect(builder: () -> Effect) {
+        val newEffect = builder()
+        Timber.d("## Set new side Effect: $newEffect")
         viewModelScope.launch {
-            _sideEffect.send(newSideEffect)
+            _effect.send(newEffect)
         }
     }
 }

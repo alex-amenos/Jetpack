@@ -3,7 +3,9 @@ include ":app"
 include ':feature:home'
 include ':feature:authentication'
 include ':feature:settings'
+include ':feature:posts'
 // Shared modules
 include ":shared:core"
-include ":shared:router"
+include ':shared:router'
 include ':shared:testing'
+include ':shared:api'

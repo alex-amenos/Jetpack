@@ -5,7 +5,7 @@ import org.gradle.api.JavaVersion
 object AppVersion {
     private const val MAJOR = 0
     private const val MINOR = 0
-    private const val BUILD = 1
+    private const val BUILD = 3
 
     const val NAME: String = "${MAJOR}.${MINOR}.${BUILD}"
     val CODE = "${MAJOR}${MINOR.format()}${BUILD.format()}".toInt()
@@ -33,8 +33,10 @@ object Modules {
     const val FEATURE_HOME = ":feature:home"
     const val FEATURE_AUTHENTICATION = ":feature:authentication"
     const val FEATURE_SETTINGS = ":feature:settings"
+    const val FEATURE_POSTS = ":feature:posts"
 
     const val SHARED_CORE = ":shared:core"
+    const val SHARED_API = ":shared:api"
     const val SHARED_ROUTER = ":shared:router"
     const val SHARED_TESTING = ":shared:testing"
 }
@@ -60,15 +62,20 @@ private object Version {
     const val ANDROIDX_SECURITY_CRYPTO_VERSION = "1.0.0"
     const val ARROW = "1.0.1"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
+    const val GOOGLE_ACCOMPANITS = "0.23.1"
     const val JUNIT = "4.13.2"
     const val JUNIT_JUPITER = "5.8.2"
     const val KOTLIN = "1.6.10"
     const val KOTLIN_COROUTINES = "1.6.0"
+    const val KOTLINX_SERIALIZATION_JSON = "1.3.2"
     const val KOIN = "3.1.4"
     const val MOSHI = "1.12.0"
     const val MOCKITO = "4.0.0"
+    const val NETWORK_RESPONSE_ADAPTER = "5.0.0"
     const val LEAK_CANARY = "2.7"
+    const val OKHTTP = "4.9.3"
     const val PERMISSION_DISPATCHER = "4.9.1"
+    const val RETROFIT = "2.9.0"
     const val TIMBER = "5.0.1"
     const val TURBINE = "0.7.0"
 }
@@ -94,11 +101,14 @@ object Dep {
     const val ANDROIDX_COMPOSE_RUNTIME = "androidx.compose.runtime:runtime:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_RUNTIME_LIVEDATA = "androidx.compose.runtime:runtime-livedata:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI = "androidx.compose.ui:ui:${Version.ANDROIDX_COMPOSE}"
+    const val ANDROIDX_COMPOSE_UI_UTIL = "androidx.compose.ui:ui-util:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI_TEST = "androidx.compose.ui:ui-test-junit4:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI_TEST_MANIFEST = "androidx.compose.ui:ui-test-manifest:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI_TOOLING = "androidx.compose.ui:ui-tooling:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW = "androidx.compose.ui:ui-tooling-preview:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:${Version.ANDROIDX_LIFECYCLE}"
+    const val GOOGLE_ACCOMPANITS_SWIPEREFRESH = "com.google.accompanist:accompanist-swiperefresh:${Version.GOOGLE_ACCOMPANITS}"
+    const val GOOGLE_ACCOMPANITS_PLACEHOLDER = "com.google.accompanist:accompanist-placeholder-material:${Version.GOOGLE_ACCOMPANITS}"
     const val ANDROIDX_LIFECYCLE_COMMON = "androidx.lifecycle:lifecycle-common-java8:${Version.ANDROIDX_LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_COMPILER = "androidx.lifecycle:lifecycle-compiler:${Version.ANDROIDX_LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_EXTENSION = "androidx.lifecycle:lifecycle-extensions:${Version.ANDROIDX_LIFECYCLE_EXTENSIONS}"
@@ -122,6 +132,7 @@ object Dep {
     const val JUNIT_JUPITER_API = "org.junit.jupiter:junit-jupiter-api:${Version.JUNIT_JUPITER}"
     const val JUNIT_JUPITER_ENGINE = "org.junit.jupiter:junit-jupiter-engine:${Version.JUNIT_JUPITER}"
     const val JUNIT_JUPITER_PARAMS = "org.junit.jupiter:junit-jupiter-params:${Version.JUNIT_JUPITER}"
+    const val KOTLINX_SERIALIZATION_JSON = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.KOTLINX_SERIALIZATION_JSON}"
     const val KOIN_ANDROID = "io.insert-koin:koin-android:${Version.KOIN}"
     const val KOIN_ANDROID_COMPOSE = "io.insert-koin:koin-androidx-compose:${Version.KOIN}"
     const val KOIN_TEST = "io.insert-koin:koin-test:${Version.KOIN}"
@@ -132,9 +143,14 @@ object Dep {
     const val MOSHI = "com.squareup.moshi:moshi-kotlin:${Version.MOSHI}"
     const val MOSHI_ADAPTER = "com.squareup.moshi:moshi-adapters:${Version.MOSHI}"
     const val MOSHI_KOTLIN_CODEGEN = "com.squareup.moshi:moshi-kotlin-codegen:${Version.MOSHI}"
+    const val NETWORK_RESPONSE_ADAPTER = "com.github.haroldadmin:NetworkResponseAdapter:${Version.NETWORK_RESPONSE_ADAPTER}"
     const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:${Version.LEAK_CANARY}"
     const val PERMISSION_DISPATCHER = "com.github.permissions-dispatcher:permissionsdispatcher:${Version.PERMISSION_DISPATCHER}"
     const val PERMISSION_DISPATCHER_PROCESSOR = "com.github.permissions-dispatcher:permissionsdispatcher-processor:${Version.PERMISSION_DISPATCHER}"
+    const val RETROFIT = "com.squareup.retrofit2:retrofit:${Version.RETROFIT}"
+    const val RETROFIT_CONVERTER_MOSHI = "com.squareup.retrofit2:converter-moshi:${Version.RETROFIT}"
+    const val OKHTTP = "com.squareup.okhttp3:okhttp:${Version.OKHTTP}"
+    const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Version.OKHTTP}"
     const val TURBINE = "app.cash.turbine:turbine:${Version.TURBINE}"
     const val TIMBER = "com.jakewharton.timber:timber:${Version.TIMBER}"
 }

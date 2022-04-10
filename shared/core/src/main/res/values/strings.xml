@@ -4,4 +4,7 @@
     <string name="core_ok" translatable="false">Ok</string>
     <string name="core_cancel" translatable="false">Cancel</string>
     <string name="core_error_title" translatable="false">Whoops!</string>
+    <string name="core_error_unknown" translatable="false">Something goes wrong.</string>
+    <string name="core_error_network" translatable="false">Network error</string>
+    <string name="core_error_server" translatable="false">Server error</string>
 </resources>

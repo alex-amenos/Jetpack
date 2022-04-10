@@ -2,17 +2,17 @@ package com.alxnophis.jetpack.settings.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import com.alxnophis.jetpack.core.base.activity.BaseActivity
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
 import com.alxnophis.jetpack.settings.di.injectSettings
-import com.alxnophis.jetpack.settings.ui.contract.SettingsSideEffect
-import com.alxnophis.jetpack.settings.ui.view.SettingsComposable
+import com.alxnophis.jetpack.settings.ui.contract.SettingsEffect
+import com.alxnophis.jetpack.settings.ui.view.SettingsScreen
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : BaseActivity() {
 
-    private val viewModel: SettingsViewModel by viewModels()
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,16 +22,16 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun initSideEffectObserver() = repeatOnLifecycleResumed {
-        viewModel.sideEffect.collect { effect ->
+        viewModel.effect.collect { effect ->
             when (effect) {
-                is SettingsSideEffect.Finish -> this.finish()
+                SettingsEffect.Finish -> this.finish()
             }
         }
     }
 
     private fun renderContent() {
         setContent {
-            SettingsComposable()
+            SettingsScreen()
         }
     }
 }

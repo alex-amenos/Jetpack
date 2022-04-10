@@ -8,8 +8,7 @@
             android:name=".ui.AuthenticationActivity"
             android:exported="false"
             android:theme="@style/CoreTheme"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="MissingClass" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.AuthorizedActivity"
             android:exported="false"

@@ -9,8 +9,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
@@ -18,23 +18,23 @@ import org.koin.androidx.compose.getViewModel
 
 @ExperimentalComposeUiApi
 @Composable
-internal fun AuthenticationComposable(
+internal fun AuthenticationScreen(
     viewModel: AuthenticationViewModel = getViewModel()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        AuthenticationScreen(
+        Authentication(
             state,
-            viewModel::setAction
+            viewModel::setEvent
         )
     }
 }
 
 @ExperimentalComposeUiApi
 @Composable
-internal fun AuthenticationScreen(
+internal fun Authentication(
     authenticationState: AuthenticationState,
-    onViewAction: (viewAction: AuthenticationViewAction) -> Unit,
+    onAuthenticationEvent: (event: AuthenticationEvent) -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -53,23 +53,23 @@ internal fun AuthenticationScreen(
                 false
             },
             onEmailChanged = { email ->
-                onViewAction(AuthenticationViewAction.EmailChanged(email))
+                onAuthenticationEvent(AuthenticationEvent.EmailChanged(email))
             },
             onPasswordChanged = { password ->
-                onViewAction(AuthenticationViewAction.PasswordChanged(password))
+                onAuthenticationEvent(AuthenticationEvent.PasswordChanged(password))
             },
             onAuthenticate = {
-                onViewAction(AuthenticationViewAction.Authenticate)
+                onAuthenticationEvent(AuthenticationEvent.Authenticate)
             },
             onToggleMode = {
-                onViewAction(AuthenticationViewAction.ToggleAuthenticationMode)
+                onAuthenticationEvent(AuthenticationEvent.ToggleAuthenticationMode)
             }
         )
         authenticationState.error?.let { error: Int ->
             CoreErrorDialog(
                 errorMessage = stringResource(error),
                 dismissError = {
-                    onViewAction(AuthenticationViewAction.ErrorDismissed)
+                    onAuthenticationEvent(AuthenticationEvent.ErrorDismissed)
                 }
             )
         }
@@ -81,9 +81,9 @@ internal fun AuthenticationScreen(
 @Composable
 private fun AuthenticationFormPreview() {
     CoreTheme {
-        AuthenticationScreen(
+        Authentication(
             authenticationState = AuthenticationState(),
-            onViewAction = {},
+            onAuthenticationEvent = {},
         )
     }
 }

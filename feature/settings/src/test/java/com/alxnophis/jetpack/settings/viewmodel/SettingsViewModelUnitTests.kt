@@ -2,9 +2,9 @@ package com.alxnophis.jetpack.settings.viewmodel
 
 import app.cash.turbine.test
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
-import com.alxnophis.jetpack.settings.ui.contract.SettingsSideEffect
+import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
+import com.alxnophis.jetpack.settings.ui.contract.SettingsEffect
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
-import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
 import com.alxnophis.jetpack.settings.ui.contract.Theme
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
@@ -21,14 +21,14 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
 
     @ParameterizedTest
     @MethodSource("testProvider")
-    fun `WHEN action THEN assert state change`(
-        action: SettingsViewAction,
+    fun `WHEN event THEN assert state change`(
+        event: SettingsEvent,
         state: SettingsState
     ) {
         runTest {
             val viewModel = SettingsViewModel(initialState = SettingsState())
 
-            viewModel.setAction(action)
+            viewModel.setEvent(event)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -44,15 +44,15 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
     }
 
     @Test
-    fun `WHEN finish viewAction then finish side effect`() {
+    fun `WHEN finish event then finish side effect`() {
         runTest {
             val viewModel = SettingsViewModel(initialState = SettingsState())
 
-            viewModel.setAction(SettingsViewAction.Finish)
+            viewModel.setEvent(SettingsEvent.Finish)
 
-            viewModel.sideEffect.test {
+            viewModel.effect.test {
                 assertEquals(
-                    SettingsSideEffect.Finish,
+                    SettingsEffect.Finish,
                     awaitItem()
                 )
             }
@@ -65,23 +65,23 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
         @JvmStatic
         private fun testProvider(): Stream<Arguments> = Stream.of(
             Arguments.of(
-                SettingsViewAction.SetNotifications,
+                SettingsEvent.SetNotifications,
                 initialSettingsState.copy(notificationsEnabled = !initialSettingsState.notificationsEnabled),
             ),
             Arguments.of(
-                SettingsViewAction.SetHint,
+                SettingsEvent.SetHint,
                 initialSettingsState.copy(hintsEnabled = !initialSettingsState.hintsEnabled),
             ),
             Arguments.of(
-                SettingsViewAction.SetMarketingOption(MarketingOption.NOT_ALLOWED),
+                SettingsEvent.SetMarketingOption(MarketingOption.NOT_ALLOWED),
                 initialSettingsState.copy(marketingOption = MarketingOption.NOT_ALLOWED),
             ),
             Arguments.of(
-                SettingsViewAction.SetTheme(Theme.LIGHT),
+                SettingsEvent.SetTheme(Theme.LIGHT),
                 initialSettingsState.copy(themeOption = Theme.LIGHT),
             ),
             Arguments.of(
-                SettingsViewAction.SetTheme(Theme.DARK),
+                SettingsEvent.SetTheme(Theme.DARK),
                 initialSettingsState.copy(themeOption = Theme.DARK),
             ),
         )
