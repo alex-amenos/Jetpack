@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import com.alxnophis.jetpack.core.base.activity.BaseActivity
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
 import com.alxnophis.jetpack.home.di.injectHome
-import com.alxnophis.jetpack.home.ui.contract.HomeSideEffect
-import com.alxnophis.jetpack.home.ui.view.HomeComposable
+import com.alxnophis.jetpack.home.ui.contract.HomeEffect
+import com.alxnophis.jetpack.home.ui.view.HomeScreen
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,16 +23,16 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initSideEffectObserver() = repeatOnLifecycleResumed {
-        viewModel.sideEffect.collect { sideEffect ->
-            when (sideEffect) {
-                is HomeSideEffect.NavigateTo -> navigateTo(sideEffect.intent)
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is HomeEffect.NavigateTo -> navigateTo(effect.intent)
             }
         }
     }
 
     private fun renderContent() {
         setContent {
-            HomeComposable()
+            HomeScreen()
         }
     }
 

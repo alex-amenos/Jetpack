@@ -8,9 +8,9 @@ import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.domain.model.PostsError
 import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
-import com.alxnophis.jetpack.posts.ui.contract.PostsSideEffect
+import com.alxnophis.jetpack.posts.ui.contract.PostsEffect
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
-import com.alxnophis.jetpack.posts.ui.contract.PostsViewAction
+import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -22,17 +22,17 @@ internal class PostsViewModel(
     initialState: PostsState = PostsState(),
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
     private val postsUseCase: PostsUseCase,
-) : BaseViewModel<PostsViewAction, PostsState, PostsSideEffect>(initialState) {
+) : BaseViewModel<PostsEvent, PostsState, PostsEffect>(initialState) {
 
     init {
-        handleAction(PostsViewAction.GetPosts)
+        handleEvent(PostsEvent.GetPosts)
     }
 
-    override fun handleAction(action: PostsViewAction) {
-        when (action) {
-            PostsViewAction.GetPosts -> renderPosts()
-            PostsViewAction.Finish -> setSideEffect { PostsSideEffect.Finish }
-            is PostsViewAction.DismissError -> dismissError(action.errorId)
+    override fun handleEvent(event: PostsEvent) {
+        when (event) {
+            PostsEvent.GetPosts -> renderPosts()
+            PostsEvent.Finish -> setEffect { PostsEffect.Finish }
+            is PostsEvent.DismissError -> dismissError(event.errorId)
         }
     }
 

@@ -3,20 +3,20 @@ package com.alxnophis.jetpack.authentication.ui.contract
 import androidx.annotation.StringRes
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.base.constants.EMPTY
-import com.alxnophis.jetpack.core.base.viewmodel.UiAction
 import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
+import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 
 internal sealed class AuthenticationEffect : UiEffect {
     object UserAuthorized : AuthenticationEffect()
 }
 
-internal sealed class AuthenticationViewAction : UiAction {
-    object Authenticate : AuthenticationViewAction()
-    object ErrorDismissed : AuthenticationViewAction()
-    object ToggleAuthenticationMode : AuthenticationViewAction()
-    data class EmailChanged(val email: String) : AuthenticationViewAction()
-    data class PasswordChanged(val password: String) : AuthenticationViewAction()
+internal sealed class AuthenticationEvent : UiEvent {
+    object Authenticate : AuthenticationEvent()
+    object ErrorDismissed : AuthenticationEvent()
+    object ToggleAuthenticationMode : AuthenticationEvent()
+    data class EmailChanged(val email: String) : AuthenticationEvent()
+    data class PasswordChanged(val password: String) : AuthenticationEvent()
 }
 
 internal data class AuthenticationState(

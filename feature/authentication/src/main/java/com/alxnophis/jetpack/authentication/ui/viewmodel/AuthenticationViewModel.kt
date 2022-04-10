@@ -8,7 +8,7 @@ import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,15 +21,15 @@ internal class AuthenticationViewModel(
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
     private val dispatcherDefault: CoroutineDispatcher = Dispatchers.Default,
     private val useCaseAuthenticate: UseCaseAuthenticate,
-) : BaseViewModel<AuthenticationViewAction, AuthenticationState, AuthenticationEffect>(initialState) {
+) : BaseViewModel<AuthenticationEvent, AuthenticationState, AuthenticationEffect>(initialState) {
 
-    override fun handleAction(action: AuthenticationViewAction) =
-        when (action) {
-            AuthenticationViewAction.Authenticate -> authenticate()
-            AuthenticationViewAction.ErrorDismissed -> dismissError()
-            AuthenticationViewAction.ToggleAuthenticationMode -> toggleAuthenticationMode()
-            is AuthenticationViewAction.EmailChanged -> updateEmail(action.email)
-            is AuthenticationViewAction.PasswordChanged -> updatePassword(action.password)
+    override fun handleEvent(event: AuthenticationEvent) =
+        when (event) {
+            AuthenticationEvent.Authenticate -> authenticate()
+            AuthenticationEvent.ErrorDismissed -> dismissError()
+            AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
+            is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
+            is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
         }
 
     private fun toggleAuthenticationMode() {
@@ -89,7 +89,7 @@ internal class AuthenticationViewModel(
                 },
                 {
                     setState { copy(isLoading = false) }
-                    setSideEffect { AuthenticationEffect.UserAuthorized }
+                    setEffect { AuthenticationEffect.UserAuthorized }
                 }
             )
         }

@@ -1,19 +1,19 @@
 package com.alxnophis.jetpack.posts.ui.contract
 
-import com.alxnophis.jetpack.core.base.viewmodel.UiAction
 import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
+import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.domain.model.Post
 
-internal sealed class PostsSideEffect : UiEffect {
-    object Finish : PostsSideEffect()
+internal sealed class PostsEffect : UiEffect {
+    object Finish : PostsEffect()
 }
 
-internal sealed class PostsViewAction : UiAction {
-    object GetPosts : PostsViewAction()
-    object Finish : PostsViewAction()
-    data class DismissError(val errorId: Long) : PostsViewAction()
+internal sealed class PostsEvent : UiEvent {
+    object GetPosts : PostsEvent()
+    object Finish : PostsEvent()
+    data class DismissError(val errorId: Long) : PostsEvent()
 }
 
 internal data class PostsState(

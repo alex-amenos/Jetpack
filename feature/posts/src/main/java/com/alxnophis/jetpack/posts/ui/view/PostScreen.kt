@@ -40,8 +40,8 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.domain.model.Post
+import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
-import com.alxnophis.jetpack.posts.ui.contract.PostsViewAction
 import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -49,22 +49,22 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-internal fun PostsComposable(
+internal fun PostScreen(
     viewModel: PostsViewModel = getViewModel()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        PostScreen(
+        Posts(
             state,
-            viewModel::setAction
+            viewModel::setEvent
         )
     }
 }
 
 @Composable
-internal fun PostScreen(
+internal fun Posts(
     state: PostsState,
-    onViewAction: (viewAction: PostsViewAction) -> Unit,
+    onPostEvent: (event: PostsEvent) -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -73,16 +73,16 @@ internal fun PostScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            PostsTopBar(onViewAction)
+            PostsTopBar(onPostEvent)
             PostList(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
-                onViewAction = onViewAction,
+                onPostEvent = onPostEvent,
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
                     errorMessage = stringResource(error.messageId),
-                    dismissError = { onViewAction.invoke(PostsViewAction.DismissError(error.id)) }
+                    dismissError = { onPostEvent.invoke(PostsEvent.DismissError(error.id)) }
                 )
             }
         }
@@ -91,14 +91,14 @@ internal fun PostScreen(
 
 @Composable
 internal fun PostsTopBar(
-    onViewAction: (viewAction: PostsViewAction) -> Unit,
+    onPostEvent: (event: PostsEvent) -> Unit,
 ) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primaryVariant,
         contentPadding = PaddingValues(start = 12.dp)
     ) {
         IconButton(
-            onClick = { onViewAction.invoke(PostsViewAction.Finish) }
+            onClick = { onPostEvent.invoke(PostsEvent.Finish) }
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
@@ -120,12 +120,12 @@ internal fun PostsTopBar(
 internal fun PostList(
     modifier: Modifier,
     state: PostsState,
-    onViewAction: (viewAction: PostsViewAction) -> Unit,
+    onPostEvent: (event: PostsEvent) -> Unit,
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { onViewAction.invoke(PostsViewAction.GetPosts) },
+        onRefresh = { onPostEvent.invoke(PostsEvent.GetPosts) },
     ) {
         LazyColumn(
             state = listState,
@@ -214,9 +214,9 @@ private fun PostScreenPreview() {
         errorMessages = listOf()
     )
     CoreTheme {
-        PostScreen(
+        Posts(
             state = state,
-            onViewAction = {}
+            onPostEvent = {}
         )
     }
 }

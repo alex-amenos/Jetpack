@@ -30,31 +30,31 @@ import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
+import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
-import com.alxnophis.jetpack.settings.ui.contract.SettingsViewAction
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-internal fun SettingsComposable(
+internal fun SettingsScreen(
     viewModel: SettingsViewModel = getViewModel(),
     appVersion: String = LocalContext.current.getVersion()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        SettingsScreen(
+        Settings(
             state = state,
             appVersion = appVersion,
-            onViewAction = viewModel::setAction
+            onSettingsEvent = viewModel::setEvent
         )
     }
 }
 
 @Composable
-internal fun SettingsScreen(
+internal fun Settings(
     state: SettingsState,
     appVersion: String,
-    onViewAction: (viewAction: SettingsViewAction) -> Unit,
+    onSettingsEvent: (event: SettingsEvent) -> Unit,
 ) {
     val context = LocalContext.current
     Column(
@@ -62,20 +62,20 @@ internal fun SettingsScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        SettingsTopBar(onViewAction)
+        SettingsTopBar(onSettingsEvent)
         Divider()
         SettingsNotificationItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_notifications),
             checked = state.notificationsEnabled,
-            onToggleNotificationSettings = { onViewAction(SettingsViewAction.SetNotifications) }
+            onToggleNotificationSettings = { onSettingsEvent(SettingsEvent.SetNotifications) }
         )
         Divider()
         SettingsHintItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_hints),
             checked = state.hintsEnabled,
-            onShowHintToggled = { onViewAction(SettingsViewAction.SetHint) }
+            onShowHintToggled = { onSettingsEvent(SettingsEvent.SetHint) }
         )
         Divider()
         SettingsManageSubscriptionItem(
@@ -85,7 +85,7 @@ internal fun SettingsScreen(
                 Toast
                     .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
                     .show()
-                onViewAction(SettingsViewAction.ManageSubscription)
+                onSettingsEvent(SettingsEvent.ManageSubscription)
             }
         )
         Divider()
@@ -96,7 +96,7 @@ internal fun SettingsScreen(
             modifier = Modifier.fillMaxWidth(),
             selectedOption = state.marketingOption,
             onOptionSelected = { marketingOption ->
-                onViewAction(SettingsViewAction.SetMarketingOption(marketingOption))
+                onSettingsEvent(SettingsEvent.SetMarketingOption(marketingOption))
             }
         )
         Divider()
@@ -104,7 +104,7 @@ internal fun SettingsScreen(
             modifier = Modifier.fillMaxWidth(),
             selectedTheme = state.themeOption,
             onOptionSelected = { theme ->
-                onViewAction(SettingsViewAction.SetTheme(theme))
+                onSettingsEvent(SettingsEvent.SetTheme(theme))
             }
         )
         SettingsSectionSpacer(
@@ -120,14 +120,14 @@ internal fun SettingsScreen(
 
 @Composable
 internal fun SettingsTopBar(
-    onViewAction: (viewAction: SettingsViewAction) -> Unit,
+    onSettingsEvent: (event: SettingsEvent) -> Unit,
 ) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primaryVariant,
         contentPadding = PaddingValues(start = 12.dp)
     ) {
         IconButton(
-            onClick = { onViewAction.invoke(SettingsViewAction.Finish) }
+            onClick = { onSettingsEvent.invoke(SettingsEvent.Finish) }
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
@@ -150,10 +150,10 @@ internal fun SettingsTopBar(
 @Composable
 private fun SettingsScreenPreview() {
     CoreTheme {
-        SettingsScreen(
+        Settings(
             state = SettingsState(),
             appVersion = "1.0.0",
-            onViewAction = {}
+            onSettingsEvent = {}
         )
     }
 }

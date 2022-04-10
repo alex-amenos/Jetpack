@@ -16,9 +16,9 @@ class AuthenticationScreenTest : BaseComposeTest() {
     @Test
     fun sign_in_title_displayed_by_default() {
         composeTestRule.setContent {
-            AuthenticationScreen(
+            Authentication(
                 authenticationState = screenState,
-                onViewAction = {}
+                onAuthenticationEvent = {}
             )
         }
 

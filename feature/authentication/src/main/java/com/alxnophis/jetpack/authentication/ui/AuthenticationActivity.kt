@@ -5,7 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.ui.ExperimentalComposeUiApi
 import com.alxnophis.jetpack.authentication.di.injectAuthentication
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
-import com.alxnophis.jetpack.authentication.ui.view.AuthenticationComposable
+import com.alxnophis.jetpack.authentication.ui.view.AuthenticationScreen
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.base.activity.BaseActivity
 import com.alxnophis.jetpack.core.extensions.repeatOnLifecycleResumed
@@ -25,7 +25,7 @@ class AuthenticationActivity : BaseActivity() {
     }
 
     private fun initSideEffectObserver() = repeatOnLifecycleResumed {
-        viewModel.sideEffect.collect { effect ->
+        viewModel.effect.collect { effect ->
             when (effect) {
                 AuthenticationEffect.UserAuthorized -> {
                     this.finish()
@@ -37,7 +37,7 @@ class AuthenticationActivity : BaseActivity() {
 
     private fun renderContent() {
         setContent {
-            AuthenticationComposable()
+            AuthenticationScreen()
         }
     }
 

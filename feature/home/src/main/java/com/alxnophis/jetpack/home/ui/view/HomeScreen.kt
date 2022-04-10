@@ -38,28 +38,28 @@ import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
+import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
-import com.alxnophis.jetpack.home.ui.contract.HomeViewAction
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-internal fun HomeComposable(
+internal fun HomeScreen(
     viewModel: HomeViewModel = getViewModel()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        HomeScreen(
+        Home(
             state = state,
-            onViewAction = viewModel::setAction
+            onHomeEvent = viewModel::setEvent
         )
     }
 }
 
 @Composable
-internal fun HomeScreen(
+internal fun Home(
     state: HomeState,
-    onViewAction: (viewAction: HomeViewAction) -> Unit
+    onHomeEvent: (event: HomeEvent) -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -69,12 +69,12 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             HomeTopBar()
-            SectionsList(state, onViewAction)
+            SectionsList(state, onHomeEvent)
         }
         state.error?.let { error: Int ->
             CoreErrorDialog(
                 errorMessage = stringResource(error),
-                dismissError = { onViewAction.invoke(HomeViewAction.ErrorDismissed) }
+                dismissError = { onHomeEvent.invoke(HomeEvent.ErrorDismissed) }
             )
         }
     }
@@ -100,7 +100,7 @@ internal fun HomeTopBar() {
 @Composable
 internal fun SectionsList(
     state: HomeState,
-    onViewAction: (viewAction: HomeViewAction) -> Unit
+    onHomeEvent: (event: HomeEvent) -> Unit
 ) {
     val listState = rememberLazyListState()
     LazyColumn(
@@ -117,7 +117,7 @@ internal fun SectionsList(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .clickable {
-                            onViewAction.invoke(HomeViewAction.NavigateTo(item.intent))
+                            onHomeEvent.invoke(HomeEvent.NavigateTo(item.intent))
                         }
                         .fillMaxWidth()
                         .wrapContentHeight()
@@ -172,9 +172,9 @@ private fun HomeScreenPreview() {
         error = null
     )
     CoreTheme {
-        HomeScreen(
+        Home(
             state = state,
-            onViewAction = {}
+            onHomeEvent = {}
         )
     }
 }

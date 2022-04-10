@@ -11,7 +11,7 @@ import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate.C
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationViewAction
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModel5UnitTest
 import kotlin.test.assertEquals
@@ -49,7 +49,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN signIn state and ToggleAuthenticationMode event THEN validate state is signUp`() {
         runTest {
-            viewModel.setAction(AuthenticationViewAction.ToggleAuthenticationMode)
+            viewModel.setEvent(AuthenticationEvent.ToggleAuthenticationMode)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -71,7 +71,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             val initialState = AuthenticationState().copy(authenticationMode = AuthenticationMode.SIGN_UP)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.setAction(AuthenticationViewAction.ToggleAuthenticationMode)
+            viewModel.setEvent(AuthenticationEvent.ToggleAuthenticationMode)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -93,7 +93,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             val initialState = AuthenticationState().copy(error = 1)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.setAction(AuthenticationViewAction.ErrorDismissed)
+            viewModel.setEvent(AuthenticationEvent.ErrorDismissed)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -112,7 +112,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN updated email and EmailChanged event THEN validate state change`() {
         runTest {
-            viewModel.setAction(AuthenticationViewAction.EmailChanged(EMAIL))
+            viewModel.setEvent(AuthenticationEvent.EmailChanged(EMAIL))
 
             viewModel.uiState.test {
                 assertEquals(
@@ -131,7 +131,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN updated password and PasswordChanged event THEN validate state change`() {
         runTest {
-            viewModel.setAction(AuthenticationViewAction.PasswordChanged(PASSWORD))
+            viewModel.setEvent(AuthenticationEvent.PasswordChanged(PASSWORD))
 
             viewModel.uiState.test {
                 assertEquals(
@@ -161,7 +161,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.setAction(AuthenticationViewAction.Authenticate)
+            viewModel.setEvent(AuthenticationEvent.Authenticate)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -183,7 +183,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.setAction(AuthenticationViewAction.Authenticate)
+            viewModel.setEvent(AuthenticationEvent.Authenticate)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -210,9 +210,9 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.setAction(AuthenticationViewAction.Authenticate)
+            viewModel.setEvent(AuthenticationEvent.Authenticate)
 
-            viewModel.sideEffect.test {
+            viewModel.effect.test {
                 assertEquals(
                     AuthenticationEffect.UserAuthorized,
                     awaitItem()
@@ -229,7 +229,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
             val viewModel = viewModelMother(initialState = initialState)
             whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
 
-            viewModel.setAction(AuthenticationViewAction.Authenticate)
+            viewModel.setEvent(AuthenticationEvent.Authenticate)
 
             viewModel.uiState.test {
                 assertEquals(

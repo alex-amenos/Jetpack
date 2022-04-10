@@ -1,22 +1,22 @@
 package com.alxnophis.jetpack.settings.ui.contract
 
 import androidx.annotation.StringRes
-import com.alxnophis.jetpack.core.base.viewmodel.UiAction
 import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
+import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
 
-internal sealed class SettingsSideEffect : UiEffect {
-    object Finish : SettingsSideEffect()
+internal sealed class SettingsEffect : UiEffect {
+    object Finish : SettingsEffect()
 }
 
-internal sealed class SettingsViewAction : UiAction {
-    object Finish : SettingsViewAction()
-    object ManageSubscription : SettingsViewAction()
-    object SetNotifications : SettingsViewAction()
-    object SetHint : SettingsViewAction()
-    data class SetMarketingOption(val marketingOption: MarketingOption) : SettingsViewAction()
-    data class SetTheme(val theme: Theme) : SettingsViewAction()
+internal sealed class SettingsEvent : UiEvent {
+    object Finish : SettingsEvent()
+    object ManageSubscription : SettingsEvent()
+    object SetNotifications : SettingsEvent()
+    object SetHint : SettingsEvent()
+    data class SetMarketingOption(val marketingOption: MarketingOption) : SettingsEvent()
+    data class SetTheme(val theme: Theme) : SettingsEvent()
 }
 
 internal data class SettingsState(
