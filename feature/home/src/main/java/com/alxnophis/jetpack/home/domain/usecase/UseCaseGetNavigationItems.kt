@@ -4,6 +4,7 @@ import arrow.core.Either
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.router.features.RouterAuthentication
+import com.alxnophis.jetpack.router.features.RouterLocationTracker
 import com.alxnophis.jetpack.router.features.RouterPosts
 import com.alxnophis.jetpack.router.features.RouterSettings
 
@@ -15,7 +16,8 @@ class UseCaseGetNavigationItems {
             listOf(
                 authentication,
                 settings,
-                posts
+                posts,
+                locationTracker,
             )
         }
     )
@@ -36,6 +38,11 @@ class UseCaseGetNavigationItems {
             name = "Posts",
             description = "Load posts from JsonPlaceholder API",
             intent = RouterPosts.dynamicStart
+        )
+        private val locationTracker = NavigationItem(
+            name = "Location Tracker",
+            description = "User location tracking",
+            intent = RouterLocationTracker.dynamicStart
         )
     }
 }

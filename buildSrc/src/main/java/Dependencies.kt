@@ -34,6 +34,7 @@ object Modules {
     const val FEATURE_AUTHENTICATION = ":feature:authentication"
     const val FEATURE_SETTINGS = ":feature:settings"
     const val FEATURE_POSTS = ":feature:posts"
+    const val FEATURE_LOCATION_TRACKER =":feature:location-tracker"
 
     const val SHARED_CORE = ":shared:core"
     const val SHARED_API = ":shared:api"

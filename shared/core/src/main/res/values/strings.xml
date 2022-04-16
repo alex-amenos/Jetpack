@@ -7,4 +7,5 @@
     <string name="core_error_unknown" translatable="false">Something goes wrong.</string>
     <string name="core_error_network" translatable="false">Network error</string>
     <string name="core_error_server" translatable="false">Server error</string>
+    <string name="core_cd_go_back">Go back to the previous screen</string>
 </resources>

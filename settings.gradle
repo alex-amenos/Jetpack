@@ -4,6 +4,7 @@ include ':feature:home'
 include ':feature:authentication'
 include ':feature:settings'
 include ':feature:posts'
+include ':feature:location-tracker'
 // Shared modules
 include ":shared:core"
 include ':shared:router'
