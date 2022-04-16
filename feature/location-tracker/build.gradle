@@ -3,3 +3,7 @@ apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 android {
     resourcePrefix 'location_tracker'
 }
+
+dependencies {
+    implementation Dep.GOOGLE_ACCOMPANITS_PERMISSIONS
+}

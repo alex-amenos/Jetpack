@@ -109,6 +109,7 @@ object Dep {
     const val ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW = "androidx.compose.ui:ui-tooling-preview:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:${Version.ANDROIDX_LIFECYCLE}"
     const val GOOGLE_ACCOMPANITS_SWIPEREFRESH = "com.google.accompanist:accompanist-swiperefresh:${Version.GOOGLE_ACCOMPANITS}"
+    const val GOOGLE_ACCOMPANITS_PERMISSIONS = "com.google.accompanist:accompanist-permissions:${Version.GOOGLE_ACCOMPANITS}"
     const val GOOGLE_ACCOMPANITS_PLACEHOLDER = "com.google.accompanist:accompanist-placeholder-material:${Version.GOOGLE_ACCOMPANITS}"
     const val ANDROIDX_LIFECYCLE_COMMON = "androidx.lifecycle:lifecycle-common-java8:${Version.ANDROIDX_LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_COMPILER = "androidx.lifecycle:lifecycle-compiler:${Version.ANDROIDX_LIFECYCLE}"

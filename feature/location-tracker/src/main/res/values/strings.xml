@@ -1,4 +1,10 @@
 <resources>
     <string name="location_tracker_title">Location Tracker</string>
     <string name="location_tracker_cd_go_back">Location Tracker</string>
+    <string name="location_tracker_grant_access">Grant Access</string>
+    <string name="location_tracker_request_permissions">Request Permissions</string>
+    <string name="location_tracker_allow_fine_location">Allow precise location</string>
+    <string name="location_tracker_feature_require_permission">This feature requires location permission</string>
+    <string name="location_tracker_location_permission_rationale">Getting your exact location is important for this app. Please grant us fine location. Thank you.</string>
+    <string name="location_tracker_permissions_revoked">Yay! Thanks for letting me access your approximate location. But you know what would be great? If you allow me to know where you exactly are. Thank you!</string>
 </resources>

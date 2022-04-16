@@ -95,8 +95,7 @@ internal fun AuthenticationForm(
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                horizontalAlignment =
-                Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 EmailInput(
                     modifier = Modifier.fillMaxWidth(),
