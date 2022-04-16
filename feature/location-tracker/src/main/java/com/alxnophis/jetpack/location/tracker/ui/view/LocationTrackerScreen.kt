@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
@@ -103,6 +104,7 @@ private fun LocationPermission() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
+                textAlign = TextAlign.Justify,
                 text = stringResource(textIdToShow)
             )
             Spacer(modifier = Modifier.height(16.dp))
