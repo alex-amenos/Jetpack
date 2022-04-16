@@ -132,10 +132,13 @@ internal fun SectionsList(
                             modifier = Modifier.wrapContentSize(),
                             style = MaterialTheme.typography.subtitle1,
                             text = item.name,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Medium,
                         )
                         Text(
-                            modifier = Modifier.wrapContentSize(),
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(top = 4.dp),
                             style = MaterialTheme.typography.subtitle1,
                             text = item.description,
                             fontWeight = FontWeight.Light,
