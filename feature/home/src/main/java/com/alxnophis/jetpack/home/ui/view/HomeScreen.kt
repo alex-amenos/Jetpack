@@ -107,7 +107,7 @@ internal fun SectionsList(
         state = listState,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colors.background)
+            .background(color = MaterialTheme.colors.surface)
     ) {
         items(
             items = state.data,

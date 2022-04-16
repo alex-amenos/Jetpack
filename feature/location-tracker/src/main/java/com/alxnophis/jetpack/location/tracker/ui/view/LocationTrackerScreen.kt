@@ -8,8 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -53,7 +52,6 @@ internal fun LocationTracker(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.surface)
-            .verticalScroll(rememberScrollState())
     ) {
         CoreTopBar(
             title = stringResource(id = R.string.location_tracker_title),
@@ -61,14 +59,20 @@ internal fun LocationTracker(
                 onLocationTrackingEvent(LocationTrackerEvent.Finish)
             }
         )
-        LocationPermission()
+        LocationPermission {
+            UserLocationsList(
+                modifier = Modifier.wrapContentSize(),
+                state = state
+            )
+        }
     }
 }
 
-
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-private fun LocationPermission() {
+private fun LocationPermission(
+    composableWhenPermissionGranted: @Composable () -> Unit,
+) {
     val locationPermissionsState = rememberMultiplePermissionsState(
         listOf(
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -76,11 +80,10 @@ private fun LocationPermission() {
         )
     )
     if (locationPermissionsState.allPermissionsGranted) {
-        Text("Thanks! I can access your exact location :D")
-        // TODO something with the location
+        composableWhenPermissionGranted()
     } else {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.wrapContentSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -113,4 +116,16 @@ private fun LocationPermission() {
             }
         }
     }
+}
+
+@Composable
+private fun UserLocationsList(
+    modifier: Modifier,
+    state: LocationTrackerState,
+) {
+    Text(
+        modifier = modifier
+            .padding(16.dp),
+        text = state.userLocation.toString()
+    )
 }
