@@ -1,12 +1,14 @@
 package com.alxnophis.jetpack.settings.ui.view
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -48,6 +50,7 @@ internal fun Settings(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colors.surface)
             .verticalScroll(rememberScrollState())
     ) {
         CoreTopBar(
