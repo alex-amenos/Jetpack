@@ -80,6 +80,7 @@ private fun LocationPermission(
         )
     )
     if (locationPermissionsState.allPermissionsGranted) {
+        // TODO - Check if GPS is enabled and show a dialog if not
         composableWhenPermissionGranted()
     } else {
         Column(
