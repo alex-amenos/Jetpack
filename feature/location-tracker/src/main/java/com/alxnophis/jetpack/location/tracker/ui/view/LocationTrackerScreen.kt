@@ -29,7 +29,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.koin.androidx.compose.getViewModel
 
-
 @Composable
 internal fun LocationTrackerScreen(
     viewModel: LocationTrackerViewModel = getViewModel(),
