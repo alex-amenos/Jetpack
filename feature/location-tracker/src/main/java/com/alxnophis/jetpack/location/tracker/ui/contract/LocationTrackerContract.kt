@@ -11,8 +11,6 @@ internal sealed class LocationTrackerEffect : UiEffect {
 
 internal sealed class LocationTrackerEvent : UiEvent {
     object Finish : LocationTrackerEvent()
-    object StartTrackingUserLocation : LocationTrackerEvent()
-    object StopTrackingUserLocation : LocationTrackerEvent()
 }
 
 internal data class LocationTrackerState(
