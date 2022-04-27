@@ -17,8 +17,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.location.tracker.R
@@ -124,8 +126,13 @@ private fun UserLocationsList(
     state: LocationTrackerState,
 ) {
     Text(
-        modifier = modifier
-            .padding(16.dp),
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
+        text = stringResource(id = R.string.location_tracker_last_known_location)
+    )
+    Text(
+        modifier = modifier.padding(16.dp),
         text = state.userLocation.toString()
     )
 }
