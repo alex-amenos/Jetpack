@@ -37,7 +37,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
     val uiEvent = _event.asSharedFlow()
 
     private val _effect: Channel<Effect> = Channel(Channel.BUFFERED)
-    val effect = _effect.receiveAsFlow()
+    val uiEffect = _effect.receiveAsFlow()
 
     init {
         subscribeEvents()

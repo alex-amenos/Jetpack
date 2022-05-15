@@ -9,8 +9,8 @@ import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.domain.model.PostsError
 import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
 import com.alxnophis.jetpack.posts.ui.contract.PostsEffect
-import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
+import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +31,7 @@ internal class PostsViewModel(
     override fun handleEvent(event: PostsEvent) {
         when (event) {
             PostsEvent.GetPosts -> renderPosts()
-            PostsEvent.Finish -> setEffect { PostsEffect.Finish }
+            PostsEvent.NavigateBack -> setEffect { PostsEffect.NavigateBack }
             is PostsEvent.DismissError -> dismissError(event.errorId)
         }
     }

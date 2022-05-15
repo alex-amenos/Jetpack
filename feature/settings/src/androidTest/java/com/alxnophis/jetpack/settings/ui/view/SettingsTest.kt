@@ -7,6 +7,7 @@ import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
@@ -96,6 +97,7 @@ class SettingsTest : BaseComposeTest() {
     private fun setSettingsContent() {
         composeTestRule.setContent {
             SettingsScreen(
+                navController = rememberNavController(),
                 viewModel = SettingsViewModel(),
                 appVersion = APP_VERSION
             )
@@ -107,6 +109,7 @@ class SettingsTest : BaseComposeTest() {
     ) {
         assertStringDisplayedWith(stringResource) {
             SettingsScreen(
+                rememberNavController(),
                 viewModel = SettingsViewModel(),
                 appVersion = APP_VERSION,
             )

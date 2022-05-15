@@ -1,5 +1,7 @@
 package com.alxnophis.jetpack.home.ui.view
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,34 +27,55 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
+import com.alxnophis.jetpack.home.ui.contract.HomeEffect
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
+import com.alxnophis.jetpack.router.screen.Screen
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun HomeScreen(
+    navController: NavController,
     viewModel: HomeViewModel = getViewModel()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
+        val activity = (LocalContext.current as? Activity)
+        val exitApp: () -> Unit = { activity?.finish() }
         Home(
             state = state,
             onHomeEvent = viewModel::setEvent
         )
+        BackHandler {
+            if (!navController.popBackStack()) {
+                viewModel.setEvent(HomeEvent.ExitApp)
+            }
+        }
+        LaunchedEffect(key1 = Unit) {
+            viewModel.uiEffect.collect { effect ->
+                when (effect) {
+                    HomeEffect.ExitApp -> exitApp()
+                    is HomeEffect.NavigateTo -> navController.navigate(effect.screen.route)
+                }
+            }
+        }
     }
 }
 
@@ -116,9 +139,7 @@ internal fun SectionsList(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable {
-                            onHomeEvent.invoke(HomeEvent.NavigateTo(item.intent))
-                        }
+                        .clickable { onHomeEvent(HomeEvent.NavigateTo(item.screen)) }
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(16.dp)
@@ -164,12 +185,12 @@ private fun HomeScreenPreview() {
             NavigationItem(
                 name = "Screen 1",
                 description = stringResource(id = R.string.core_lorem_ipsum_s),
-                intent = null
+                screen = Screen.Authentication
             ),
             NavigationItem(
                 name = "Screen 2",
                 description = stringResource(id = R.string.core_lorem_ipsum_m),
-                intent = null
+                screen = Screen.Settings
             ),
         ),
         error = null

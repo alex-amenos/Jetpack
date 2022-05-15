@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.settings.ui.view
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,16 +11,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
+import com.alxnophis.jetpack.settings.ui.contract.SettingsEffect
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
@@ -27,6 +31,7 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun SettingsScreen(
+    navController: NavController,
     viewModel: SettingsViewModel = getViewModel(),
     appVersion: String = LocalContext.current.getVersion()
 ) {
@@ -35,8 +40,18 @@ internal fun SettingsScreen(
         Settings(
             state = state,
             appVersion = appVersion,
-            onSettingsEvent = viewModel::setEvent
+            onSettingsEvent = viewModel::setEvent,
         )
+        BackHandler {
+            viewModel.setEvent(SettingsEvent.NavigateBack)
+        }
+        LaunchedEffect(key1 = Unit) {
+            viewModel.uiEffect.collect { effect ->
+                when (effect) {
+                    SettingsEffect.NavigateBack -> navController.popBackStack()
+                }
+            }
+        }
     }
 }
 
@@ -55,7 +70,7 @@ internal fun Settings(
     ) {
         CoreTopBar(
             title = stringResource(id = R.string.settings_title),
-            onBack = { onSettingsEvent.invoke(SettingsEvent.Finish) }
+            onBack = { onSettingsEvent(SettingsEvent.NavigateBack) }
         )
         Divider()
         SettingsNotificationItem(

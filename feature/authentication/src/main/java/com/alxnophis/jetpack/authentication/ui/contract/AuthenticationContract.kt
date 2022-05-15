@@ -8,13 +8,15 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 
 internal sealed class AuthenticationEffect : UiEffect {
-    object UserAuthorized : AuthenticationEffect()
+    object NavigateToNextScreen : AuthenticationEffect()
+    object NavigateBack : AuthenticationEffect()
 }
 
 internal sealed class AuthenticationEvent : UiEvent {
     object Authenticate : AuthenticationEvent()
     object ErrorDismissed : AuthenticationEvent()
     object ToggleAuthenticationMode : AuthenticationEvent()
+    object NavigateBack : AuthenticationEvent()
     data class EmailChanged(val email: String) : AuthenticationEvent()
     data class PasswordChanged(val password: String) : AuthenticationEvent()
 }

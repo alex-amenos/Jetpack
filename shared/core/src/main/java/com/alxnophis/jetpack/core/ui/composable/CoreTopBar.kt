@@ -28,7 +28,7 @@ fun CoreTopBar(
         contentPadding = PaddingValues(start = 12.dp)
     ) {
         IconButton(
-            onClick = { onBack() }
+            onClick = onBack,
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,

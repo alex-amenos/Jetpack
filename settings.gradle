@@ -1,12 +1,13 @@
 include ":app"
 // Feature modules
-include ':feature:home'
+include ':feature:root'
 include ':feature:authentication'
-include ':feature:settings'
-include ':feature:posts'
+include ':feature:home'
 include ':feature:location-tracker'
+include ':feature:posts'
+include ':feature:settings'
 // Shared modules
+include ':shared:api'
 include ":shared:core"
 include ':shared:router'
 include ':shared:testing'
-include ':shared:api'

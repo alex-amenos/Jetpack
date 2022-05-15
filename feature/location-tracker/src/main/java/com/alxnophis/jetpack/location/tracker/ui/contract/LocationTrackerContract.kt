@@ -6,11 +6,11 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.location.tracker.domain.model.Location
 
 internal sealed class LocationTrackerEffect : UiEffect {
-    object Finish : LocationTrackerEffect()
+    object NavigateBack : LocationTrackerEffect()
 }
 
 internal sealed class LocationTrackerEvent : UiEvent {
-    object Finish : LocationTrackerEvent()
+    object NavigateBack : LocationTrackerEvent()
 }
 
 internal data class LocationTrackerState(

@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.posts.ui.view
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
@@ -34,6 +37,7 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.domain.model.Post
+import com.alxnophis.jetpack.posts.ui.contract.PostsEffect
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
@@ -43,15 +47,26 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-internal fun PostScreen(
+internal fun PostsScreen(
+    navController: NavController,
     viewModel: PostsViewModel = getViewModel()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
         Posts(
-            state,
-            viewModel::setEvent
+            state = state,
+            onPostEvent = viewModel::setEvent
         )
+        BackHandler {
+            viewModel.setEvent(PostsEvent.NavigateBack)
+        }
+        LaunchedEffect(key1 = Unit) {
+            viewModel.uiEffect.collect { effect ->
+                when (effect) {
+                    is PostsEffect.NavigateBack -> navController.popBackStack()
+                }
+            }
+        }
     }
 }
 
@@ -69,7 +84,7 @@ internal fun Posts(
         ) {
             CoreTopBar(
                 title = stringResource(id = R.string.posts_title),
-                onBack = { onPostEvent.invoke(PostsEvent.Finish) }
+                onBack = { onPostEvent(PostsEvent.NavigateBack) }
             )
             PostList(
                 modifier = Modifier.fillMaxSize(),

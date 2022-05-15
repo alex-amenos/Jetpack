@@ -3,18 +3,18 @@ package com.alxnophis.jetpack.authentication.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
-import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate.Companion.AUTHORIZED_EMAIL
-import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate.Companion.AUTHORIZED_PASSWORD
+import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_EMAIL
+import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_PASSWORD
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-class UseCaseAuthenticateUnitTest : BaseUnitTest() {
+class AuthenticateUseCaseUnitTest : BaseUnitTest() {
 
     private val usecase by lazy {
-        UseCaseAuthenticate()
+        AuthenticateUseCase()
     }
 
     @Test

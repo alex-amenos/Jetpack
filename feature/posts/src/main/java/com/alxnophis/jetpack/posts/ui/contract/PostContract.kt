@@ -7,12 +7,12 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.domain.model.Post
 
 internal sealed class PostsEffect : UiEffect {
-    object Finish : PostsEffect()
+    object NavigateBack : PostsEffect()
 }
 
 internal sealed class PostsEvent : UiEvent {
+    object NavigateBack : PostsEvent()
     object GetPosts : PostsEvent()
-    object Finish : PostsEvent()
     data class DismissError(val errorId: Long) : PostsEvent()
 }
 

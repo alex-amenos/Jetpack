@@ -4,11 +4,11 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
-import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
+import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,7 +20,7 @@ internal class AuthenticationViewModel(
     initialState: AuthenticationState = AuthenticationState(),
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
     private val dispatcherDefault: CoroutineDispatcher = Dispatchers.Default,
-    private val useCaseAuthenticate: UseCaseAuthenticate,
+    private val authenticateUseCase: AuthenticateUseCase,
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState, AuthenticationEffect>(initialState) {
 
     override fun handleEvent(event: AuthenticationEvent) =
@@ -28,6 +28,7 @@ internal class AuthenticationViewModel(
             AuthenticationEvent.Authenticate -> authenticate()
             AuthenticationEvent.ErrorDismissed -> dismissError()
             AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
+            AuthenticationEvent.NavigateBack -> setEffect { AuthenticationEffect.NavigateBack }
             is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
             is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
         }
@@ -89,7 +90,7 @@ internal class AuthenticationViewModel(
                 },
                 {
                     setState { copy(isLoading = false) }
-                    setEffect { AuthenticationEffect.UserAuthorized }
+                    setEffect { AuthenticationEffect.NavigateToNextScreen }
                 }
             )
         }
@@ -97,7 +98,7 @@ internal class AuthenticationViewModel(
 
     private suspend fun authenticateUser(email: String, password: String): Either<AuthenticationError, Unit> =
         withContext(dispatcherIO) {
-            useCaseAuthenticate.invoke(email, password)
+            authenticateUseCase.invoke(email, password)
         }
 
     companion object {
