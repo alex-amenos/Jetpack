@@ -36,13 +36,15 @@ internal fun AuthenticationScreen(
             viewModel::setEvent
         )
         BackHandler {
-            navController.popBackStack()
+            viewModel.setEvent(AuthenticationEvent.NavigateBack)
         }
         LaunchedEffect(Unit) {
             viewModel.uiEffect.collect { effect ->
                 when (effect) {
+                    AuthenticationEffect.NavigateBack -> navController.popBackStack()
                     AuthenticationEffect.NavigateToNextScreen -> {
                         navController.navigate(Screen.Authorized.route) {
+                            // Remove Authentication screen form back stack
                             popUpTo(Screen.Authentication.route) {
                                 inclusive = true
                             }

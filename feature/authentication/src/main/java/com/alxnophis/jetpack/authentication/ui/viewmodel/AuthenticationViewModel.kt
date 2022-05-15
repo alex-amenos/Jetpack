@@ -28,6 +28,7 @@ internal class AuthenticationViewModel(
             AuthenticationEvent.Authenticate -> authenticate()
             AuthenticationEvent.ErrorDismissed -> dismissError()
             AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
+            AuthenticationEvent.NavigateBack -> setEffect { AuthenticationEffect.NavigateBack }
             is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
             is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
         }

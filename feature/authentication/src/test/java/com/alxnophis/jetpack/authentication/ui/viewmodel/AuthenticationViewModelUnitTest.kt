@@ -252,6 +252,22 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
         }
     }
 
+    @Test
+    fun `WHEN on navigate back THEN set navigate back effect`() {
+        runTest {
+            val viewModel = viewModelMother()
+            viewModel.setEvent(AuthenticationEvent.NavigateBack)
+
+            viewModel.uiEffect.test {
+                assertEquals(
+                    AuthenticationEffect.NavigateBack,
+                    awaitItem()
+                )
+                expectNoEvents()
+            }
+        }
+    }
+
     private fun viewModelMother(
         initialState: AuthenticationState = initialAuthenticationState,
         dispatcherIO: TestDispatcher = testDispatcher,
