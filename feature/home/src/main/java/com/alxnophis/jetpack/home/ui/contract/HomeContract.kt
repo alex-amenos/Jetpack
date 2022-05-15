@@ -7,10 +7,12 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.router.screen.Screen
 
 internal sealed class HomeEffect : UiEffect {
+    object ExitApp : HomeEffect()
     data class NavigateTo(val screen: Screen) : HomeEffect()
 }
 
 internal sealed class HomeEvent : UiEvent {
+    object ExitApp : HomeEvent()
     object ErrorDismissed : HomeEvent()
     object LoadNavigationItems : HomeEvent()
     data class NavigateTo(val screen: Screen) : HomeEvent()

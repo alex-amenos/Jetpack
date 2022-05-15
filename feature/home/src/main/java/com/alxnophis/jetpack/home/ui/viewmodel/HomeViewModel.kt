@@ -27,6 +27,7 @@ internal class HomeViewModel(
 
     override fun handleEvent(event: HomeEvent) {
         when (event) {
+            HomeEvent.ExitApp -> setEffect { HomeEffect.ExitApp }
             HomeEvent.ErrorDismissed -> dismissError()
             HomeEvent.LoadNavigationItems -> loadNavigationItems()
             is HomeEvent.NavigateTo -> setEffect { HomeEffect.NavigateTo(event.screen) }

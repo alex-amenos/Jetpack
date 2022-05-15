@@ -65,12 +65,13 @@ internal fun HomeScreen(
         )
         BackHandler {
             if (!navController.popBackStack()) {
-                exitApp()
+                viewModel.setEvent(HomeEvent.ExitApp)
             }
         }
         LaunchedEffect(key1 = Unit) {
             viewModel.uiEffect.collect { effect ->
                 when (effect) {
+                    HomeEffect.ExitApp -> exitApp()
                     is HomeEffect.NavigateTo -> navController.navigate(effect.screen.route)
                 }
             }
