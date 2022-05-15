@@ -2,6 +2,7 @@ apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 
 android {
     resourcePrefix 'location_tracker'
+    namespace 'com.alxnophis.jetpack.location.tracker'
 }
 
 dependencies {

@@ -2,4 +2,5 @@ apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 
 android {
     resourcePrefix 'home'
+    namespace 'com.alxnophis.jetpack.home'
 }

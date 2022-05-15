@@ -1,5 +1,9 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
 
+android {
+    namespace 'com.alxnophis.jetpack.api'
+}
+
 dependencies {
     implementation Dep.OKHTTP
     implementation Dep.OKHTTP_LOGGING_INTERCEPTOR
