@@ -2,8 +2,8 @@ package com.alxnophis.jetpack.settings.viewmodel
 
 import app.cash.turbine.test
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
-import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEffect
+import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.contract.Theme
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
@@ -50,7 +50,7 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
 
             viewModel.setEvent(SettingsEvent.Finish)
 
-            viewModel.effect.test {
+            viewModel.uiEffect.test {
                 assertEquals(
                     SettingsEffect.Finish,
                     awaitItem()

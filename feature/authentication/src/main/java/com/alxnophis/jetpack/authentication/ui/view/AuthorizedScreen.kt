@@ -20,11 +20,12 @@ import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 internal fun AuthorizedScreen(
     navController: NavController
 ) {
+    val navigateBack: () -> Unit = { navController.popBackStack() }
     CoreTheme {
         Authorized()
     }
     BackHandler {
-        navController.popBackStack()
+        navigateBack()
     }
 }
 

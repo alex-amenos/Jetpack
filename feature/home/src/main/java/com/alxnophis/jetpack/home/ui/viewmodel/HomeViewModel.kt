@@ -29,6 +29,7 @@ internal class HomeViewModel(
         when (event) {
             HomeEvent.ErrorDismissed -> dismissError()
             HomeEvent.LoadNavigationItems -> loadNavigationItems()
+            is HomeEvent.NavigateTo -> setEffect { HomeEffect.NavigateTo(event.screen) }
         }
     }
 

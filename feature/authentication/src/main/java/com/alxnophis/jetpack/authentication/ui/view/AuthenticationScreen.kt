@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -13,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
@@ -31,20 +32,31 @@ internal fun AuthenticationScreen(
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
         Authentication(
-            navController,
             state,
             viewModel::setEvent
         )
-    }
-    BackHandler {
-        navController.popBackStack()
+        BackHandler {
+            navController.popBackStack()
+        }
+        LaunchedEffect(Unit) {
+            viewModel.uiEffect.collect { effect ->
+                when (effect) {
+                    AuthenticationEffect.NavigateToNextScreen -> {
+                        navController.navigate(Screen.Authorized.route) {
+                            popUpTo(Screen.Authentication.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 @ExperimentalComposeUiApi
 @Composable
 internal fun Authentication(
-    navController: NavController,
     authenticationState: AuthenticationState,
     onAuthenticationEvent: (event: AuthenticationEvent) -> Unit,
 ) {
@@ -73,8 +85,7 @@ internal fun Authentication(
                 onAuthenticationEvent(AuthenticationEvent.PasswordChanged(password))
             },
             onAuthenticate = {
-                navController.navigate(Screen.Authorized.route)
-                navController.popBackStack()
+                onAuthenticationEvent(AuthenticationEvent.Authenticate)
             },
             onToggleMode = {
                 onAuthenticationEvent(AuthenticationEvent.ToggleAuthenticationMode)
@@ -97,7 +108,6 @@ internal fun Authentication(
 private fun AuthenticationFormPreview() {
     CoreTheme {
         Authentication(
-            navController = rememberNavController(),
             authenticationState = AuthenticationState(),
             onAuthenticationEvent = {},
         )

@@ -51,12 +51,14 @@ internal fun PostsScreen(
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
+        val navigateBack: () -> Unit = { navController.popBackStack() }
         Posts(
             state,
+            navigateBack,
             viewModel::setEvent
         )
         BackHandler {
-            navController.popBackStack()
+            navigateBack()
         }
     }
 }
@@ -64,6 +66,7 @@ internal fun PostsScreen(
 @Composable
 internal fun Posts(
     state: PostsState,
+    onNavigateBack: () -> Unit,
     onPostEvent: (event: PostsEvent) -> Unit,
 ) {
     Box(
@@ -75,7 +78,7 @@ internal fun Posts(
         ) {
             CoreTopBar(
                 title = stringResource(id = R.string.posts_title),
-                onBack = { onPostEvent.invoke(PostsEvent.Finish) }
+                onBack = onNavigateBack
             )
             PostList(
                 modifier = Modifier.fillMaxSize(),
@@ -192,6 +195,7 @@ private fun PostScreenPreview() {
     CoreTheme {
         Posts(
             state = state,
+            onNavigateBack = {},
             onPostEvent = {}
         )
     }

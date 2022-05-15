@@ -8,7 +8,7 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 
 internal sealed class AuthenticationEffect : UiEffect {
-    object UserAuthorized : AuthenticationEffect()
+    object NavigateToNextScreen : AuthenticationEffect()
 }
 
 internal sealed class AuthenticationEvent : UiEvent {

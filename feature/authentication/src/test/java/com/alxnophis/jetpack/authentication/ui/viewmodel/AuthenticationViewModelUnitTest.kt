@@ -9,9 +9,9 @@ import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_EMAIL
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_PASSWORD
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModel5UnitTest
 import kotlin.test.assertEquals
@@ -212,9 +212,9 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
             viewModel.setEvent(AuthenticationEvent.Authenticate)
 
-            viewModel.effect.test {
+            viewModel.uiEffect.test {
                 assertEquals(
-                    AuthenticationEffect.UserAuthorized,
+                    AuthenticationEffect.NavigateToNextScreen,
                     awaitItem()
                 )
                 expectNoEvents()

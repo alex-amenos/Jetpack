@@ -26,7 +26,6 @@ import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.location.tracker.R
-import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -40,12 +39,13 @@ internal fun LocationTrackerScreen(
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
+        val navigateBack: () -> Unit = { navController.popBackStack() }
         LocationTracker(
-            state = state,
-            onLocationTrackingEvent = viewModel::setEvent
+            state,
+            navigateBack,
         )
         BackHandler {
-            navController.popBackStack()
+            navigateBack()
         }
     }
 }
@@ -53,7 +53,7 @@ internal fun LocationTrackerScreen(
 @Composable
 internal fun LocationTracker(
     state: LocationTrackerState,
-    onLocationTrackingEvent: (LocationTrackerEvent) -> Unit
+    onNavigateBack: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -62,9 +62,7 @@ internal fun LocationTracker(
     ) {
         CoreTopBar(
             title = stringResource(id = R.string.location_tracker_title),
-            onBack = {
-                onLocationTrackingEvent(LocationTrackerEvent.Finish)
-            }
+            onBack = onNavigateBack,
         )
         LocationPermission {
             UserLocationsList(

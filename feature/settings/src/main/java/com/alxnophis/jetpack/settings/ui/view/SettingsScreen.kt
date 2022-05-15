@@ -35,15 +35,15 @@ internal fun SettingsScreen(
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        val back: () -> Unit = { navController.popBackStack() }
+        val navigateBack: () -> Unit = { navController.popBackStack() }
         Settings(
             state = state,
             appVersion = appVersion,
-            onBack = back,
+            onNavigateBack = navigateBack,
             onSettingsEvent = viewModel::setEvent,
         )
         BackHandler {
-            back()
+            navigateBack()
         }
     }
 }
@@ -52,7 +52,7 @@ internal fun SettingsScreen(
 internal fun Settings(
     state: SettingsState,
     appVersion: String,
-    onBack: () -> Unit,
+    onNavigateBack: () -> Unit,
     onSettingsEvent: (event: SettingsEvent) -> Unit,
 ) {
     val context = LocalContext.current
@@ -64,7 +64,7 @@ internal fun Settings(
     ) {
         CoreTopBar(
             title = stringResource(id = R.string.settings_title),
-            onBack = onBack
+            onBack = onNavigateBack
         )
         Divider()
         SettingsNotificationItem(
@@ -129,7 +129,7 @@ private fun SettingsScreenPreview() {
         Settings(
             state = SettingsState(),
             appVersion = "1.0.0",
-            onBack = {},
+            onNavigateBack = {},
             onSettingsEvent = {}
         )
     }
