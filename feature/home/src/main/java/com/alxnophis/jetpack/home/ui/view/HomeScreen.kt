@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.home.ui.view
 
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,6 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,6 +55,8 @@ internal fun HomeScreen(
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
+        val activity = (LocalContext.current as? Activity)
+        val exitApp: () -> Unit = { activity?.finish() }
         val navigateToScreen: (Screen) -> Unit = { screen ->
             navController.navigate(screen.route)
         }
@@ -62,7 +66,7 @@ internal fun HomeScreen(
             onHomeEvent = viewModel::setEvent
         )
         BackHandler {
-            navController.popBackStack()
+            exitApp()
         }
     }
 }
