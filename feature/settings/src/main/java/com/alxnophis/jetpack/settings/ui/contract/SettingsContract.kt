@@ -7,11 +7,11 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
 
 internal sealed class SettingsEffect : UiEffect {
-    object Finish : SettingsEffect()
+    object NavigateBack : SettingsEffect()
 }
 
 internal sealed class SettingsEvent : UiEvent {
-    object Finish : SettingsEvent()
+    object NavigateBack : SettingsEvent()
     object ManageSubscription : SettingsEvent()
     object SetNotifications : SettingsEvent()
     object SetHint : SettingsEvent()

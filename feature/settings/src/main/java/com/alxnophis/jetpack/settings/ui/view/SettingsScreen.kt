@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.settings.R
+import com.alxnophis.jetpack.settings.ui.contract.SettingsEffect
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
@@ -35,15 +37,20 @@ internal fun SettingsScreen(
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        val navigateBack: () -> Unit = { navController.popBackStack() }
         Settings(
             state = state,
             appVersion = appVersion,
-            onNavigateBack = navigateBack,
             onSettingsEvent = viewModel::setEvent,
         )
         BackHandler {
-            navigateBack()
+            viewModel.setEvent(SettingsEvent.NavigateBack)
+        }
+        LaunchedEffect(key1 = Unit) {
+            viewModel.uiEffect.collect { effect ->
+                when (effect) {
+                    SettingsEffect.NavigateBack -> navController.popBackStack()
+                }
+            }
         }
     }
 }
@@ -52,7 +59,6 @@ internal fun SettingsScreen(
 internal fun Settings(
     state: SettingsState,
     appVersion: String,
-    onNavigateBack: () -> Unit,
     onSettingsEvent: (event: SettingsEvent) -> Unit,
 ) {
     val context = LocalContext.current
@@ -64,7 +70,7 @@ internal fun Settings(
     ) {
         CoreTopBar(
             title = stringResource(id = R.string.settings_title),
-            onBack = onNavigateBack
+            onBack = { onSettingsEvent(SettingsEvent.NavigateBack) }
         )
         Divider()
         SettingsNotificationItem(
@@ -129,7 +135,6 @@ private fun SettingsScreenPreview() {
         Settings(
             state = SettingsState(),
             appVersion = "1.0.0",
-            onNavigateBack = {},
             onSettingsEvent = {}
         )
     }

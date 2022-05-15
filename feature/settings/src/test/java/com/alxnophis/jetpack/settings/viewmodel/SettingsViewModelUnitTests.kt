@@ -48,11 +48,11 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
         runTest {
             val viewModel = SettingsViewModel(initialState = SettingsState())
 
-            viewModel.setEvent(SettingsEvent.Finish)
+            viewModel.setEvent(SettingsEvent.NavigateBack)
 
             viewModel.uiEffect.test {
                 assertEquals(
-                    SettingsEffect.Finish,
+                    SettingsEffect.NavigateBack,
                     awaitItem()
                 )
             }
