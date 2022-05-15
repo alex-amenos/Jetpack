@@ -18,6 +18,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.domain.model.Post
+import com.alxnophis.jetpack.posts.ui.contract.PostsEffect
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
@@ -51,14 +53,19 @@ internal fun PostsScreen(
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        val navigateBack: () -> Unit = { navController.popBackStack() }
         Posts(
-            state,
-            navigateBack,
-            viewModel::setEvent
+            state = state,
+            onPostEvent = viewModel::setEvent
         )
         BackHandler {
-            navigateBack()
+            viewModel.setEvent(PostsEvent.NavigateBack)
+        }
+        LaunchedEffect(key1 = Unit) {
+            viewModel.uiEffect.collect { effect ->
+                when (effect) {
+                    is PostsEffect.NavigateBack -> navController.popBackStack()
+                }
+            }
         }
     }
 }
@@ -66,7 +73,6 @@ internal fun PostsScreen(
 @Composable
 internal fun Posts(
     state: PostsState,
-    onNavigateBack: () -> Unit,
     onPostEvent: (event: PostsEvent) -> Unit,
 ) {
     Box(
@@ -78,7 +84,7 @@ internal fun Posts(
         ) {
             CoreTopBar(
                 title = stringResource(id = R.string.posts_title),
-                onBack = onNavigateBack
+                onBack = { onPostEvent(PostsEvent.NavigateBack) }
             )
             PostList(
                 modifier = Modifier.fillMaxSize(),
@@ -195,7 +201,6 @@ private fun PostScreenPreview() {
     CoreTheme {
         Posts(
             state = state,
-            onNavigateBack = {},
             onPostEvent = {}
         )
     }

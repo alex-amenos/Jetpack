@@ -31,6 +31,7 @@ internal class PostsViewModel(
     override fun handleEvent(event: PostsEvent) {
         when (event) {
             PostsEvent.GetPosts -> renderPosts()
+            PostsEvent.NavigateBack -> setEffect { PostsEffect.NavigateBack }
             is PostsEvent.DismissError -> dismissError(event.errorId)
         }
     }
