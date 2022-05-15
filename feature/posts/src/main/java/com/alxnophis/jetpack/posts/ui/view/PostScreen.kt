@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.posts.ui.view
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
@@ -43,7 +45,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-internal fun PostScreen(
+internal fun PostsScreen(
+    navController: NavController,
     viewModel: PostsViewModel = getViewModel()
 ) {
     CoreTheme {
@@ -52,6 +55,9 @@ internal fun PostScreen(
             state,
             viewModel::setEvent
         )
+        BackHandler {
+            navController.popBackStack()
+        }
     }
 }
 

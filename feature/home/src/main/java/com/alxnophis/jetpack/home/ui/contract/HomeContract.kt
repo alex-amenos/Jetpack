@@ -1,19 +1,15 @@
 package com.alxnophis.jetpack.home.ui.contract
 
-import android.content.Intent
 import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 
-internal sealed class HomeEffect : UiEffect {
-    data class NavigateTo(val intent: Intent?) : HomeEffect()
-}
+internal sealed class HomeEffect : UiEffect
 
 internal sealed class HomeEvent : UiEvent {
     object ErrorDismissed : HomeEvent()
     object LoadNavigationItems : HomeEvent()
-    data class NavigateTo(val intent: Intent?) : HomeEvent()
 }
 
 internal data class HomeState(

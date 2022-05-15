@@ -1,9 +1,9 @@
 package com.alxnophis.jetpack.home.domain.model
 
-import android.content.Intent
+import com.alxnophis.jetpack.router.screen.Screen
 
 data class NavigationItem(
     val name: String,
     val description: String,
-    val intent: Intent?
+    val screen: Screen
 )

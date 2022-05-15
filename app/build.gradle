@@ -5,10 +5,5 @@ android {
 }
 
 dependencies {
-    implementation project(Modules.FEATURE_HOME)
-    implementation project(Modules.FEATURE_AUTHENTICATION)
-    implementation project(Modules.FEATURE_POSTS)
-    implementation project(Modules.FEATURE_SETTINGS)
-    implementation project(Modules.FEATURE_LOCATION_TRACKER)
-    implementation Dep.ANDROIDX_WORK
+    implementation project(Modules.FEATURE_ROOT)
 }

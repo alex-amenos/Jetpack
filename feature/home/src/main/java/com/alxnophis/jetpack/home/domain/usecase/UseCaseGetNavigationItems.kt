@@ -3,10 +3,7 @@ package com.alxnophis.jetpack.home.domain.usecase
 import arrow.core.Either
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
-import com.alxnophis.jetpack.router.features.RouterAuthentication
-import com.alxnophis.jetpack.router.features.RouterLocationTracker
-import com.alxnophis.jetpack.router.features.RouterPosts
-import com.alxnophis.jetpack.router.features.RouterSettings
+import com.alxnophis.jetpack.router.screen.Screen
 
 class UseCaseGetNavigationItems {
 
@@ -27,22 +24,22 @@ class UseCaseGetNavigationItems {
         private val authentication = NavigationItem(
             name = "Authentication",
             description = "Authentication form with SignUp and SignIn",
-            intent = RouterAuthentication.dynamicStart
+            screen = Screen.Authentication,
         )
         private val settings = NavigationItem(
             name = "Settings",
             description = "Settings options screen",
-            intent = RouterSettings.dynamicStart
+            screen = Screen.Settings,
         )
         private val posts = NavigationItem(
             name = "Posts",
             description = "Load posts from JsonPlaceholder API",
-            intent = RouterPosts.dynamicStart
+            screen = Screen.Posts,
         )
         private val locationTracker = NavigationItem(
             name = "Location Tracker",
             description = "User location tracking",
-            intent = RouterLocationTracker.dynamicStart
+            screen = Screen.LocationTracker,
         )
     }
 }

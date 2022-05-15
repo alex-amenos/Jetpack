@@ -1,7 +1,5 @@
 package com.alxnophis.jetpack.location.tracker.ui.viewmodel
 
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.location.tracker.domain.usecase.GetUserLocationsFlowUseCase
@@ -18,20 +16,11 @@ internal class LocationTrackerViewModel(
     private val startLastKnownLocationRequestUseCase: StartLastKnownLocationRequestUseCase,
     private val stopLastKnownLocationRequestUseCase: StopLastKnownLocationRequestUseCase,
     private val getUserLocationsFlowUseCase: GetUserLocationsFlowUseCase,
-) : BaseViewModel<LocationTrackerEvent, LocationTrackerState, LocationTrackerEffect>(initialState), DefaultLifecycleObserver {
+) : BaseViewModel<LocationTrackerEvent, LocationTrackerState, LocationTrackerEffect>(initialState) {
 
     init {
-        subscribeToUserLocation()
-    }
-
-    override fun onStart(owner: LifecycleOwner) {
-        super.onStart(owner)
         startTrackingUserLocation()
-    }
-
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-        stopTrackUserLocation()
+        subscribeToUserLocation()
     }
 
     override fun handleEvent(event: LocationTrackerEvent) {
@@ -57,6 +46,11 @@ internal class LocationTrackerViewModel(
                 }
             }
         }
+    }
+
+    override fun onCleared() {
+        stopTrackUserLocation()
+        super.onCleared()
     }
 
     companion object {

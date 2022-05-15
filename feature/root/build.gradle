@@ -1,0 +1,14 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
+
+android {
+    resourcePrefix 'root'
+    namespace 'com.alxnophis.jetpack.root'
+}
+
+dependencies {
+    implementation project(Modules.FEATURE_HOME)
+    implementation project(Modules.FEATURE_AUTHENTICATION)
+    implementation project(Modules.FEATURE_POSTS)
+    implementation project(Modules.FEATURE_SETTINGS)
+    implementation project(Modules.FEATURE_LOCATION_TRACKER)
+}

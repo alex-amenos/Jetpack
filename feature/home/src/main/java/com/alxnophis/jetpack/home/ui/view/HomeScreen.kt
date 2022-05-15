@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.home.ui.view
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.home.R
@@ -41,24 +43,34 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
+import com.alxnophis.jetpack.router.screen.Screen
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun HomeScreen(
+    navController: NavController,
     viewModel: HomeViewModel = getViewModel()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
+        val navigateToScreen: (Screen) -> Unit = { screen ->
+            navController.navigate(screen.route)
+        }
         Home(
             state = state,
+            onNavigateToScreen = navigateToScreen,
             onHomeEvent = viewModel::setEvent
         )
+        BackHandler {
+            navController.popBackStack()
+        }
     }
 }
 
 @Composable
 internal fun Home(
     state: HomeState,
+    onNavigateToScreen: (Screen) -> Unit,
     onHomeEvent: (event: HomeEvent) -> Unit
 ) {
     Box(
@@ -69,7 +81,7 @@ internal fun Home(
             modifier = Modifier.fillMaxSize()
         ) {
             HomeTopBar()
-            SectionsList(state, onHomeEvent)
+            SectionsList(state, onNavigateToScreen, onHomeEvent)
         }
         state.error?.let { error: Int ->
             CoreErrorDialog(
@@ -100,6 +112,7 @@ internal fun HomeTopBar() {
 @Composable
 internal fun SectionsList(
     state: HomeState,
+    onNavigateToScreen: (Screen) -> Unit,
     onHomeEvent: (event: HomeEvent) -> Unit
 ) {
     val listState = rememberLazyListState()
@@ -116,9 +129,7 @@ internal fun SectionsList(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable {
-                            onHomeEvent.invoke(HomeEvent.NavigateTo(item.intent))
-                        }
+                        .clickable { onNavigateToScreen(item.screen) }
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(16.dp)
@@ -164,12 +175,12 @@ private fun HomeScreenPreview() {
             NavigationItem(
                 name = "Screen 1",
                 description = stringResource(id = R.string.core_lorem_ipsum_s),
-                intent = null
+                screen = Screen.Authentication
             ),
             NavigationItem(
                 name = "Screen 2",
                 description = stringResource(id = R.string.core_lorem_ipsum_m),
-                intent = null
+                screen = Screen.Settings
             ),
         ),
         error = null
@@ -177,6 +188,7 @@ private fun HomeScreenPreview() {
     CoreTheme {
         Home(
             state = state,
+            onNavigateToScreen = {},
             onHomeEvent = {}
         )
     }

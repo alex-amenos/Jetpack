@@ -30,14 +30,15 @@ object AppConfig {
 object Modules {
     const val APP = ":app"
 
-    const val FEATURE_HOME = ":feature:home"
     const val FEATURE_AUTHENTICATION = ":feature:authentication"
-    const val FEATURE_SETTINGS = ":feature:settings"
-    const val FEATURE_POSTS = ":feature:posts"
     const val FEATURE_LOCATION_TRACKER =":feature:location-tracker"
+    const val FEATURE_HOME = ":feature:home"
+    const val FEATURE_POSTS = ":feature:posts"
+    const val FEATURE_ROOT = ":feature:root"
+    const val FEATURE_SETTINGS = ":feature:settings"
 
-    const val SHARED_CORE = ":shared:core"
     const val SHARED_API = ":shared:api"
+    const val SHARED_CORE = ":shared:core"
     const val SHARED_ROUTER = ":shared:router"
     const val SHARED_TESTING = ":shared:testing"
 }

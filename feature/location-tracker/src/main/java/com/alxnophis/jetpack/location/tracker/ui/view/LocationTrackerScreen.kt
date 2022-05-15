@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.location.tracker.ui.view
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.location.tracker.R
@@ -33,6 +35,7 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun LocationTrackerScreen(
+    navController: NavController,
     viewModel: LocationTrackerViewModel = getViewModel(),
 ) {
     CoreTheme {
@@ -41,6 +44,9 @@ internal fun LocationTrackerScreen(
             state = state,
             onLocationTrackingEvent = viewModel::setEvent
         )
+        BackHandler {
+            navController.popBackStack()
+        }
     }
 }
 

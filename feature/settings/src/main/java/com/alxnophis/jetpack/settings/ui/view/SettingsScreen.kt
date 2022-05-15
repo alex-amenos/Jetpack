@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.settings.ui.view
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
@@ -27,16 +29,22 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun SettingsScreen(
+    navController: NavController,
     viewModel: SettingsViewModel = getViewModel(),
     appVersion: String = LocalContext.current.getVersion()
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
+        val back: () -> Unit = { navController.popBackStack() }
         Settings(
             state = state,
             appVersion = appVersion,
-            onSettingsEvent = viewModel::setEvent
+            onBack = back,
+            onSettingsEvent = viewModel::setEvent,
         )
+        BackHandler {
+            back()
+        }
     }
 }
 
@@ -44,6 +52,7 @@ internal fun SettingsScreen(
 internal fun Settings(
     state: SettingsState,
     appVersion: String,
+    onBack: () -> Unit,
     onSettingsEvent: (event: SettingsEvent) -> Unit,
 ) {
     val context = LocalContext.current
@@ -55,7 +64,7 @@ internal fun Settings(
     ) {
         CoreTopBar(
             title = stringResource(id = R.string.settings_title),
-            onBack = { onSettingsEvent.invoke(SettingsEvent.Finish) }
+            onBack = onBack
         )
         Divider()
         SettingsNotificationItem(
@@ -120,6 +129,7 @@ private fun SettingsScreenPreview() {
         Settings(
             state = SettingsState(),
             appVersion = "1.0.0",
+            onBack = {},
             onSettingsEvent = {}
         )
     }
