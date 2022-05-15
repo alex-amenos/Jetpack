@@ -29,7 +29,7 @@ fun NavGraphBuilder.authenticationNavGraph(
         }
         composable(
             route = Screen.Authorized.route
-        ){
+        ) {
             AuthorizedScreen(
                 navController = navController
             )
