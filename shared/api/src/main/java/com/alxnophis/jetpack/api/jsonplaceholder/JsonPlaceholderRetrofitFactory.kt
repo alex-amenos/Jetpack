@@ -10,9 +10,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object JsonPlaceholderRetrofitFactory {
     private const val BASE_URL = "https://jsonplaceholder.typicode.com"
-    private const val TIMEOUT_CONNECT = 30L
-    private const val TIMEOUT_READ = 30L
-    private const val TIMEOUT_WRITE = 30L
+    private const val TIMEOUT_CONNECT = 15L
+    private const val TIMEOUT_READ = 15L
+    private const val TIMEOUT_WRITE = 15L
 
     fun invoke(): JsonPlaceholderRetrofitService {
         return Retrofit.Builder()
