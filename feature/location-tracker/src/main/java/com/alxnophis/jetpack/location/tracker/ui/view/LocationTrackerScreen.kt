@@ -14,6 +14,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +27,8 @@ import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.location.tracker.R
+import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEffect
+import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -39,13 +42,19 @@ internal fun LocationTrackerScreen(
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        val navigateBack: () -> Unit = { navController.popBackStack() }
         LocationTracker(
-            state,
-            navigateBack,
+            state = state,
+            onLocationTrackerEvent = viewModel::setEvent,
         )
         BackHandler {
-            navigateBack()
+            viewModel.setEvent(LocationTrackerEvent.NavigateBack)
+        }
+        LaunchedEffect(key1 = Unit) {
+            viewModel.uiEffect.collect { effect ->
+                when (effect) {
+                    LocationTrackerEffect.NavigateBack -> navController.popBackStack()
+                }
+            }
         }
     }
 }
@@ -53,7 +62,7 @@ internal fun LocationTrackerScreen(
 @Composable
 internal fun LocationTracker(
     state: LocationTrackerState,
-    onNavigateBack: () -> Unit,
+    onLocationTrackerEvent: (event: LocationTrackerEvent) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -62,7 +71,7 @@ internal fun LocationTracker(
     ) {
         CoreTopBar(
             title = stringResource(id = R.string.location_tracker_title),
-            onBack = onNavigateBack,
+            onBack = { onLocationTrackerEvent(LocationTrackerEvent.NavigateBack) },
         )
         LocationPermission {
             UserLocationsList(

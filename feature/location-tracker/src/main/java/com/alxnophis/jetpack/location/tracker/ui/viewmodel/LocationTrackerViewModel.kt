@@ -2,7 +2,6 @@ package com.alxnophis.jetpack.location.tracker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
-import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.location.tracker.domain.usecase.GetUserLocationsFlowUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLastKnownLocationRequestUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLastKnownLocationRequestUseCase
@@ -25,7 +24,9 @@ internal class LocationTrackerViewModel(
     }
 
     override fun handleEvent(event: LocationTrackerEvent) {
-        doNothing()
+        when (event) {
+            LocationTrackerEvent.NavigateBack -> setEffect { LocationTrackerEffect.NavigateBack }
+        }
     }
 
     private fun startTrackingUserLocation() = viewModelScope.launch {
