@@ -1,5 +1,7 @@
 package com.alxnophis.jetpack.location.tracker.data.data
 
+import android.location.Location
+
 internal interface FusedLocationDataSource {
-    fun getLastKnownLocation(block: (android.location.Location?) -> Unit)
+    fun getLastKnownLocation(block: (Location?) -> Unit)
 }

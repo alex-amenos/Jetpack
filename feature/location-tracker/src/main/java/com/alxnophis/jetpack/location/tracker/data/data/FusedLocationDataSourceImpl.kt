@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.location.tracker.data.data
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Location
 import android.location.LocationManager
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
@@ -11,12 +12,12 @@ internal class FusedLocationDataSourceImpl(
 ) : FusedLocationDataSource {
 
     @SuppressLint("MissingPermission")
-    override fun getLastKnownLocation(block: (android.location.Location?) -> Unit) {
+    override fun getLastKnownLocation(block: (Location?) -> Unit) {
         if (isGPSEnabled() && (checkFineLocationPermission() || checkCoarseLocationPermission())) {
             LocationServices
                 .getFusedLocationProviderClient(context)
                 .lastLocation
-                .addOnSuccessListener { location: android.location.Location? ->
+                .addOnSuccessListener { location: Location? ->
                     block(location)
                 }
         }
