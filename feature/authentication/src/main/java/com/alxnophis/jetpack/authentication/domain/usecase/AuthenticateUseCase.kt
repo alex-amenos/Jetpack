@@ -5,8 +5,7 @@ import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 
-// TODO rename it to AuthenticateUseCase
-class UseCaseAuthenticate {
+class AuthenticateUseCase {
 
     suspend fun invoke(
         email: String,

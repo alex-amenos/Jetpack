@@ -5,9 +5,9 @@ import arrow.core.left
 import arrow.core.right
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
-import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate
-import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate.Companion.AUTHORIZED_EMAIL
-import com.alxnophis.jetpack.authentication.domain.usecase.UseCaseAuthenticate.Companion.AUTHORIZED_PASSWORD
+import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
+import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_EMAIL
+import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_PASSWORD
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
@@ -157,7 +157,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN Authenticate event started THEN show loading state`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(Unit.right())
+            whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -179,7 +179,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN Authenticate event with correct credentials THEN update state accordingly`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(Unit.right())
+            whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -206,7 +206,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     @Test
     fun `WHEN Authenticate event with correct credentials THEN navigate to next step`() {
         runTest {
-            whenever(useCaseAuthenticateMock.invoke(any(), any())).thenReturn(Unit.right())
+            whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -227,7 +227,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
         runTest {
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = viewModelMother(initialState = initialState)
-            whenever(useCaseAuthenticateMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
+            whenever(authenticateUseCaseMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
 
             viewModel.setEvent(AuthenticationEvent.Authenticate)
 
@@ -256,18 +256,18 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
         initialState: AuthenticationState = initialAuthenticationState,
         dispatcherIO: TestDispatcher = testDispatcher,
         dispatcherDefault: TestDispatcher = testDispatcher,
-        useCaseAuthenticate: UseCaseAuthenticate = useCaseAuthenticateMock
+        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock
     ) = AuthenticationViewModel(
         initialState,
         dispatcherIO,
         dispatcherDefault,
-        useCaseAuthenticate
+        authenticateUseCase
     )
 
     companion object {
         private const val EMAIL = AUTHORIZED_EMAIL
         private const val PASSWORD = AUTHORIZED_PASSWORD
-        private val useCaseAuthenticateMock: UseCaseAuthenticate = mock()
+        private val authenticateUseCaseMock: AuthenticateUseCase = mock()
         private val initialAuthenticationState = AuthenticationState()
     }
 }
