@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.authentication.ui.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -22,7 +23,9 @@ internal fun AuthorizedScreen() {
 @Composable
 internal fun Authorized() {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.surface),
         contentAlignment = Alignment.Center
     ) {
         Text(

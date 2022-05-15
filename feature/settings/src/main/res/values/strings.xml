@@ -4,7 +4,6 @@
     <string name="settings_light">Light</string>
     <string name="settings_dark">Dark</string>
     <string name="settings_system">System</string>
-    <string name="settings_cd_go_back">Go back to the previous screen</string>
     <string name="settings_cd_notifications_enabled">Notifications Enabled</string>
     <string name="settings_cd_notifications_disabled">Notifications Disabled</string>
     <string name="settings_cd_hints_enabled">Hints Enabled</string>

@@ -4,11 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,13 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -35,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
+import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
@@ -73,7 +67,10 @@ internal fun Posts(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            PostsTopBar(onPostEvent)
+            CoreTopBar(
+                title = stringResource(id = R.string.posts_title),
+                onBack = { onPostEvent.invoke(PostsEvent.Finish) }
+            )
             PostList(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
@@ -86,33 +83,6 @@ internal fun Posts(
                 )
             }
         }
-    }
-}
-
-@Composable
-internal fun PostsTopBar(
-    onPostEvent: (event: PostsEvent) -> Unit,
-) {
-    TopAppBar(
-        backgroundColor = MaterialTheme.colors.primaryVariant,
-        contentPadding = PaddingValues(start = 12.dp)
-    ) {
-        IconButton(
-            onClick = { onPostEvent.invoke(PostsEvent.Finish) }
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = stringResource(id = R.string.posts_cd_go_back),
-                tint = MaterialTheme.colors.onPrimary,
-            )
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = stringResource(id = R.string.posts_title),
-            color = MaterialTheme.colors.onPrimary,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-        )
     }
 }
 

@@ -1,0 +1,12 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
+
+android {
+    resourcePrefix 'location_tracker'
+}
+
+dependencies {
+    implementation Dep.ANDROIDX_WORK
+    implementation Dep.GOOGLE_ACCOMPANITS_PERMISSIONS
+    implementation Dep.GOOGLE_PLAY_SERVICES_LOCATION
+    implementation Dep.KOIN_ANDROID_WORK_MANAGER
+}
