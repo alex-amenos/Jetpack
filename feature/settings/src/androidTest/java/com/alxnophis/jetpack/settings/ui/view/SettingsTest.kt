@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.settings.ui.view
 
-import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.assertIsSelected
@@ -24,32 +23,38 @@ class SettingsTest : BaseComposeTest() {
 
     @Test
     fun settings_enable_notifications_is_displayed() {
-        assertSettingsStringIsDisplayed(R.string.settings_option_notifications)
+        setSettingsContent()
+        assertStringResDisplayed(R.string.settings_option_notifications)
     }
 
     @Test
     fun settings_show_hints_is_displayed() {
-        assertSettingsStringIsDisplayed(R.string.settings_option_hints)
+        setSettingsContent()
+        assertStringResDisplayed(R.string.settings_option_hints)
     }
 
     @Test
     fun settings_subscription_is_displayed() {
-        assertSettingsStringIsDisplayed(R.string.settings_option_manage_subscription)
+        setSettingsContent()
+        assertStringResDisplayed(R.string.settings_option_manage_subscription)
     }
 
     @Test
     fun settings_theme_is_displayed() {
-        assertSettingsStringIsDisplayed(R.string.settings_option_theme)
+        setSettingsContent()
+        assertStringResDisplayed(R.string.settings_option_theme)
     }
 
     @Test
     fun settings_marketing_is_displayed() {
-        assertSettingsStringIsDisplayed(R.string.settings_option_marketing)
+        setSettingsContent()
+        assertStringResDisplayed(R.string.settings_option_marketing)
     }
 
     @Test
     fun settings_version_is_displayed() {
-        assertSettingsStringIsDisplayed(R.string.settings_app_version)
+        setSettingsContent()
+        assertStringResDisplayed(R.string.settings_app_version)
     }
 
     @Test
@@ -100,18 +105,6 @@ class SettingsTest : BaseComposeTest() {
                 navController = rememberNavController(),
                 viewModel = SettingsViewModel(),
                 appVersion = APP_VERSION
-            )
-        }
-    }
-
-    private fun assertSettingsStringIsDisplayed(
-        @StringRes stringResource: Int,
-    ) {
-        assertStringDisplayedWith(stringResource) {
-            SettingsScreen(
-                rememberNavController(),
-                viewModel = SettingsViewModel(),
-                appVersion = APP_VERSION,
             )
         }
     }
