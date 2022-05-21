@@ -7,5 +7,5 @@
     <string name="location_tracker_feature_require_permission">This feature requires location permission</string>
     <string name="location_tracker_location_permission_rationale">Getting your exact location is important for this app. Please grant us fine location. Thank you.</string>
     <string name="location_tracker_permissions_revoked">Yay! Thanks for letting me access your approximate location. But you know what would be great? If you allow me to know where you exactly are. Thank you!</string>
-    <string name="location_tracker_last_known_location">Last known location</string>
+    <string name="location_tracker_current_location">Current location</string>
 </resources>

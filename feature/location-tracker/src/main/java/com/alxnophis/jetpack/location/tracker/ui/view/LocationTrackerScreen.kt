@@ -74,8 +74,7 @@ internal fun LocationTracker(
             onBack = { onLocationTrackerEvent(LocationTrackerEvent.NavigateBack) },
         )
         LocationPermission {
-            UserLocationsList(
-                modifier = Modifier.wrapContentSize(),
+            UserLocation(
                 state = state
             )
         }
@@ -134,18 +133,19 @@ private fun LocationPermission(
 }
 
 @Composable
-private fun UserLocationsList(
-    modifier: Modifier,
+private fun UserLocation(
     state: LocationTrackerState,
 ) {
     Text(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
-        text = stringResource(id = R.string.location_tracker_last_known_location)
+        text = stringResource(id = R.string.location_tracker_current_location)
     )
     Text(
-        modifier = modifier.padding(16.dp),
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(16.dp),
         text = state.userLocation.toString()
     )
 }

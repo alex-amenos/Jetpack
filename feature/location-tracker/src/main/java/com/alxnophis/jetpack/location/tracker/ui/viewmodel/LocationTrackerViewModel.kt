@@ -2,20 +2,20 @@ package com.alxnophis.jetpack.location.tracker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
-import com.alxnophis.jetpack.location.tracker.domain.usecase.GetUserLocationsFlowUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLastKnownLocationRequestUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLastKnownLocationRequestUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationStateUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationRequestUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationRequestUseCase
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEffect
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 internal class LocationTrackerViewModel(
     initialState: LocationTrackerState = LocationTrackerState(),
-    private val startLastKnownLocationRequestUseCase: StartLastKnownLocationRequestUseCase,
-    private val stopLastKnownLocationRequestUseCase: StopLastKnownLocationRequestUseCase,
-    private val getUserLocationsFlowUseCase: GetUserLocationsFlowUseCase,
+    private val startLocationRequestUseCase: StartLocationRequestUseCase,
+    private val stopLocationRequestUseCase: StopLocationRequestUseCase,
+    private val locationStateUseCase: LocationStateUseCase,
 ) : BaseViewModel<LocationTrackerEvent, LocationTrackerState, LocationTrackerEffect>(initialState) {
 
     init {
@@ -25,25 +25,25 @@ internal class LocationTrackerViewModel(
 
     override fun handleEvent(event: LocationTrackerEvent) {
         when (event) {
-            LocationTrackerEvent.NavigateBack -> setEffect { LocationTrackerEffect.NavigateBack }
+            LocationTrackerEvent.NavigateBack -> {
+                setEffect { LocationTrackerEffect.NavigateBack }
+                stopTrackUserLocation()
+            }
         }
     }
 
     private fun startTrackingUserLocation() = viewModelScope.launch {
-        startLastKnownLocationRequestUseCase(LOCATION_INTERVAL_MILLIS)
+        startLocationRequestUseCase()
     }
 
     private fun stopTrackUserLocation() = viewModelScope.launch {
-        stopLastKnownLocationRequestUseCase()
+        stopLocationRequestUseCase()
     }
 
     private fun subscribeToUserLocation() = viewModelScope.launch {
-        getUserLocationsFlowUseCase().collect { userLocation ->
-            Timber.d("New location viewModel $userLocation")
-            userLocation?.let {
-                setState {
-                    currentState.copy(userLocation = userLocation)
-                }
+        locationStateUseCase().collectLatest { locationState ->
+            setState {
+                currentState.copy(userLocation = locationState.toString())
             }
         }
     }
@@ -51,9 +51,5 @@ internal class LocationTrackerViewModel(
     override fun onCleared() {
         stopTrackUserLocation()
         super.onCleared()
-    }
-
-    companion object {
-        private const val LOCATION_INTERVAL_MILLIS = 5000L
     }
 }

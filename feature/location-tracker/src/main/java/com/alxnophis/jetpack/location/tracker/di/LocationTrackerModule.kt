@@ -1,12 +1,15 @@
 package com.alxnophis.jetpack.location.tracker.di
 
-import com.alxnophis.jetpack.location.tracker.data.data.FusedLocationDataSource
-import com.alxnophis.jetpack.location.tracker.data.data.FusedLocationDataSourceImpl
-import com.alxnophis.jetpack.location.tracker.data.repository.LastKnownLocationRepository
-import com.alxnophis.jetpack.location.tracker.data.repository.LastKnownLocationRepositoryImpl
-import com.alxnophis.jetpack.location.tracker.domain.usecase.GetUserLocationsFlowUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLastKnownLocationRequestUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLastKnownLocationRequestUseCase
+import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSource
+import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSourceImpl
+import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
+import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepositoryImpl
+import com.alxnophis.jetpack.location.tracker.domain.usecase.GPSProviderAvailableUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationAvailableUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationStateUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationRequestUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationRequestUseCase
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -25,16 +28,19 @@ private val loadLocationTrackerModules by lazy {
 }
 
 private val locationTrackerModule: Module = module {
-    factory<FusedLocationDataSource> { FusedLocationDataSourceImpl(androidContext()) }
-    single<LastKnownLocationRepository> { LastKnownLocationRepositoryImpl(fusedLocationDataSource = get()) }
-    factory { StartLastKnownLocationRequestUseCase(lastKnownLocationRepository = get()) }
-    factory { StopLastKnownLocationRequestUseCase(lastKnownLocationRepository = get()) }
-    factory { GetUserLocationsFlowUseCase(lastKnownLocationRepository = get()) }
+    single<LocationDataSource> { LocationDataSourceImpl(context = androidContext()) }
+    factory<LocationRepository> { LocationRepositoryImpl(locationDataSource = get()) }
+    factory { GPSProviderAvailableUseCase(locationRepository = get()) }
+    factory { LocationAvailableUseCase(locationRepository = get()) }
+    factory { LocationStateUseCase(locationRepository = get()) }
+    factory { ProvideLastKnownLocationUseCase(locationRepository = get()) }
+    factory { StartLocationRequestUseCase(locationRepository = get()) }
+    factory { StopLocationRequestUseCase(locationRepository = get()) }
     viewModel {
         LocationTrackerViewModel(
-            startLastKnownLocationRequestUseCase = get(),
-            stopLastKnownLocationRequestUseCase = get(),
-            getUserLocationsFlowUseCase = get()
+            startLocationRequestUseCase = get(),
+            stopLocationRequestUseCase = get(),
+            locationStateUseCase = get()
         )
     }
 }
