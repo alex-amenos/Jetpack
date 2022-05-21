@@ -84,6 +84,9 @@ internal class LocationDataSourceImpl(
                     )
                 }
             }
+            .addOnFailureListener {
+                mutableLocationStateFlow.update { LocationState.NotAvailable }
+            }
     }
 
     override fun hasLocationAvailable(): Either<Unit, Unit> = Either.catch(
@@ -119,7 +122,11 @@ internal class LocationDataSourceImpl(
                         fastestInterval = locationParameters.fastestInterval
                         smallestDisplacement = locationParameters.smallestDisplacement
                     }
-                    it.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+                    it
+                        .requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+                        .addOnFailureListener {
+                            mutableLocationStateFlow.update { LocationState.NotAvailable }
+                        }
                 }
             }
     }

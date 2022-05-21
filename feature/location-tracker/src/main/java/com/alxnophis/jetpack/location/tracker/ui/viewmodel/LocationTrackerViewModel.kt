@@ -18,13 +18,13 @@ internal class LocationTrackerViewModel(
     private val locationStateUseCase: LocationStateUseCase,
 ) : BaseViewModel<LocationTrackerEvent, LocationTrackerState, LocationTrackerEffect>(initialState) {
 
-    init {
-        startTrackingUserLocation()
-        subscribeToUserLocation()
-    }
-
     override fun handleEvent(event: LocationTrackerEvent) {
         when (event) {
+            LocationTrackerEvent.FineLocationPermissionGranted -> {
+                // TODO - Check if location is enabled
+                startTrackingUserLocation()
+                subscribeToUserLocation()
+            }
             LocationTrackerEvent.NavigateBack -> {
                 setEffect { LocationTrackerEffect.NavigateBack }
                 stopTrackUserLocation()

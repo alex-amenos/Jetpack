@@ -73,11 +73,10 @@ internal fun LocationTracker(
             title = stringResource(id = R.string.location_tracker_title),
             onBack = { onLocationTrackerEvent(LocationTrackerEvent.NavigateBack) },
         )
-        LocationPermission {
-            UserLocation(
-                state = state
-            )
-        }
+        LocationPermission(
+            composableWhenPermissionGranted = { UserLocation(state = state) },
+            onLocationTrackerEvent = onLocationTrackerEvent
+        )
     }
 }
 
@@ -85,6 +84,7 @@ internal fun LocationTracker(
 @Composable
 private fun LocationPermission(
     composableWhenPermissionGranted: @Composable () -> Unit,
+    onLocationTrackerEvent: (event: LocationTrackerEvent) -> Unit,
 ) {
     val locationPermissionsState = rememberMultiplePermissionsState(
         listOf(
@@ -93,7 +93,7 @@ private fun LocationPermission(
         )
     )
     if (locationPermissionsState.allPermissionsGranted) {
-        // TODO - Check if GPS is enabled and show a dialog if not
+        onLocationTrackerEvent(LocationTrackerEvent.FineLocationPermissionGranted)
         composableWhenPermissionGranted()
     } else {
         Column(
@@ -134,7 +134,7 @@ private fun LocationPermission(
 
 @Composable
 private fun UserLocation(
-    state: LocationTrackerState,
+    state: LocationTrackerState
 ) {
     Text(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
