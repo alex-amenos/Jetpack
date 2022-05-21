@@ -10,7 +10,7 @@ internal sealed class LocationTrackerEffect : UiEffect {
 }
 
 internal sealed class LocationTrackerEvent : UiEvent {
-    object FineLocationPermissionGranted: LocationTrackerEvent()
+    object FineLocationPermissionGranted : LocationTrackerEvent()
     object NavigateBack : LocationTrackerEvent()
 }
 
