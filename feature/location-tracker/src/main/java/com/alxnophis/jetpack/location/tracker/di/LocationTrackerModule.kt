@@ -4,7 +4,7 @@ import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSource
 import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSourceImpl
 import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
 import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepositoryImpl
-import com.alxnophis.jetpack.location.tracker.domain.usecase.GPSProviderAvailableUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.LastKnownLocationStateUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationAvailableUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationStateUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
@@ -30,9 +30,9 @@ private val loadLocationTrackerModules by lazy {
 private val locationTrackerModule: Module = module {
     single<LocationDataSource> { LocationDataSourceImpl(context = androidContext()) }
     factory<LocationRepository> { LocationRepositoryImpl(locationDataSource = get()) }
-    factory { GPSProviderAvailableUseCase(locationRepository = get()) }
     factory { LocationAvailableUseCase(locationRepository = get()) }
     factory { LocationStateUseCase(locationRepository = get()) }
+    factory { LastKnownLocationStateUseCase(locationRepository = get()) }
     factory { ProvideLastKnownLocationUseCase(locationRepository = get()) }
     factory { StartLocationRequestUseCase(locationRepository = get()) }
     factory { StopLocationRequestUseCase(locationRepository = get()) }

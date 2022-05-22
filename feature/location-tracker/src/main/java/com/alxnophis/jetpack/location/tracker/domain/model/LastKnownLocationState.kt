@@ -1,8 +1,8 @@
 package com.alxnophis.jetpack.location.tracker.domain.model
 
-sealed class LocationState {
-    object Idle : LocationState()
-    object LocationNotAvailable : LocationState()
+sealed class LastKnownLocationState {
+    object Idle : LastKnownLocationState()
+    object LocationNotAvailable : LastKnownLocationState()
     data class Location(
         val latitude: Double,
         val longitude: Double,
@@ -11,5 +11,5 @@ sealed class LocationState {
         val speed: Float,
         val bearing: Float,
         val time: Long
-    ) : LocationState()
+    ) : LastKnownLocationState()
 }

@@ -9,6 +9,7 @@ import androidx.core.location.LocationManagerCompat
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.alxnophis.jetpack.location.tracker.domain.model.LastKnownLocationState
 import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
 import com.alxnophis.jetpack.location.tracker.domain.model.LocationState
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -32,11 +33,12 @@ import timber.log.Timber
 internal class LocationDataSourceImpl(
     private val context: Context,
     dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
-    private val mutableLocationStateFlow: MutableStateFlow<LocationState> = MutableStateFlow(LocationState.Idle)
+    private val mutableLocationStateFlow: MutableStateFlow<LocationState> = MutableStateFlow(LocationState.Idle),
+    private val mutableLastKnownLocationStateFlow: MutableStateFlow<LastKnownLocationState> = MutableStateFlow(LastKnownLocationState.Idle)
 ) : LocationDataSource {
 
-    override val locationState: StateFlow<LocationState> =
-        mutableLocationStateFlow.asStateFlow()
+    override val locationState: StateFlow<LocationState> = mutableLocationStateFlow.asStateFlow()
+    override val lastKnownLocationState: StateFlow<LastKnownLocationState> = mutableLastKnownLocationStateFlow.asStateFlow()
 
     private val coroutineScope: CoroutineScope = CoroutineScope(dispatcherIO + SupervisorJob())
     private val locationManager: LocationManager by lazy {
@@ -49,7 +51,7 @@ internal class LocationDataSourceImpl(
         override fun onLocationResult(locationResult: LocationResult) {
             Timber.d("LocationDataSource - New LastLocation ${locationResult.lastLocation}")
             locationResult.lastLocation.apply {
-                mutableLocationStateFlow.update {
+                updateLocationState(
                     LocationState.Location(
                         latitude = latitude,
                         longitude = longitude,
@@ -59,7 +61,7 @@ internal class LocationDataSourceImpl(
                         bearing = bearing,
                         time = time
                     )
-                }
+                )
             }
         }
     }
@@ -72,8 +74,8 @@ internal class LocationDataSourceImpl(
             .getFusedLocationProviderClient(context)
             .lastLocation
             .addOnSuccessListener { location: Location ->
-                mutableLocationStateFlow.update {
-                    LocationState.Location(
+                updateLastKnownLocationState(
+                    LastKnownLocationState.Location(
                         latitude = location.latitude,
                         longitude = location.longitude,
                         altitude = location.altitude,
@@ -82,10 +84,10 @@ internal class LocationDataSourceImpl(
                         bearing = location.bearing,
                         time = location.time
                     )
-                }
+                )
             }
             .addOnFailureListener {
-                mutableLocationStateFlow.update { LocationState.NotAvailable }
+                updateLastKnownLocationState(LastKnownLocationState.LocationNotAvailable)
             }
     }
 
@@ -93,17 +95,6 @@ internal class LocationDataSourceImpl(
         { Unit.left() },
         {
             when (LocationManagerCompat.isLocationEnabled(locationManager)) {
-                true -> Unit.right()
-                false -> Unit.left()
-            }
-        }
-    )
-
-    override fun hasGPSProviderAvailable(): Either<Unit, Unit> = Either.catch(
-        { Unit.left() },
-        {
-            val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            when (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 true -> Unit.right()
                 false -> Unit.left()
             }
@@ -124,11 +115,17 @@ internal class LocationDataSourceImpl(
                     }
                     it
                         .requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-                        .addOnFailureListener {
-                            mutableLocationStateFlow.update { LocationState.NotAvailable }
-                        }
+                        .addOnFailureListener { updateLocationState(LocationState.LocationNotAvailable) }
                 }
             }
+    }
+
+    private fun updateLocationState(locationState: LocationState) {
+        mutableLocationStateFlow.update { locationState }
+    }
+
+    private fun updateLastKnownLocationState(locationState: LastKnownLocationState) {
+        mutableLastKnownLocationStateFlow.update { locationState }
     }
 
     override suspend fun stop() {
