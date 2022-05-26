@@ -2,20 +2,19 @@ package com.alxnophis.jetpack.location.tracker.data.repository
 
 import arrow.core.Either
 import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSource
-import com.alxnophis.jetpack.location.tracker.domain.model.LastKnownLocationState
+import com.alxnophis.jetpack.location.tracker.domain.model.Location
 import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
-import com.alxnophis.jetpack.location.tracker.domain.model.LocationState
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 internal class LocationRepositoryImpl(
     val locationDataSource: LocationDataSource
 ) : LocationRepository {
 
-    override val locationState: StateFlow<LocationState> =
-        locationDataSource.locationState
+    override val locationSharedFlow: SharedFlow<Location> =
+        locationDataSource.locationSharedFlow
 
-    override val lastKnownLocationState: StateFlow<LastKnownLocationState>
-        get() = locationDataSource.lastKnownLocationState
+    override val lastKnownLocationSharedFlow: SharedFlow<Location>
+        get() = locationDataSource.lastKnownLocationSharedFlow
 
     override fun provideLastKnownLocation() =
         locationDataSource.provideLastKnownLocation()

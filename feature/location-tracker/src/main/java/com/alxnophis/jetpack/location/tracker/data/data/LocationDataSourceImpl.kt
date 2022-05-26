@@ -2,16 +2,14 @@ package com.alxnophis.jetpack.location.tracker.data.data
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
 import androidx.core.location.LocationManagerCompat
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.alxnophis.jetpack.location.tracker.domain.model.LastKnownLocationState
+import com.alxnophis.jetpack.location.tracker.domain.model.Location
 import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
-import com.alxnophis.jetpack.location.tracker.domain.model.LocationState
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -23,22 +21,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import android.location.Location as AndroidLocation
 
 internal class LocationDataSourceImpl(
     private val context: Context,
     dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
-    private val mutableLocationStateFlow: MutableStateFlow<LocationState> = MutableStateFlow(LocationState.Idle),
-    private val mutableLastKnownLocationStateFlow: MutableStateFlow<LastKnownLocationState> = MutableStateFlow(LastKnownLocationState.Idle)
+    private val mutableLocationSharedFlow: MutableSharedFlow<Location> = MutableSharedFlow(),
+    private val mutableLastKnownLocationSharedFlow: MutableSharedFlow<Location> = MutableSharedFlow(),
 ) : LocationDataSource {
 
-    override val locationState: StateFlow<LocationState> = mutableLocationStateFlow.asStateFlow()
-    override val lastKnownLocationState: StateFlow<LastKnownLocationState> = mutableLastKnownLocationStateFlow.asStateFlow()
+    override val locationSharedFlow: SharedFlow<Location> = mutableLocationSharedFlow.asSharedFlow()
+    override val lastKnownLocationSharedFlow: SharedFlow<Location> = mutableLastKnownLocationSharedFlow.asSharedFlow()
 
     private val coroutineScope: CoroutineScope = CoroutineScope(dispatcherIO + SupervisorJob())
     private val locationManager: LocationManager by lazy {
@@ -49,19 +47,21 @@ internal class LocationDataSourceImpl(
     }
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            Timber.d("LocationDataSource - New LastLocation ${locationResult.lastLocation}")
-            locationResult.lastLocation.apply {
-                updateLocationState(
-                    LocationState.Location(
-                        latitude = latitude,
-                        longitude = longitude,
-                        altitude = altitude,
-                        accuracy = accuracy,
-                        speed = speed,
-                        bearing = bearing,
-                        time = time
+            coroutineScope.launch {
+                Timber.d("LocationDataSource - New LastLocation ${locationResult.lastLocation}")
+                locationResult.lastLocation.apply {
+                    mutableLocationSharedFlow.emit(
+                        Location(
+                            latitude = latitude,
+                            longitude = longitude,
+                            altitude = altitude,
+                            accuracy = accuracy,
+                            speed = speed,
+                            bearing = bearing,
+                            time = time
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -73,21 +73,20 @@ internal class LocationDataSourceImpl(
         LocationServices
             .getFusedLocationProviderClient(context)
             .lastLocation
-            .addOnSuccessListener { location: Location ->
-                updateLastKnownLocationState(
-                    LastKnownLocationState.Location(
-                        latitude = location.latitude,
-                        longitude = location.longitude,
-                        altitude = location.altitude,
-                        accuracy = location.accuracy,
-                        speed = location.speed,
-                        bearing = location.bearing,
-                        time = location.time
+            .addOnSuccessListener { location: AndroidLocation ->
+                coroutineScope.launch {
+                    mutableLastKnownLocationSharedFlow.emit(
+                        Location(
+                            latitude = location.latitude,
+                            longitude = location.longitude,
+                            altitude = location.altitude,
+                            accuracy = location.accuracy,
+                            speed = location.speed,
+                            bearing = location.bearing,
+                            time = location.time
+                        )
                     )
-                )
-            }
-            .addOnFailureListener {
-                updateLastKnownLocationState(LastKnownLocationState.LocationNotAvailable)
+                }
             }
     }
 
@@ -113,19 +112,9 @@ internal class LocationDataSourceImpl(
                         fastestInterval = locationParameters.fastestInterval
                         smallestDisplacement = locationParameters.smallestDisplacement
                     }
-                    it
-                        .requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-                        .addOnFailureListener { updateLocationState(LocationState.LocationNotAvailable) }
+                    it.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
                 }
             }
-    }
-
-    private fun updateLocationState(locationState: LocationState) {
-        mutableLocationStateFlow.update { locationState }
-    }
-
-    private fun updateLastKnownLocationState(locationState: LastKnownLocationState) {
-        mutableLastKnownLocationStateFlow.update { locationState }
     }
 
     override suspend fun stop() {
