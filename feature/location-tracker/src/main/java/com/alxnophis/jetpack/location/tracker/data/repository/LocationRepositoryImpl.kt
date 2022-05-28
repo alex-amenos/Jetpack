@@ -20,11 +20,11 @@ internal class LocationRepositoryImpl(
     override fun hasLocationAvailable(): Either<Unit, Unit> =
         locationDataSource.hasLocationAvailable()
 
-    override suspend fun start(locationParameters: LocationParameters) {
-        locationDataSource.start(locationParameters)
+    override suspend fun startLocationProvider(locationParameters: LocationParameters) {
+        locationDataSource.startLocationProvider(locationParameters)
     }
 
-    override suspend fun stop() {
-        locationDataSource.stop()
+    override suspend fun stopLocationProvider() {
+        locationDataSource.stopLocationProvider()
     }
 }

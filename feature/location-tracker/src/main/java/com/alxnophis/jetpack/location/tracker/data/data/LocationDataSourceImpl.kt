@@ -100,7 +100,7 @@ internal class LocationDataSourceImpl(
     )
 
     @SuppressLint("MissingPermission")
-    override suspend fun start(locationParameters: LocationParameters) {
+    override suspend fun startLocationProvider(locationParameters: LocationParameters) {
         if (locationJob == null)
             locationJob = coroutineScope.launch {
                 Timber.d("LocationDataSource started with $locationParameters")
@@ -116,7 +116,7 @@ internal class LocationDataSourceImpl(
             }
     }
 
-    override suspend fun stop() {
+    override suspend fun stopLocationProvider() {
         fusedLocationProvider.removeLocationUpdates(locationCallback)
         locationJob?.cancelAndJoin()
         locationJob = null

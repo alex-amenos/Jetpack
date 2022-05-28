@@ -11,6 +11,6 @@ interface LocationRepository {
 
     fun provideLastKnownLocationFlow(): Flow<Location?>
     fun hasLocationAvailable(): Either<Unit, Unit>
-    suspend fun start(locationParameters: LocationParameters)
-    suspend fun stop()
+    suspend fun startLocationProvider(locationParameters: LocationParameters)
+    suspend fun stopLocationProvider()
 }

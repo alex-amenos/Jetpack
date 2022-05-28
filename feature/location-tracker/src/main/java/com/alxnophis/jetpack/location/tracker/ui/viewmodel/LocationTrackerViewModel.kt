@@ -10,8 +10,8 @@ import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.location.tracker.domain.model.Location
 import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationFlowUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationRequestUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationRequestUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationProviderUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProviderUseCase
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEffect
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 
 internal class LocationTrackerViewModel(
     initialState: LocationTrackerState = LocationTrackerState(),
-    private val startLocationRequestUseCase: StartLocationRequestUseCase,
-    private val stopLocationRequestUseCase: StopLocationRequestUseCase,
+    private val startLocationProviderUseCase: StartLocationProviderUseCase,
+    private val stopLocationProviderUseCase: StopLocationProviderUseCase,
     private val locationStateUseCase: LocationFlowUseCase,
     private val lastKnownLocationUseCase: ProvideLastKnownLocationUseCase
 ) : BaseViewModel<LocationTrackerEvent, LocationTrackerState, LocationTrackerEffect>(initialState) {
@@ -42,11 +42,11 @@ internal class LocationTrackerViewModel(
     }
 
     private fun startTrackingUserLocation() = viewModelScope.launch {
-        startLocationRequestUseCase()
+        startLocationProviderUseCase()
     }
 
     private fun stopTrackUserLocation() = viewModelScope.launch {
-        stopLocationRequestUseCase()
+        stopLocationProviderUseCase()
     }
 
     private fun subscribeToUserLocation() = viewModelScope.launch {

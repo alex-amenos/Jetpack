@@ -10,8 +10,9 @@ import com.alxnophis.jetpack.location.tracker.domain.usecase.LastKnownLocationFl
 import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationAvailableUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationFlowUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationRequestUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationRequestUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationProviderUseCase
+import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProviderUseCase
+import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
@@ -46,12 +47,13 @@ private val locationTrackerModule: Module = module {
     factory { LocationFlowUseCase(locationRepository = get()) }
     factory { LastKnownLocationFlowUseCase(locationRepository = get()) }
     factory { ProvideLastKnownLocationUseCase(locationRepository = get()) }
-    factory { StartLocationRequestUseCase(locationRepository = get()) }
-    factory { StopLocationRequestUseCase(locationRepository = get()) }
+    factory { StartLocationProviderUseCase(locationRepository = get()) }
+    factory { StopLocationProviderUseCase(locationRepository = get()) }
     viewModel {
         LocationTrackerViewModel(
-            startLocationRequestUseCase = get(),
-            stopLocationRequestUseCase = get(),
+            initialState = LocationTrackerState(),
+            startLocationProviderUseCase = get(),
+            stopLocationProviderUseCase = get(),
             locationStateUseCase = get(),
             lastKnownLocationUseCase = get()
         )
