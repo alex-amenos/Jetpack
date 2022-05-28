@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.location.tracker.data.data
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.location.LocationManager
 import android.os.Looper
 import androidx.core.location.LocationManagerCompat
@@ -14,41 +13,35 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import android.location.Location as AndroidLocation
 
 internal class LocationDataSourceImpl(
-    private val context: Context,
-    dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
-    private val mutableLocationSharedFlow: MutableSharedFlow<Location> = MutableSharedFlow(),
-    private val mutableLastKnownLocationSharedFlow: MutableSharedFlow<Location> = MutableSharedFlow(),
+    dispatcherIO: CoroutineDispatcher,
+    private val fusedLocationProvider: FusedLocationProviderClient,
+    private val locationManager: LocationManager,
+    private val mutableLocationSharedFlow: MutableSharedFlow<Location>,
 ) : LocationDataSource {
 
     override val locationSharedFlow: SharedFlow<Location> = mutableLocationSharedFlow.asSharedFlow()
-    override val lastKnownLocationSharedFlow: SharedFlow<Location> = mutableLastKnownLocationSharedFlow.asSharedFlow()
 
     private val coroutineScope: CoroutineScope = CoroutineScope(dispatcherIO + SupervisorJob())
-    private val locationManager: LocationManager by lazy {
-        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    }
-    private val locationProvider: FusedLocationProviderClient by lazy {
-        LocationServices.getFusedLocationProviderClient(context)
-    }
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             coroutineScope.launch {
-                Timber.d("LocationDataSource - New LastLocation ${locationResult.lastLocation}")
+                Timber.d("LocationDataSource - New Location ${locationResult.lastLocation}")
                 locationResult.lastLocation.apply {
                     mutableLocationSharedFlow.emit(
                         Location(
@@ -69,13 +62,12 @@ internal class LocationDataSourceImpl(
     private var locationJob: Job? = null
 
     @SuppressLint("MissingPermission")
-    override fun provideLastKnownLocation() {
-        LocationServices
-            .getFusedLocationProviderClient(context)
+    override fun provideLastKnownLocationFlow(): Flow<Location?> = callbackFlow {
+        fusedLocationProvider
             .lastLocation
             .addOnSuccessListener { location: AndroidLocation ->
-                coroutineScope.launch {
-                    mutableLastKnownLocationSharedFlow.emit(
+                try {
+                    trySend(
                         Location(
                             latitude = location.latitude,
                             longitude = location.longitude,
@@ -86,8 +78,15 @@ internal class LocationDataSourceImpl(
                             time = location.time
                         )
                     )
+                } catch (exception: Exception) {
+                    Timber.e("Error getting last known location: ${exception.message}")
+                    trySend(null)
                 }
             }
+            .addOnFailureListener {
+                trySend(null)
+            }
+        awaitClose { Timber.d("LocationDataSource - ProvideLastKnownLocationFlow - awaitClose") }
     }
 
     override fun hasLocationAvailable(): Either<Unit, Unit> = Either.catch(
@@ -105,7 +104,7 @@ internal class LocationDataSourceImpl(
         if (locationJob == null)
             locationJob = coroutineScope.launch {
                 Timber.d("LocationDataSource started with $locationParameters")
-                locationProvider.let {
+                fusedLocationProvider.let {
                     val locationRequest = LocationRequest.create()
                     locationRequest.apply {
                         priority = locationParameters.priority
@@ -118,7 +117,7 @@ internal class LocationDataSourceImpl(
     }
 
     override suspend fun stop() {
-        locationProvider.removeLocationUpdates(locationCallback)
+        fusedLocationProvider.removeLocationUpdates(locationCallback)
         locationJob?.cancelAndJoin()
         locationJob = null
         Timber.d("LocationDataSource stopped")

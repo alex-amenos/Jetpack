@@ -4,6 +4,7 @@ import arrow.core.Either
 import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSource
 import com.alxnophis.jetpack.location.tracker.domain.model.Location
 import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 
 internal class LocationRepositoryImpl(
@@ -13,11 +14,8 @@ internal class LocationRepositoryImpl(
     override val locationSharedFlow: SharedFlow<Location> =
         locationDataSource.locationSharedFlow
 
-    override val lastKnownLocationSharedFlow: SharedFlow<Location>
-        get() = locationDataSource.lastKnownLocationSharedFlow
-
-    override fun provideLastKnownLocation() =
-        locationDataSource.provideLastKnownLocation()
+    override fun provideLastKnownLocationFlow(): Flow<Location?> =
+        locationDataSource.provideLastKnownLocationFlow()
 
     override fun hasLocationAvailable(): Either<Unit, Unit> =
         locationDataSource.hasLocationAvailable()

@@ -1,5 +1,7 @@
 package com.alxnophis.jetpack.location.tracker.di
 
+import android.content.Context
+import android.location.LocationManager
 import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSource
 import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSourceImpl
 import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
@@ -11,6 +13,9 @@ import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLoc
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationRequestUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationRequestUseCase
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
+import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
@@ -28,7 +33,14 @@ private val loadLocationTrackerModules by lazy {
 }
 
 private val locationTrackerModule: Module = module {
-    single<LocationDataSource> { LocationDataSourceImpl(context = androidContext()) }
+    single<LocationDataSource> {
+        LocationDataSourceImpl(
+            dispatcherIO = Dispatchers.IO,
+            fusedLocationProvider = LocationServices.getFusedLocationProviderClient(androidContext()),
+            locationManager = androidContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager,
+            mutableLocationSharedFlow = MutableSharedFlow(),
+        )
+    }
     factory<LocationRepository> { LocationRepositoryImpl(locationDataSource = get()) }
     factory { LocationAvailableUseCase(locationRepository = get()) }
     factory { LocationFlowUseCase(locationRepository = get()) }
@@ -40,7 +52,8 @@ private val locationTrackerModule: Module = module {
         LocationTrackerViewModel(
             startLocationRequestUseCase = get(),
             stopLocationRequestUseCase = get(),
-            locationStateUseCase = get()
+            locationStateUseCase = get(),
+            lastKnownLocationUseCase = get()
         )
     }
 }

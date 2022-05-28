@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -139,6 +140,20 @@ private fun UserLocation(
     Text(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
         fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colors.primary,
+        fontSize = 16.sp,
+        text = stringResource(id = R.string.location_tracker_last_known_location)
+    )
+    Text(
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(16.dp),
+        text = state.lastKnownLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
+    )
+    Text(
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colors.primary,
         fontSize = 16.sp,
         text = stringResource(id = R.string.location_tracker_current_location)
     )
@@ -148,4 +163,18 @@ private fun UserLocation(
             .padding(16.dp),
         text = state.userLocation.toString()
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun UserLocationPreview() {
+    val state = LocationTrackerState(
+        lastKnownLocation = "Last known location",
+        userLocation = "Current Location"
+    )
+    CoreTheme {
+        Column(modifier = Modifier.fillMaxSize()) {
+            UserLocation(state)
+        }
+    }
 }
