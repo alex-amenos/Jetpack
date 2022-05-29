@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.location.tracker.ui.contract
 
-import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
@@ -15,6 +14,6 @@ internal sealed class LocationTrackerEvent : UiEvent {
 }
 
 internal data class LocationTrackerState(
-    val userLocation: String? = EMPTY,
+    val userLocation: String? = null,
     val lastKnownLocation: String? = null,
 ) : UiState

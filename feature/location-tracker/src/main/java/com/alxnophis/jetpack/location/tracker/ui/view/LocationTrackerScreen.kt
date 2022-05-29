@@ -161,7 +161,7 @@ private fun UserLocation(
         modifier = Modifier
             .wrapContentSize()
             .padding(16.dp),
-        text = state.userLocation.toString()
+        text = state.userLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
     )
 }
 
