@@ -30,13 +30,14 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     private lateinit var viewModel: AuthenticationViewModel
 
     @BeforeEach
-    fun beforeEach() {
+    override fun beforeEach() {
+        super.beforeEach()
         viewModel = viewModelMother()
     }
 
     @Test
     fun `WHEN start THEN validate initial state`() {
-        testScope.runTest {
+        runTest {
             viewModel.uiState.test {
                 assertEquals(
                     AuthenticationState(),
@@ -49,7 +50,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN signIn state and ToggleAuthenticationMode event THEN validate state is signUp`() {
-        testScope.runTest {
+        runTest {
             viewModel.setEvent(AuthenticationEvent.ToggleAuthenticationMode)
 
             viewModel.uiState.test {
@@ -68,7 +69,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN signUp state and ToggleAuthenticationMode event THEN validate state is signIn`() {
-        testScope.runTest {
+        runTest {
             val initialState = AuthenticationState().copy(authenticationMode = AuthenticationMode.SIGN_UP)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -90,7 +91,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN error state and ErrorDismissed event THEN validate dismissed error`() {
-        testScope.runTest {
+        runTest {
             val initialState = AuthenticationState().copy(error = 1)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -112,7 +113,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN updated email and EmailChanged event THEN validate state change`() {
-        testScope.runTest {
+        runTest {
             viewModel.setEvent(AuthenticationEvent.EmailChanged(EMAIL))
 
             viewModel.uiState.test {
@@ -131,7 +132,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN updated password and PasswordChanged event THEN validate state change`() {
-        testScope.runTest {
+        runTest {
             viewModel.setEvent(AuthenticationEvent.PasswordChanged(PASSWORD))
 
             viewModel.uiState.test {
@@ -157,7 +158,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN Authenticate event started THEN show loading state`() {
-        testScope.runTest {
+        runTest {
             whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
@@ -179,7 +180,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN Authenticate event with correct credentials THEN update state accordingly`() {
-        testScope.runTest {
+        runTest {
             whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
@@ -206,7 +207,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN Authenticate event with correct credentials THEN navigate to next step`() {
-        testScope.runTest {
+        runTest {
             whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
@@ -225,7 +226,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN Authenticate event with incorrect credentials THEN validate loading and error state sequence`() {
-        testScope.runTest {
+        runTest {
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = viewModelMother(initialState = initialState)
             whenever(authenticateUseCaseMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
@@ -255,7 +256,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     @Test
     fun `WHEN on navigate back THEN set navigate back effect`() {
-        testScope.runTest {
+        runTest {
             val viewModel = viewModelMother()
             viewModel.setEvent(AuthenticationEvent.NavigateBack)
 
