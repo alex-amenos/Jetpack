@@ -7,20 +7,21 @@ import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.C
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_PASSWORD
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
 class AuthenticateUseCaseUnitTest : BaseUnitTest() {
 
-    private val usecase by lazy {
+    private val useCase by lazy {
         AuthenticateUseCase()
     }
 
     @Test
     fun `when email and password are valid then complete successfully`() {
-        runTest {
-            val result = usecase.invoke(VALID_EMAIL, VALID_PASSWORD)
+        testScope.runTest {
+            val result = useCase.invoke(VALID_EMAIL, VALID_PASSWORD)
 
             assertEquals(Unit.right(), result)
         }
@@ -28,8 +29,8 @@ class AuthenticateUseCaseUnitTest : BaseUnitTest() {
 
     @Test
     fun `when email or password are invalid then WrongAuthentication error`() {
-        runTest {
-            val result = usecase.invoke(INVALID_EMAIL, INVALID_PASSWORD)
+        testScope.runTest {
+            val result = useCase.invoke(INVALID_EMAIL, INVALID_PASSWORD)
 
             assertEquals(AuthenticationError.WrongAuthentication.left(), result)
         }

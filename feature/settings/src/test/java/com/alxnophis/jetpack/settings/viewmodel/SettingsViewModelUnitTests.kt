@@ -11,6 +11,7 @@ import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import java.util.stream.Stream
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -25,7 +26,7 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
         event: SettingsEvent,
         state: SettingsState
     ) {
-        runTest {
+        testScope.runTest {
             val viewModel = SettingsViewModel(initialState = SettingsState())
 
             viewModel.setEvent(event)
@@ -45,7 +46,7 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
 
     @Test
     fun `WHEN finish event then finish side effect`() {
-        runTest {
+        testScope.runTest {
             val viewModel = SettingsViewModel(initialState = SettingsState())
 
             viewModel.setEvent(SettingsEvent.NavigateBack)
