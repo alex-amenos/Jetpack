@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 
 internal class PostsViewModel(
     initialState: PostsState = PostsState(),
-    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val postsUseCase: PostsUseCase,
 ) : BaseViewModel<PostsEvent, PostsState, PostsEffect>(initialState) {
 
@@ -68,7 +68,7 @@ internal class PostsViewModel(
         }
     }
 
-    private suspend fun getPosts(): Either<PostsError, List<Post>> = withContext(dispatcherIO) {
+    private suspend fun getPosts(): Either<PostsError, List<Post>> = withContext(ioDispatcher) {
         delay(3000) // testing purposes
         postsUseCase.invoke()
     }

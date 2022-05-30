@@ -24,7 +24,7 @@ private val homeModule: Module = module {
     viewModel {
         HomeViewModel(
             initialState = HomeState(),
-            dispatcherIO = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             useCaseGetNavigationItems = get()
         )
     }

@@ -36,7 +36,7 @@ private val loadLocationTrackerModules by lazy {
 private val locationTrackerModule: Module = module {
     single<LocationDataSource> {
         LocationDataSourceImpl(
-            dispatcherIO = Dispatchers.IO,
+            ioDispatcher = Dispatchers.IO,
             fusedLocationProvider = LocationServices.getFusedLocationProviderClient(androidContext()),
             locationManager = androidContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager,
             mutableLocationSharedFlow = MutableSharedFlow(),

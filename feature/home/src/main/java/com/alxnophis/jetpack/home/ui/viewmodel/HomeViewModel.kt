@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 
 internal class HomeViewModel(
     initialState: HomeState = HomeState(),
-    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val useCaseGetNavigationItems: UseCaseGetNavigationItems
 ) : BaseViewModel<HomeEvent, HomeState, HomeEffect>(initialState) {
 
@@ -60,7 +60,7 @@ internal class HomeViewModel(
     }
 
     private suspend fun getNavigationItems(): Either<NavigationError, List<NavigationItem>> =
-        withContext(dispatcherIO) {
+        withContext(ioDispatcher) {
             useCaseGetNavigationItems.invoke()
         }
 

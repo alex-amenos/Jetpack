@@ -29,7 +29,7 @@ import timber.log.Timber
 import android.location.Location as AndroidLocation
 
 internal class LocationDataSourceImpl(
-    dispatcherIO: CoroutineDispatcher,
+    ioDispatcher: CoroutineDispatcher,
     private val fusedLocationProvider: FusedLocationProviderClient,
     private val locationManager: LocationManager,
     private val mutableLocationSharedFlow: MutableSharedFlow<Location>,
@@ -37,7 +37,7 @@ internal class LocationDataSourceImpl(
 
     override val locationSharedFlow: SharedFlow<Location> = mutableLocationSharedFlow.asSharedFlow()
 
-    private val coroutineScope: CoroutineScope = CoroutineScope(dispatcherIO + SupervisorJob())
+    private val coroutineScope: CoroutineScope = CoroutineScope(ioDispatcher + SupervisorJob())
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             coroutineScope.launch {

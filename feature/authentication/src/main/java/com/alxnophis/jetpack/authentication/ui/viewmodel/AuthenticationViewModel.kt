@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 
 internal class AuthenticationViewModel(
     initialState: AuthenticationState = AuthenticationState(),
-    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val dispatcherDefault: CoroutineDispatcher = Dispatchers.Default,
     private val authenticateUseCase: AuthenticateUseCase,
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState, AuthenticationEffect>(initialState) {
@@ -97,7 +97,7 @@ internal class AuthenticationViewModel(
     }
 
     private suspend fun authenticateUser(email: String, password: String): Either<AuthenticationError, Unit> =
-        withContext(dispatcherIO) {
+        withContext(ioDispatcher) {
             authenticateUseCase.invoke(email, password)
         }
 
