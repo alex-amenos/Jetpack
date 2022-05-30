@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 internal class LocationTrackerViewModel(
-    initialState: LocationTrackerState = LocationTrackerState(),
+    initialState: LocationTrackerState,
     private val startLocationProviderUseCase: StartLocationProviderUseCase,
     private val stopLocationProviderUseCase: StopLocationProviderUseCase,
     private val locationStateUseCase: LocationFlowUseCase,

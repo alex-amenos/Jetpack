@@ -13,14 +13,13 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 internal class PostsViewModel(
-    initialState: PostsState = PostsState(),
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    initialState: PostsState,
+    private val ioDispatcher: CoroutineDispatcher,
     private val postsUseCase: PostsUseCase,
 ) : BaseViewModel<PostsEvent, PostsState, PostsEffect>(initialState) {
 

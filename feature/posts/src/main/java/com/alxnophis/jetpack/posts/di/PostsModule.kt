@@ -6,7 +6,9 @@ import com.alxnophis.jetpack.posts.data.datasource.PostDataSourceImpl
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
 import com.alxnophis.jetpack.posts.data.repository.PostsRepositoryImpl
 import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
+import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
+import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
@@ -27,5 +29,11 @@ private val postModule: Module = module {
     factory<PostDataSource> { PostDataSourceImpl(get()) }
     factory<PostsRepository> { PostsRepositoryImpl(get()) }
     factory { PostsUseCase(get()) }
-    viewModel { PostsViewModel(postsUseCase = get()) }
+    viewModel {
+        PostsViewModel(
+            initialState = PostsState(),
+            ioDispatcher = Dispatchers.IO,
+            postsUseCase = get(),
+        )
+    }
 }

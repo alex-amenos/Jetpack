@@ -9,7 +9,7 @@ import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.contract.Theme
 
 internal class SettingsViewModel(
-    initialState: SettingsState = SettingsState(),
+    initialState: SettingsState,
 ) : BaseViewModel<SettingsEvent, SettingsState, SettingsEffect>(initialState) {
 
     override fun handleEvent(event: SettingsEvent) =

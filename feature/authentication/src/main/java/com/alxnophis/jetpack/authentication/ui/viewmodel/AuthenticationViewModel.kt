@@ -12,14 +12,13 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 internal class AuthenticationViewModel(
-    initialState: AuthenticationState = AuthenticationState(),
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val dispatcherDefault: CoroutineDispatcher = Dispatchers.Default,
+    initialState: AuthenticationState,
+    private val ioDispatcher: CoroutineDispatcher,
+    private val defaultDispatcher: CoroutineDispatcher,
     private val authenticateUseCase: AuthenticateUseCase,
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState, AuthenticationEffect>(initialState) {
 
@@ -52,7 +51,7 @@ internal class AuthenticationViewModel(
     private fun updatePassword(newPassword: String) {
         viewModelScope.launch {
             val requirements = mutableListOf<PasswordRequirements>()
-            withContext(dispatcherDefault) {
+            withContext(defaultDispatcher) {
                 if (newPassword.length >= MIN_PASSWORD_LENGTH) {
                     requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
                 }

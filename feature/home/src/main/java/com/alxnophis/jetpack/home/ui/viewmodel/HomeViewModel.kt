@@ -11,13 +11,12 @@ import com.alxnophis.jetpack.home.ui.contract.HomeEffect
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 internal class HomeViewModel(
-    initialState: HomeState = HomeState(),
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    initialState: HomeState,
+    private val ioDispatcher: CoroutineDispatcher,
     private val useCaseGetNavigationItems: UseCaseGetNavigationItems
 ) : BaseViewModel<HomeEvent, HomeState, HomeEffect>(initialState) {
 
