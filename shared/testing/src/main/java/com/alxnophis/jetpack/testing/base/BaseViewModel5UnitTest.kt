@@ -5,6 +5,7 @@ import com.alxnophis.jetpack.testing.extensions.InstantExecutorExtension
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
@@ -17,7 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 @Suppress("MemberVisibilityCanBePrivate")
 open class BaseViewModel5UnitTest {
 
-    val standardTestDispatcher = StandardTestDispatcher()
+    val testScheduler = TestCoroutineScheduler()
+    val standardTestDispatcher = StandardTestDispatcher(testScheduler)
 
     @BeforeEach
     open fun beforeEach() {
