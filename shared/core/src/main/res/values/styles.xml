@@ -1,25 +1,8 @@
 <resources>
 
-    <style name="CoreTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="CoreTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">#6200ee</item>
         <item name="colorPrimaryDark">#3600b2</item>
-        <item name="colorOnPrimary">#ffffff</item>
-    </style>
-
-    <style name="CoreTheme.NoActionBar">
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="CoreTheme.FullScreen">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-    </style>
-
-    <style name="CoreTheme.FullScreen.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowActionBar">false</item>
     </style>
 
 </resources>

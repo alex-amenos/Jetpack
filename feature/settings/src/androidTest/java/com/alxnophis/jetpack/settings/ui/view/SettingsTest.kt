@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
+import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_TOGGLE_ITEM
@@ -103,7 +104,7 @@ class SettingsTest : BaseComposeTest() {
         composeTestRule.setContent {
             SettingsScreen(
                 navController = rememberNavController(),
-                viewModel = SettingsViewModel(),
+                viewModel = SettingsViewModel(initialState = SettingsState()),
                 appVersion = APP_VERSION
             )
         }
