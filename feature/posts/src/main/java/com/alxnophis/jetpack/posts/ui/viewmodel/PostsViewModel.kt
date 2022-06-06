@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
+import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.domain.model.PostsError
@@ -12,14 +13,13 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsEffect
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import java.util.UUID
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 internal class PostsViewModel(
     initialState: PostsState,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val dispatchers: DispatcherProvider,
     private val postsUseCase: PostsUseCase,
 ) : BaseViewModel<PostsEvent, PostsState, PostsEffect>(initialState) {
 
@@ -67,7 +67,7 @@ internal class PostsViewModel(
         }
     }
 
-    private suspend fun getPosts(): Either<PostsError, List<Post>> = withContext(ioDispatcher) {
+    private suspend fun getPosts(): Either<PostsError, List<Post>> = withContext(dispatchers.io()) {
         delay(3000) // testing purposes
         postsUseCase.invoke()
     }

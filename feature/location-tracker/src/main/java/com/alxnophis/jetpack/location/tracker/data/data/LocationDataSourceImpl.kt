@@ -7,13 +7,13 @@ import androidx.core.location.LocationManagerCompat
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.location.tracker.domain.model.Location
 import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -29,7 +29,7 @@ import timber.log.Timber
 import android.location.Location as AndroidLocation
 
 internal class LocationDataSourceImpl(
-    ioDispatcher: CoroutineDispatcher,
+    dispatchers: DispatcherProvider,
     private val fusedLocationProvider: FusedLocationProviderClient,
     private val locationManager: LocationManager,
     private val mutableLocationSharedFlow: MutableSharedFlow<Location>,
@@ -37,7 +37,7 @@ internal class LocationDataSourceImpl(
 
     override val locationSharedFlow: SharedFlow<Location> = mutableLocationSharedFlow.asSharedFlow()
 
-    private val coroutineScope: CoroutineScope = CoroutineScope(ioDispatcher + SupervisorJob())
+    private val coroutineScope: CoroutineScope = CoroutineScope(dispatchers.io() + SupervisorJob())
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             coroutineScope.launch {
