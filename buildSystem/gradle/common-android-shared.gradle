@@ -1,0 +1,30 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
+
+dependencies {
+    implementation project(Modules.SHARED_KOTLIN)
+
+    implementation Dep.KOIN_ANDROID
+    implementation Dep.COROUTINES_ANDROID
+    implementation Dep.COROUTINES_CORE
+    implementation Dep.TIMBER
+
+    debugImplementation Dep.LEAK_CANARY
+
+    testImplementation Dep.JUNIT
+    testImplementation Dep.JUNIT_JUPITER_API
+    testImplementation Dep.JUNIT_JUPITER_PARAMS
+    testImplementation Dep.KOIN_TEST
+    testImplementation Dep.COROUTINES_TEST
+    testImplementation Dep.MOCKITO
+    testImplementation Dep.MOCKITO_INLINE
+    testImplementation Dep.MOCKITO_KOTLIN
+    testImplementation Dep.TURBINE
+
+    testRuntimeOnly Dep.JUNIT_JUPITER_ENGINE
+    testRuntimeOnly Dep.JUNIT_VINTAGE_ENGINE
+
+    androidTestImplementation Dep.ANDROIDX_TEST_JUNIT
+    androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
+    androidTestImplementation Dep.ANDROIDX_TEST_RULES
+    androidTestImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
+}

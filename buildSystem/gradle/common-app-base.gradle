@@ -108,6 +108,7 @@ android {
 dependencies {
     // Shared Modules
     implementation project(Modules.SHARED_CORE)
+    implementation project(Modules.SHARED_KOTLIN)
     implementation project(Modules.SHARED_ROUTER)
 
     // Others

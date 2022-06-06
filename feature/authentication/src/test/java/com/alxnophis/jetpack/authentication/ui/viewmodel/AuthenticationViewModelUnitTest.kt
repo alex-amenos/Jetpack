@@ -16,7 +16,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModel5UnitTest
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -29,7 +29,8 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     private lateinit var viewModel: AuthenticationViewModel
 
     @BeforeEach
-    fun beforeEach() {
+    override fun beforeEach() {
+        super.beforeEach()
         viewModel = viewModelMother()
     }
 
@@ -270,13 +271,10 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     private fun viewModelMother(
         initialState: AuthenticationState = initialAuthenticationState,
-        dispatcherIO: TestDispatcher = testDispatcher,
-        dispatcherDefault: TestDispatcher = testDispatcher,
         authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock
     ) = AuthenticationViewModel(
         initialState,
-        dispatcherIO,
-        dispatcherDefault,
+        testDispatcherProvider,
         authenticateUseCase
     )
 

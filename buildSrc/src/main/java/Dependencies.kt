@@ -17,10 +17,10 @@ object AppConfig {
     const val APPLICATION_ID = "com.alxnophis.jetpack"
     const val APP_PACKAGE_NAME = APPLICATION_ID
     const val APP_PACKAGE_NAME_DEBUG = "$APPLICATION_ID.debug"
-    const val COMPILE_SDK_VERSION = 31
-    const val BUILD_TOOLS_VERSION = "31.0.0"
+    const val COMPILE_SDK_VERSION = 32
+    const val BUILD_TOOLS_VERSION = "32.0.0"
     const val MIN_SDK_VERSION = 23
-    const val TARGET_SDK_VERSION = 31
+    const val TARGET_SDK_VERSION = 32
 
     val sourceCompat = JavaVersion.VERSION_11
     val targetCompat = JavaVersion.VERSION_11
@@ -39,24 +39,23 @@ object Modules {
 
     const val SHARED_API = ":shared:api"
     const val SHARED_CORE = ":shared:core"
+    const val SHARED_KOTLIN = ":shared:kotlin"
     const val SHARED_ROUTER = ":shared:router"
     const val SHARED_TESTING = ":shared:testing"
 }
 
 private object Version {
     const val ANDROIDX_ANNOTATIONS = "1.2.0"
-    const val ANDROIDX_ACTIVITY = "1.4.0"
-    const val ANDROIDX_APPCOMPAT = "1.4.1"
+    const val ANDROIDX_ACTIVITY = "1.5.0-rc01"
+    const val ANDROIDX_APPCOMPAT = "1.4.2"
     const val ANDROIDX_ARCH_CORE_COMMON = "2.1.0"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "2.1.0"
-    const val ANDROIDX_COMPOSE = "1.1.1"
+    const val ANDROIDX_COMPOSE = "1.2.0-beta03"
     const val ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT = "1.0.0"
     const val ANDROIDX_COMPOSE_NAVIGATION = "2.4.1"
-    const val ANDROIDX_CONSTRAINT_LAYOUT = "2.1.1"
     const val ANDROIDX_CORE_KTX = "1.6.0"
     const val ANDROIDX_LIFECYCLE = "2.4.0"
     const val ANDROIDX_LIFECYCLE_EXTENSIONS = "2.2.0"
-    const val ANDROIDX_SECURITY_CRYPTO_VERSION = "1.0.0"
     const val ANDROIDX_TEST_ARCH_CORE = "2.1.0"
     const val ANDROIDX_TEST_JUNIT = "1.1.3"
     const val ANDROIDX_TEST_RULES = "1.4.0"
@@ -66,11 +65,10 @@ private object Version {
     const val ARROW = "1.0.1"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
     const val GOOGLE_PLAY_SERVICES_LOCATION = "18.0.0"
-    const val GOOGLE_ACCOMPANITS = "0.23.1"
+    const val GOOGLE_ACCOMPANITS = "0.24.10-beta"
     const val JUNIT = "4.13.2"
     const val JUNIT_JUPITER = "5.8.2"
-    const val KOTLIN = "1.6.10"
-    const val KOTLIN_COROUTINES = "1.6.0"
+    const val KOTLIN_COROUTINES = "1.6.2"
     const val KOTLINX_SERIALIZATION_JSON = "1.3.2"
     const val KOIN = "3.1.6"
     const val MOSHI = "1.12.0"
@@ -91,7 +89,6 @@ object Dep {
     const val ANDROIDX_ARCH_CORE_COMMON = "androidx.arch.core:core-common:${Version.ANDROIDX_ARCH_CORE_COMMON}"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "androidx.arch.core:core-runtime:${Version.ANDROIDX_ARCH_CORE_RUNTIME}"
     const val ANDROIDX_ARCH_CORE_TESTING = "androidx.arch.core:core-testing:${Version.ANDROIDX_TEST_ARCH_CORE}"
-    const val ANDROIDX_CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Version.ANDROIDX_CONSTRAINT_LAYOUT}"
     const val ANDROIDX_CORE_KTX = "androidx.core:core-ktx:${Version.ANDROIDX_CORE_KTX}"
     const val ANDROIDX_COMPOSE_ACTIVITY = "androidx.activity:activity-compose:${Version.ANDROIDX_ACTIVITY}"
     const val ANDROIDX_COMPOSE_ANIMATION = "androidx.compose.animation:animation:${Version.ANDROIDX_COMPOSE}"
@@ -103,7 +100,6 @@ object Dep {
     const val ANDROIDX_COMPOSE_MATERIAL_ICONS_EXTENDED = "androidx.compose.material:material-icons-extended:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_NAVIGATION = "androidx.navigation:navigation-compose:${Version.ANDROIDX_COMPOSE_NAVIGATION}"
     const val ANDROIDX_COMPOSE_RUNTIME = "androidx.compose.runtime:runtime:${Version.ANDROIDX_COMPOSE}"
-    const val ANDROIDX_COMPOSE_RUNTIME_LIVEDATA = "androidx.compose.runtime:runtime-livedata:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI = "androidx.compose.ui:ui:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI_UTIL = "androidx.compose.ui:ui-util:${Version.ANDROIDX_COMPOSE}"
     const val ANDROIDX_COMPOSE_UI_TEST = "androidx.compose.ui:ui-test-junit4:${Version.ANDROIDX_COMPOSE}"
@@ -117,7 +113,6 @@ object Dep {
     const val ANDROIDX_LIFECYCLE_COMMON = "androidx.lifecycle:lifecycle-common-java8:${Version.ANDROIDX_LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_COMPILER = "androidx.lifecycle:lifecycle-compiler:${Version.ANDROIDX_LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_EXTENSION = "androidx.lifecycle:lifecycle-extensions:${Version.ANDROIDX_LIFECYCLE_EXTENSIONS}"
-    const val ANDROIDX_LIFECYCLE_LIVEDATA = "androidx.lifecycle:lifecycle-livedata-ktx:${Version.ANDROIDX_LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_RUNTIME = "androidx.lifecycle:lifecycle-runtime-ktx:${Version.ANDROIDX_LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Version.ANDROIDX_LIFECYCLE}"
     const val ANDROIDX_TEST_JUNIT = "androidx.test.ext:junit-ktx:${Version.ANDROIDX_TEST_JUNIT}"

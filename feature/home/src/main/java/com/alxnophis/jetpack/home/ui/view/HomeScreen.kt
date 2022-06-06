@@ -129,8 +129,8 @@ internal fun SectionsList(
     LazyColumn(
         state = listState,
         modifier = Modifier
-            .fillMaxSize()
             .background(color = MaterialTheme.colors.surface)
+            .fillMaxSize()
     ) {
         items(
             items = state.data,
@@ -152,6 +152,7 @@ internal fun SectionsList(
                         Text(
                             modifier = Modifier.wrapContentSize(),
                             style = MaterialTheme.typography.subtitle1,
+                            color = MaterialTheme.colors.onSurface,
                             text = item.name,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium,
@@ -161,12 +162,14 @@ internal fun SectionsList(
                                 .wrapContentSize()
                                 .padding(top = 4.dp),
                             style = MaterialTheme.typography.subtitle1,
+                            color = MaterialTheme.colors.onSurface,
                             text = item.description,
                             fontWeight = FontWeight.Light,
                         )
                     }
                     Icon(
                         modifier = Modifier.weight(0.1f),
+                        tint = MaterialTheme.colors.onSurface,
                         imageVector = Icons.Default.ArrowForwardIos,
                         contentDescription = null,
                     )

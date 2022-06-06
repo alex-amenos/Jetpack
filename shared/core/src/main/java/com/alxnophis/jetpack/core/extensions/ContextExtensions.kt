@@ -3,7 +3,7 @@ package com.alxnophis.jetpack.core.extensions
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import com.alxnophis.jetpack.core.base.constants.BLANK
+import com.alxnophis.jetpack.core.base.constants.WHITE_SPACE
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.base.constants.PARENTHESES_CLOSED
 import com.alxnophis.jetpack.core.base.constants.PARENTHESES_OPENED
@@ -31,7 +31,7 @@ fun Context.getVersionCode(): String =
 
 fun Context.getVersion(): String = StringBuilder()
     .append(this.getVersionName())
-    .append(BLANK)
+    .append(WHITE_SPACE)
     .append(PARENTHESES_OPENED)
     .append(this.getVersionCode())
     .append(PARENTHESES_CLOSED)

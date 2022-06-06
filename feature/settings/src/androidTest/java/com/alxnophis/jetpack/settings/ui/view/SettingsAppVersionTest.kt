@@ -11,9 +11,7 @@ class SettingsAppVersionTest : BaseComposeTest() {
     fun app_version_displayed() {
         val version = "1.0.0"
         composeTestRule.setContent {
-            SettingsAppVersion(
-                appVersion = version
-            )
+            SettingsAppVersion(appVersion = version)
         }
         composeTestRule
             .onNodeWithText(version)

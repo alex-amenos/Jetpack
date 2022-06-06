@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -73,12 +74,10 @@ internal fun LocationTracker(
             title = stringResource(id = R.string.location_tracker_title),
             onBack = { onLocationTrackerEvent(LocationTrackerEvent.NavigateBack) },
         )
-        LocationPermission {
-            UserLocationsList(
-                modifier = Modifier.wrapContentSize(),
-                state = state
-            )
-        }
+        LocationPermission(
+            composableWhenPermissionGranted = { UserLocation(state = state) },
+            onLocationTrackerEvent = onLocationTrackerEvent
+        )
     }
 }
 
@@ -86,6 +85,7 @@ internal fun LocationTracker(
 @Composable
 private fun LocationPermission(
     composableWhenPermissionGranted: @Composable () -> Unit,
+    onLocationTrackerEvent: (event: LocationTrackerEvent) -> Unit,
 ) {
     val locationPermissionsState = rememberMultiplePermissionsState(
         listOf(
@@ -94,7 +94,7 @@ private fun LocationPermission(
         )
     )
     if (locationPermissionsState.allPermissionsGranted) {
-        // TODO - Check if GPS is enabled and show a dialog if not
+        onLocationTrackerEvent(LocationTrackerEvent.FineLocationPermissionGranted)
         composableWhenPermissionGranted()
     } else {
         Column(
@@ -134,18 +134,47 @@ private fun LocationPermission(
 }
 
 @Composable
-private fun UserLocationsList(
-    modifier: Modifier,
-    state: LocationTrackerState,
+private fun UserLocation(
+    state: LocationTrackerState
 ) {
     Text(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
         fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colors.primary,
         fontSize = 16.sp,
         text = stringResource(id = R.string.location_tracker_last_known_location)
     )
     Text(
-        modifier = modifier.padding(16.dp),
-        text = state.userLocation.toString()
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(16.dp),
+        text = state.lastKnownLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
     )
+    Text(
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colors.primary,
+        fontSize = 16.sp,
+        text = stringResource(id = R.string.location_tracker_current_location)
+    )
+    Text(
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(16.dp),
+        text = state.userLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun UserLocationPreview() {
+    val state = LocationTrackerState(
+        lastKnownLocation = "Last known location",
+        userLocation = "Current Location"
+    )
+    CoreTheme {
+        Column(modifier = Modifier.fillMaxSize()) {
+            UserLocation(state)
+        }
+    }
 }
