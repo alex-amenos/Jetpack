@@ -1,11 +1,45 @@
-apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
+apply from: "$rootDir/buildSystem/gradle/common-android-shared.gradle"
 
 android {
     namespace 'com.alxnophis.jetpack.core'
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE
+    }
 }
 
 dependencies {
     implementation project(Modules.SHARED_API)
 
+    implementation Dep.ANDROIDX_ANNOTATIONS
+    implementation Dep.ANDROIDX_ACTIVITY
+    implementation Dep.ANDROIDX_APPCOMPAT
+    implementation Dep.ANDROIDX_ARCH_CORE_COMMON
+    implementation Dep.ANDROIDX_ARCH_CORE_RUNTIME
+    implementation Dep.ANDROIDX_COMPOSE_ACTIVITY
+    implementation Dep.ANDROIDX_COMPOSE_MATERIAL
+    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_CORE
+    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_EXTENDED
+    implementation Dep.ANDROIDX_COMPOSE_RUNTIME
+    implementation Dep.ANDROIDX_COMPOSE_UI
     implementation Dep.ANDROIDX_COMPOSE_UI_UTIL
+    implementation Dep.ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW
+    implementation Dep.ANDROIDX_CORE_KTX
+    implementation Dep.ANDROIDX_LIFECYCLE_EXTENSION
+    implementation Dep.ANDROIDX_LIFECYCLE_COMMON
+    implementation Dep.ANDROIDX_LIFECYCLE_RUNTIME
+    implementation Dep.ANDROIDX_LIFECYCLE_VIEWMODEL
+    implementation Dep.KOIN_ANDROID
+    implementation Dep.KOIN_ANDROID_COMPOSE
+    implementation Dep.TIMBER
+
+    debugImplementation Dep.ANDROIDX_COMPOSE_UI_TOOLING
+
+    kapt Dep.ANDROIDX_LIFECYCLE_COMPILER
+
+    testImplementation project(Modules.SHARED_TESTING)
 }

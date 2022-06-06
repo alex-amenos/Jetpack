@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.core.ui.composable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -12,9 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.R
+import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 
 @Composable
 fun CoreErrorDialog(
@@ -53,4 +56,16 @@ fun CoreErrorDialog(
             Text(text = errorMessage)
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CoreErrorDialogPreview() {
+    CoreTheme {
+        CoreErrorDialog(
+            modifier = Modifier.wrapContentSize(),
+            errorMessage = "Error message",
+            dismissError = {}
+        )
+    }
 }

@@ -28,3 +28,27 @@ android {
         }
     }
 }
+
+dependencies {
+    // Shared Modules
+    implementation project(Modules.SHARED_CORE)
+    implementation project(Modules.SHARED_KOTLIN)
+    implementation project(Modules.SHARED_ROUTER)
+
+    // Others
+    implementation Dep.ANDROIDX_APPCOMPAT
+    implementation Dep.ANDROIDX_COMPOSE_ACTIVITY
+    implementation Dep.ANDROIDX_COMPOSE_RUNTIME
+    implementation Dep.KOIN_ANDROID
+
+    testImplementation Dep.JUNIT_JUPITER_API
+    testImplementation Dep.JUNIT_JUPITER_PARAMS
+    testImplementation Dep.KOIN_TEST
+
+    testRuntimeOnly Dep.JUNIT_JUPITER_ENGINE
+
+    androidTestImplementation Dep.ANDROIDX_TEST_JUNIT
+    androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
+    androidTestImplementation Dep.ANDROIDX_TEST_RULES
+    androidTestImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
+}

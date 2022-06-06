@@ -1,4 +1,4 @@
-apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
+apply from: "$rootDir/buildSystem/gradle/common-android-shared.gradle"
 
 android {
     namespace 'com.alxnophis.jetpack.api'
