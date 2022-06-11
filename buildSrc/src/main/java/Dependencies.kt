@@ -1,11 +1,9 @@
 @file:Suppress("unused", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
 
-import org.gradle.api.JavaVersion
-
 object AppVersion {
     private const val MAJOR = 0
     private const val MINOR = 0
-    private const val BUILD = 3
+    private const val BUILD = 4
 
     const val NAME: String = "${MAJOR}.${MINOR}.${BUILD}"
     val CODE = "${MAJOR}${MINOR.format()}${BUILD.format()}".toInt()
@@ -21,10 +19,6 @@ object AppConfig {
     const val BUILD_TOOLS_VERSION = "32.0.0"
     const val MIN_SDK_VERSION = 23
     const val TARGET_SDK_VERSION = 32
-
-    val sourceCompat = JavaVersion.VERSION_11
-    val targetCompat = JavaVersion.VERSION_11
-    val kotlinOption = JavaVersion.VERSION_11
 }
 
 object Modules {
@@ -36,6 +30,7 @@ object Modules {
     const val FEATURE_POSTS = ":feature:posts"
     const val FEATURE_ROOT = ":feature:root"
     const val FEATURE_SETTINGS = ":feature:settings"
+    const val FEATURE_GAME_BALL_CLICKER = ":feature:game:ballclicker"
 
     const val SHARED_API = ":shared:api"
     const val SHARED_CORE = ":shared:core"

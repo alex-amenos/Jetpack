@@ -44,33 +44,34 @@ android {
         kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            def project = "jetpack"
-            def apkExtension = ".apk"
-            def SEP = "_"
-            def buildType = name
-            def versionName = variant.versionName
-            def versionCode = versionCode
-            def date = new Date()
-            def formattedDate = date.format('ddMMyy_HHmm')
-            def newApkName = project + SEP + buildType +
-                    SEP + versionCode + SEP + versionName +
-                    SEP + formattedDate + apkExtension
-            outputFileName = new File(newApkName)
-        }
-        if (variant.buildType.name == "debug") {
-            variant.mergedFlavor.resourceConfigurations.add("xxhdpi")
-        }
-    }
+    // TODO - fix this, reason: Gradle update
+//    applicationVariants.all { variant ->
+//        variant.outputs.all { output ->
+//            def project = "jetpack"
+//            def apkExtension = ".apk"
+//            def SEP = "_"
+//            def buildType = name
+//            def versionName = variant.versionName
+//            def versionCode = versionCode
+//            def date = new Date()
+//            def formattedDate = date.format('ddMMyy_HHmm')
+//            def newApkName = project + SEP + buildType +
+//                    SEP + versionCode + SEP + versionName +
+//                    SEP + formattedDate + apkExtension
+//            outputFileName = new File(newApkName)
+//        }
+//        if (variant.buildType.name == "debug") {
+//            variant.mergedFlavor.resourceConfigurations.add("xxhdpi")
+//        }
+//    }
 
     compileOptions {
-        sourceCompatibility AppConfig.sourceCompat
-        targetCompatibility AppConfig.targetCompat
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = AppConfig.kotlinOption
+        jvmTarget = 11
     }
 
     lint {

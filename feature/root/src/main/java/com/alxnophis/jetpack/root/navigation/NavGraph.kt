@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.alxnophis.jetpack.authentication.ui.navigation.authenticationNavGraph
+import com.alxnophis.jetpack.game.ballclicker.ui.navigation.ballClickerNavGraph
 import com.alxnophis.jetpack.home.ui.navigation.homeNavGraph
 import com.alxnophis.jetpack.location.tracker.ui.navigation.locationTrackerNavGraph
 import com.alxnophis.jetpack.posts.ui.navigation.postsNavGraph
@@ -23,5 +24,6 @@ fun SetupNavGraph(navController: NavHostController) {
         locationTrackerNavGraph(navController)
         postsNavGraph(navController)
         settingsNavGraph(navController)
+        ballClickerNavGraph(navController)
     }
 }

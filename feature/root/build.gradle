@@ -11,4 +11,5 @@ dependencies {
     implementation project(Modules.FEATURE_POSTS)
     implementation project(Modules.FEATURE_SETTINGS)
     implementation project(Modules.FEATURE_LOCATION_TRACKER)
+    implementation project(Modules.FEATURE_GAME_BALL_CLICKER)
 }

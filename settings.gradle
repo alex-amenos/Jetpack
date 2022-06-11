@@ -2,6 +2,7 @@ include ":app"
 // Feature modules
 include ':feature:root'
 include ':feature:authentication'
+include ':feature:game:ballclicker'
 include ':feature:home'
 include ':feature:location-tracker'
 include ':feature:posts'
