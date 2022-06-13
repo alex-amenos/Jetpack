@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.game.ballclicker.ui.view
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -14,7 +15,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,29 +33,38 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.game.ballclicker.R
+import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
+import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
+import com.alxnophis.jetpack.game.ballclicker.ui.viewmodel.BallClickerViewModel
 import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlin.random.Random
-import kotlinx.coroutines.delay
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun BallClickerScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: BallClickerViewModel = getViewModel()
 ) {
     CoreTheme {
-//    BackHandler {
-//        viewModel.setEvent(SettingsEvent.NavigateBack)
-//    }
-        BallClicker()
+        val state: BallClickerState = viewModel.uiState.collectAsState().value
+        BackHandler {
+            navController.popBackStack()
+        }
+        BallClicker(
+            state,
+            viewModel::setEvent
+        )
     }
 }
 
 @Composable
-internal fun BallClicker() {
-    var points by remember { mutableStateOf(0) }
-    var isTimerRunning by remember { mutableStateOf(false) }
+internal fun BallClicker(
+    state: BallClickerState,
+    onBallClickerEvent: BallClickerEvent.() -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,59 +81,37 @@ internal fun BallClicker() {
                 text = buildString {
                     append(stringResource(R.string.ball_clicker_points))
                     append(WHITE_SPACE)
-                    append(points)
+                    append(state.points)
                 },
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
-            CountdownTimer(isTimerRunning = isTimerRunning) {
-                isTimerRunning = false
-            }
+            Text(
+                text = state.currentTimeInSeconds.toString(),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
             Button(
                 onClick = {
-                    isTimerRunning = !isTimerRunning
-                    points = 0
+                    if (state.isTimerRunning) {
+                        onBallClickerEvent(BallClickerEvent.Stop)
+                    } else {
+                        onBallClickerEvent(BallClickerEvent.Start)
+                    }
                 }
             ) {
                 Text(
                     text = when {
-                        isTimerRunning -> stringResource(R.string.ball_clicker_reset)
+                        state.isTimerRunning -> stringResource(R.string.ball_clicker_reset)
                         else -> stringResource(R.string.ball_clicker_start)
                     }
                 )
             }
         }
-        BallClicker(enabled = isTimerRunning) {
-            points++
+        BallClicker(enabled = state.isTimerRunning) {
+            onBallClickerEvent(BallClickerEvent.BallClicked)
         }
     }
-}
-
-@Composable
-private fun CountdownTimer(
-    time: Int = 30000,
-    isTimerRunning: Boolean = false,
-    onTimerEnd: () -> Unit = {}
-) {
-    var curTime by remember { mutableStateOf(time) }
-    LaunchedEffect(key1 = curTime, key2 = isTimerRunning) {
-        when {
-            !isTimerRunning -> {
-                curTime = time
-                return@LaunchedEffect
-            }
-            curTime > 0 -> {
-                delay(1000L)
-                curTime -= 1000
-            }
-            else -> onTimerEnd()
-        }
-    }
-    Text(
-        text = (curTime / 1000).toString(),
-        fontSize = 20.sp,
-        fontWeight = FontWeight.Bold
-    )
 }
 
 @Composable

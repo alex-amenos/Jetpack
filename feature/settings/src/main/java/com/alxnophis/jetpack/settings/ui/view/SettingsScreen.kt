@@ -59,7 +59,7 @@ internal fun SettingsScreen(
 internal fun Settings(
     state: SettingsState,
     appVersion: String,
-    onSettingsEvent: (event: SettingsEvent) -> Unit,
+    onSettingsEvent: SettingsEvent.() -> Unit,
 ) {
     val context = LocalContext.current
     Column(
