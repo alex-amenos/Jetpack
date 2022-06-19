@@ -11,14 +11,14 @@ import com.alxnophis.jetpack.router.screen.Screen
 
 fun NavGraphBuilder.ballClickerNavGraph(
     navController: NavController
-){
+) {
     navigation(
         startDestination = Screen.GameBallClicker.route,
         route = GAME_BALL_CLICKER_ROUTE
-    ){
+    ) {
         composable(
             route = Screen.GameBallClicker.route
-        ){
+        ) {
             injectBallClicker()
             BallClickerScreen(navController = navController)
         }
