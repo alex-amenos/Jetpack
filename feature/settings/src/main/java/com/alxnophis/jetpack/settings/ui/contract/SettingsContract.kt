@@ -1,17 +1,11 @@
 package com.alxnophis.jetpack.settings.ui.contract
 
 import androidx.annotation.StringRes
-import com.alxnophis.jetpack.core.base.viewmodel.UiEffect
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
 
-internal sealed class SettingsEffect : UiEffect {
-    object NavigateBack : SettingsEffect()
-}
-
 internal sealed class SettingsEvent : UiEvent {
-    object NavigateBack : SettingsEvent()
     object ManageSubscription : SettingsEvent()
     object SetNotifications : SettingsEvent()
     object SetHint : SettingsEvent()

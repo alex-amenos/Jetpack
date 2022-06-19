@@ -5,7 +5,6 @@ import arrow.core.Either
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
@@ -19,14 +18,13 @@ internal class AuthenticationViewModel(
     initialState: AuthenticationState,
     private val dispatchers: DispatcherProvider,
     private val authenticateUseCase: AuthenticateUseCase,
-) : BaseViewModel<AuthenticationEvent, AuthenticationState, AuthenticationEffect>(initialState) {
+) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
 
     override fun handleEvent(event: AuthenticationEvent) =
         when (event) {
             AuthenticationEvent.Authenticate -> authenticate()
             AuthenticationEvent.ErrorDismissed -> dismissError()
             AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-            AuthenticationEvent.NavigateBack -> setEffect { AuthenticationEffect.NavigateBack }
             is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
             is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
         }
@@ -87,8 +85,12 @@ internal class AuthenticationViewModel(
                     }
                 },
                 {
-                    setState { copy(isLoading = false) }
-                    setEffect { AuthenticationEffect.NavigateToNextScreen }
+                    setState {
+                        copy(
+                            isLoading = false,
+                            isUserAuthorized = true,
+                        )
+                    }
                 }
             )
         }

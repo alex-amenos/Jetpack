@@ -27,7 +27,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +42,6 @@ import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
-import com.alxnophis.jetpack.home.ui.contract.HomeEffect
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
@@ -56,33 +54,26 @@ internal fun HomeScreen(
     viewModel: HomeViewModel = getViewModel()
 ) {
     CoreTheme {
-        val state = viewModel.uiState.collectAsState().value
-        val activity = (LocalContext.current as? Activity)
-        val exitApp: () -> Unit = { activity?.finish() }
-        Home(
-            state = state,
-            onHomeEvent = viewModel::setEvent
-        )
+        val state: HomeState = viewModel.uiState.collectAsState().value
+        val activity: Activity? = (LocalContext.current as? Activity)
         BackHandler {
             if (!navController.popBackStack()) {
-                viewModel.setEvent(HomeEvent.ExitApp)
+                activity?.finish()
             }
         }
-        LaunchedEffect(key1 = Unit) {
-            viewModel.uiEffect.collect { effect ->
-                when (effect) {
-                    HomeEffect.ExitApp -> exitApp()
-                    is HomeEffect.NavigateTo -> navController.navigate(effect.screen.route)
-                }
-            }
-        }
+        Home(
+            state = state,
+            onHomeEvent = viewModel::setEvent,
+            onNavigateTo = { route -> navController.navigate(route) },
+        )
     }
 }
 
 @Composable
 internal fun Home(
     state: HomeState,
-    onHomeEvent: (event: HomeEvent) -> Unit
+    onHomeEvent: HomeEvent.() -> Unit,
+    onNavigateTo: (route: String) -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -92,7 +83,7 @@ internal fun Home(
             modifier = Modifier.fillMaxSize()
         ) {
             HomeTopBar()
-            SectionsList(state, onHomeEvent)
+            SectionsList(state, onNavigateTo)
         }
         state.error?.let { error: Int ->
             CoreErrorDialog(
@@ -123,7 +114,7 @@ internal fun HomeTopBar() {
 @Composable
 internal fun SectionsList(
     state: HomeState,
-    onHomeEvent: (event: HomeEvent) -> Unit
+    onNavigateTo: (route: String) -> Unit
 ) {
     val listState = rememberLazyListState()
     LazyColumn(
@@ -139,7 +130,7 @@ internal fun SectionsList(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable { onHomeEvent(HomeEvent.NavigateTo(item.screen)) }
+                        .clickable { onNavigateTo(item.screen.route) }
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(16.dp)
@@ -201,7 +192,8 @@ private fun HomeScreenPreview() {
     CoreTheme {
         Home(
             state = state,
-            onHomeEvent = {}
+            onHomeEvent = {},
+            onNavigateTo = {}
         )
     }
 }
