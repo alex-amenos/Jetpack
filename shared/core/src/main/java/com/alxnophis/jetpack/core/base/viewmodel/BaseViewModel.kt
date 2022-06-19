@@ -2,12 +2,10 @@ package com.alxnophis.jetpack.core.base.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -23,7 +21,7 @@ import timber.log.Timber
  *    https://medium.com/proandroiddev/sending-view-model-events-to-the-ui-eef76bdd632c
  */
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect>(
+abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     initialState: State
 ) : ViewModel() {
 
@@ -35,9 +33,6 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
 
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
     val uiEvent = _event.asSharedFlow()
-
-    private val _effect: Channel<Effect> = Channel(Channel.BUFFERED)
-    val uiEffect = _effect.receiveAsFlow()
 
     init {
         subscribeEvents()
@@ -77,17 +72,6 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
             currentState
                 .reduce()
                 .also { Timber.d("## Set new state: $it") }
-        }
-    }
-
-    /**
-     * Set new Side Effect
-     */
-    protected fun setEffect(builder: () -> Effect) {
-        val newEffect = builder()
-        Timber.d("## Set new side Effect: $newEffect")
-        viewModelScope.launch {
-            _effect.send(newEffect)
         }
     }
 }

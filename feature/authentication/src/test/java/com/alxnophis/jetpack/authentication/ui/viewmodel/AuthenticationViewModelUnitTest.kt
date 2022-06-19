@@ -8,7 +8,6 @@ import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_EMAIL
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_PASSWORD
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
@@ -196,26 +195,10 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                     awaitItem()
                 )
                 assertEquals(
-                    initialState.copy(isLoading = false),
-                    awaitItem()
-                )
-                expectNoEvents()
-            }
-        }
-    }
-
-    @Test
-    fun `WHEN Authenticate event with correct credentials THEN navigate to next step`() {
-        runTest {
-            whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
-            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
-            val viewModel = viewModelMother(initialState = initialState)
-
-            viewModel.setEvent(AuthenticationEvent.Authenticate)
-
-            viewModel.uiEffect.test {
-                assertEquals(
-                    AuthenticationEffect.NavigateToNextScreen,
+                    initialState.copy(
+                        isLoading = false,
+                        isUserAuthorized = true
+                    ),
                     awaitItem()
                 )
                 expectNoEvents()
@@ -246,22 +229,6 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
                         isLoading = false,
                         error = R.string.authentication_auth_error,
                     ),
-                    awaitItem()
-                )
-                expectNoEvents()
-            }
-        }
-    }
-
-    @Test
-    fun `WHEN on navigate back THEN set navigate back effect`() {
-        runTest {
-            val viewModel = viewModelMother()
-            viewModel.setEvent(AuthenticationEvent.NavigateBack)
-
-            viewModel.uiEffect.test {
-                assertEquals(
-                    AuthenticationEffect.NavigateBack,
                     awaitItem()
                 )
                 expectNoEvents()

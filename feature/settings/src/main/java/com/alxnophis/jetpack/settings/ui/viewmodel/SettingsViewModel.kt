@@ -3,18 +3,16 @@ package com.alxnophis.jetpack.settings.ui.viewmodel
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
-import com.alxnophis.jetpack.settings.ui.contract.SettingsEffect
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.contract.Theme
 
 internal class SettingsViewModel(
     initialState: SettingsState,
-) : BaseViewModel<SettingsEvent, SettingsState, SettingsEffect>(initialState) {
+) : BaseViewModel<SettingsEvent, SettingsState>(initialState) {
 
     override fun handleEvent(event: SettingsEvent) =
         when (event) {
-            is SettingsEvent.NavigateBack -> setEffect { SettingsEffect.NavigateBack }
             is SettingsEvent.ManageSubscription -> manageSubscription()
             is SettingsEvent.SetNotifications -> toggleNotifications()
             is SettingsEvent.SetHint -> toggleHint()

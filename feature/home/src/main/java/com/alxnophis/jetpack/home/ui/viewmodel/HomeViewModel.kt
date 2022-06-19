@@ -7,7 +7,6 @@ import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.domain.usecase.UseCaseGetNavigationItems
-import com.alxnophis.jetpack.home.ui.contract.HomeEffect
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
@@ -18,7 +17,7 @@ internal class HomeViewModel(
     initialState: HomeState,
     private val dispatchers: DispatcherProvider,
     private val useCaseGetNavigationItems: UseCaseGetNavigationItems
-) : BaseViewModel<HomeEvent, HomeState, HomeEffect>(initialState) {
+) : BaseViewModel<HomeEvent, HomeState>(initialState) {
 
     init {
         setEvent(HomeEvent.LoadNavigationItems)
@@ -26,10 +25,8 @@ internal class HomeViewModel(
 
     override fun handleEvent(event: HomeEvent) {
         when (event) {
-            HomeEvent.ExitApp -> setEffect { HomeEffect.ExitApp }
             HomeEvent.ErrorDismissed -> dismissError()
             HomeEvent.LoadNavigationItems -> loadNavigationItems()
-            is HomeEvent.NavigateTo -> setEffect { HomeEffect.NavigateTo(event.screen) }
         }
     }
 

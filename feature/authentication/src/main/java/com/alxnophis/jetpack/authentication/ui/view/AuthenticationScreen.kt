@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEffect
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
@@ -36,19 +35,14 @@ internal fun AuthenticationScreen(
             viewModel::setEvent
         )
         BackHandler {
-            viewModel.setEvent(AuthenticationEvent.NavigateBack)
+            navController.popBackStack()
         }
-        LaunchedEffect(Unit) {
-            viewModel.uiEffect.collect { effect ->
-                when (effect) {
-                    AuthenticationEffect.NavigateBack -> navController.popBackStack()
-                    AuthenticationEffect.NavigateToNextScreen -> {
-                        navController.navigate(Screen.Authorized.route) {
-                            // Remove Authentication screen form back stack
-                            popUpTo(Screen.Authentication.route) {
-                                inclusive = true
-                            }
-                        }
+        LaunchedEffect(state) {
+            if (state.isUserAuthorized) {
+                navController.navigate(Screen.Authorized.route) {
+                    // Remove Authentication screen form back stack
+                    popUpTo(Screen.Authentication.route) {
+                        inclusive = true
                     }
                 }
             }

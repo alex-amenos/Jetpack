@@ -1,7 +1,5 @@
 @file:Suppress("unused", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
 
-import org.gradle.api.JavaVersion
-
 object AppVersion {
     private const val MAJOR = 0
     private const val MINOR = 0
@@ -21,10 +19,6 @@ object AppConfig {
     const val BUILD_TOOLS_VERSION = "32.0.0"
     const val MIN_SDK_VERSION = 23
     const val TARGET_SDK_VERSION = 32
-
-    val sourceCompat = JavaVersion.VERSION_11
-    val targetCompat = JavaVersion.VERSION_11
-    val kotlinOption = JavaVersion.VERSION_11
 }
 
 object Modules {
@@ -50,8 +44,8 @@ private object Version {
     const val ANDROIDX_APPCOMPAT = "1.4.2"
     const val ANDROIDX_ARCH_CORE_COMMON = "2.1.0"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "2.1.0"
-    const val ANDROIDX_COMPOSE = "1.2.0-beta03"
-    const val ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT = "1.0.0"
+    const val ANDROIDX_COMPOSE = "1.2.0-rc01"
+    const val ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT = "1.0.1"
     const val ANDROIDX_COMPOSE_NAVIGATION = "2.4.1"
     const val ANDROIDX_CORE_KTX = "1.6.0"
     const val ANDROIDX_LIFECYCLE = "2.4.0"
@@ -65,7 +59,7 @@ private object Version {
     const val ARROW = "1.0.1"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
     const val GOOGLE_PLAY_SERVICES_LOCATION = "18.0.0"
-    const val GOOGLE_ACCOMPANITS = "0.24.10-beta"
+    const val GOOGLE_ACCOMPANITS = "0.24.11-rc"
     const val JUNIT = "4.13.2"
     const val JUNIT_JUPITER = "5.8.2"
     const val KOTLIN_COROUTINES = "1.6.2"
@@ -74,7 +68,7 @@ private object Version {
     const val MOSHI = "1.12.0"
     const val MOCKITO = "4.0.0"
     const val NETWORK_RESPONSE_ADAPTER = "5.0.0"
-    const val LEAK_CANARY = "2.7"
+    const val LEAK_CANARY = "2.9.1"
     const val OKHTTP = "4.9.3"
     const val PERMISSION_DISPATCHER = "4.9.1"
     const val RETROFIT = "2.9.0"

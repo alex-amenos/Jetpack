@@ -12,7 +12,6 @@ import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationFlowUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationProviderUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProviderUseCase
-import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEffect
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
 import kotlinx.coroutines.flow.collectLatest
@@ -24,7 +23,7 @@ internal class LocationTrackerViewModel(
     private val stopLocationProviderUseCase: StopLocationProviderUseCase,
     private val locationStateUseCase: LocationFlowUseCase,
     private val lastKnownLocationUseCase: ProvideLastKnownLocationUseCase
-) : BaseViewModel<LocationTrackerEvent, LocationTrackerState, LocationTrackerEffect>(initialState) {
+) : BaseViewModel<LocationTrackerEvent, LocationTrackerState>(initialState) {
 
     override fun handleEvent(event: LocationTrackerEvent) {
         when (event) {
@@ -34,8 +33,7 @@ internal class LocationTrackerViewModel(
                 subscribeToUserLocation()
                 subscribeToLastKnownLocation()
             }
-            LocationTrackerEvent.NavigateBack -> {
-                setEffect { LocationTrackerEffect.NavigateBack }
+            LocationTrackerEvent.EndTracking -> {
                 stopTrackUserLocation()
             }
         }

@@ -9,7 +9,6 @@ import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.domain.model.PostsError
 import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
-import com.alxnophis.jetpack.posts.ui.contract.PostsEffect
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import java.util.UUID
@@ -21,7 +20,7 @@ internal class PostsViewModel(
     initialState: PostsState,
     private val dispatchers: DispatcherProvider,
     private val postsUseCase: PostsUseCase,
-) : BaseViewModel<PostsEvent, PostsState, PostsEffect>(initialState) {
+) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 
     init {
         handleEvent(PostsEvent.GetPosts)
@@ -30,7 +29,6 @@ internal class PostsViewModel(
     override fun handleEvent(event: PostsEvent) {
         when (event) {
             PostsEvent.GetPosts -> renderPosts()
-            PostsEvent.NavigateBack -> setEffect { PostsEffect.NavigateBack }
             is PostsEvent.DismissError -> dismissError(event.errorId)
         }
     }
