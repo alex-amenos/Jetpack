@@ -3,7 +3,6 @@ package com.alxnophis.jetpack.game.ballclicker.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.extensions.doNothing
-import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEffect
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
@@ -21,7 +20,7 @@ import kotlinx.coroutines.launch
 internal class BallClickerViewModel(
     initialState: BallClickerState,
     dispatcherProvider: DispatcherProvider,
-) : BaseViewModel<BallClickerEvent, BallClickerState, BallClickerEffect>(initialState) {
+) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
 
     private val timer = ((DEFAULT_TIME_IN_SECONDS - 1) downTo ZERO_INT)
         .asSequence()
@@ -36,10 +35,6 @@ internal class BallClickerViewModel(
 
     override fun handleEvent(event: BallClickerEvent) {
         when (event) {
-            BallClickerEvent.NavigateBack -> {
-                stopGame()
-                setEffect { BallClickerEffect.NavigateBack }
-            }
             BallClickerEvent.BallClicked -> ballClicked()
             BallClickerEvent.Start -> startGame()
             BallClickerEvent.Stop -> stopGame()

@@ -2,7 +2,6 @@ package com.alxnophis.jetpack.settings.viewmodel
 
 import app.cash.turbine.test
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
-import com.alxnophis.jetpack.settings.ui.contract.SettingsEffect
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.contract.Theme
@@ -12,7 +11,6 @@ import java.util.stream.Stream
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -38,22 +36,6 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
                 )
                 assertEquals(
                     state,
-                    awaitItem()
-                )
-            }
-        }
-    }
-
-    @Test
-    fun `WHEN finish event then finish side effect`() {
-        testScope.runTest {
-            val viewModel = SettingsViewModel(initialState = SettingsState())
-
-            viewModel.setEvent(SettingsEvent.NavigateBack)
-
-            viewModel.uiEffect.test {
-                assertEquals(
-                    SettingsEffect.NavigateBack,
                     awaitItem()
                 )
             }

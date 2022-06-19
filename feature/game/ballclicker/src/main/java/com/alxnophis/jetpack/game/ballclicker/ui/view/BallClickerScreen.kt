@@ -51,7 +51,9 @@ internal fun BallClickerScreen(
     CoreTheme {
         val state: BallClickerState = viewModel.uiState.collectAsState().value
         BackHandler {
-            navController.popBackStack()
+            viewModel
+                .setEvent(BallClickerEvent.Stop)
+                .also { navController.popBackStack() }
         }
         BallClicker(
             state,
