@@ -65,12 +65,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility AppConfig.sourceCompat
-        targetCompatibility AppConfig.targetCompat
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = AppConfig.kotlinOption
+        jvmTarget = JavaVersion.VERSION_11
     }
 
     lint {
