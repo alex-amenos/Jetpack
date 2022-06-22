@@ -30,9 +30,10 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -46,6 +47,8 @@ import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -209,12 +212,16 @@ fun PasswordInput(
     onDoneClicked: () -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val isPasswordHidden: MutableState<Boolean> = remember { mutableStateOf(true) }
+    var isPasswordHidden by remember { mutableStateOf(true) }
     TextField(
         modifier = modifier,
         value = password,
         singleLine = true,
         onValueChange = { onPasswordChanged(it) },
+        visualTransformation = when {
+            isPasswordHidden -> PasswordVisualTransformation()
+            else -> VisualTransformation.None
+        },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Lock,
@@ -224,15 +231,15 @@ fun PasswordInput(
         trailingIcon = {
             Icon(
                 modifier = Modifier.clickable(
-                    onClickLabel = if (isPasswordHidden.value) {
+                    onClickLabel = if (isPasswordHidden) {
                         stringResource(R.string.authentication_cd_show_password)
                     } else {
                         stringResource(R.string.authentication_cd_hide_password)
                     }
                 ) {
-                    isPasswordHidden.value = !isPasswordHidden.value
+                    isPasswordHidden = !isPasswordHidden
                 },
-                imageVector = if (isPasswordHidden.value) {
+                imageVector = if (isPasswordHidden) {
                     Icons.Default.Visibility
                 } else {
                     Icons.Default.VisibilityOff
