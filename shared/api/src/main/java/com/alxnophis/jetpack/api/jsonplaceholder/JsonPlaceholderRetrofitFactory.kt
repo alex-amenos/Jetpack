@@ -14,8 +14,9 @@ object JsonPlaceholderRetrofitFactory {
     private const val TIMEOUT_READ = 15L
     private const val TIMEOUT_WRITE = 15L
 
-    fun invoke(): JsonPlaceholderRetrofitService {
-        return Retrofit.Builder()
+    operator fun invoke(): JsonPlaceholderRetrofitService {
+        return Retrofit
+            .Builder()
             .baseUrl(BASE_URL)
             .client(buildOkHttpClient())
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
@@ -25,7 +26,8 @@ object JsonPlaceholderRetrofitFactory {
     }
 
     private fun buildOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
+        return OkHttpClient
+            .Builder()
             .addInterceptor(loggingInterceptor())
             .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)

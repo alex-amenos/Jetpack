@@ -4,4 +4,5 @@ sealed class PostsError {
     object Network : PostsError()
     object Server : PostsError()
     object Unknown : PostsError()
+    object Unexpected : PostsError()
 }

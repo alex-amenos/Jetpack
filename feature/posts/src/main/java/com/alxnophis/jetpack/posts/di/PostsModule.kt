@@ -28,13 +28,12 @@ private val loadPostsModules by lazy {
 
 private val postModule: Module = module {
     factory<DispatcherProvider> { DefaultDispatcherProvider() }
-    factory<PostDataSource> { PostDataSourceImpl(get()) }
+    factory<PostDataSource> { PostDataSourceImpl(get(), get()) }
     factory<PostsRepository> { PostsRepositoryImpl(get()) }
     factory { PostsUseCase(get()) }
     viewModel {
         PostsViewModel(
             initialState = PostsState(),
-            dispatchers = get(),
             postsUseCase = get(),
         )
     }
