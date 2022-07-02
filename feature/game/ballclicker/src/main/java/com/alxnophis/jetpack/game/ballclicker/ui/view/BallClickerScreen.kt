@@ -49,14 +49,13 @@ internal fun BallClickerScreen(
     viewModel: BallClickerViewModel = getViewModel()
 ) {
     CoreTheme {
-        val state: BallClickerState = viewModel.uiState.collectAsState().value
         BackHandler {
             viewModel
                 .setEvent(BallClickerEvent.Stop)
                 .also { navController.popBackStack() }
         }
         BallClicker(
-            state,
+            viewModel.uiState.collectAsState().value,
             viewModel::setEvent
         )
     }
