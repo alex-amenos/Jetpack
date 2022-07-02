@@ -44,7 +44,7 @@ class UseCaseGetNavigationItems {
         )
         private val gameBallClicker = NavigationItem(
             name = "Ball Clicker Game",
-            description = "Be the fastest ball clicker",
+            description = "Be the fastest ball clicker!",
             screen = Screen.GameBallClicker
         )
     }
