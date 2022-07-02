@@ -10,7 +10,10 @@ internal sealed class BallClickerEvent : UiEvent {
 }
 
 internal data class BallClickerState(
-    val currentTimeInSeconds: Int = 30,
+    val currentTimeInSeconds: Int = DEFAULT_TIME_IN_SECONDS,
     val isTimerRunning: Boolean = false,
-    val points: Int = 0,
+    val points: Int = DEFAULT_POINTS,
 ) : UiState
+
+internal const val DEFAULT_TIME_IN_SECONDS = 30
+internal const val DEFAULT_POINTS = 0

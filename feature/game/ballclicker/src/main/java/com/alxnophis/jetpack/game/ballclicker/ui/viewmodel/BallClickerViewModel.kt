@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
+import com.alxnophis.jetpack.game.ballclicker.ui.contract.DEFAULT_POINTS
+import com.alxnophis.jetpack.game.ballclicker.ui.contract.DEFAULT_TIME_IN_SECONDS
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -56,7 +58,7 @@ internal class BallClickerViewModel(
             .onCompletion {
                 setState {
                     copy(
-                        currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS.toInt(),
+                        currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS,
                         isTimerRunning = false,
                     )
                 }
@@ -71,21 +73,16 @@ internal class BallClickerViewModel(
         setState {
             copy(
                 isTimerRunning = false,
-                currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS.toInt()
+                currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS
             )
         }
     }
 
-    private fun tickerFlow(start: Long = DEFAULT_TIME_IN_SECONDS, end: Long = 0L): Flow<Long> =
+    private fun tickerFlow(start: Long = DEFAULT_TIME_IN_SECONDS.toLong(), end: Long = 0L): Flow<Long> =
         flow {
             for (i in start downTo end) {
                 emit(i)
                 delay(1_000)
             }
         }
-
-    companion object {
-        private const val DEFAULT_TIME_IN_SECONDS = 30L
-        private const val DEFAULT_POINTS = 0
-    }
 }
