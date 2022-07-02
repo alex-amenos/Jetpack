@@ -2,18 +2,18 @@ package com.alxnophis.jetpack.game.ballclicker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
-import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
-import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
-import kotlin.coroutines.coroutineContext
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -22,16 +22,9 @@ internal class BallClickerViewModel(
     dispatcherProvider: DispatcherProvider,
 ) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
 
-    private val timer = ((DEFAULT_TIME_IN_SECONDS - 1) downTo ZERO_INT)
-        .asSequence()
-        .asFlow()
-        .onEach {
-            coroutineContext.ensureActive()
-            delay(1000L)
-            it
-        }
-        .cancellable()
-        .flowOn(dispatcherProvider.default())
+    private val timerScope = CoroutineScope(dispatcherProvider.default() + SupervisorJob())
+
+    private var timerJob: Job? = null
 
     override fun handleEvent(event: BallClickerEvent) {
         when (event) {
@@ -54,36 +47,45 @@ internal class BallClickerViewModel(
                 points = DEFAULT_POINTS
             )
         }
-        timer.collect { seconds ->
-            if (!currentState.isTimerRunning) {
-                cancel()
+        tickerFlow()
+            .onEach { seconds ->
+                setState {
+                    copy(currentTimeInSeconds = seconds.toInt())
+                }
             }
-            when {
-                seconds == ZERO_INT -> setState {
+            .onCompletion {
+                setState {
                     copy(
-                        currentTimeInSeconds = seconds,
+                        currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS.toInt(),
                         isTimerRunning = false,
                     )
                 }
-                seconds > ZERO_INT && currentState.isTimerRunning -> setState {
-                    copy(currentTimeInSeconds = seconds)
-                }
-                else -> doNothing()
             }
-        }
+            .cancellable()
+            .launchIn(timerScope)
+            .also { job -> timerJob = job }
     }
 
-    private fun stopGame() {
+    private fun stopGame() = viewModelScope.launch {
+        timerJob?.cancel()
         setState {
             copy(
                 isTimerRunning = false,
-                currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS
+                currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS.toInt()
             )
         }
     }
 
+    private fun tickerFlow(start: Long = DEFAULT_TIME_IN_SECONDS, end: Long = 0L): Flow<Long> =
+        flow {
+            for (i in start downTo end) {
+                emit(i)
+                delay(1_000)
+            }
+        }
+
     companion object {
-        private const val DEFAULT_TIME_IN_SECONDS = 30
+        private const val DEFAULT_TIME_IN_SECONDS = 30L
         private const val DEFAULT_POINTS = 0
     }
 }
