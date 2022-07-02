@@ -34,3 +34,9 @@ User location tracking
 
 ![Location tracker screen](./docs/images/location_tracker_screen.png)
 ![Location permissions](./docs/images/location_tracker_screen_2.png)
+
+## Ball clicker (Game)
+
+Ball clicker game (custom view with compose)
+
+![Ball clicker game](./docs/images/ball_clicker.png)

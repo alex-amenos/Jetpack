@@ -15,6 +15,7 @@ class UseCaseGetNavigationItems {
                 settings,
                 posts,
                 locationTracker,
+                gameBallClicker
             )
         }
     )
@@ -40,6 +41,11 @@ class UseCaseGetNavigationItems {
             name = "Location Tracker",
             description = "User location tracking",
             screen = Screen.LocationTracker,
+        )
+        private val gameBallClicker = NavigationItem(
+            name = "Ball Clicker Game",
+            description = "Be the fastest ball clicker!",
+            screen = Screen.GameBallClicker
         )
     }
 }

@@ -1,0 +1,5 @@
+<resources>
+    <string name="ball_clicker_points">Points:</string>
+    <string name="ball_clicker_start">Start</string>
+    <string name="ball_clicker_reset">Reset</string>
+</resources>

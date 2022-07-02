@@ -10,16 +10,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-/**
- * Related articles to create the BaseViewModel
- *
- * 1. MVI Architecture with Kotlin Flows and Channels:
- *    https://medium.com/proandroiddev/mvi-architecture-with-kotlin-flows-and-channels-d36820b2028d
- * 2. Atomic Updates on MutableStateFlow:
- *    https://medium.com/geekculture/atomic-updates-with-mutablestateflow-dc0331724405
- * 3. Sending ViewModel Events to the UI in Android:
- *    https://medium.com/proandroiddev/sending-view-model-events-to-the-ui-eef76bdd632c
- */
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     initialState: State
