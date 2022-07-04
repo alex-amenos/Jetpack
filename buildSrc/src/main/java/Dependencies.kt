@@ -24,6 +24,12 @@ object AppConfig {
 object Modules {
     const val APP = ":app"
 
+    const val SHARED_API = ":shared:api"
+    const val SHARED_CORE = ":shared:core"
+    const val SHARED_KOTLIN = ":shared:kotlin"
+    const val SHARED_ROUTER = ":shared:router"
+    const val SHARED_TESTING = ":shared:testing"
+
     const val FEATURE_AUTHENTICATION = ":feature:authentication"
     const val FEATURE_LOCATION_TRACKER =":feature:location-tracker"
     const val FEATURE_HOME = ":feature:home"
@@ -31,12 +37,7 @@ object Modules {
     const val FEATURE_ROOT = ":feature:root"
     const val FEATURE_SETTINGS = ":feature:settings"
     const val FEATURE_GAME_BALL_CLICKER = ":feature:game:ballclicker"
-
-    const val SHARED_API = ":shared:api"
-    const val SHARED_CORE = ":shared:core"
-    const val SHARED_KOTLIN = ":shared:kotlin"
-    const val SHARED_ROUTER = ":shared:router"
-    const val SHARED_TESTING = ":shared:testing"
+    const val FEATURE_MUSIC_DASHBOARD = ":feature:music-dashboard"
 }
 
 private object Version {

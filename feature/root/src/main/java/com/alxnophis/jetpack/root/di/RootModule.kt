@@ -7,7 +7,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun injectRoot() = loadRootModules
+internal fun injectRoot() = loadRootModules
 
 private val loadRootModules by lazy {
     loadKoinModules(

@@ -10,7 +10,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun injectAuthentication() = loadAuthenticationModules
+internal fun injectAuthentication() = loadAuthenticationModules
 
 private val loadAuthenticationModules by lazy {
     loadKoinModules(

@@ -7,7 +7,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun injectSettings() = loadSettingsModule
+internal fun injectSettings() = loadSettingsModule
 
 private val loadSettingsModule by lazy {
     loadKoinModules(

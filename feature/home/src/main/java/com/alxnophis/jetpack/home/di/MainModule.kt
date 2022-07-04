@@ -10,7 +10,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun injectHome() = loadHomeModules
+internal fun injectHome() = loadHomeModules
 
 private val loadHomeModules by lazy {
     loadKoinModules(

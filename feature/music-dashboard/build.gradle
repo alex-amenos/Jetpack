@@ -1,0 +1,6 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
+
+android {
+    resourcePrefix 'musicdashboard'
+    namespace 'com.alxnophis.jetpack.musicdashboard'
+}
