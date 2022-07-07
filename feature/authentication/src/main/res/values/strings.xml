@@ -19,5 +19,5 @@
     <string name="authentication_action_already_have_account">Already have an account?</string>
     <string name="authentication_error_title">Whoops</string>
     <string name="authentication_error_action">OK</string>
-    <string name="authentication_authorized">Congratulations, you are authorized!</string>
+    <string name="authentication_authorized">Congratulations %s,\nyou are authorized!</string>
 </resources>
