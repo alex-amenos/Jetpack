@@ -34,7 +34,7 @@ fun NavGraphBuilder.authenticationNavGraph(
         ) {
             AuthorizedScreen(
                 navController = navController,
-                authEmail = it.arguments?.getString(AUTHENTICATION_ARGUMENT_EMAIL) ?: EMPTY
+                userEmail = it.arguments?.getString(AUTHENTICATION_ARGUMENT_EMAIL) ?: EMPTY
             )
         }
     }

@@ -20,10 +20,10 @@ import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 @Composable
 internal fun AuthorizedScreen(
     navController: NavController,
-    authEmail: String,
+    userEmail: String,
 ) {
     CoreTheme {
-        AuthorizedContent(authEmail)
+        AuthorizedContent(userEmail)
     }
     BackHandler {
         navController.popBackStack()
@@ -32,7 +32,7 @@ internal fun AuthorizedScreen(
 
 @Composable
 internal fun AuthorizedContent(
-    authEmail: String,
+    userEmail: String,
 ) {
     Box(
         modifier = Modifier
@@ -41,7 +41,7 @@ internal fun AuthorizedContent(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(R.string.authentication_authorized, authEmail),
+            text = stringResource(R.string.authentication_authorized, userEmail),
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center
         )
