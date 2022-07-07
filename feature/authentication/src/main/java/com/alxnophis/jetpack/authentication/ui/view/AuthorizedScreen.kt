@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -18,10 +19,11 @@ import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 
 @Composable
 internal fun AuthorizedScreen(
-    navController: NavController
+    navController: NavController,
+    userEmail: String,
 ) {
     CoreTheme {
-        Authorized()
+        AuthorizedContent(userEmail)
     }
     BackHandler {
         navController.popBackStack()
@@ -29,7 +31,9 @@ internal fun AuthorizedScreen(
 }
 
 @Composable
-internal fun Authorized() {
+internal fun AuthorizedContent(
+    userEmail: String,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -37,8 +41,9 @@ internal fun Authorized() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(R.string.authentication_authorized),
+            text = stringResource(R.string.authentication_authorized, userEmail),
             style = MaterialTheme.typography.h6,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -47,6 +52,7 @@ internal fun Authorized() {
 @Composable
 private fun AuthorizedScreenPreview() {
     AuthorizedScreen(
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        "my@email.com"
     )
 }
