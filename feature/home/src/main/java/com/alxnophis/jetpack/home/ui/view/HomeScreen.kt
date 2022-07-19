@@ -61,7 +61,7 @@ internal fun HomeScreen(
                 activity?.finish()
             }
         }
-        Home(
+        HomeContent(
             state = state,
             onHomeEvent = viewModel::setEvent,
             onNavigateTo = { route -> navController.navigate(route) },
@@ -70,7 +70,7 @@ internal fun HomeScreen(
 }
 
 @Composable
-internal fun Home(
+internal fun HomeContent(
     state: HomeState,
     onHomeEvent: HomeEvent.() -> Unit,
     onNavigateTo: (route: String) -> Unit
@@ -190,7 +190,7 @@ private fun HomeScreenPreview() {
         error = null
     )
     CoreTheme {
-        Home(
+        HomeContent(
             state = state,
             onHomeEvent = {},
             onNavigateTo = {}

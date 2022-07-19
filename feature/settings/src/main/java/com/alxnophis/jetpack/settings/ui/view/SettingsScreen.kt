@@ -37,7 +37,7 @@ internal fun SettingsScreen(
         val state = viewModel.uiState.collectAsState().value
         val navigateBack: () -> Unit = { navController.popBackStack() }
         BackHandler { navigateBack() }
-        Settings(
+        SettingsContent(
             state = state,
             appVersion = appVersion,
             onSettingsEvent = viewModel::setEvent,
@@ -47,7 +47,7 @@ internal fun SettingsScreen(
 }
 
 @Composable
-internal fun Settings(
+internal fun SettingsContent(
     state: SettingsState,
     appVersion: String,
     onSettingsEvent: (event: SettingsEvent) -> Unit,
@@ -124,7 +124,7 @@ internal fun Settings(
 @Composable
 private fun SettingsScreenPreview() {
     CoreTheme {
-        Settings(
+        SettingsContent(
             state = SettingsState(),
             appVersion = "1.0.0",
             onSettingsEvent = {},
