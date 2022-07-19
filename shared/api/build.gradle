@@ -1,13 +1,29 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-shared.gradle"
+apply plugin: "com.apollographql.apollo3"
 
 android {
     namespace 'com.alxnophis.jetpack.api'
+
+    /**
+     * Flag to enable support for the new language APIs.
+     * If you're targeting Android API level < 26,
+     * you'll need to enable core library desugaring to support the java.time API.
+     */
+    compileOptions {
+        coreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {
+    implementation Dep.APOLLO_API
+    implementation Dep.APOLLO_RUNTIME
     implementation Dep.OKHTTP
     implementation Dep.OKHTTP_LOGGING_INTERCEPTOR
     implementation Dep.RETROFIT
     implementation Dep.RETROFIT_CONVERTER_MOSHI
     implementation Dep.NETWORK_RESPONSE_ADAPTER
+}
+
+apollo {
+    packageName.set("com.alxnophis.jetpack.spacex")
 }

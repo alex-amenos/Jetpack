@@ -22,7 +22,7 @@ sealed class Screen(val route: String) {
     object LocationTracker : Screen(route = "location_tracker_screen")
     object Posts : Screen(route = "posts_screen")
     object Settings : Screen(route = "settings_screen")
-    object Spacex: Screen(route = "spacex_screen")
+    object Spacex : Screen(route = "spacex_screen")
 }
 
 @Suppress("unused")

@@ -1,0 +1,20 @@
+query Launches($sort: String!, $order: String!) {
+    launches(sort: $sort, order: $order) {
+        mission_name
+        mission_id
+        rocket {
+            rocket_name
+            rocket {
+                company
+                name
+                mass {
+                    kg
+                }
+            }
+        }
+        launch_site {
+            site_name
+        }
+        launch_date_local
+    }
+}
