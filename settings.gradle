@@ -1,4 +1,10 @@
 include ":app"
+// Shared modules
+include ':shared:api'
+include ":shared:core"
+include ':shared:kotlin'
+include ':shared:router'
+include ':shared:testing'
 // Feature modules
 include ':feature:root'
 include ':feature:authentication'
@@ -7,9 +13,3 @@ include ':feature:home'
 include ':feature:location-tracker'
 include ':feature:posts'
 include ':feature:settings'
-// Shared modules
-include ':shared:api'
-include ":shared:core"
-include ':shared:kotlin'
-include ':shared:router'
-include ':shared:testing'
