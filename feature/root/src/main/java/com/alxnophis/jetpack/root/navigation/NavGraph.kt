@@ -11,6 +11,7 @@ import com.alxnophis.jetpack.posts.ui.navigation.postsNavGraph
 import com.alxnophis.jetpack.router.screen.HOME_ROUTE
 import com.alxnophis.jetpack.router.screen.ROOT_ROUTE
 import com.alxnophis.jetpack.settings.ui.navigation.settingsNavGraph
+import com.alxnophis.jetpack.spacex.ui.navigation.spacexNavGraph
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
@@ -25,5 +26,6 @@ fun SetupNavGraph(navController: NavHostController) {
         postsNavGraph(navController)
         settingsNavGraph(navController)
         ballClickerNavGraph(navController)
+        spacexNavGraph(navController)
     }
 }

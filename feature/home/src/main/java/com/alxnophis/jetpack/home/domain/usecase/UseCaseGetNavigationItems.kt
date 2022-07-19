@@ -15,7 +15,8 @@ class UseCaseGetNavigationItems {
                 settings,
                 posts,
                 locationTracker,
-                gameBallClicker
+                gameBallClicker,
+                spacex
             )
         }
     )
@@ -46,6 +47,11 @@ class UseCaseGetNavigationItems {
             name = "Ball Clicker Game",
             description = "Be the fastest ball clicker!",
             screen = Screen.GameBallClicker
+        )
+        private val spacex = NavigationItem(
+            name = "SpaceX",
+            description = "Welcome to the SpaceX GraphQL API",
+            screen = Screen.Spacex
         )
     }
 }

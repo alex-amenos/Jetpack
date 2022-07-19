@@ -1,0 +1,6 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
+
+android {
+    resourcePrefix 'spacex'
+    namespace 'com.alxnophis.jetpack.spacex'
+}

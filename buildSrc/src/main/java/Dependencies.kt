@@ -32,12 +32,13 @@ object Modules {
     const val SHARED_TESTING = ":shared:testing"
     // Feature modules
     const val FEATURE_AUTHENTICATION = ":feature:authentication"
-    const val FEATURE_LOCATION_TRACKER =":feature:location-tracker"
+    const val FEATURE_GAME_BALL_CLICKER = ":feature:game:ballclicker"
     const val FEATURE_HOME = ":feature:home"
+    const val FEATURE_LOCATION_TRACKER =":feature:location-tracker"
     const val FEATURE_POSTS = ":feature:posts"
     const val FEATURE_ROOT = ":feature:root"
     const val FEATURE_SETTINGS = ":feature:settings"
-    const val FEATURE_GAME_BALL_CLICKER = ":feature:game:ballclicker"
+    const val FEATURE_SPACEX = ":feature:spacex"
 }
 
 private object Version {

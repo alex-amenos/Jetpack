@@ -9,6 +9,7 @@ const val HOME_ROUTE = "home"
 const val LOCATION_TRACKER_ROUTE = "location-tracker"
 const val POSTS_ROUTE = "posts"
 const val SETTINGS_ROUTE = "settings"
+const val SPACEX_ROUTE = "spacex"
 
 // Screens
 sealed class Screen(val route: String) {
@@ -21,6 +22,7 @@ sealed class Screen(val route: String) {
     object LocationTracker : Screen(route = "location_tracker_screen")
     object Posts : Screen(route = "posts_screen")
     object Settings : Screen(route = "settings_screen")
+    object Spacex: Screen(route = "spacex_screen")
 }
 
 @Suppress("unused")
