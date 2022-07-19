@@ -8,35 +8,34 @@ It is the home screen where you can select some of experiments of this project.
 
 ℹ️ Some experiments are not completed in terms of development, you can see on code maybe is missing testing or some data/domain layer.
 
-![Home screen](./docs/images/home_screen.png)
+<img alt="Home screen" src="./docs/images/home_screen.png" width="300" />
 
 ## Authentication
 
 Authentication form with SignUp and SignIn
 
-![Authentication screen](./docs/images/authentication_screen.png)
+<img alt="Authentication screen" src="./docs/images/authentication_screen.png" width="300" />
 
 ## Settings
 
 Settings options screen
 
-![Settings screen](./docs/images/settings_screen.png)
+<img alt="Settings screen" src="./docs/images/settings_screen.png" width="300" />
 
 ## Posts
 
 Load posts from JsonPlaceholder API
 
-![Posts screen](./docs/images/posts_screen.png)
+<img alt="Posts screen" src="./docs/images/posts_screen.png" width="300" />
 
 ## Location tracker
 
 User location tracking
 
-![Location tracker screen](./docs/images/location_tracker_screen.png)
-![Location permissions](./docs/images/location_tracker_screen_2.png)
+<img alt="Location tracker screen" src="./docs/images/location_tracker_screen.png" width="300" /> <img alt="Location permissions" src="./docs/images/location_tracker_screen_2.png" width="300" />
 
 ## Ball clicker (Game)
 
 Ball clicker game (custom view with compose)
 
-![Ball clicker game](./docs/images/ball_clicker.png)
+<img alt="Ball clicker game" src="./docs/images/ball_clicker.png" width="300" />

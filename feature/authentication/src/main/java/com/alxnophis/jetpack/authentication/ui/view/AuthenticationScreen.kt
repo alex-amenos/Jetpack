@@ -30,7 +30,7 @@ internal fun AuthenticationScreen(
 ) {
     CoreTheme {
         val state = viewModel.uiState.collectAsState().value
-        Authentication(
+        AuthenticationContent(
             state,
             viewModel::setEvent
         )
@@ -39,7 +39,7 @@ internal fun AuthenticationScreen(
         }
         LaunchedEffect(state) {
             if (state.isUserAuthorized) {
-                navController.navigate(Screen.Authorized.route) {
+                navController.navigate(Screen.Authorized.routeWithParams(state.email)) {
                     // Remove Authentication screen form back stack
                     popUpTo(Screen.Authentication.route) {
                         inclusive = true
@@ -52,7 +52,7 @@ internal fun AuthenticationScreen(
 
 @ExperimentalComposeUiApi
 @Composable
-internal fun Authentication(
+internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
     onAuthenticationEvent: (event: AuthenticationEvent) -> Unit,
 ) {
@@ -103,7 +103,7 @@ internal fun Authentication(
 @Composable
 private fun AuthenticationFormPreview() {
     CoreTheme {
-        Authentication(
+        AuthenticationContent(
             authenticationState = AuthenticationState(),
             onAuthenticationEvent = {},
         )
