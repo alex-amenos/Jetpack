@@ -191,8 +191,8 @@ private fun PastLaunchItem(item: PastLaunchesModel) {
                         modifier = Modifier.wrapContentSize(),
                         text = item.mission_name,
                         color = MaterialTheme.colors.primary,
-                        fontSize = 21.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
                     )
                     Text(
                         modifier = Modifier
@@ -200,7 +200,7 @@ private fun PastLaunchItem(item: PastLaunchesModel) {
                             .wrapContentSize(),
                         text = item.rocket,
                         color = MaterialTheme.colors.onSurface,
-                        fontSize = 16.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
