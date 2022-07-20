@@ -6,7 +6,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.alxnophis.jetpack.router.screen.SPACEX_ROUTE
 import com.alxnophis.jetpack.router.screen.Screen
+import com.alxnophis.jetpack.spacex.di.injectSpacex
 import com.alxnophis.jetpack.spacex.ui.view.SpacexScreen
+import org.koin.androidx.compose.getViewModel
 
 fun NavGraphBuilder.spacexNavGraph(
     navController: NavController
@@ -18,7 +20,11 @@ fun NavGraphBuilder.spacexNavGraph(
         composable(
             route = Screen.Spacex.route
         ) {
-            SpacexScreen(navController = navController)
+            injectSpacex()
+            SpacexScreen(
+                navController = navController,
+                viewModel = getViewModel()
+            )
         }
     }
 }
