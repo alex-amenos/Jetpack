@@ -2,11 +2,11 @@
 
 It is a personal project to experiment with Android development.
 
+ℹ️ Some experiments are not completed in terms of development, you can see on code maybe is missing testing or some data/domain layer.
+
 ## Home
 
 It is the home screen where you can select some of experiments of this project.
-
-ℹ️ Some experiments are not completed in terms of development, you can see on code maybe is missing testing or some data/domain layer.
 
 <img alt="Home screen" src="./docs/images/home_screen.png" width="300" />
 
@@ -31,6 +31,7 @@ Load posts from JsonPlaceholder Rest API
 ## Location tracker
 
 User location tracking
+
 <img alt="Location permissions" src="./docs/images/location_tracker_screen_1.png" width="300" /> <img alt="Location permissions" src="./docs/images/location_tracker_screen_2.png" width="300" />
 
 ## Ball clicker (Game)
