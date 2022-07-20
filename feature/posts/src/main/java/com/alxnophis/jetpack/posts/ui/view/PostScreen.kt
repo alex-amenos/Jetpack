@@ -49,47 +49,47 @@ internal fun PostsScreen(
     navController: NavController,
     viewModel: PostsViewModel = getViewModel()
 ) {
-    CoreTheme {
-        val state = viewModel.uiState.collectAsState().value
-        val navigateBack: () -> Unit = { navController.popBackStack() }
-        BackHandler {
-            navigateBack()
-        }
-        Posts(
-            state = state,
-            onPostEvent = viewModel::setEvent,
-            onNavigateBack = navigateBack
-        )
+    val state = viewModel.uiState.collectAsState().value
+    val navigateBack: () -> Unit = { navController.popBackStack() }
+    BackHandler {
+        navigateBack()
     }
+    PostsContent(
+        state = state,
+        onPostEvent = viewModel::setEvent,
+        onNavigateBack = navigateBack
+    )
 }
 
 @Composable
-internal fun Posts(
+internal fun PostsContent(
     state: PostsState,
     onPostEvent: (event: PostsEvent) -> Unit,
     onNavigateBack: () -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
+    CoreTheme {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            CoreTopBar(
-                title = stringResource(id = R.string.posts_title),
-                onBack = { onNavigateBack() }
-            )
-            PostList(
-                modifier = Modifier.fillMaxSize(),
-                state = state,
-                onPostEvent = onPostEvent,
-            )
-            state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
-                CoreErrorDialog(
-                    errorMessage = stringResource(error.messageId),
-                    dismissError = { onPostEvent.invoke(PostsEvent.DismissError(error.id)) }
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CoreTopBar(
+                    title = stringResource(id = R.string.posts_title),
+                    onBack = { onNavigateBack() }
                 )
+                PostList(
+                    modifier = Modifier.fillMaxSize(),
+                    state = state,
+                    onPostEvent = onPostEvent,
+                )
+                state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
+                    CoreErrorDialog(
+                        errorMessage = stringResource(error.messageId),
+                        dismissError = { onPostEvent.invoke(PostsEvent.DismissError(error.id)) }
+                    )
+                }
             }
         }
     }
@@ -192,11 +192,9 @@ private fun PostScreenPreview() {
         posts = listOf(post1, post2),
         errorMessages = listOf()
     )
-    CoreTheme {
-        Posts(
-            state = state,
-            onPostEvent = {},
-            onNavigateBack = {}
-        )
-    }
+    PostsContent(
+        state = state,
+        onPostEvent = {},
+        onNavigateBack = {}
+    )
 }
