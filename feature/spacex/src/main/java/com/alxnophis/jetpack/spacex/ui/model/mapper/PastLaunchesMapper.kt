@@ -12,7 +12,7 @@ internal fun List<PastLaunchesDataModel>.map(dateFormatter: DateFormatter): List
             mission_name = launch.mission_name ?: EMPTY,
             details = launch.details ?: EMPTY,
             rocket = launch.rocketName ?: EMPTY,
-            launchSite = launch.launchSite ?: EMPTY,
+            launchSite = launch.launchSiteShort ?: EMPTY,
             mission_patch_url = launch.mission_patch_small_url,
             launch_date_utc = launch.launch_date_utc?.let { date -> dateFormatter.formatToReadableDateTime(date) } ?: EMPTY
         )
