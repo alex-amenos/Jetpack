@@ -2,14 +2,14 @@ package com.alxnophis.jetpack.spacex.data.model
 
 import java.util.Date
 
-data class PastLaunchesDataModel(
+internal data class PastLaunchesDataModel(
     val id: String,
-    val mission_name: String,
-    val details: String,
-    val rocketCompany: String,
-    val rocketName: String,
-    val launchSiteShort: String,
-    val launchSite: String,
+    val mission_name: String?,
+    val details: String?,
+    val rocketCompany: String?,
+    val rocketName: String?,
+    val launchSiteShort: String?,
+    val launchSite: String?,
     val mission_patch_small_url: String?,
     val launch_date_utc: Date?
 )
