@@ -13,11 +13,7 @@ import org.koin.dsl.module
 fun injectHome() = loadHomeModules
 
 private val loadHomeModules by lazy {
-    loadKoinModules(
-        listOf(
-            homeModule
-        )
-    )
+    loadKoinModules(homeModule)
 }
 
 private val homeModule: Module = module {

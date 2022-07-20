@@ -13,11 +13,7 @@ import org.koin.dsl.module
 fun injectAuthentication() = loadAuthenticationModules
 
 private val loadAuthenticationModules by lazy {
-    loadKoinModules(
-        listOf(
-            authenticationModule
-        )
-    )
+    loadKoinModules(authenticationModule)
 }
 
 private val authenticationModule: Module = module {

@@ -10,11 +10,7 @@ import org.koin.dsl.module
 internal fun injectBallClicker() = loadBallClickerModule
 
 private val loadBallClickerModule by lazy {
-    loadKoinModules(
-        listOf(
-            ballClickerModule
-        )
-    )
+    loadKoinModules(ballClickerModule)
 }
 
 private val ballClickerModule: Module = module {

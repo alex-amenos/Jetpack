@@ -10,11 +10,7 @@ import org.koin.dsl.module
 fun injectSettings() = loadSettingsModule
 
 private val loadSettingsModule by lazy {
-    loadKoinModules(
-        listOf(
-            settingsModule
-        )
-    )
+    loadKoinModules(settingsModule)
 }
 
 private val settingsModule: Module = module {

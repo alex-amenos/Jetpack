@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.posts.di
 
-import com.alxnophis.jetpack.api.di.apiModule
 import com.alxnophis.jetpack.posts.data.datasource.PostDataSource
 import com.alxnophis.jetpack.posts.data.datasource.PostDataSourceImpl
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
@@ -16,12 +15,7 @@ import org.koin.dsl.module
 fun injectPosts() = loadPostsModules
 
 private val loadPostsModules by lazy {
-    loadKoinModules(
-        listOf(
-            apiModule,
-            postModule
-        )
-    )
+    loadKoinModules(postModule)
 }
 
 private val postModule: Module = module {

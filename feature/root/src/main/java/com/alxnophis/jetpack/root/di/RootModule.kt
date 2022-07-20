@@ -9,9 +9,7 @@ import org.koin.dsl.module
 fun injectRoot() = loadRootModules
 
 private val loadRootModules by lazy {
-    loadKoinModules(
-        listOf(rootModule)
-    )
+    loadKoinModules(rootModule)
 }
 
 private val rootModule: Module = module {
