@@ -42,20 +42,18 @@ import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun PostsScreen(
     navController: NavController,
-    viewModel: PostsViewModel = getViewModel()
+    viewModel: PostsViewModel
 ) {
-    val state = viewModel.uiState.collectAsState().value
     val navigateBack: () -> Unit = { navController.popBackStack() }
     BackHandler {
         navigateBack()
     }
     PostsContent(
-        state = state,
+        state = viewModel.uiState.collectAsState().value,
         onPostEvent = viewModel::setEvent,
         onNavigateBack = navigateBack
     )
