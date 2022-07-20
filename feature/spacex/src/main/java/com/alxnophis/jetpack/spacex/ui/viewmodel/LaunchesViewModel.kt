@@ -44,6 +44,7 @@ internal class LaunchesViewModel(
                     val errorMessages: List<ErrorMessage> = currentState.errorMessages + ErrorMessage(
                         id = UUID.randomUUID().mostSignificantBits,
                         messageId = when (error) {
+                            is LaunchesError.Http -> R.string.core_error_http
                             LaunchesError.Network -> R.string.core_error_network
                             LaunchesError.Parse -> R.string.core_error_parse
                             LaunchesError.Unknown -> R.string.core_error_unknown
