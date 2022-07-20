@@ -1,8 +1,7 @@
 package com.alxnophis.jetpack.posts.di
 
+import com.alxnophis.jetpack.api.di.apiModule
 import com.alxnophis.jetpack.core.di.coreModule
-import com.alxnophis.jetpack.kotlin.utils.DefaultDispatcherProvider
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.posts.data.datasource.PostDataSource
 import com.alxnophis.jetpack.posts.data.datasource.PostDataSourceImpl
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
@@ -21,13 +20,13 @@ private val loadPostsModules by lazy {
     loadKoinModules(
         listOf(
             coreModule,
+            apiModule,
             postModule
         )
     )
 }
 
 private val postModule: Module = module {
-    factory<DispatcherProvider> { DefaultDispatcherProvider() }
     factory<PostDataSource> { PostDataSourceImpl(get(), get()) }
     factory<PostsRepository> { PostsRepositoryImpl(get()) }
     factory { PostsUseCase(get()) }

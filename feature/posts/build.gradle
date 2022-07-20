@@ -7,7 +7,6 @@ android {
 
 dependencies {
     implementation project(Modules.SHARED_API)
-
     implementation Dep.NETWORK_RESPONSE_ADAPTER
     implementation Dep.RETROFIT
     implementation Dep.GOOGLE_ACCOMPANITS_SWIPEREFRESH

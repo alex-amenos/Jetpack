@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.root.di
 
-import com.alxnophis.jetpack.core.di.coreModule
 import com.alxnophis.jetpack.root.ui.viewmodel.RootViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
@@ -11,10 +10,7 @@ fun injectRoot() = loadRootModules
 
 private val loadRootModules by lazy {
     loadKoinModules(
-        listOf(
-            coreModule,
-            rootModule
-        )
+        listOf(rootModule)
     )
 }
 
