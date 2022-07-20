@@ -4,5 +4,5 @@ import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.apollographql.apollo3.ApolloCall
 
 interface SpacexApi {
-    suspend fun getLaunchedMissions(): ApolloCall<LaunchesQuery.Data>
+    suspend fun pastLaunches(): ApolloCall<LaunchesQuery.Data>
 }

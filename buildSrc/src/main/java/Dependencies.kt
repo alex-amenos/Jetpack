@@ -119,7 +119,7 @@ object Dep {
     const val ANDROIDX_VECTOR_DRAWABLE = "androidx.vectordrawable:vectordrawable:${Version.ANDROIDX_VECTOR_DRAWABLE}"
     const val ANDROIDX_WORK = "androidx.work:work-runtime-ktx:${Version.ANDROIDX_WORK}"
     const val APOLLO_API = "com.apollographql.apollo3:apollo-api:${Version.APOLLO}"
-    const val APOLLO_COROUTINES = "com.apollographql.apollo3:apollo-coroutines-support:${Version.APOLLO}"
+    const val APOLLO_ADAPTERS = "com.apollographql.apollo3:apollo-adapters:${Version.APOLLO}"
     const val APOLLO_RUNTIME = "com.apollographql.apollo3:apollo-runtime:${Version.APOLLO}"
     const val APOLLO_CACHE = "com.apollographql.apollo3:apollo-http-cache:${Version.APOLLO}"
     const val ARROW_STACK = "io.arrow-kt:arrow-stack:${Version.ARROW}"

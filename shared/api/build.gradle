@@ -15,6 +15,7 @@ android {
 }
 
 dependencies {
+    implementation Dep.APOLLO_ADAPTERS
     implementation Dep.APOLLO_API
     implementation Dep.APOLLO_RUNTIME
     implementation Dep.OKHTTP
@@ -26,4 +27,5 @@ dependencies {
 
 apollo {
     packageName.set("com.alxnophis.jetpack.spacex")
+    mapScalar("Date", "java.util.Date", "com.apollographql.apollo3.adapter.DateAdapter")
 }

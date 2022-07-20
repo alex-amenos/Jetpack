@@ -8,6 +8,6 @@ class SpacexApiImpl(
     private val apolloClient: ApolloClient
 ) : SpacexApi {
 
-    override suspend fun getLaunchedMissions(): ApolloCall<LaunchesQuery.Data> =
-        apolloClient.query(LaunchesQuery(sort = "launch_date_local", order = "desc"))
+    override suspend fun pastLaunches(): ApolloCall<LaunchesQuery.Data> =
+        apolloClient.query(LaunchesQuery(sort = "launch_date_utc", order = "desc"))
 }
