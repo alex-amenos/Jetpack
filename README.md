@@ -24,18 +24,23 @@ Settings options screen
 
 ## Posts
 
-Load posts from JsonPlaceholder API
+Load posts from JsonPlaceholder Rest API
 
 <img alt="Posts screen" src="./docs/images/posts_screen.png" width="300" />
 
 ## Location tracker
 
 User location tracking
-
-<img alt="Location tracker screen" src="./docs/images/location_tracker_screen.png" width="300" /> <img alt="Location permissions" src="./docs/images/location_tracker_screen_2.png" width="300" />
+<img alt="Location permissions" src="./docs/images/location_tracker_screen_1.png" width="300" /> <img alt="Location permissions" src="./docs/images/location_tracker_screen_2.png" width="300" />
 
 ## Ball clicker (Game)
 
-Ball clicker game (custom view with compose)
+Ball clicker game (custom view with compose).
 
 <img alt="Ball clicker game" src="./docs/images/ball_clicker.png" width="300" />
+
+## SpaceX
+
+This experiment shows past launches of SpaceX using SpaceX GraphQL API with expandable card detail.
+
+<img alt="Ball clicker game" src="./docs/images/spacex_past_launches.png" width="300" />
