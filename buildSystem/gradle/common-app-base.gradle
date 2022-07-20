@@ -15,8 +15,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        vectorDrawables.useSupportLibrary = true
         multiDexEnabled false
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
