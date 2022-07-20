@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.spacex.di
 
 import com.alxnophis.jetpack.api.di.apiModule
-import com.alxnophis.jetpack.core.di.coreModule
 import com.alxnophis.jetpack.spacex.data.datasource.LaunchesDataSource
 import com.alxnophis.jetpack.spacex.data.datasource.LaunchesDataSourceImpl
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
@@ -18,7 +17,6 @@ fun injectSpacex() = loadSpacexModules
 private val loadSpacexModules by lazy {
     loadKoinModules(
         listOf(
-            coreModule,
             apiModule,
             spacexModule
         )

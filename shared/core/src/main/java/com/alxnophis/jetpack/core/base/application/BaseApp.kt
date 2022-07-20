@@ -2,8 +2,10 @@ package com.alxnophis.jetpack.core.base.application
 
 import android.app.Application
 import android.os.StrictMode
+import com.alxnophis.jetpack.api.di.apiModule
 import com.alxnophis.jetpack.core.BuildConfig
 import com.alxnophis.jetpack.core.di.KoinLogger
+import com.alxnophis.jetpack.core.di.coreModule
 import com.alxnophis.jetpack.core.extensions.isDebugBuildType
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -20,7 +22,15 @@ open class BaseApp : Application() {
     }
 
     private fun initKoin() {
-        val koinApp = startKoin { androidContext(this@BaseApp) }
+        val koinApp = startKoin {
+            androidContext(this@BaseApp)
+            modules(
+                listOf(
+                    coreModule,
+                    apiModule
+                )
+            )
+        }
         if (BuildConfig.DEBUG) {
             koinApp.logger(KoinLogger())
         }
