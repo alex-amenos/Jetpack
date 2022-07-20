@@ -14,4 +14,4 @@ internal data class LaunchesState(
     val isLoading: Boolean = false,
     val pastLaunches: List<PastLaunchesModel> = emptyList(),
     val errorMessages: List<ErrorMessage> = emptyList(),
-): UiState
+) : UiState

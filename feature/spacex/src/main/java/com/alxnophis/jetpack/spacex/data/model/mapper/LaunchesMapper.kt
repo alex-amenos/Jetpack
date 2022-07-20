@@ -16,7 +16,7 @@ internal fun LaunchesQuery.Data.map(): List<PastLaunchesDataModel> =
                 rocketCompany = launch.rocket?.rocket?.company,
                 rocketName = launch.rocket?.rocket?.name,
                 launchSiteShort = launch.launch_site?.site_name,
-                launchSite = launch.launch_site?.site_name,
+                launchSite = launch.launch_site?.site_name_long,
                 mission_patch_small_url = launch.links?.mission_patch_small,
                 launch_date_utc = launch.launch_date_utc
             )

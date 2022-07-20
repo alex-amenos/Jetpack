@@ -1,15 +1,17 @@
 package com.alxnophis.jetpack.spacex.ui.view
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -20,14 +22,18 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +46,7 @@ import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
@@ -136,24 +143,34 @@ private fun PastLaunchItem(item: PastLaunchesModel) {
                 .wrapContentHeight()
                 .padding(16.dp)
         ) {
-            if (item.launch_date_utc.isNotEmpty()) {
-                Text(
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .wrapContentWidth(),
-                    text = item.launch_date_utc,
-                    color = MaterialTheme.colors.onSurface,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Light,
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                if (item.launchSite.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier.wrapContentWidth(),
+                        text = item.launchSite,
+                        color = MaterialTheme.colors.onSurface,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Light,
+                    )
+                }
+                if (item.launch_date_utc.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier.wrapContentWidth(),
+                        text = item.launch_date_utc,
+                        color = MaterialTheme.colors.onSurface,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Light,
+                    )
+                }
             }
             Row(
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier.padding(top = 16.dp)
             ) {
                 AsyncImage(
-                    modifier = Modifier
-                        .width(60.dp)
-                        .height(60.dp),
+                    modifier = Modifier.size(60.dp),
                     model = ImageRequest
                         .Builder(localContext)
                         .data(item.mission_patch_url)
@@ -189,18 +206,56 @@ private fun PastLaunchItem(item: PastLaunchesModel) {
                 }
             }
             if (item.details.isNotEmpty()) {
-                Text(
+                ExpandingText(
                     modifier = Modifier
                         .padding(top = 16.dp)
                         .wrapContentSize(),
-                    text = item.details,
-                    color = Color.Gray,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Light,
+                    item = item,
                 )
             }
         }
     }
+}
+
+@Composable
+private fun ExpandingText(
+    modifier: Modifier = Modifier,
+    item: PastLaunchesModel,
+) {
+    val showMoreString = stringResource(R.string.spacex_show_more)
+    val textLayoutResultState = remember { mutableStateOf<TextLayoutResult?>(null) }
+    val textLayoutResult = textLayoutResultState.value
+    var isClickable by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(false) }
+    var finalText: String by remember { mutableStateOf(item.details) }
+    LaunchedEffect(textLayoutResult) {
+        if (textLayoutResult == null) return@LaunchedEffect
+        when {
+            isExpanded -> {
+                isClickable = false
+                finalText = item.details
+            }
+            !isExpanded && textLayoutResult.hasVisualOverflow -> {
+                isClickable = true
+                val lastCharIndex = textLayoutResult.getLineEnd(MINIMIZED_LINES - 1)
+                val adjustedText = item.details
+                    .substring(startIndex = ZERO_INT, endIndex = lastCharIndex)
+                    .dropLast(showMoreString.length)
+                    .dropLastWhile { it == ' ' || it == '.' }
+                finalText = "$adjustedText$showMoreString"
+            }
+        }
+    }
+    Text(
+        text = finalText,
+        modifier = modifier
+            .clickable(enabled = isClickable) { isExpanded = !isExpanded }
+            .animateContentSize(),
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Light,
+        maxLines = if (isExpanded) Int.MAX_VALUE else MINIMIZED_LINES,
+        onTextLayout = { textLayoutResultState.value = it },
+    )
 }
 
 @Preview(showBackground = true)
@@ -212,7 +267,8 @@ private fun SpacexContentPreview() {
             PastLaunchesModel(
                 id = "1",
                 mission_name = "Mission XYZ",
-                details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                    "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 rocket = "Rocket Name (Company)",
                 launchSite = "Launch Site",
                 mission_patch_url = null,
@@ -227,3 +283,5 @@ private fun SpacexContentPreview() {
         onNavigateBack = {}
     )
 }
+
+private const val MINIMIZED_LINES = 3
