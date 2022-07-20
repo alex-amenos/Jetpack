@@ -17,6 +17,7 @@ android {
 dependencies {
     implementation Dep.APOLLO_ADAPTERS
     implementation Dep.APOLLO_API
+    implementation Dep.APOLLO_NORMALIZED_CACHE
     implementation Dep.APOLLO_RUNTIME
     implementation Dep.OKHTTP
     implementation Dep.OKHTTP_LOGGING_INTERCEPTOR
