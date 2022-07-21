@@ -31,15 +31,16 @@ internal class LaunchesViewModel(
 
     override fun handleEvent(event: LaunchesEvent) {
         when (event) {
-            LaunchesEvent.GetPastLaunches -> renderPastLaunches()
+            LaunchesEvent.GetPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = false)
+            LaunchesEvent.RefreshPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = true)
             is LaunchesEvent.DismissError -> dismissError(event.errorId)
         }
     }
 
-    private fun renderPastLaunches() {
+    private fun renderPastLaunches(hasToFetchDataFromNetworkOnly: Boolean) {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            getPastLaunches().fold(
+            getPastLaunches(hasToFetchDataFromNetworkOnly).fold(
                 { error ->
                     val errorMessages: List<ErrorMessage> = currentState.errorMessages + ErrorMessage(
                         id = UUID.randomUUID().mostSignificantBits,
@@ -69,11 +70,12 @@ internal class LaunchesViewModel(
         }
     }
 
-    private suspend fun getPastLaunches(): Either<LaunchesError, List<PastLaunchesModel>> = withContext(dispatcherProvider.io()) {
-        launchesRepository
-            .getPastLaunches()
-            .map { launches: List<PastLaunchesDataModel> -> launches.map(dateFormatter) }
-    }
+    private suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchesModel>> =
+        withContext(dispatcherProvider.io()) {
+            launchesRepository
+                .getPastLaunches(hasToFetchDataFromNetworkOnly)
+                .map { launches: List<PastLaunchesDataModel> -> launches.map(dateFormatter) }
+        }
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }

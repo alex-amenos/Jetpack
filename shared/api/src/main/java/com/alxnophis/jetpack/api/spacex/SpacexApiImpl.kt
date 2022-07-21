@@ -10,10 +10,12 @@ class SpacexApiImpl(
     private val apolloClient: ApolloClient
 ) : SpacexApi {
 
-    override suspend fun pastLaunches(): ApolloCall<LaunchesQuery.Data> =
-        apolloClient
+    override suspend fun pastLaunches(hasToFetchDataFromNetworkOnly: Boolean): ApolloCall<LaunchesQuery.Data> {
+        val fetchPolicy = if(hasToFetchDataFromNetworkOnly) FetchPolicy.NetworkOnly else FetchPolicy.NetworkFirst
+        return apolloClient
             .query(LaunchesQuery(sort = FIELD_LAUNCH_DATE_UTC, order = ORDER_DESC))
-            .fetchPolicy(FetchPolicy.NetworkFirst)
+            .fetchPolicy(fetchPolicy)
+    }
 
     companion object {
         private const val FIELD_LAUNCH_DATE_UTC = "launch_date_utc"

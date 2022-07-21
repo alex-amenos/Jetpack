@@ -17,7 +17,7 @@ internal class LaunchesDataSourceImpl(
     private val spacexApi: SpacexApi
 ) : LaunchesDataSource {
 
-    override suspend fun getPastLaunches(): Either<LaunchesError, List<PastLaunchesDataModel>> =
+    override suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchesDataModel>> =
         withContext(dispatcherProvider.io()) {
             Either.catch(
                 { error: Throwable ->
@@ -31,7 +31,7 @@ internal class LaunchesDataSourceImpl(
                 },
                 {
                     spacexApi
-                        .pastLaunches()
+                        .pastLaunches(hasToFetchDataFromNetworkOnly)
                         .execute()
                         .data
                         ?.map()

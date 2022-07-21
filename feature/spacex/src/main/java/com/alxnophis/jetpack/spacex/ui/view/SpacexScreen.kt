@@ -109,7 +109,7 @@ private fun PastLaunchesList(
     val listState = rememberLazyListState()
     SwipeRefresh(
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { onLaunchesEvent.invoke(LaunchesEvent.GetPastLaunches) }
+        onRefresh = { onLaunchesEvent.invoke(LaunchesEvent.RefreshPastLaunches) }
     ) {
         LazyColumn(
             state = listState,
