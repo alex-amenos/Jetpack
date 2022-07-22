@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.spacex.data.datasource
 
+import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import com.alxnophis.jetpack.api.spacex.SpacexApi
@@ -47,9 +48,9 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
         testScope.runTest {
             whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.launches)
 
-            val result = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
+            val result: Either<LaunchesError, List<PastLaunchesDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
-            assertEquals(result, PAST_LAUNCHES.right())
+            assertEquals(PAST_LAUNCHES.right(), result)
         }
     }
 
@@ -61,9 +62,9 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
         testScope.runTest {
             whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.nullableLaunches)
 
-            val result = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
+            val result: Either<LaunchesError, List<PastLaunchesDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
-            assertEquals(result, emptyList<PastLaunchesDataModel>().right())
+            assertEquals(emptyList<PastLaunchesDataModel>().right(), result)
         }
     }
 
@@ -77,9 +78,9 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
         testScope.runTest {
             whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenThrow(inputException)
 
-            val result = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
+            val result: Either<LaunchesError, List<PastLaunchesDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
-            assertEquals(result, expectedError.left())
+            assertEquals(expectedError.left(), result)
         }
     }
 
