@@ -8,6 +8,7 @@ import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo3.network.okHttpClient
+import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.BuildConfig
@@ -18,6 +19,10 @@ class SpacexApolloClientFactory(applicationContext: Context) {
     private val memoryThenSqlCache = memoryCache.chain(sqlCache)
     private val okHttpClient = OkHttpClient
         .Builder()
+        .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
+        .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
+        .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(false)
         .addInterceptor(loggingInterceptor())
         .build()
 
@@ -39,5 +44,8 @@ class SpacexApolloClientFactory(applicationContext: Context) {
 
     companion object {
         private const val SERVER_URL = "https://api.spacex.land/graphql/"
+        private const val TIMEOUT_CONNECT = 10L
+        private const val TIMEOUT_READ = 10L
+        private const val TIMEOUT_WRITE = 10L
     }
 }
