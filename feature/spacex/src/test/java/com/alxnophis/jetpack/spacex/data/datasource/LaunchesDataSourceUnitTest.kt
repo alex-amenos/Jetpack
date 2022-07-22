@@ -40,7 +40,7 @@ internal class LaunchesDataSourceUnitTest : BaseUnitTest() {
     }
 
     @ParameterizedTest
-    @MethodSource("argumentTestProvider")
+    @MethodSource("pastLaunchesSuccessTestProvider")
     fun `WHEN get past launches succeed THEN return a list of past launches`(
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
@@ -54,7 +54,7 @@ internal class LaunchesDataSourceUnitTest : BaseUnitTest() {
     }
 
     @ParameterizedTest
-    @MethodSource("argumentTestProvider")
+    @MethodSource("pastLaunchesSuccessTestProvider")
     fun `WHEN get past launches succeed with null THEN return an empty list of past launches`(
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
@@ -68,62 +68,23 @@ internal class LaunchesDataSourceUnitTest : BaseUnitTest() {
     }
 
     @ParameterizedTest
-    @MethodSource("argumentTestProvider")
-    fun `WHEN get past launches fails with ApolloParseException then return parse error`(
-        hasToFetchDataFromNetworkOnly: Boolean
+    @MethodSource("pastLaunchesErrorTestProvider")
+    fun `WHEN get past launches failure then return launches error`(
+        hasToFetchDataFromNetworkOnly: Boolean,
+        inputException: ApolloException,
+        expectedError: LaunchesError
     ) {
         testScope.runTest {
-            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenThrow(ApolloParseException())
+            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenThrow(inputException)
 
             val result = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
-            assertEquals(result, LaunchesError.Parse.left())
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("argumentTestProvider")
-    fun `WHEN get past launches fails with ApolloHttpException then return http error with status code`(
-        hasToFetchDataFromNetworkOnly: Boolean
-    ) {
-        testScope.runTest {
-            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenThrow(apolloHttpException)
-
-            val result = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
-
-            assertEquals(result, LaunchesError.Http(500).left())
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("argumentTestProvider")
-    fun `WHEN get past launches fails with ApolloNetworkException then return network error`(
-        hasToFetchDataFromNetworkOnly: Boolean
-    ) {
-        testScope.runTest {
-            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenThrow(ApolloNetworkException())
-
-            val result = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
-
-            assertEquals(result, LaunchesError.Network.left())
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("argumentTestProvider")
-    fun `WHEN get past launches fails with any other exception then return unknown error`(
-        hasToFetchDataFromNetworkOnly: Boolean
-    ) {
-        testScope.runTest {
-            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenThrow(ApolloException())
-
-            val result = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
-
-            assertEquals(result, LaunchesError.Unknown.left())
+            assertEquals(result, expectedError.left())
         }
     }
 
     companion object {
+        private const val STATUS_CODE_SERVER_ERROR = 500
         private val PAST_LAUNCHES = listOf(
             PastLaunchesDataModel(
                 id = "id",
@@ -137,7 +98,7 @@ internal class LaunchesDataSourceUnitTest : BaseUnitTest() {
             )
         )
         private val apolloHttpException = ApolloHttpException(
-            statusCode = 500,
+            statusCode = STATUS_CODE_SERVER_ERROR,
             headers = listOf(),
             body = null,
             message = "Server error",
@@ -145,9 +106,21 @@ internal class LaunchesDataSourceUnitTest : BaseUnitTest() {
         )
 
         @JvmStatic
-        private fun argumentTestProvider(): Stream<Arguments> = Stream.of(
+        private fun pastLaunchesSuccessTestProvider(): Stream<Arguments> = Stream.of(
             Arguments.of(true),
-            Arguments.of(false)
+            Arguments.of(false),
+        )
+
+        @JvmStatic
+        private fun pastLaunchesErrorTestProvider(): Stream<Arguments> = Stream.of(
+            Arguments.of(true, ApolloParseException(), LaunchesError.Parse),
+            Arguments.of(false, ApolloParseException(), LaunchesError.Parse),
+            Arguments.of(true, apolloHttpException, LaunchesError.Http(STATUS_CODE_SERVER_ERROR)),
+            Arguments.of(false, apolloHttpException, LaunchesError.Http(STATUS_CODE_SERVER_ERROR)),
+            Arguments.of(true, ApolloNetworkException(), LaunchesError.Network),
+            Arguments.of(false, ApolloNetworkException(), LaunchesError.Network),
+            Arguments.of(true, ApolloException(), LaunchesError.Unknown),
+            Arguments.of(false, ApolloException(), LaunchesError.Unknown)
         )
     }
 }
