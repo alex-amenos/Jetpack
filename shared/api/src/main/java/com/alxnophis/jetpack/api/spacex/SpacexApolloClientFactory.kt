@@ -29,14 +29,13 @@ class SpacexApolloClientFactory(applicationContext: Context) {
         .normalizedCache(memoryThenSqlCache)
         .build()
 
-    private fun loggingInterceptor(): HttpLoggingInterceptor {
-        val logging = HttpLoggingInterceptor()
-        logging.level = when (BuildConfig.DEBUG) {
-            true -> HttpLoggingInterceptor.Level.BODY
-            else -> HttpLoggingInterceptor.Level.NONE
+    private fun loggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply {
+            level = when {
+                BuildConfig.DEBUG -> HttpLoggingInterceptor.Level.BASIC
+                else -> HttpLoggingInterceptor.Level.NONE
+            }
         }
-        return logging
-    }
 
     companion object {
         private const val SERVER_URL = "https://api.spacex.land/graphql/"
