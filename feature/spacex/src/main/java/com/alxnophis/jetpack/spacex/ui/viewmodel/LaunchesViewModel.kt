@@ -48,7 +48,7 @@ internal class LaunchesViewModel(
                             is LaunchesError.Http -> R.string.core_error_http
                             LaunchesError.Network -> R.string.core_error_network
                             LaunchesError.Parse -> R.string.core_error_parse
-                            LaunchesError.Unknown -> R.string.core_error_unknown
+                            else -> R.string.core_error_unknown
                         }
                     )
                     setState {

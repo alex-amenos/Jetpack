@@ -4,15 +4,12 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import com.alxnophis.jetpack.api.spacex.SpacexApi
+import com.alxnophis.jetpack.api.spacex.model.SpacexApiError
 import com.alxnophis.jetpack.api.spacex.testbuilder.PastLaunchesApiTestBuilder
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModel
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import com.apollographql.apollo3.annotations.ApolloExperimental
-import com.apollographql.apollo3.exception.ApolloException
-import com.apollographql.apollo3.exception.ApolloHttpException
-import com.apollographql.apollo3.exception.ApolloNetworkException
-import com.apollographql.apollo3.exception.ApolloParseException
 import java.util.stream.Stream
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -46,7 +43,7 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
         testScope.runTest {
-            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.launches)
+            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.launches.right())
 
             val result: Either<LaunchesError, List<PastLaunchesDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
@@ -60,7 +57,7 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
         testScope.runTest {
-            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.nullableLaunches)
+            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.nullableLaunches.right())
 
             val result: Either<LaunchesError, List<PastLaunchesDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
@@ -72,11 +69,11 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
     @MethodSource("pastLaunchesErrorTestProvider")
     fun `WHEN get past launches failure then return launches error`(
         hasToFetchDataFromNetworkOnly: Boolean,
-        inputException: ApolloException,
+        inputException: SpacexApiError,
         expectedError: LaunchesError
     ) {
         testScope.runTest {
-            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenThrow(inputException)
+            whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(inputException.left())
 
             val result: Either<LaunchesError, List<PastLaunchesDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
@@ -98,13 +95,7 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
                 launch_date_utc = null
             )
         )
-        private val apolloHttpException = ApolloHttpException(
-            statusCode = STATUS_CODE_SERVER_ERROR,
-            headers = listOf(),
-            body = null,
-            message = "Server error",
-            cause = null
-        )
+        private val apolloHttpException = SpacexApiError.Http(statusCode = STATUS_CODE_SERVER_ERROR)
 
         @JvmStatic
         private fun pastLaunchesSuccessTestProvider(): Stream<Arguments> = Stream.of(
@@ -114,14 +105,16 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
 
         @JvmStatic
         private fun pastLaunchesErrorTestProvider(): Stream<Arguments> = Stream.of(
-            Arguments.of(true, ApolloParseException(), LaunchesError.Parse),
-            Arguments.of(false, ApolloParseException(), LaunchesError.Parse),
+            Arguments.of(true, SpacexApiError.Parse, LaunchesError.Parse),
+            Arguments.of(false, SpacexApiError.Parse, LaunchesError.Parse),
             Arguments.of(true, apolloHttpException, LaunchesError.Http(STATUS_CODE_SERVER_ERROR)),
             Arguments.of(false, apolloHttpException, LaunchesError.Http(STATUS_CODE_SERVER_ERROR)),
-            Arguments.of(true, ApolloNetworkException(), LaunchesError.Network),
-            Arguments.of(false, ApolloNetworkException(), LaunchesError.Network),
-            Arguments.of(true, ApolloException(), LaunchesError.Unknown),
-            Arguments.of(false, ApolloException(), LaunchesError.Unknown)
+            Arguments.of(true, SpacexApiError.Network, LaunchesError.Network),
+            Arguments.of(false, SpacexApiError.Network, LaunchesError.Network),
+            Arguments.of(true, SpacexApiError.Unknown, LaunchesError.Unknown),
+            Arguments.of(false, SpacexApiError.Unknown, LaunchesError.Unknown),
+            Arguments.of(true, SpacexApiError.Unexpected, LaunchesError.Unexpected),
+            Arguments.of(false, SpacexApiError.Unexpected, LaunchesError.Unexpected),
         )
     }
 }
