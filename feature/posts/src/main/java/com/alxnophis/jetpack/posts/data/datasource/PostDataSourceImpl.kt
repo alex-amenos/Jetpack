@@ -2,7 +2,7 @@ package com.alxnophis.jetpack.posts.data.datasource
 
 import arrow.core.Either
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderApi
-import com.alxnophis.jetpack.api.jsonplaceholder.model.JsonPlaceholderError
+import com.alxnophis.jetpack.api.jsonplaceholder.model.JsonPlaceholderApiError
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.posts.data.datasource.mapper.mapToPostList
@@ -22,10 +22,10 @@ class PostDataSourceImpl(
                 .map { posts: List<PostApiModel> -> posts.mapToPostList() }
                 .mapLeft { error ->
                     when (error) {
-                        JsonPlaceholderError.Network -> PostsError.Network
-                        JsonPlaceholderError.Unexpected -> PostsError.Unexpected
-                        is JsonPlaceholderError.Server -> PostsError.Server
-                        is JsonPlaceholderError.Unknown -> PostsError.Unknown
+                        JsonPlaceholderApiError.Network -> PostsError.Network
+                        JsonPlaceholderApiError.Unexpected -> PostsError.Unexpected
+                        is JsonPlaceholderApiError.Server -> PostsError.Server
+                        is JsonPlaceholderApiError.Unknown -> PostsError.Unknown
                     }
                 }
         }
