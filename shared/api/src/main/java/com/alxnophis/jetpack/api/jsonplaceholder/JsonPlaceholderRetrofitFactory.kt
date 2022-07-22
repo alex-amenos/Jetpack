@@ -8,39 +8,38 @@ import org.koin.android.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-object JsonPlaceholderRetrofitFactory {
-    private const val BASE_URL = "https://jsonplaceholder.typicode.com"
-    private const val TIMEOUT_CONNECT = 15L
-    private const val TIMEOUT_READ = 15L
-    private const val TIMEOUT_WRITE = 15L
+class JsonPlaceholderRetrofitFactory {
+    private val okHttpClient = OkHttpClient
+        .Builder()
+        .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
+        .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
+        .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
+        .addInterceptor(loggingInterceptor())
+        .build()
 
     operator fun invoke(): JsonPlaceholderRetrofitService {
         return Retrofit
             .Builder()
             .baseUrl(BASE_URL)
-            .client(buildOkHttpClient())
+            .client(okHttpClient)
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(JsonPlaceholderRetrofitService::class.java)
     }
 
-    private fun buildOkHttpClient(): OkHttpClient {
-        return OkHttpClient
-            .Builder()
-            .addInterceptor(loggingInterceptor())
-            .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
-            .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
-            .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
-            .build()
-    }
-
-    private fun loggingInterceptor(): HttpLoggingInterceptor {
-        val logging = HttpLoggingInterceptor()
-        logging.level = when (BuildConfig.DEBUG) {
-            true -> HttpLoggingInterceptor.Level.BODY
-            else -> HttpLoggingInterceptor.Level.NONE
+    private fun loggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply {
+            level = when {
+                BuildConfig.DEBUG -> HttpLoggingInterceptor.Level.BASIC
+                else -> HttpLoggingInterceptor.Level.NONE
+            }
         }
-        return logging
+
+    companion object {
+        private const val BASE_URL = "https://jsonplaceholder.typicode.com"
+        private const val TIMEOUT_CONNECT = 10L
+        private const val TIMEOUT_READ = 10L
+        private const val TIMEOUT_WRITE = 10L
     }
 }
