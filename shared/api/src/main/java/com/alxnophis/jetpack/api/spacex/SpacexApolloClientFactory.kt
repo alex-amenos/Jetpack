@@ -5,6 +5,7 @@ import com.alxnophis.jetpack.spacex.type.Date
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.adapter.DateAdapter
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
+import com.apollographql.apollo3.cache.normalized.api.NormalizedCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo3.network.okHttpClient
@@ -16,31 +17,32 @@ import org.koin.android.BuildConfig
 class SpacexApolloClientFactory(applicationContext: Context) {
     private val sqlCache = SqlNormalizedCacheFactory(applicationContext, "spacex.db")
     private val memoryCache = MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
-    private val memoryThenSqlCache = memoryCache.chain(sqlCache)
-    private val okHttpClient = OkHttpClient
-        .Builder()
-        .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
-        .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
-        .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
-        .retryOnConnectionFailure(false)
-        .addInterceptor(loggingInterceptor())
-        .build()
+    private val memoryThenSqlCache: NormalizedCacheFactory = memoryCache.chain(sqlCache)
+    private val okHttpClient =
+        OkHttpClient
+            .Builder()
+            .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(false)
+            .addInterceptor(loggingInterceptor())
+            .build()
 
-    operator fun invoke() = ApolloClient
-        .Builder()
-        .serverUrl(SERVER_URL)
-        .okHttpClient(okHttpClient)
-        .addCustomScalarAdapter(Date.type, DateAdapter)
-        .normalizedCache(memoryThenSqlCache)
-        .build()
+    operator fun invoke() =
+        ApolloClient
+            .Builder()
+            .serverUrl(SERVER_URL)
+            .okHttpClient(okHttpClient)
+            .addCustomScalarAdapter(Date.type, DateAdapter)
+            .normalizedCache(memoryThenSqlCache)
+            .build()
 
-    private fun loggingInterceptor(): HttpLoggingInterceptor =
-        HttpLoggingInterceptor().apply {
-            level = when {
-                BuildConfig.DEBUG -> HttpLoggingInterceptor.Level.BASIC
-                else -> HttpLoggingInterceptor.Level.NONE
-            }
+    private fun loggingInterceptor() = HttpLoggingInterceptor().apply {
+        level = when {
+            BuildConfig.DEBUG -> HttpLoggingInterceptor.Level.BASIC
+            else -> HttpLoggingInterceptor.Level.NONE
         }
+    }
 
     companion object {
         private const val SERVER_URL = "https://api.spacex.land/graphql/"
