@@ -9,6 +9,5 @@ dependencies {
     implementation project(Modules.SHARED_API)
     implementation Dep.APOLLO_RUNTIME
     implementation Dep.GOOGLE_ACCOMPANITS_SWIPEREFRESH
-    implementation Dep.APOLLO_TESTING_SUPPORT
 }
 
