@@ -3,6 +3,9 @@ apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
 dependencies {
     implementation project(Modules.SHARED_KOTLIN)
 
+    implementation(platform(Dep.ARROW_STACK))
+    implementation Dep.ARROW_CORE
+    implementation Dep.ARROW_FX_COROUTINES
     implementation Dep.KOIN_ANDROID
     implementation Dep.COROUTINES_ANDROID
     implementation Dep.COROUTINES_CORE
