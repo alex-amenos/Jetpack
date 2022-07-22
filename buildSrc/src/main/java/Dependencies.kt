@@ -123,6 +123,7 @@ object Dep {
     const val APOLLO_ADAPTERS = "com.apollographql.apollo3:apollo-adapters:${Version.APOLLO}"
     const val APOLLO_NORMALIZED_CACHE = "com.apollographql.apollo3:apollo-normalized-cache-sqlite:${Version.APOLLO}"
     const val APOLLO_RUNTIME = "com.apollographql.apollo3:apollo-runtime:${Version.APOLLO}"
+    const val APOLLO_TESTING_SUPPORT = "com.apollographql.apollo3:apollo-testing-support:${Version.APOLLO}"
     const val ARROW_STACK = "io.arrow-kt:arrow-stack:${Version.ARROW}"
     const val ARROW_CORE = "io.arrow-kt:arrow-core"
     const val ARROW_FX_COROUTINES = "io.arrow-kt:arrow-fx-coroutines"

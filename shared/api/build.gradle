@@ -10,6 +10,7 @@ dependencies {
     implementation Dep.APOLLO_API
     implementation Dep.APOLLO_NORMALIZED_CACHE
     implementation Dep.APOLLO_RUNTIME
+    implementation Dep.APOLLO_TESTING_SUPPORT
     implementation Dep.OKHTTP
     implementation Dep.OKHTTP_LOGGING_INTERCEPTOR
     implementation Dep.RETROFIT
@@ -18,6 +19,10 @@ dependencies {
 }
 
 apollo {
+    generateTestBuilders.set(true)
+    testDirConnection {
+        connectToKotlinSourceSet("main")
+    }
     packageName.set("com.alxnophis.jetpack.spacex")
     mapScalar("Date", "java.util.Date", "com.apollographql.apollo3.adapter.DateAdapter")
 }

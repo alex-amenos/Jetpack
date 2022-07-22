@@ -3,12 +3,8 @@ query Launches($sort: String!, $order: String!) {
         id
         mission_name
         details
-        launch_date_utc
         rocket {
-            rocket {
-                company
-                name
-            }
+            rocket_name
         }
         launch_site {
             site_name
@@ -17,5 +13,6 @@ query Launches($sort: String!, $order: String!) {
         links {
             mission_patch_small
         }
+        launch_date_utc
     }
 }

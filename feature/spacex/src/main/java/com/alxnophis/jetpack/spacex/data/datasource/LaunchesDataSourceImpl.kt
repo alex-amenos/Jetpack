@@ -23,17 +23,15 @@ internal class LaunchesDataSourceImpl(
                 { error: Throwable ->
                     Timber.e("Error getting past launches. Exception: $error")
                     when (error) {
-                        is ApolloNetworkException -> LaunchesError.Network
-                        is ApolloHttpException -> LaunchesError.Http(error.statusCode)
                         is ApolloParseException -> LaunchesError.Parse
+                        is ApolloHttpException -> LaunchesError.Http(error.statusCode)
+                        is ApolloNetworkException -> LaunchesError.Network
                         else -> LaunchesError.Unknown
                     }
                 },
                 {
                     spacexApi
                         .pastLaunches(hasToFetchDataFromNetworkOnly)
-                        .execute()
-                        .data
                         ?.map()
                         ?: emptyList()
                 }

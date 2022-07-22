@@ -6,7 +6,6 @@ internal data class PastLaunchesDataModel(
     val id: String,
     val mission_name: String?,
     val details: String?,
-    val rocketCompany: String?,
     val rocketName: String?,
     val launchSiteShort: String?,
     val launchSite: String?,
