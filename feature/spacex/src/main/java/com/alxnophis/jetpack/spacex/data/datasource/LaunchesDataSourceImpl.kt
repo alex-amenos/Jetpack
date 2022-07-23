@@ -6,7 +6,7 @@ import com.alxnophis.jetpack.api.spacex.model.SpacexApiError
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
-import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModel
+import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
 import com.alxnophis.jetpack.spacex.data.model.mapper.map
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -16,7 +16,7 @@ internal class LaunchesDataSourceImpl(
     private val spacexApi: SpacexApi
 ) : LaunchesDataSource {
 
-    override suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchesDataModel>> =
+    override suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchDataModel>> =
         withContext(dispatcherProvider.io()) {
             spacexApi
                 .pastLaunches(hasToFetchDataFromNetworkOnly)

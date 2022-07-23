@@ -50,7 +50,7 @@ import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
-import com.alxnophis.jetpack.spacex.ui.model.PastLaunchesModel
+import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
 import com.alxnophis.jetpack.spacex.ui.viewmodel.LaunchesViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -120,7 +120,7 @@ private fun PastLaunchesList(
         ) {
             items(
                 items = state.pastLaunches,
-                itemContent = { item: PastLaunchesModel ->
+                itemContent = { item: PastLaunchModel ->
                     PastLaunchItem(item)
                 }
             )
@@ -129,7 +129,7 @@ private fun PastLaunchesList(
 }
 
 @Composable
-private fun PastLaunchItem(item: PastLaunchesModel) {
+private fun PastLaunchItem(item: PastLaunchModel) {
     val localContext = LocalContext.current
     Card(
         elevation = 10.dp,
@@ -156,10 +156,10 @@ private fun PastLaunchItem(item: PastLaunchesModel) {
                         fontWeight = FontWeight.Light,
                     )
                 }
-                if (item.launch_date_utc.isNotEmpty()) {
+                if (item.launchDateUtc.isNotEmpty()) {
                     Text(
                         modifier = Modifier.wrapContentWidth(),
-                        text = item.launch_date_utc,
+                        text = item.launchDateUtc,
                         color = MaterialTheme.colors.onSurface,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Light,
@@ -173,12 +173,12 @@ private fun PastLaunchItem(item: PastLaunchesModel) {
                     modifier = Modifier.size(60.dp),
                     model = ImageRequest
                         .Builder(localContext)
-                        .data(item.mission_patch_url)
+                        .data(item.missionPatchUrl)
                         .fallback(R.drawable.ic_rocket_launch)
                         .crossfade(true)
                         .build(),
                     placeholder = painterResource(R.drawable.ic_rocket_launch),
-                    contentDescription = item.mission_name,
+                    contentDescription = item.missionName,
                     contentScale = ContentScale.FillBounds,
                 )
                 Column(
@@ -189,7 +189,7 @@ private fun PastLaunchItem(item: PastLaunchesModel) {
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
-                        text = item.mission_name,
+                        text = item.missionName,
                         color = MaterialTheme.colors.primary,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
@@ -220,7 +220,7 @@ private fun PastLaunchItem(item: PastLaunchesModel) {
 @Composable
 private fun ExpandingText(
     modifier: Modifier = Modifier,
-    item: PastLaunchesModel,
+    item: PastLaunchModel,
 ) {
     val showMoreString = stringResource(R.string.spacex_show_more)
     val textLayoutResultState = remember { mutableStateOf<TextLayoutResult?>(null) }
@@ -264,15 +264,15 @@ private fun SpacexContentPreview() {
     val state = LaunchesState(
         isLoading = false,
         pastLaunches = listOf(
-            PastLaunchesModel(
+            PastLaunchModel(
                 id = "1",
-                mission_name = "Mission XYZ",
+                missionName = "Mission XYZ",
                 details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                     "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 rocket = "Rocket Name (Company)",
                 launchSite = "Launch Site",
-                mission_patch_url = null,
-                launch_date_utc = "10 May 21 - 11:00"
+                missionPatchUrl = null,
+                launchDateUtc = "10 May 21 - 11:00"
             )
         ),
         errorMessages = listOf()

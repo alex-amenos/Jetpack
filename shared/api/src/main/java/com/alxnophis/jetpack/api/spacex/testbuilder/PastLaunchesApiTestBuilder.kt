@@ -19,11 +19,11 @@ object PastLaunchesApiTestBuilder {
                     rocket_name = "rocket_name"
                 }
                 launch_site = launch_site {
-                    site_name = "site_name"
-                    site_name_long = "site_name_long"
+                    site_name = "launch_site_name"
+                    site_name_long = "launch_site_name_long"
                 }
                 links = links {
-                    mission_patch_small = "mission_patch_small"
+                    mission_patch_small = "mission_patch"
                 }
             }
         )

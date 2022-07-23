@@ -1,23 +1,23 @@
 package com.alxnophis.jetpack.spacex.data.model.mapper
 
 import com.alxnophis.jetpack.spacex.LaunchesQuery
-import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModel
+import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
 
-internal fun LaunchesQuery.Data.map(): List<PastLaunchesDataModel> =
+internal fun LaunchesQuery.Data.map(): List<PastLaunchDataModel> =
     this
         .launches
         ?.filterNotNull()
         ?.filter { it.id != null }
         ?.map { launch ->
-            PastLaunchesDataModel(
+            PastLaunchDataModel(
                 id = launch.id!!,
-                mission_name = launch.mission_name,
+                missionName = launch.mission_name,
                 details = launch.details,
                 rocketName = launch.rocket?.rocket_name,
                 launchSiteShort = launch.launch_site?.site_name,
                 launchSite = launch.launch_site?.site_name_long,
-                mission_patch_small_url = launch.links?.mission_patch_small,
-                launch_date_utc = launch.launch_date_utc
+                missionPatchSmallUrl = launch.links?.mission_patch_small,
+                launchDateUtc = launch.launch_date_utc
             )
         }
         ?: emptyList()

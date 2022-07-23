@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.api.spacex
 
 import android.content.Context
+import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.alxnophis.jetpack.spacex.type.Date
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.adapter.DateAdapter
@@ -12,7 +13,6 @@ import com.apollographql.apollo3.network.okHttpClient
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.BuildConfig
 
 class SpacexApolloClientFactory(applicationContext: Context) {
     private val sqlCache = SqlNormalizedCacheFactory(applicationContext, "spacex.db")
@@ -24,7 +24,6 @@ class SpacexApolloClientFactory(applicationContext: Context) {
             .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(false)
             .addInterceptor(loggingInterceptor())
             .build()
 
@@ -39,7 +38,7 @@ class SpacexApolloClientFactory(applicationContext: Context) {
 
     private fun loggingInterceptor() = HttpLoggingInterceptor().apply {
         level = when {
-            BuildConfig.DEBUG -> HttpLoggingInterceptor.Level.BASIC
+            isDebugBuildType() -> HttpLoggingInterceptor.Level.BODY
             else -> HttpLoggingInterceptor.Level.NONE
         }
     }
