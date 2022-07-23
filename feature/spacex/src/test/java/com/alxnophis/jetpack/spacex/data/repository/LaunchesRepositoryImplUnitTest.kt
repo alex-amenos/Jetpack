@@ -22,7 +22,7 @@ import org.mockito.kotlin.whenever
 
 @ApolloExperimental
 @ExperimentalCoroutinesApi
-internal class LaunchesRepositoryUnitTest : BaseUnitTest() {
+internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
 
     private val launchesDataSourceMock: LaunchesDataSource = mock()
     private lateinit var launchesRepository: LaunchesRepository
