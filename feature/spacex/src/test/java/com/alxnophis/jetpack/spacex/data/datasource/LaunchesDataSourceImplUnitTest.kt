@@ -27,7 +27,7 @@ import org.mockito.kotlin.whenever
 internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
 
     private val spacexApiMock: SpacexApi = mock()
-    private lateinit var launchesDataSource: LaunchesDataSourceImpl
+    private lateinit var launchesDataSource: LaunchesDataSource
 
     @BeforeEach
     override fun beforeEach() {
