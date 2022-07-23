@@ -24,7 +24,6 @@ class SpacexApolloClientFactory(applicationContext: Context) {
             .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(false)
             .addInterceptor(loggingInterceptor())
             .build()
 
