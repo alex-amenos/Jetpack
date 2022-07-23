@@ -1,10 +1,10 @@
 package com.alxnophis.jetpack.api.jsonplaceholder
 
+import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -28,13 +28,12 @@ class JsonPlaceholderRetrofitFactory {
             .build()
             .create(JsonPlaceholderRetrofitService::class.java)
 
-    private fun loggingInterceptor(): HttpLoggingInterceptor =
-        HttpLoggingInterceptor().apply {
-            level = when {
-                BuildConfig.DEBUG -> HttpLoggingInterceptor.Level.BASIC
-                else -> HttpLoggingInterceptor.Level.NONE
-            }
+    private fun loggingInterceptor() = HttpLoggingInterceptor().apply {
+        level = when {
+            isDebugBuildType() -> HttpLoggingInterceptor.Level.BODY
+            else -> HttpLoggingInterceptor.Level.NONE
         }
+    }
 
     companion object {
         private const val BASE_URL = "https://jsonplaceholder.typicode.com"
