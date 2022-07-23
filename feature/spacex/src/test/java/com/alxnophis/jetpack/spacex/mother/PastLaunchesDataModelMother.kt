@@ -12,7 +12,7 @@ internal object PastLaunchesDataModelMother {
         rocketName: String? = "rocket_name",
         launchSiteShort: String? = "launch_site_name",
         launchSite: String? = "launch_site_name_long",
-        missionPatchSmallUrl: String? = "mission_patch_small",
+        missionPatchSmallUrl: String? = "mission_patch",
         launchDateUtc: Date? = null
     ) = PastLaunchDataModel(
         id = id,

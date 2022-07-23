@@ -12,7 +12,7 @@ import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
-import com.alxnophis.jetpack.spacex.ui.model.PastLaunchesModel
+import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
 import com.alxnophis.jetpack.spacex.ui.model.mapper.map
 import java.util.UUID
 import kotlinx.coroutines.launch
@@ -70,7 +70,7 @@ internal class LaunchesViewModel(
         }
     }
 
-    private suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchesModel>> =
+    private suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchModel>> =
         withContext(dispatcherProvider.io()) {
             launchesRepository
                 .getPastLaunches(hasToFetchDataFromNetworkOnly)

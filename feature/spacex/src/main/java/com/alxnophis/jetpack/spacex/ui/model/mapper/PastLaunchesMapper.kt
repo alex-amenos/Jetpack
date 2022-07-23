@@ -3,17 +3,17 @@ package com.alxnophis.jetpack.spacex.ui.model.mapper
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.base.formatter.DateFormatter
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
-import com.alxnophis.jetpack.spacex.ui.model.PastLaunchesModel
+import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
 
-internal fun List<PastLaunchDataModel>.map(dateFormatter: DateFormatter): List<PastLaunchesModel> =
+internal fun List<PastLaunchDataModel>.map(dateFormatter: DateFormatter): List<PastLaunchModel> =
     this.map { launch ->
-        PastLaunchesModel(
+        PastLaunchModel(
             id = launch.id,
-            mission_name = launch.missionName ?: EMPTY,
+            missionName = launch.missionName ?: EMPTY,
             details = launch.details ?: EMPTY,
             rocket = launch.rocketName ?: EMPTY,
             launchSite = launch.launchSiteShort ?: EMPTY,
-            mission_patch_url = launch.missionPatchSmallUrl,
-            launch_date_utc = launch.launchDateUtc?.let { date -> dateFormatter.formatToReadableDateTime(date) } ?: EMPTY
+            missionPatchUrl = launch.missionPatchSmallUrl,
+            launchDateUtc = launch.launchDateUtc?.let { date -> dateFormatter.formatToReadableDateTime(date) } ?: EMPTY
         )
     }

@@ -3,7 +3,7 @@ package com.alxnophis.jetpack.spacex.ui.contract
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
-import com.alxnophis.jetpack.spacex.ui.model.PastLaunchesModel
+import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
 
 internal sealed class LaunchesEvent : UiEvent {
     object GetPastLaunches : LaunchesEvent()
@@ -13,6 +13,6 @@ internal sealed class LaunchesEvent : UiEvent {
 
 internal data class LaunchesState(
     val isLoading: Boolean = false,
-    val pastLaunches: List<PastLaunchesModel> = emptyList(),
+    val pastLaunches: List<PastLaunchModel> = emptyList(),
     val errorMessages: List<ErrorMessage> = emptyList(),
 ) : UiState

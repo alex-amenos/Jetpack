@@ -23,7 +23,7 @@ object PastLaunchesApiTestBuilder {
                     site_name_long = "launch_site_name_long"
                 }
                 links = links {
-                    mission_patch_small = "mission_patch_small"
+                    mission_patch_small = "mission_patch"
                 }
             }
         )
