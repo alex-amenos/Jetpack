@@ -8,7 +8,7 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
-import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModel
+import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
@@ -74,7 +74,7 @@ internal class LaunchesViewModel(
         withContext(dispatcherProvider.io()) {
             launchesRepository
                 .getPastLaunches(hasToFetchDataFromNetworkOnly)
-                .map { launches: List<PastLaunchesDataModel> -> launches.map(dateFormatter) }
+                .map { launches: List<PastLaunchDataModel> -> launches.map(dateFormatter) }
         }
 
     private fun dismissError(errorId: Long) {

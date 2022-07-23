@@ -7,7 +7,8 @@ import com.alxnophis.jetpack.api.spacex.SpacexApi
 import com.alxnophis.jetpack.api.spacex.model.SpacexApiError
 import com.alxnophis.jetpack.api.spacex.testbuilder.PastLaunchesApiTestBuilder
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
-import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModel
+import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
+import com.alxnophis.jetpack.spacex.mother.PastLaunchesDataModelMother
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import com.apollographql.apollo3.annotations.ApolloExperimental
 import java.util.stream.Stream
@@ -45,7 +46,7 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
         testScope.runTest {
             whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.launches.right())
 
-            val result: Either<LaunchesError, List<PastLaunchesDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
+            val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
             assertEquals(PAST_LAUNCHES.right(), result)
         }
@@ -59,9 +60,9 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
         testScope.runTest {
             whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.nullableLaunches.right())
 
-            val result: Either<LaunchesError, List<PastLaunchesDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
+            val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
-            assertEquals(emptyList<PastLaunchesDataModel>().right(), result)
+            assertEquals(emptyList<PastLaunchDataModel>().right(), result)
         }
     }
 
@@ -75,7 +76,7 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
         testScope.runTest {
             whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(inputException.left())
 
-            val result: Either<LaunchesError, List<PastLaunchesDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
+            val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
             assertEquals(expectedError.left(), result)
         }
@@ -83,18 +84,7 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
 
     companion object {
         private const val STATUS_CODE_SERVER_ERROR = 500
-        private val PAST_LAUNCHES = listOf(
-            PastLaunchesDataModel(
-                id = "id",
-                mission_name = "mission_name",
-                details = "details",
-                rocketName = "rocket_name",
-                launchSiteShort = "site_name",
-                launchSite = "site_name_long",
-                mission_patch_small_url = "mission_patch_small",
-                launch_date_utc = null
-            )
-        )
+        private val PAST_LAUNCHES = listOf(PastLaunchesDataModelMother.pastLaunch())
         private val apolloHttpException = SpacexApiError.Http(statusCode = STATUS_CODE_SERVER_ERROR)
 
         @JvmStatic
