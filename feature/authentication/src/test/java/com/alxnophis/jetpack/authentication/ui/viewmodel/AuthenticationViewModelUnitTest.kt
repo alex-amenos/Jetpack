@@ -12,7 +12,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
-import com.alxnophis.jetpack.testing.base.BaseViewModel5UnitTest
+import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -23,7 +23,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
+internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     private lateinit var viewModel: AuthenticationViewModel
 
