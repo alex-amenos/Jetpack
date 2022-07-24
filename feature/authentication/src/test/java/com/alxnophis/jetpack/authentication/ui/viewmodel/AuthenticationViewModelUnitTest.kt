@@ -12,6 +12,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
+import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -238,12 +239,9 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     private fun viewModelMother(
         initialState: AuthenticationState = initialAuthenticationState,
-        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock
-    ) = AuthenticationViewModel(
-        initialState,
-        testDispatcherProvider,
-        authenticateUseCase
-    )
+        dispatcherProvider: DispatcherProvider = testDispatcherProvider,
+        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock,
+    ) = AuthenticationViewModel(initialState, dispatcherProvider, authenticateUseCase)
 
     companion object {
         private const val EMAIL = AUTHORIZED_EMAIL
