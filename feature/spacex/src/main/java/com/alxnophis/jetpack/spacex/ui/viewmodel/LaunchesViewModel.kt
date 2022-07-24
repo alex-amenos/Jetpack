@@ -2,7 +2,9 @@ package com.alxnophis.jetpack.spacex.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
-import com.alxnophis.jetpack.core.base.formatter.DateFormatter
+import com.alxnophis.jetpack.core.base.constants.EMPTY
+import com.alxnophis.jetpack.core.base.formatter.BaseDateFormatter
+import com.alxnophis.jetpack.core.base.provider.BaseRandomProvider
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
@@ -13,20 +15,20 @@ import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
 import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
-import com.alxnophis.jetpack.spacex.ui.model.mapper.map
-import java.util.UUID
+import java.util.Date
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 internal class LaunchesViewModel(
     initialState: LaunchesState,
-    private val dateFormatter: DateFormatter,
+    private val dateFormatter: BaseDateFormatter,
+    private val randomProvider: BaseRandomProvider,
     private val dispatcherProvider: DispatcherProvider,
     private val launchesRepository: LaunchesRepository,
 ) : BaseViewModel<LaunchesEvent, LaunchesState>(initialState) {
 
     init {
-        handleEvent(LaunchesEvent.GetPastLaunches)
+        setEvent(LaunchesEvent.GetPastLaunches)
     }
 
     override fun handleEvent(event: LaunchesEvent) {
@@ -40,42 +42,46 @@ internal class LaunchesViewModel(
     private fun renderPastLaunches(hasToFetchDataFromNetworkOnly: Boolean) {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            getPastLaunches(hasToFetchDataFromNetworkOnly).fold(
-                { error ->
-                    val errorMessages: List<ErrorMessage> = currentState.errorMessages + ErrorMessage(
-                        id = UUID.randomUUID().mostSignificantBits,
-                        messageId = when (error) {
-                            is LaunchesError.Http -> R.string.core_error_http
-                            LaunchesError.Network -> R.string.core_error_network
-                            LaunchesError.Parse -> R.string.core_error_parse
-                            else -> R.string.core_error_unknown
-                        }
-                    )
-                    setState {
-                        copy(
-                            isLoading = false,
-                            errorMessages = errorMessages
-                        )
-                    }
-                },
-                { pastLaunches ->
-                    setState {
-                        copy(
-                            isLoading = false,
-                            pastLaunches = pastLaunches
-                        )
+            getPastLaunches(hasToFetchDataFromNetworkOnly)
+                .map { pastLaunches ->
+                    pastLaunches.mapTo { date: Date? ->
+                        date
+                            ?.let { dateFormatter.formatToReadableDateTime(date) }
+                            ?: EMPTY
                     }
                 }
-            )
+                .fold(
+                    { error: LaunchesError ->
+                        val errorMessages: List<ErrorMessage> = currentState.errorMessages + ErrorMessage(
+                            id = randomProvider.mostSignificantBitsRandomUUID(),
+                            messageId = when (error) {
+                                is LaunchesError.Http -> R.string.spacex_error_http
+                                LaunchesError.Network -> R.string.spacex_error_network
+                                LaunchesError.Parse -> R.string.spacex_error_parse
+                                else -> R.string.spacex_error_unknown
+                            }
+                        )
+                        setState {
+                            copy(
+                                isLoading = false,
+                                errorMessages = errorMessages
+                            )
+                        }
+                    },
+                    { pastLaunches: List<PastLaunchModel> ->
+                        setState {
+                            copy(
+                                isLoading = false,
+                                pastLaunches = pastLaunches
+                            )
+                        }
+                    }
+                )
         }
     }
 
-    private suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchModel>> =
-        withContext(dispatcherProvider.io()) {
-            launchesRepository
-                .getPastLaunches(hasToFetchDataFromNetworkOnly)
-                .map { launches: List<PastLaunchDataModel> -> launches.map(dateFormatter) }
-        }
+    private suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchDataModel>> =
+        launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
@@ -83,4 +89,19 @@ internal class LaunchesViewModel(
             copy(errorMessages = errorMessages)
         }
     }
+
+    private suspend fun List<PastLaunchDataModel>.mapTo(formatDate: (Date?) -> String): List<PastLaunchModel> =
+        withContext(dispatcherProvider.io()) {
+            map { launch ->
+                PastLaunchModel(
+                    id = launch.id,
+                    missionName = launch.missionName ?: EMPTY,
+                    details = launch.details ?: EMPTY,
+                    rocket = launch.rocketName ?: EMPTY,
+                    launchSite = launch.launchSiteShort ?: EMPTY,
+                    missionPatchUrl = launch.missionPatchSmallUrl,
+                    launchDateUtc = formatDate(launch.launchDateUtc),
+                )
+            }
+        }
 }

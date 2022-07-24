@@ -5,7 +5,7 @@ import java.util.Date
 import java.util.Locale
 
 @Suppress("unused")
-class DateFormatter(
+class BaseDateFormatter(
     private val locale: Locale = Locale.getDefault()
 ) {
 

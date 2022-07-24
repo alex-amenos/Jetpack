@@ -78,7 +78,7 @@ private object Version {
     const val PERMISSION_DISPATCHER = "4.9.1"
     const val RETROFIT = "2.9.0"
     const val TIMBER = "5.0.1"
-    const val TURBINE = "0.7.0"
+    const val TURBINE = "0.8.0"
 }
 
 object Dep {

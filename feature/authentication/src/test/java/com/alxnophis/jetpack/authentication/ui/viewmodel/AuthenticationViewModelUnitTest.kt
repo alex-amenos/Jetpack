@@ -12,7 +12,8 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
-import com.alxnophis.jetpack.testing.base.BaseViewModel5UnitTest
+import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
+import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -23,7 +24,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
+internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     private lateinit var viewModel: AuthenticationViewModel
 
@@ -34,11 +35,11 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
     }
 
     @Test
-    fun `WHEN start THEN validate initial state`() {
+    fun `WHEN init THEN validate initial state`() {
         runTest {
             viewModel.uiState.test {
                 assertEquals(
-                    AuthenticationState(),
+                    initialAuthenticationState,
                     awaitItem()
                 )
                 expectNoEvents()
@@ -238,12 +239,9 @@ internal class AuthenticationViewModelUnitTest : BaseViewModel5UnitTest() {
 
     private fun viewModelMother(
         initialState: AuthenticationState = initialAuthenticationState,
-        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock
-    ) = AuthenticationViewModel(
-        initialState,
-        testDispatcherProvider,
-        authenticateUseCase
-    )
+        dispatcherProvider: DispatcherProvider = testDispatcherProvider,
+        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock,
+    ) = AuthenticationViewModel(initialState, dispatcherProvider, authenticateUseCase)
 
     companion object {
         private const val EMAIL = AUTHORIZED_EMAIL

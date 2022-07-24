@@ -37,10 +37,10 @@ internal class PostsViewModel(
                     val errorMessages: List<ErrorMessage> = currentState.errorMessages + ErrorMessage(
                         id = UUID.randomUUID().mostSignificantBits,
                         messageId = when (error) {
-                            PostsError.Network -> R.string.core_error_network
-                            PostsError.Server -> R.string.core_error_server
-                            PostsError.Unknown -> R.string.core_error_unknown
-                            PostsError.Unexpected -> R.string.core_error_unexpected
+                            PostsError.Network -> R.string.posts_error_network
+                            PostsError.Server -> R.string.posts_error_server
+                            PostsError.Unknown -> R.string.posts_error_unknown
+                            PostsError.Unexpected -> R.string.posts_error_unexpected
                         }
                     )
                     setState {
