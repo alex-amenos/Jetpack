@@ -10,7 +10,7 @@ internal object PastLaunchesModelMother {
         missionName: String = "mission_name",
         details: String = "details",
         rocketName: String = "rocket_name",
-        launchSite: String = "launch_site_name_long",
+        launchSiteName: String = "launch_site_name",
         missionPatchSmallUrl: String? = "mission_patch",
         launchDateUtc: String = EMPTY
     ) = PastLaunchModel(
@@ -18,7 +18,7 @@ internal object PastLaunchesModelMother {
         missionName = missionName,
         details = details,
         rocket = rocketName,
-        launchSite = launchSite,
+        launchSite = launchSiteName,
         missionPatchUrl = missionPatchSmallUrl,
         launchDateUtc = launchDateUtc,
     )

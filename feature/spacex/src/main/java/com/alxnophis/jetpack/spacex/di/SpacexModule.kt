@@ -24,6 +24,7 @@ private val spacexModule: Module = module {
         LaunchesViewModel(
             initialState = LaunchesState(),
             dateFormatter = get(),
+            randomProvider = get(),
             dispatcherProvider = get(),
             launchesRepository = get(),
         )

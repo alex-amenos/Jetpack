@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="spacex_title">SpaceX - Past Launches</string>
-    <string name="spacex_show_more">... Show More</string>
+    <string name="spacex_show_more">... See More</string>
+    <string name="spacex_error_http" translatable="false">Http error</string>
+    <string name="spacex_error_network" translatable="false">Network error</string>
+    <string name="spacex_error_parse" translatable="false">Parser error</string>
+    <string name="spacex_error_unknown" translatable="false">Something goes wrong.</string>
 </resources>

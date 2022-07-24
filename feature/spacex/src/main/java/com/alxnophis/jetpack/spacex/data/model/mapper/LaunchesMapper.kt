@@ -3,9 +3,8 @@ package com.alxnophis.jetpack.spacex.data.model.mapper
 import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
 
-internal fun LaunchesQuery.Data.map(): List<PastLaunchDataModel> =
-    this
-        .launches
+internal fun LaunchesQuery.Data.mapTo(): List<PastLaunchDataModel> =
+    launches
         ?.filterNotNull()
         ?.filter { it.id != null }
         ?.map { launch ->

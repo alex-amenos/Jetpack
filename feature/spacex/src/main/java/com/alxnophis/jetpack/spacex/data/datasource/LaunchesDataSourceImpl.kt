@@ -7,7 +7,7 @@ import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
-import com.alxnophis.jetpack.spacex.data.model.mapper.map
+import com.alxnophis.jetpack.spacex.data.model.mapper.mapTo
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -20,7 +20,7 @@ internal class LaunchesDataSourceImpl(
         withContext(dispatcherProvider.io()) {
             spacexApi
                 .pastLaunches(hasToFetchDataFromNetworkOnly)
-                .map { pastLaunches: LaunchesQuery.Data? -> pastLaunches?.map() ?: emptyList() }
+                .map { pastLaunches: LaunchesQuery.Data? -> pastLaunches?.mapTo() ?: emptyList() }
                 .mapLeft { error: SpacexApiError ->
                     Timber.e("Error getting past launches. Exception: $error")
                     when (error) {
