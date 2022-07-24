@@ -35,11 +35,11 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN start THEN validate initial state`() {
+    fun `WHEN init THEN validate initial state`() {
         runTest {
             viewModel.uiState.test {
                 assertEquals(
-                    AuthenticationState(),
+                    initialAuthenticationState,
                     awaitItem()
                 )
                 expectNoEvents()

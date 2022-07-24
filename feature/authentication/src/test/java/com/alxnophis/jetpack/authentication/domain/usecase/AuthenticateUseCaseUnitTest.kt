@@ -19,7 +19,7 @@ class AuthenticateUseCaseUnitTest : BaseUnitTest() {
     }
 
     @Test
-    fun `when email and password are valid then complete successfully`() {
+    fun `WHEN email and password are valid THEN complete successfully`() {
         testScope.runTest {
             val result = useCase.invoke(VALID_EMAIL, VALID_PASSWORD)
 
@@ -28,7 +28,7 @@ class AuthenticateUseCaseUnitTest : BaseUnitTest() {
     }
 
     @Test
-    fun `when email or password are invalid then WrongAuthentication error`() {
+    fun `WHEN email or password are invalid THEN WrongAuthentication error`() {
         testScope.runTest {
             val result = useCase.invoke(INVALID_EMAIL, INVALID_PASSWORD)
 
