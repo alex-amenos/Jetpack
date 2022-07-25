@@ -20,7 +20,7 @@ class AuthenticateUseCaseUnitTest : BaseUnitTest() {
 
     @Test
     fun `when email and password are valid then complete successfully`() {
-        testScope.runTest {
+        standardTestScope.runTest {
             val result = useCase.invoke(VALID_EMAIL, VALID_PASSWORD)
 
             assertEquals(Unit.right(), result)
@@ -29,7 +29,7 @@ class AuthenticateUseCaseUnitTest : BaseUnitTest() {
 
     @Test
     fun `when email or password are invalid then WrongAuthentication error`() {
-        testScope.runTest {
+        standardTestScope.runTest {
             val result = useCase.invoke(INVALID_EMAIL, INVALID_PASSWORD)
 
             assertEquals(AuthenticationError.WrongAuthentication.left(), result)
