@@ -43,7 +43,7 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
     fun `WHEN get past launches succeed THEN return a list of past launches`(
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
-        testScope.runTest {
+        standardTestScope.runTest {
             whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.launches.right())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
@@ -57,7 +57,7 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
     fun `WHEN get past launches succeed with null THEN return an empty list of past launches`(
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
-        testScope.runTest {
+        standardTestScope.runTest {
             whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PastLaunchesApiTestBuilder.nullableLaunches.right())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
@@ -73,7 +73,7 @@ internal class LaunchesDataSourceImplUnitTest : BaseUnitTest() {
         inputException: SpacexApiError,
         expectedError: LaunchesError
     ) {
-        testScope.runTest {
+        standardTestScope.runTest {
             whenever(spacexApiMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(inputException.left())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesDataSource.getPastLaunches(hasToFetchDataFromNetworkOnly)
