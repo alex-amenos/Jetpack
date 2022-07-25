@@ -31,7 +31,7 @@ open class BaseUnitTest {
         override fun main(): CoroutineDispatcher = standardTestDispatcher
         override fun unconfined(): CoroutineDispatcher = standardTestDispatcher
     }
-    val testScope = TestScope(standardTestDispatcher)
+    val standardTestScope = TestScope(standardTestDispatcher)
     val unconfinedScope = TestScope(unconfinedTestDispatcher)
 
     @BeforeEach
