@@ -9,7 +9,6 @@ import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
 import com.alxnophis.jetpack.spacex.data.model.mapper.mapTo
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 internal class LaunchesDataSourceImpl(
     private val dispatcherProvider: DispatcherProvider,
@@ -22,7 +21,6 @@ internal class LaunchesDataSourceImpl(
                 .pastLaunches(hasToFetchDataFromNetworkOnly)
                 .map { pastLaunches: LaunchesQuery.Data? -> pastLaunches?.mapTo() ?: emptyList() }
                 .mapLeft { error: SpacexApiError ->
-                    Timber.e("Error getting past launches. Exception: $error")
                     when (error) {
                         is SpacexApiError.Parse -> LaunchesError.Parse
                         is SpacexApiError.Http -> LaunchesError.Http(error.statusCode)
