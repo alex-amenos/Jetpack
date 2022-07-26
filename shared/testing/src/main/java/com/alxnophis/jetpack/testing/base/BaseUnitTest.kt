@@ -8,7 +8,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
@@ -24,7 +23,6 @@ import org.junit.jupiter.api.BeforeEach
 open class BaseUnitTest {
     val testScheduler = TestCoroutineScheduler()
     val standardTestDispatcher = StandardTestDispatcher(testScheduler)
-    val unconfinedTestDispatcher = UnconfinedTestDispatcher(testScheduler)
     val testDispatcherProvider = object : DispatcherProvider {
         override fun default(): CoroutineDispatcher = standardTestDispatcher
         override fun io(): CoroutineDispatcher = standardTestDispatcher
@@ -32,7 +30,6 @@ open class BaseUnitTest {
         override fun unconfined(): CoroutineDispatcher = standardTestDispatcher
     }
     val standardTestScope = TestScope(standardTestDispatcher)
-    val unconfinedScope = TestScope(unconfinedTestDispatcher)
 
     @BeforeEach
     open fun beforeEach() {

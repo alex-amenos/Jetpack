@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Rule
 
+@Suppress("MemberVisibilityCanBePrivate")
 abstract class BaseComposeTest {
 
     @get:Rule
