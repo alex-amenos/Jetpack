@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.api.spacex
 
-import android.content.Context
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.alxnophis.jetpack.spacex.type.Date
 import com.apollographql.apollo3.ApolloClient
@@ -8,16 +7,17 @@ import com.apollographql.apollo3.adapter.DateAdapter
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
 import com.apollographql.apollo3.cache.normalized.api.NormalizedCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
-import com.apollographql.apollo3.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo3.network.okHttpClient
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
-class SpacexApolloClientFactory(applicationContext: Context) {
-    private val sqlCache = SqlNormalizedCacheFactory(applicationContext, "spacex.db")
-    private val memoryCache = MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
-    private val memoryThenSqlCache: NormalizedCacheFactory = memoryCache.chain(sqlCache)
+class SpacexApolloClientFactory() {
+    private val memoryCache = MemoryCacheFactory(
+        maxSizeBytes = 10 * 1024 * 1024,
+        expireAfterMillis = 15 * 60 * 1000
+    )
+    private val memoryThenSqlCache: NormalizedCacheFactory = memoryCache
     private val okHttpClient =
         OkHttpClient
             .Builder()

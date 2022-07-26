@@ -28,7 +28,7 @@ class SpacexApiImpl(
                 }
             },
             {
-                val fetchPolicy = if (hasToFetchDataFromNetworkOnly) FetchPolicy.NetworkOnly else FetchPolicy.NetworkFirst
+                val fetchPolicy = if (hasToFetchDataFromNetworkOnly) FetchPolicy.NetworkOnly else FetchPolicy.CacheFirst
                 return apolloClient
                     .query(LaunchesQuery(sort = FIELD_LAUNCH_DATE_UTC, order = ORDER_DESC))
                     .fetchPolicy(fetchPolicy)
