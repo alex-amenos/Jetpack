@@ -5,19 +5,17 @@ import com.alxnophis.jetpack.spacex.type.Date
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.adapter.DateAdapter
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
-import com.apollographql.apollo3.cache.normalized.api.NormalizedCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.network.okHttpClient
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
-class SpacexApolloClientFactory() {
+class SpacexApolloClientFactory {
     private val memoryCache = MemoryCacheFactory(
-        maxSizeBytes = 10 * 1024 * 1024,
-        expireAfterMillis = 15 * 60 * 1000
+        maxSizeBytes = MEMORY_MAX_SIZE_BYTES,
+        expireAfterMillis = MEMORY_EXPIRATION_TIME_MILLIS
     )
-    private val memoryThenSqlCache: NormalizedCacheFactory = memoryCache
     private val okHttpClient =
         OkHttpClient
             .Builder()
@@ -31,9 +29,12 @@ class SpacexApolloClientFactory() {
         ApolloClient
             .Builder()
             .serverUrl(SERVER_URL)
+            .normalizedCache(
+                normalizedCacheFactory = memoryCache,
+                writeToCacheAsynchronously = true
+            )
             .okHttpClient(okHttpClient)
             .addCustomScalarAdapter(Date.type, DateAdapter)
-            .normalizedCache(memoryThenSqlCache)
             .build()
 
     private fun loggingInterceptor() = HttpLoggingInterceptor().apply {
@@ -48,5 +49,7 @@ class SpacexApolloClientFactory() {
         private const val TIMEOUT_CONNECT = 10L
         private const val TIMEOUT_READ = 10L
         private const val TIMEOUT_WRITE = 10L
+        private const val MEMORY_MAX_SIZE_BYTES: Int = 10 * 1024 * 1024
+        private const val MEMORY_EXPIRATION_TIME_MILLIS: Long = 5 * 60 * 1000
     }
 }
