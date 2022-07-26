@@ -1,23 +1,21 @@
 package com.alxnophis.jetpack.api.spacex
 
-import android.content.Context
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.alxnophis.jetpack.spacex.type.Date
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.adapter.DateAdapter
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
-import com.apollographql.apollo3.cache.normalized.api.NormalizedCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
-import com.apollographql.apollo3.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo3.network.okHttpClient
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
-class SpacexApolloClientFactory(applicationContext: Context) {
-    private val sqlCache = SqlNormalizedCacheFactory(applicationContext, "spacex.db")
-    private val memoryCache = MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
-    private val memoryThenSqlCache: NormalizedCacheFactory = memoryCache.chain(sqlCache)
+class SpacexApolloClientFactory {
+    private val memoryCache = MemoryCacheFactory(
+        maxSizeBytes = MEMORY_MAX_SIZE_BYTES,
+        expireAfterMillis = MEMORY_EXPIRATION_TIME_MILLIS
+    )
     private val okHttpClient =
         OkHttpClient
             .Builder()
@@ -31,9 +29,12 @@ class SpacexApolloClientFactory(applicationContext: Context) {
         ApolloClient
             .Builder()
             .serverUrl(SERVER_URL)
+            .normalizedCache(
+                normalizedCacheFactory = memoryCache,
+                writeToCacheAsynchronously = true
+            )
             .okHttpClient(okHttpClient)
             .addCustomScalarAdapter(Date.type, DateAdapter)
-            .normalizedCache(memoryThenSqlCache)
             .build()
 
     private fun loggingInterceptor() = HttpLoggingInterceptor().apply {
@@ -48,5 +49,7 @@ class SpacexApolloClientFactory(applicationContext: Context) {
         private const val TIMEOUT_CONNECT = 10L
         private const val TIMEOUT_READ = 10L
         private const val TIMEOUT_WRITE = 10L
+        private const val MEMORY_MAX_SIZE_BYTES: Int = 10 * 1024 * 1024
+        private const val MEMORY_EXPIRATION_TIME_MILLIS: Long = 5 * 60 * 1000
     }
 }

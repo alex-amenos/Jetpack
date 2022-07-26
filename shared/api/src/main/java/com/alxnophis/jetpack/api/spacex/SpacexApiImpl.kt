@@ -11,6 +11,7 @@ import com.apollographql.apollo3.exception.ApolloException
 import com.apollographql.apollo3.exception.ApolloHttpException
 import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.apollographql.apollo3.exception.ApolloParseException
+import timber.log.Timber
 
 class SpacexApiImpl(
     private val apolloClient: ApolloClient
@@ -19,6 +20,7 @@ class SpacexApiImpl(
     override suspend fun pastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<SpacexApiError, LaunchesQuery.Data?> =
         Either.catch(
             { error: Throwable ->
+                Timber.e("Error past launches. Exception: $error")
                 when (error) {
                     is ApolloParseException -> SpacexApiError.Parse
                     is ApolloHttpException -> SpacexApiError.Http(error.statusCode)
@@ -28,7 +30,7 @@ class SpacexApiImpl(
                 }
             },
             {
-                val fetchPolicy = if (hasToFetchDataFromNetworkOnly) FetchPolicy.NetworkOnly else FetchPolicy.NetworkFirst
+                val fetchPolicy = if (hasToFetchDataFromNetworkOnly) FetchPolicy.NetworkOnly else FetchPolicy.CacheFirst
                 return apolloClient
                     .query(LaunchesQuery(sort = FIELD_LAUNCH_DATE_UTC, order = ORDER_DESC))
                     .fetchPolicy(fetchPolicy)
