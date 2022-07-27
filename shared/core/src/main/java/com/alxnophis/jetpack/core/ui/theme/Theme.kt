@@ -5,8 +5,8 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 internal val lightColorPalette = lightColors(
-    primary = coreColorGreenRadioactive,
-    primaryVariant = coreColorGreenRadioactiveDark,
+    primary = coreColorGreen,
+    primaryVariant = coreColorGreenDark,
     onPrimary = coreColorWhite,
     secondary = coreColorOrange,
     secondaryVariant = coreColorOrangeDark,
