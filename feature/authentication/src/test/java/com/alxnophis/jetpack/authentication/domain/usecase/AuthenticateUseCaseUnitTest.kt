@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
 class AuthenticateUseCaseUnitTest : BaseUnitTest() {
-    
+
     private val useCase by lazy {
         AuthenticateUseCase()
     }
