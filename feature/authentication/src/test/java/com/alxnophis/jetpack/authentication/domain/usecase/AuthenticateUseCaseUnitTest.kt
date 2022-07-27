@@ -13,14 +13,14 @@ import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
 class AuthenticateUseCaseUnitTest : BaseUnitTest() {
-
+    
     private val useCase by lazy {
         AuthenticateUseCase()
     }
 
     @Test
     fun `WHEN email and password are valid THEN complete successfully`() {
-        testScope.runTest {
+        runTest {
             val result = useCase.invoke(VALID_EMAIL, VALID_PASSWORD)
 
             assertEquals(Unit.right(), result)
@@ -29,7 +29,7 @@ class AuthenticateUseCaseUnitTest : BaseUnitTest() {
 
     @Test
     fun `WHEN email or password are invalid THEN WrongAuthentication error`() {
-        testScope.runTest {
+        runTest {
             val result = useCase.invoke(INVALID_EMAIL, INVALID_PASSWORD)
 
             assertEquals(AuthenticationError.WrongAuthentication.left(), result)

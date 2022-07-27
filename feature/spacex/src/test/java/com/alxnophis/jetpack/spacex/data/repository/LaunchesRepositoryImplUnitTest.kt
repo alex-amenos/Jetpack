@@ -40,7 +40,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
     fun `WHEN get past launches succeed THEN return a list of past launches`(
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
-        testScope.runTest {
+        runTest {
             whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PAST_LAUNCHES.right())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
@@ -54,7 +54,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
     fun `WHEN get past launches succeed with null THEN return an empty list of past launches`(
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
-        testScope.runTest {
+        runTest {
             whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(emptyList<PastLaunchDataModel>().right())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
@@ -69,7 +69,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
         hasToFetchDataFromNetworkOnly: Boolean,
         exception: LaunchesError,
     ) {
-        testScope.runTest {
+        runTest {
             whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(exception.left())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
