@@ -22,18 +22,18 @@ import org.junit.jupiter.api.BeforeEach
 @VisibleForTesting
 open class BaseUnitTest {
     val testScheduler = TestCoroutineScheduler()
-    val standardTestDispatcher = StandardTestDispatcher(testScheduler)
+    open val testDispatcher = StandardTestDispatcher(testScheduler)
+    open val testScope = TestScope(testDispatcher)
     val testDispatcherProvider = object : DispatcherProvider {
-        override fun default(): CoroutineDispatcher = standardTestDispatcher
-        override fun io(): CoroutineDispatcher = standardTestDispatcher
-        override fun main(): CoroutineDispatcher = standardTestDispatcher
-        override fun unconfined(): CoroutineDispatcher = standardTestDispatcher
+        override fun default(): CoroutineDispatcher = testDispatcher
+        override fun io(): CoroutineDispatcher = testDispatcher
+        override fun main(): CoroutineDispatcher = testDispatcher
+        override fun unconfined(): CoroutineDispatcher = testDispatcher
     }
-    val standardTestScope = TestScope(standardTestDispatcher)
 
     @BeforeEach
     open fun beforeEach() {
-        Dispatchers.setMain(standardTestDispatcher)
+        Dispatchers.setMain(testDispatcher)
     }
 
     @AfterEach

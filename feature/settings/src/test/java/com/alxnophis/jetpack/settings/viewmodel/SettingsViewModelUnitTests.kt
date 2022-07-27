@@ -24,7 +24,7 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
         event: SettingsEvent,
         state: SettingsState
     ) {
-        standardTestScope.runTest {
+        testScope.runTest {
             val viewModel = SettingsViewModel(initialState = SettingsState())
 
             viewModel.setEvent(event)
