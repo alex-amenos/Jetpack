@@ -119,7 +119,7 @@ internal fun BallClicker(
 private fun BallClicker(
     radius: Float = 100f,
     enabled: Boolean = false,
-    ballColor: Color = Color.Red,
+    ballColor: Color = MaterialTheme.colors.secondary,
     onBallClick: () -> Unit = {}
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {

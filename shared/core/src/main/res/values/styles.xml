@@ -1,8 +1,8 @@
 <resources>
 
     <style name="CoreTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">#6200ee</item>
-        <item name="colorPrimaryDark">#3600b2</item>
+        <item name="colorPrimary">#26B378</item>
+        <item name="colorPrimaryDark">#1E8F60</item>
     </style>
 
 </resources>
