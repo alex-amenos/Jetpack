@@ -31,7 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +51,7 @@ import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
 import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
+import com.alxnophis.jetpack.spacex.ui.view.SpacexTags.TAG_SPACEX_LAUNCH_DETAIL
 import com.alxnophis.jetpack.spacex.ui.viewmodel.LaunchesViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -175,11 +176,11 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                         .Builder(localContext)
                         .data(item.missionPatchUrl)
                         .fallback(R.drawable.ic_rocket_launch)
+                        .diskCacheKey(item.missionPatchUrl)
                         .crossfade(true)
                         .build(),
-                    placeholder = painterResource(R.drawable.ic_rocket_launch),
                     contentDescription = item.missionName,
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.FillBounds
                 )
                 Column(
                     modifier = Modifier
@@ -209,7 +210,8 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                 ExpandingText(
                     modifier = Modifier
                         .padding(top = 16.dp)
-                        .wrapContentSize(),
+                        .wrapContentSize()
+                        .testTag(TAG_SPACEX_LAUNCH_DETAIL + item.id),
                     item = item,
                 )
             }

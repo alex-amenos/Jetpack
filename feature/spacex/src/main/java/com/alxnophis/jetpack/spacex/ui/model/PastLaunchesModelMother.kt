@@ -1,8 +1,9 @@
-package com.alxnophis.jetpack.spacex.mother
+package com.alxnophis.jetpack.spacex.ui.model
 
 import com.alxnophis.jetpack.core.base.constants.EMPTY
-import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
+import org.jetbrains.annotations.TestOnly
 
+@TestOnly
 internal object PastLaunchesModelMother {
 
     fun pastLaunch(
