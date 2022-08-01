@@ -9,12 +9,15 @@ class SettingsAppVersionTest : BaseComposeTest() {
 
     @Test
     fun app_version_displayed() {
-        val version = "1.0.0"
         composeTestRule.setContent {
-            SettingsAppVersion(appVersion = version)
+            SettingsAppVersion(appVersion = VERSION)
         }
         composeTestRule
-            .onNodeWithText(version)
+            .onNodeWithText(VERSION)
             .assertIsDisplayed()
+    }
+
+    companion object {
+        private const val VERSION = "1.0.0"
     }
 }
