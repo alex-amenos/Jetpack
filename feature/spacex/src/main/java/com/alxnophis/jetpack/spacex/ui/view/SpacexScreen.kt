@@ -32,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
@@ -177,11 +176,11 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                         .Builder(localContext)
                         .data(item.missionPatchUrl)
                         .fallback(R.drawable.ic_rocket_launch)
+                        .diskCacheKey(item.missionPatchUrl)
                         .crossfade(true)
                         .build(),
-                    placeholder = painterResource(R.drawable.ic_rocket_launch),
                     contentDescription = item.missionName,
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.FillBounds
                 )
                 Column(
                     modifier = Modifier
