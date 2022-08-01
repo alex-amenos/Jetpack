@@ -19,6 +19,7 @@ import java.util.Date
 import java.util.stream.Stream
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -154,6 +155,48 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
                             )
                         )
                     ),
+                    awaitItem()
+                )
+                expectNoEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `WHEN dismiss error THEN remove error from ui state`() {
+        runTest {
+            whenever(randomProviderMock.mostSignificantBitsRandomUUID()).thenReturn(RANDOM_UUID_SIGNIFICANT_BITS)
+            whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(LaunchesError.Unknown.left())
+
+            viewModel.uiState.test {
+                assertEquals(
+                    initialLaunchesState,
+                    awaitItem()
+                )
+                assertEquals(
+                    initialLaunchesState.copy(isLoading = true),
+                    awaitItem()
+                )
+                assertEquals(
+                    initialLaunchesState.copy(
+                        isLoading = false,
+                        errorMessages = listOf(
+                            ErrorMessage(
+                                id = RANDOM_UUID_SIGNIFICANT_BITS,
+                                messageId = R.string.spacex_error_unknown
+                            )
+                        )
+                    ),
+                    awaitItem()
+                )
+            }
+
+            viewModel.setEvent(LaunchesEvent.DismissError(RANDOM_UUID_SIGNIFICANT_BITS))
+            runCurrent()
+
+            viewModel.uiState.test {
+                assertEquals(
+                    initialLaunchesState.copy(),
                     awaitItem()
                 )
                 expectNoEvents()
