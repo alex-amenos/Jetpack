@@ -91,7 +91,7 @@ internal class LaunchesViewModel(
     }
 
     private suspend fun List<PastLaunchDataModel>.mapTo(formatDate: (Date?) -> String): List<PastLaunchModel> =
-        withContext(dispatcherProvider.io()) {
+        withContext(dispatcherProvider.default()) {
             map { launch ->
                 PastLaunchModel(
                     id = launch.id,
