@@ -22,7 +22,7 @@ class SpacexScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun spacex_top_bar_has_back_displayed_and_clickable() {
+    fun spacex_top_bar_is_displayed_and_clickable() {
         setSpacexContent(state = LaunchesState())
         composeTestRule
             .onNodeWithTag(CoreTags.TAG_CORE_BACK)
@@ -31,7 +31,7 @@ class SpacexScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun spacex_past_launches_launch_date_is_displayed() {
+    fun spacex_past_launches_date_is_displayed() {
         val date = "01 aug 2022 15:39"
         val pastLaunch = PastLaunchesModelMother.pastLaunch(launchDateUtc = date)
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
@@ -70,7 +70,7 @@ class SpacexScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun spacex_past_launches_detail_is_displayed_and_perform_clickable() {
+    fun spacex_past_launches_detail_is_displayed_and_performs_click() {
         val pastLaunch = PastLaunchesModelMother.pastLaunch(details = LONG_LOREM_IPSUM)
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         composeTestRule
