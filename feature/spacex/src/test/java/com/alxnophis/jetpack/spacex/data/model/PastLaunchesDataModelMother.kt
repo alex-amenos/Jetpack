@@ -1,6 +1,5 @@
-package com.alxnophis.jetpack.spacex.mother
+package com.alxnophis.jetpack.spacex.data.model
 
-import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
 import java.util.Date
 
 internal object PastLaunchesDataModelMother {

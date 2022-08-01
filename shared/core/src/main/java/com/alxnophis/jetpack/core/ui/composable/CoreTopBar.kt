@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ fun CoreTopBar(
         contentPadding = PaddingValues(start = 12.dp)
     ) {
         IconButton(
+            modifier = Modifier.testTag(CoreTags.TAG_CORE_BACK),
             onClick = onBack,
         ) {
             Icon(

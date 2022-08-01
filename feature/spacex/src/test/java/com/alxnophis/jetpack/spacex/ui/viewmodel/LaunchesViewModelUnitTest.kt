@@ -10,8 +10,8 @@ import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
-import com.alxnophis.jetpack.spacex.mother.PastLaunchesDataModelMother
-import com.alxnophis.jetpack.spacex.mother.PastLaunchesModelMother
+import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModelMother
+import com.alxnophis.jetpack.spacex.ui.model.PastLaunchesModelMother
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
