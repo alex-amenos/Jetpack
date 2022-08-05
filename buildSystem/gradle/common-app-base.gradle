@@ -36,14 +36,6 @@ android {
         }
     }
 
-    buildFeatures {
-        compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE
-    }
-
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def project = "jetpack"
@@ -113,8 +105,6 @@ dependencies {
 
     // Others
     implementation Dep.ANDROIDX_APPCOMPAT
-    implementation Dep.ANDROIDX_COMPOSE_ACTIVITY
-    implementation Dep.ANDROIDX_COMPOSE_RUNTIME
     implementation Dep.KOIN_ANDROID
 
     testImplementation Dep.JUNIT_JUPITER_API
