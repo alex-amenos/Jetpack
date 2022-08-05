@@ -1,0 +1,33 @@
+android {
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE
+    }
+}
+
+dependencies {
+    implementation Dep.ANDROIDX_COMPOSE_ACTIVITY
+    implementation Dep.ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT
+    implementation Dep.ANDROIDX_COMPOSE_ANIMATION
+    implementation Dep.ANDROIDX_COMPOSE_FOUNDATION
+    implementation Dep.ANDROIDX_COMPOSE_FOUNDATION_LAYOUT
+    implementation Dep.ANDROIDX_COMPOSE_MATERIAL
+    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_CORE
+    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_EXTENDED
+    implementation Dep.ANDROIDX_COMPOSE_NAVIGATION
+    implementation Dep.ANDROIDX_COMPOSE_RUNTIME
+    implementation Dep.ANDROIDX_COMPOSE_UI
+    implementation Dep.ANDROIDX_COMPOSE_UI_UTIL
+    implementation Dep.ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW
+    implementation Dep.ANDROIDX_COMPOSE_VIEWMODEL
+    implementation Dep.KOIN_ANDROID_COMPOSE
+
+    debugImplementation Dep.ANDROIDX_COMPOSE_UI_TOOLING
+    debugImplementation Dep.ANDROIDX_COMPOSE_UI_TEST_MANIFEST
+
+    androidTestImplementation project(Modules.SHARED_TESTING)
+    androidTestImplementation Dep.ANDROIDX_COMPOSE_UI_TEST
+}

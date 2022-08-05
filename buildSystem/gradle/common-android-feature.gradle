@@ -1,14 +1,5 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
-
-android {
-    buildFeatures {
-        compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE
-    }
-}
+apply from: "$rootDir/buildSystem/gradle/common-android-compose.gradle"
 
 dependencies {
     implementation project(Modules.SHARED_CORE)
@@ -19,19 +10,6 @@ dependencies {
     implementation Dep.ANDROIDX_APPCOMPAT
     implementation Dep.ANDROIDX_ARCH_CORE_COMMON
     implementation Dep.ANDROIDX_ARCH_CORE_RUNTIME
-    implementation Dep.ANDROIDX_COMPOSE_ACTIVITY
-    implementation Dep.ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT
-    implementation Dep.ANDROIDX_COMPOSE_ANIMATION
-    implementation Dep.ANDROIDX_COMPOSE_FOUNDATION
-    implementation Dep.ANDROIDX_COMPOSE_FOUNDATION_LAYOUT
-    implementation Dep.ANDROIDX_COMPOSE_MATERIAL
-    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_CORE
-    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_EXTENDED
-    implementation Dep.ANDROIDX_COMPOSE_NAVIGATION
-    implementation Dep.ANDROIDX_COMPOSE_RUNTIME
-    implementation Dep.ANDROIDX_COMPOSE_UI
-    implementation Dep.ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW
-    implementation Dep.ANDROIDX_COMPOSE_VIEWMODEL
     implementation Dep.ANDROIDX_CORE_KTX
     implementation Dep.ANDROIDX_LIFECYCLE_EXTENSION
     implementation Dep.ANDROIDX_LIFECYCLE_COMMON
@@ -44,13 +22,10 @@ dependencies {
     implementation Dep.COROUTINES_CORE
     implementation Dep.COROUTINES_ANDROID
     implementation Dep.KOIN_ANDROID
-    implementation Dep.KOIN_ANDROID_COMPOSE
     implementation Dep.PERMISSION_DISPATCHER
     implementation Dep.GOOGLE_ANDROID_MATERIAL
     implementation Dep.TIMBER
 
-    debugImplementation Dep.ANDROIDX_COMPOSE_UI_TOOLING
-    debugImplementation Dep.ANDROIDX_COMPOSE_UI_TEST_MANIFEST
     debugImplementation Dep.LEAK_CANARY
 
     kapt Dep.ANDROIDX_LIFECYCLE_COMPILER
@@ -73,7 +48,6 @@ dependencies {
 
     androidTestImplementation project(Modules.SHARED_TESTING)
     androidTestImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
-    androidTestImplementation Dep.ANDROIDX_COMPOSE_UI_TEST
     androidTestImplementation Dep.ANDROIDX_TEST_JUNIT
     androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
     androidTestImplementation Dep.ANDROIDX_TEST_RULES
