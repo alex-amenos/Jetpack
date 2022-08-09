@@ -1,5 +1,7 @@
 package com.alxnophis.jetpack.settings.ui.view
 
+import androidx.annotation.StringRes
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.assertIsSelected
@@ -95,6 +97,12 @@ class SettingsTest : BaseComposeTest() {
         composeTestRule
             .onNodeWithTag(TAG_MARKETING_OPTION + MarketingOption.NOT_ALLOWED.id)
             .assertIsSelected()
+    }
+
+    private fun assertStringResDisplayed(@StringRes stringResource: Int) {
+        composeTestRule
+            .onNodeWithText(targetContext.getString(stringResource))
+            .assertIsDisplayed()
     }
 
     private fun setSettingsContent() {
