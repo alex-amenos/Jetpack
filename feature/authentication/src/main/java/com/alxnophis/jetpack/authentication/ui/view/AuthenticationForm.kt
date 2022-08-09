@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
+import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 
 @ExperimentalComposeUiApi
@@ -394,8 +395,8 @@ private fun AuthenticationSighInFormPreview() {
             modifier = Modifier.wrapContentSize(),
             authenticationMode = AuthenticationMode.SIGN_IN,
             isLoading = true,
-            email = "",
-            password = "",
+            email = EMPTY,
+            password = EMPTY,
             completedPasswordRequirements = emptyList(),
             enableAuthentication = true,
             onEmailChanged = {},
@@ -415,8 +416,8 @@ private fun AuthenticationSignUpFormPreview() {
             modifier = Modifier.wrapContentSize(),
             authenticationMode = AuthenticationMode.SIGN_UP,
             isLoading = true,
-            email = "",
-            password = "",
+            email = EMPTY,
+            password = EMPTY,
             completedPasswordRequirements = listOf(
                 PasswordRequirements.CAPITAL_LETTER,
                 PasswordRequirements.EIGHT_CHARACTERS,
