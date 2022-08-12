@@ -113,6 +113,7 @@ internal fun PostList(
         ) {
             items(
                 items = state.posts,
+                key = { item: Post -> item.id },
                 itemContent = { item: Post ->
                     CardPostItem(state, item)
                 }
