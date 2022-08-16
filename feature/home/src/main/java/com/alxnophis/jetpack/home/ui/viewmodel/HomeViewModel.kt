@@ -20,13 +20,15 @@ internal class HomeViewModel(
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
 
     init {
-        setEvent(HomeEvent.LoadNavigationItems)
+        handleEvent(HomeEvent.LoadNavigationItems)
     }
 
     override fun handleEvent(event: HomeEvent) {
-        when (event) {
-            HomeEvent.ErrorDismissed -> dismissError()
-            HomeEvent.LoadNavigationItems -> loadNavigationItems()
+        viewModelScope.launch {
+            when (event) {
+                HomeEvent.ErrorDismissed -> dismissError()
+                HomeEvent.LoadNavigationItems -> loadNavigationItems()
+            }
         }
     }
 

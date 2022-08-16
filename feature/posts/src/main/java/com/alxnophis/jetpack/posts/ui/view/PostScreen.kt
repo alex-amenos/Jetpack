@@ -54,7 +54,7 @@ internal fun PostsScreen(
     }
     PostsContent(
         state = viewModel.uiState.collectAsState().value,
-        onPostEvent = viewModel::setEvent,
+        onPostEvent = viewModel::handleEvent,
         onNavigateBack = navigateBack
     )
 }

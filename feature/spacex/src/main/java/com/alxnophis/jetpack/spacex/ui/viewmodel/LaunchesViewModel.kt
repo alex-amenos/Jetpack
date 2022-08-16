@@ -28,14 +28,16 @@ internal class LaunchesViewModel(
 ) : BaseViewModel<LaunchesEvent, LaunchesState>(initialState) {
 
     init {
-        setEvent(LaunchesEvent.GetPastLaunches)
+        handleEvent(LaunchesEvent.GetPastLaunches)
     }
 
     override fun handleEvent(event: LaunchesEvent) {
-        when (event) {
-            LaunchesEvent.GetPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = false)
-            LaunchesEvent.RefreshPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = true)
-            is LaunchesEvent.DismissError -> dismissError(event.errorId)
+        viewModelScope.launch {
+            when (event) {
+                LaunchesEvent.GetPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = false)
+                LaunchesEvent.RefreshPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = true)
+                is LaunchesEvent.DismissError -> dismissError(event.errorId)
+            }
         }
     }
 

@@ -27,7 +27,7 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
         runTest {
             val viewModel = SettingsViewModel(initialState = SettingsState())
 
-            viewModel.setEvent(event)
+            viewModel.handleEvent(event)
 
             viewModel.uiState.test {
                 assertEquals(

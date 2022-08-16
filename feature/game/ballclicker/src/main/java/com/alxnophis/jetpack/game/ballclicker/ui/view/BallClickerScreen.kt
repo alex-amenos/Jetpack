@@ -51,12 +51,12 @@ internal fun BallClickerScreen(
     CoreTheme {
         BackHandler {
             viewModel
-                .setEvent(BallClickerEvent.Stop)
+                .handleEvent(BallClickerEvent.Stop)
                 .also { navController.popBackStack() }
         }
         BallClicker(
             viewModel.uiState.collectAsState().value,
-            viewModel::setEvent
+            viewModel::handleEvent
         )
     }
 }

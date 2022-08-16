@@ -29,10 +29,12 @@ internal class BallClickerViewModel(
     private var timerJob: Job? = null
 
     override fun handleEvent(event: BallClickerEvent) {
-        when (event) {
-            BallClickerEvent.BallClicked -> ballClicked()
-            BallClickerEvent.Start -> startGame()
-            BallClickerEvent.Stop -> stopGame()
+        viewModelScope.launch {
+            when (event) {
+                BallClickerEvent.BallClicked -> ballClicked()
+                BallClickerEvent.Start -> startGame()
+                BallClickerEvent.Stop -> stopGame()
+            }
         }
     }
 

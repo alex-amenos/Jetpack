@@ -23,9 +23,11 @@ internal class PostsViewModel(
     }
 
     override fun handleEvent(event: PostsEvent) {
-        when (event) {
-            PostsEvent.GetPosts -> renderPosts()
-            is PostsEvent.DismissError -> dismissError(event.errorId)
+        viewModelScope.launch {
+            when (event) {
+                PostsEvent.GetPosts -> renderPosts()
+                is PostsEvent.DismissError -> dismissError(event.errorId)
+            }
         }
     }
 

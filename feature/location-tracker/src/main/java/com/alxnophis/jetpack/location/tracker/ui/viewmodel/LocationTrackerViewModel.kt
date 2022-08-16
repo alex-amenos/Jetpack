@@ -26,15 +26,17 @@ internal class LocationTrackerViewModel(
 ) : BaseViewModel<LocationTrackerEvent, LocationTrackerState>(initialState) {
 
     override fun handleEvent(event: LocationTrackerEvent) {
-        when (event) {
-            LocationTrackerEvent.FineLocationPermissionGranted -> {
-                // TODO - Check if location is enabled
-                startTrackingUserLocation()
-                subscribeToUserLocation()
-                subscribeToLastKnownLocation()
-            }
-            LocationTrackerEvent.EndTracking -> {
-                stopTrackUserLocation()
+        viewModelScope.launch {
+            when (event) {
+                LocationTrackerEvent.FineLocationPermissionGranted -> {
+                    // TODO - Check if location is enabled
+                    startTrackingUserLocation()
+                    subscribeToUserLocation()
+                    subscribeToLastKnownLocation()
+                }
+                LocationTrackerEvent.EndTracking -> {
+                    stopTrackUserLocation()
+                }
             }
         }
     }

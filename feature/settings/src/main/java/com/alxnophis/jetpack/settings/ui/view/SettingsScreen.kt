@@ -40,7 +40,7 @@ internal fun SettingsScreen(
         SettingsContent(
             state = state,
             appVersion = appVersion,
-            onSettingsEvent = viewModel::setEvent,
+            onSettingsEvent = viewModel::handleEvent,
             onNavigateBack = navigateBack
         )
     }

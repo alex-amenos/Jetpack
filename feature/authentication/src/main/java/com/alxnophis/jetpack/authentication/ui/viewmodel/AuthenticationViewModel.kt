@@ -20,14 +20,17 @@ internal class AuthenticationViewModel(
     private val authenticateUseCase: AuthenticateUseCase,
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
 
-    override fun handleEvent(event: AuthenticationEvent) =
-        when (event) {
-            AuthenticationEvent.Authenticate -> authenticate()
-            AuthenticationEvent.ErrorDismissed -> dismissError()
-            AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-            is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
-            is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
+    override fun handleEvent(event: AuthenticationEvent) {
+        viewModelScope.launch {
+            when (event) {
+                AuthenticationEvent.Authenticate -> authenticate()
+                AuthenticationEvent.ErrorDismissed -> dismissError()
+                AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
+                is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
+                is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
+            }
         }
+    }
 
     private fun toggleAuthenticationMode() {
         val newAuthenticationMode = when (currentState.authenticationMode) {

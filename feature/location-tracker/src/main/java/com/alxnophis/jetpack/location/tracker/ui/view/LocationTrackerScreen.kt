@@ -44,12 +44,12 @@ internal fun LocationTrackerScreen(
         val navigateBack: () -> Unit = { navController.popBackStack() }
         LocationTracker(
             state = state,
-            onLocationTrackerEvent = viewModel::setEvent,
+            onLocationTrackerEvent = viewModel::handleEvent,
             onNavigateBack = navigateBack
         )
         BackHandler {
             viewModel
-                .setEvent(LocationTrackerEvent.EndTracking)
+                .handleEvent(LocationTrackerEvent.EndTracking)
                 .also { navigateBack() }
         }
     }
