@@ -54,7 +54,7 @@ internal fun AuthenticationScreen(
 @Composable
 internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
-    setAuthenticationEvent: (event: AuthenticationEvent) -> Unit,
+    handleEvent: AuthenticationEvent.() -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -75,23 +75,23 @@ internal fun AuthenticationContent(
                 false
             },
             onEmailChanged = { email ->
-                setAuthenticationEvent(AuthenticationEvent.EmailChanged(email))
+                handleEvent(AuthenticationEvent.EmailChanged(email))
             },
             onPasswordChanged = { password ->
-                setAuthenticationEvent(AuthenticationEvent.PasswordChanged(password))
+                handleEvent(AuthenticationEvent.PasswordChanged(password))
             },
             onAuthenticate = {
-                setAuthenticationEvent(AuthenticationEvent.Authenticate)
+                handleEvent(AuthenticationEvent.Authenticate)
             },
             onToggleMode = {
-                setAuthenticationEvent(AuthenticationEvent.ToggleAuthenticationMode)
+                handleEvent(AuthenticationEvent.ToggleAuthenticationMode)
             }
         )
         authenticationState.error?.let { error: Int ->
             CoreErrorDialog(
                 errorMessage = stringResource(error),
                 dismissError = {
-                    setAuthenticationEvent(AuthenticationEvent.ErrorDismissed)
+                    handleEvent(AuthenticationEvent.ErrorDismissed)
                 }
             )
         }
@@ -105,7 +105,7 @@ private fun AuthenticationFormPreview() {
     CoreTheme {
         AuthenticationContent(
             authenticationState = AuthenticationState(),
-            setAuthenticationEvent = {},
+            handleEvent = {},
         )
     }
 }

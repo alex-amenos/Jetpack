@@ -40,8 +40,8 @@ internal fun SettingsScreen(
         SettingsContent(
             state = state,
             appVersion = appVersion,
-            onSettingsEvent = viewModel::handleEvent,
-            onNavigateBack = navigateBack
+            handleEvent = viewModel::handleEvent,
+            navigateBack = navigateBack
         )
     }
 }
@@ -50,8 +50,8 @@ internal fun SettingsScreen(
 internal fun SettingsContent(
     state: SettingsState,
     appVersion: String,
-    onSettingsEvent: (event: SettingsEvent) -> Unit,
-    onNavigateBack: () -> Unit
+    handleEvent: SettingsEvent.() -> Unit,
+    navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     Column(
@@ -62,21 +62,21 @@ internal fun SettingsContent(
     ) {
         CoreTopBar(
             title = stringResource(id = R.string.settings_title),
-            onBack = { onNavigateBack() }
+            onBack = { navigateBack() }
         )
         Divider()
         SettingsNotificationItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_notifications),
             checked = state.notificationsEnabled,
-            onToggleNotificationSettings = { onSettingsEvent(SettingsEvent.SetNotifications) }
+            onToggleNotificationSettings = { handleEvent(SettingsEvent.SetNotifications) }
         )
         Divider()
         SettingsHintItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.settings_option_hints),
             checked = state.hintsEnabled,
-            onShowHintToggled = { onSettingsEvent(SettingsEvent.SetHint) }
+            onShowHintToggled = { handleEvent(SettingsEvent.SetHint) }
         )
         Divider()
         SettingsManageSubscriptionItem(
@@ -86,7 +86,7 @@ internal fun SettingsContent(
                 Toast
                     .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
                     .show()
-                onSettingsEvent(SettingsEvent.ManageSubscription)
+                handleEvent(SettingsEvent.ManageSubscription)
             }
         )
         Divider()
@@ -97,7 +97,7 @@ internal fun SettingsContent(
             modifier = Modifier.fillMaxWidth(),
             selectedOption = state.marketingOption,
             onOptionSelected = { marketingOption ->
-                onSettingsEvent(SettingsEvent.SetMarketingOption(marketingOption))
+                handleEvent(SettingsEvent.SetMarketingOption(marketingOption))
             }
         )
         Divider()
@@ -105,7 +105,7 @@ internal fun SettingsContent(
             modifier = Modifier.fillMaxWidth(),
             selectedTheme = state.themeOption,
             onOptionSelected = { theme ->
-                onSettingsEvent(SettingsEvent.SetTheme(theme))
+                handleEvent(SettingsEvent.SetTheme(theme))
             }
         )
         SettingsSectionSpacer(
@@ -127,8 +127,8 @@ private fun SettingsScreenPreview() {
         SettingsContent(
             state = SettingsState(),
             appVersion = "1.0.0",
-            onSettingsEvent = {},
-            onNavigateBack = {}
+            handleEvent = {},
+            navigateBack = {}
         )
     }
 }

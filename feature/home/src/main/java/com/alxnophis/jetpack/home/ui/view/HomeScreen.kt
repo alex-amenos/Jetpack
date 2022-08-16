@@ -63,7 +63,7 @@ internal fun HomeScreen(
         }
         HomeContent(
             state = state,
-            setHomeEvent = viewModel::handleEvent,
+            handleEvent = viewModel::handleEvent,
             navigateTo = { route -> navController.navigate(route) },
         )
     }
@@ -72,7 +72,7 @@ internal fun HomeScreen(
 @Composable
 internal fun HomeContent(
     state: HomeState,
-    setHomeEvent: HomeEvent.() -> Unit,
+    handleEvent: HomeEvent.() -> Unit,
     navigateTo: (route: String) -> Unit
 ) {
     Box(
@@ -88,7 +88,7 @@ internal fun HomeContent(
         state.error?.let { error: Int ->
             CoreErrorDialog(
                 errorMessage = stringResource(error),
-                dismissError = { setHomeEvent.invoke(HomeEvent.ErrorDismissed) }
+                dismissError = { handleEvent.invoke(HomeEvent.ErrorDismissed) }
             )
         }
     }
@@ -193,7 +193,7 @@ private fun HomeScreenPreview() {
     CoreTheme {
         HomeContent(
             state = state,
-            setHomeEvent = {},
+            handleEvent = {},
             navigateTo = {}
         )
     }

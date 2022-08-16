@@ -54,16 +54,16 @@ internal fun PostsScreen(
     }
     PostsContent(
         state = viewModel.uiState.collectAsState().value,
-        onPostEvent = viewModel::handleEvent,
-        onNavigateBack = navigateBack
+        handleEvent = viewModel::handleEvent,
+        navigateBack = navigateBack
     )
 }
 
 @Composable
 internal fun PostsContent(
     state: PostsState,
-    onPostEvent: (event: PostsEvent) -> Unit,
-    onNavigateBack: () -> Unit
+    handleEvent: PostsEvent.() -> Unit,
+    navigateBack: () -> Unit
 ) {
     CoreTheme {
         Box(
@@ -75,17 +75,17 @@ internal fun PostsContent(
             ) {
                 CoreTopBar(
                     title = stringResource(id = R.string.posts_title),
-                    onBack = { onNavigateBack() }
+                    onBack = { navigateBack() }
                 )
                 PostList(
                     modifier = Modifier.fillMaxSize(),
                     state = state,
-                    onPostEvent = onPostEvent,
+                    handleEvent = handleEvent,
                 )
                 state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                     CoreErrorDialog(
                         errorMessage = stringResource(error.messageId),
-                        dismissError = { onPostEvent.invoke(PostsEvent.DismissError(error.id)) }
+                        dismissError = { handleEvent.invoke(PostsEvent.DismissError(error.id)) }
                     )
                 }
             }
@@ -97,12 +97,12 @@ internal fun PostsContent(
 internal fun PostList(
     modifier: Modifier,
     state: PostsState,
-    onPostEvent: (event: PostsEvent) -> Unit,
+    handleEvent: PostsEvent.() -> Unit,
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { onPostEvent.invoke(PostsEvent.GetPosts) },
+        onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) },
     ) {
         LazyColumn(
             state = listState,
@@ -193,7 +193,7 @@ private fun PostScreenPreview() {
     )
     PostsContent(
         state = state,
-        onPostEvent = {},
-        onNavigateBack = {}
+        handleEvent = {},
+        navigateBack = {}
     )
 }

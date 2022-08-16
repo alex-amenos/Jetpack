@@ -44,8 +44,8 @@ internal fun LocationTrackerScreen(
         val navigateBack: () -> Unit = { navController.popBackStack() }
         LocationTracker(
             state = state,
-            onLocationTrackerEvent = viewModel::handleEvent,
-            onNavigateBack = navigateBack
+            handleEvent = viewModel::handleEvent,
+            navigateBack = navigateBack
         )
         BackHandler {
             viewModel
@@ -58,8 +58,8 @@ internal fun LocationTrackerScreen(
 @Composable
 internal fun LocationTracker(
     state: LocationTrackerState,
-    onLocationTrackerEvent: (event: LocationTrackerEvent) -> Unit,
-    onNavigateBack: () -> Unit
+    handleEvent: LocationTrackerEvent.() -> Unit,
+    navigateBack: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -69,13 +69,13 @@ internal fun LocationTracker(
         CoreTopBar(
             title = stringResource(id = R.string.location_tracker_title),
             onBack = {
-                onLocationTrackerEvent(LocationTrackerEvent.EndTracking)
-                onNavigateBack()
+                handleEvent(LocationTrackerEvent.EndTracking)
+                navigateBack()
             },
         )
         LocationPermission(
             composableWhenPermissionGranted = { UserLocation(state = state) },
-            onLocationTrackerEvent = onLocationTrackerEvent
+            handleEvent = handleEvent
         )
     }
 }
@@ -84,7 +84,7 @@ internal fun LocationTracker(
 @Composable
 private fun LocationPermission(
     composableWhenPermissionGranted: @Composable () -> Unit,
-    onLocationTrackerEvent: (event: LocationTrackerEvent) -> Unit,
+    handleEvent: LocationTrackerEvent.() -> Unit,
 ) {
     val locationPermissionsState = rememberMultiplePermissionsState(
         listOf(
@@ -93,7 +93,7 @@ private fun LocationPermission(
         )
     )
     if (locationPermissionsState.allPermissionsGranted) {
-        onLocationTrackerEvent(LocationTrackerEvent.FineLocationPermissionGranted)
+        handleEvent(LocationTrackerEvent.FineLocationPermissionGranted)
         composableWhenPermissionGranted()
     } else {
         Column(
