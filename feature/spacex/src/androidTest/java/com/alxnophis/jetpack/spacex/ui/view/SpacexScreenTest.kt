@@ -1,9 +1,11 @@
 package com.alxnophis.jetpack.spacex.ui.view
 
+import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.spacex.R
@@ -79,6 +81,16 @@ class SpacexScreenTest : BaseComposeTest() {
             .assertHasClickAction()
             .performClick()
             .assertTextContains(LONG_LOREM_IPSUM)
+    }
+
+    private fun assertStringDisplayed(text: String) {
+        composeTestRule
+            .onNodeWithText(text)
+            .assertIsDisplayed()
+    }
+
+    private fun assertStringResDisplayed(@StringRes stringResource: Int) {
+        assertStringDisplayed(targetContext.getString(stringResource))
     }
 
     private fun setSpacexContent(state: LaunchesState) {

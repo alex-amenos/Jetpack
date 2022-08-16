@@ -1,11 +1,8 @@
 package com.alxnophis.jetpack.testing.base
 
 import android.content.Context
-import androidx.annotation.StringRes
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Rule
@@ -23,14 +20,4 @@ abstract class BaseComposeTest {
 
     val context: Context
         get() = InstrumentationRegistry.getInstrumentation().context
-
-    fun assertStringDisplayed(text: String) {
-        composeTestRule
-            .onNodeWithText(text)
-            .assertIsDisplayed()
-    }
-
-    fun assertStringResDisplayed(@StringRes stringResource: Int) {
-        assertStringDisplayed(targetContext.getString(stringResource))
-    }
 }

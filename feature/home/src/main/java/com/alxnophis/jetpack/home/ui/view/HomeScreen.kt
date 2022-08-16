@@ -125,6 +125,7 @@ internal fun SectionsList(
     ) {
         items(
             items = state.data,
+            key = { item: NavigationItem -> item.id },
             itemContent = { item: NavigationItem ->
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,

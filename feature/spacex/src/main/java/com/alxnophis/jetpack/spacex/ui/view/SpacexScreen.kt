@@ -121,6 +121,7 @@ private fun PastLaunchesList(
         ) {
             items(
                 items = state.pastLaunches,
+                key = { item: PastLaunchModel -> item.id + item.missionName },
                 itemContent = { item: PastLaunchModel ->
                     PastLaunchItem(item)
                 }

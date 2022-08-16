@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -55,6 +56,7 @@ import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
+import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 
 @ExperimentalComposeUiApi
@@ -144,7 +146,9 @@ internal fun AuthenticationForm(
         Spacer(modifier = Modifier.weight(1f))
 
         ToggleAuthenticationMode(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 50.dp),
             authenticationMode = authenticationMode,
             toggleAuthentication = { onToggleMode() }
         )
@@ -394,8 +398,8 @@ private fun AuthenticationSighInFormPreview() {
             modifier = Modifier.wrapContentSize(),
             authenticationMode = AuthenticationMode.SIGN_IN,
             isLoading = true,
-            email = "",
-            password = "",
+            email = EMPTY,
+            password = EMPTY,
             completedPasswordRequirements = emptyList(),
             enableAuthentication = true,
             onEmailChanged = {},
@@ -415,8 +419,8 @@ private fun AuthenticationSignUpFormPreview() {
             modifier = Modifier.wrapContentSize(),
             authenticationMode = AuthenticationMode.SIGN_UP,
             isLoading = true,
-            email = "",
-            password = "",
+            email = EMPTY,
+            password = EMPTY,
             completedPasswordRequirements = listOf(
                 PasswordRequirements.CAPITAL_LETTER,
                 PasswordRequirements.EIGHT_CHARACTERS,
