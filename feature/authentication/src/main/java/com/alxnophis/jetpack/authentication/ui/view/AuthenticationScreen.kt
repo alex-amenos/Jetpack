@@ -32,7 +32,7 @@ internal fun AuthenticationScreen(
         val state = viewModel.uiState.collectAsState().value
         AuthenticationContent(
             state,
-            viewModel::setEvent
+            viewModel::handleEvent
         )
         BackHandler {
             navController.popBackStack()
@@ -54,7 +54,7 @@ internal fun AuthenticationScreen(
 @Composable
 internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
-    onAuthenticationEvent: (event: AuthenticationEvent) -> Unit,
+    handleEvent: AuthenticationEvent.() -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -75,23 +75,23 @@ internal fun AuthenticationContent(
                 false
             },
             onEmailChanged = { email ->
-                onAuthenticationEvent(AuthenticationEvent.EmailChanged(email))
+                handleEvent(AuthenticationEvent.EmailChanged(email))
             },
             onPasswordChanged = { password ->
-                onAuthenticationEvent(AuthenticationEvent.PasswordChanged(password))
+                handleEvent(AuthenticationEvent.PasswordChanged(password))
             },
             onAuthenticate = {
-                onAuthenticationEvent(AuthenticationEvent.Authenticate)
+                handleEvent(AuthenticationEvent.Authenticate)
             },
             onToggleMode = {
-                onAuthenticationEvent(AuthenticationEvent.ToggleAuthenticationMode)
+                handleEvent(AuthenticationEvent.ToggleAuthenticationMode)
             }
         )
         authenticationState.error?.let { error: Int ->
             CoreErrorDialog(
                 errorMessage = stringResource(error),
                 dismissError = {
-                    onAuthenticationEvent(AuthenticationEvent.ErrorDismissed)
+                    handleEvent(AuthenticationEvent.ErrorDismissed)
                 }
             )
         }
@@ -105,7 +105,7 @@ private fun AuthenticationFormPreview() {
     CoreTheme {
         AuthenticationContent(
             authenticationState = AuthenticationState(),
-            onAuthenticationEvent = {},
+            handleEvent = {},
         )
     }
 }

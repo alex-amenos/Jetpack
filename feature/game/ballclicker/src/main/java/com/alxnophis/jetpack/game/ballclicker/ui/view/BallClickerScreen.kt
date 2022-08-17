@@ -51,12 +51,12 @@ internal fun BallClickerScreen(
     CoreTheme {
         BackHandler {
             viewModel
-                .setEvent(BallClickerEvent.Stop)
+                .handleEvent(BallClickerEvent.Stop)
                 .also { navController.popBackStack() }
         }
         BallClicker(
             viewModel.uiState.collectAsState().value,
-            viewModel::setEvent
+            viewModel::handleEvent
         )
     }
 }
@@ -64,7 +64,7 @@ internal fun BallClickerScreen(
 @Composable
 internal fun BallClicker(
     state: BallClickerState,
-    onBallClickerEvent: BallClickerEvent.() -> Unit
+    handleEvent: BallClickerEvent.() -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -95,9 +95,9 @@ internal fun BallClicker(
             Button(
                 onClick = {
                     if (state.isTimerRunning) {
-                        onBallClickerEvent(BallClickerEvent.Stop)
+                        handleEvent(BallClickerEvent.Stop)
                     } else {
-                        onBallClickerEvent(BallClickerEvent.Start)
+                        handleEvent(BallClickerEvent.Start)
                     }
                 }
             ) {
@@ -110,7 +110,7 @@ internal fun BallClicker(
             }
         }
         BallClicker(enabled = state.isTimerRunning) {
-            onBallClickerEvent(BallClickerEvent.BallClicked)
+            handleEvent(BallClickerEvent.BallClicked)
         }
     }
 }
@@ -120,7 +120,7 @@ private fun BallClicker(
     radius: Float = 100f,
     enabled: Boolean = false,
     ballColor: Color = MaterialTheme.colors.secondary,
-    onBallClick: () -> Unit = {}
+    ballClick: () -> Unit = {}
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         var ballPosition by remember {
@@ -147,7 +147,7 @@ private fun BallClicker(
                                 width = constraints.maxWidth,
                                 height = constraints.maxHeight
                             )
-                            onBallClick()
+                            ballClick()
                         }
                     }
                 }

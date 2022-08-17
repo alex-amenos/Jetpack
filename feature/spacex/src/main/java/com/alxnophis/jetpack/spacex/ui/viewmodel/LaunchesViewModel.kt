@@ -28,20 +28,22 @@ internal class LaunchesViewModel(
 ) : BaseViewModel<LaunchesEvent, LaunchesState>(initialState) {
 
     init {
-        setEvent(LaunchesEvent.GetPastLaunches)
+        handleEvent(LaunchesEvent.GetPastLaunches)
     }
 
     override fun handleEvent(event: LaunchesEvent) {
-        when (event) {
-            LaunchesEvent.GetPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = false)
-            LaunchesEvent.RefreshPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = true)
-            is LaunchesEvent.DismissError -> dismissError(event.errorId)
+        viewModelScope.launch {
+            when (event) {
+                LaunchesEvent.GetPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = false)
+                LaunchesEvent.RefreshPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = true)
+                is LaunchesEvent.DismissError -> dismissError(event.errorId)
+            }
         }
     }
 
     private fun renderPastLaunches(hasToFetchDataFromNetworkOnly: Boolean) {
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
+            updateState { copy(isLoading = true) }
             getPastLaunches(hasToFetchDataFromNetworkOnly)
                 .map { pastLaunches ->
                     pastLaunches.mapTo { date: Date? ->
@@ -61,7 +63,7 @@ internal class LaunchesViewModel(
                                 else -> R.string.spacex_error_unknown
                             }
                         )
-                        setState {
+                        updateState {
                             copy(
                                 isLoading = false,
                                 errorMessages = errorMessages
@@ -69,7 +71,7 @@ internal class LaunchesViewModel(
                         }
                     },
                     { pastLaunches: List<PastLaunchModel> ->
-                        setState {
+                        updateState {
                             copy(
                                 isLoading = false,
                                 pastLaunches = pastLaunches
@@ -85,7 +87,7 @@ internal class LaunchesViewModel(
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
-        setState {
+        updateState {
             copy(errorMessages = errorMessages)
         }
     }

@@ -20,27 +20,30 @@ internal class AuthenticationViewModel(
     private val authenticateUseCase: AuthenticateUseCase,
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
 
-    override fun handleEvent(event: AuthenticationEvent) =
-        when (event) {
-            AuthenticationEvent.Authenticate -> authenticate()
-            AuthenticationEvent.ErrorDismissed -> dismissError()
-            AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-            is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
-            is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
+    override fun handleEvent(event: AuthenticationEvent) {
+        viewModelScope.launch {
+            when (event) {
+                AuthenticationEvent.Authenticate -> authenticate()
+                AuthenticationEvent.ErrorDismissed -> dismissError()
+                AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
+                is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
+                is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
+            }
         }
+    }
 
     private fun toggleAuthenticationMode() {
         val newAuthenticationMode = when (currentState.authenticationMode) {
             AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
             else -> AuthenticationMode.SIGN_IN
         }
-        setState {
+        updateState {
             copy(authenticationMode = newAuthenticationMode)
         }
     }
 
     private fun updateEmail(newEmail: String) {
-        setState {
+        updateState {
             copy(email = newEmail)
         }
     }
@@ -59,7 +62,7 @@ internal class AuthenticationViewModel(
                     requirements.add(PasswordRequirements.NUMBER)
                 }
             }
-            setState {
+            updateState {
                 copy(
                     password = newPassword,
                     passwordRequirements = requirements.toList()
@@ -69,15 +72,15 @@ internal class AuthenticationViewModel(
     }
 
     private fun dismissError() {
-        setState { copy(error = null) }
+        updateState { copy(error = null) }
     }
 
     private fun authenticate() {
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
+            updateState { copy(isLoading = true) }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
-                    setState {
+                    updateState {
                         copy(
                             isLoading = false,
                             error = R.string.authentication_auth_error,
@@ -85,7 +88,7 @@ internal class AuthenticationViewModel(
                     }
                 },
                 {
-                    setState {
+                    updateState {
                         copy(
                             isLoading = false,
                             isUserAuthorized = true,

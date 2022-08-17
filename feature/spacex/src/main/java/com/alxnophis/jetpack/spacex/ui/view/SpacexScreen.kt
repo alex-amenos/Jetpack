@@ -65,16 +65,16 @@ internal fun SpacexScreen(
     BackHandler { navigateBack() }
     SpacexContent(
         state = viewModel.uiState.collectAsState().value,
-        onLaunchesEvent = viewModel::handleEvent,
-        onNavigateBack = navigateBack
+        handleEvent = viewModel::handleEvent,
+        navigateBack = navigateBack
     )
 }
 
 @Composable
 internal fun SpacexContent(
     state: LaunchesState,
-    onLaunchesEvent: (event: LaunchesEvent) -> Unit,
-    onNavigateBack: () -> Unit,
+    handleEvent: LaunchesEvent.() -> Unit,
+    navigateBack: () -> Unit,
 ) {
     CoreTheme {
         Column(
@@ -84,17 +84,17 @@ internal fun SpacexContent(
         ) {
             CoreTopBar(
                 title = stringResource(id = R.string.spacex_title),
-                onBack = { onNavigateBack() }
+                onBack = { navigateBack() }
             )
             PastLaunchesList(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
-                onLaunchesEvent = onLaunchesEvent
+                handleEvent = handleEvent
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
                     errorMessage = stringResource(error.messageId),
-                    dismissError = { onLaunchesEvent.invoke(LaunchesEvent.DismissError(error.id)) }
+                    dismissError = { handleEvent.invoke(LaunchesEvent.DismissError(error.id)) }
                 )
             }
         }
@@ -105,12 +105,12 @@ internal fun SpacexContent(
 private fun PastLaunchesList(
     modifier: Modifier,
     state: LaunchesState,
-    onLaunchesEvent: (event: LaunchesEvent) -> Unit
+    handleEvent: LaunchesEvent.() -> Unit
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { onLaunchesEvent.invoke(LaunchesEvent.RefreshPastLaunches) }
+        onRefresh = { handleEvent.invoke(LaunchesEvent.RefreshPastLaunches) }
     ) {
         LazyColumn(
             state = listState,
@@ -282,8 +282,8 @@ private fun SpacexContentPreview() {
     )
     SpacexContent(
         state = state,
-        onLaunchesEvent = {},
-        onNavigateBack = {}
+        handleEvent = {},
+        navigateBack = {}
     )
 }
 

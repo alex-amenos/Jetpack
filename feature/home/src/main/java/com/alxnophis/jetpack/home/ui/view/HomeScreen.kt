@@ -63,8 +63,8 @@ internal fun HomeScreen(
         }
         HomeContent(
             state = state,
-            onHomeEvent = viewModel::setEvent,
-            onNavigateTo = { route -> navController.navigate(route) },
+            handleEvent = viewModel::handleEvent,
+            navigateTo = { route -> navController.navigate(route) },
         )
     }
 }
@@ -72,8 +72,8 @@ internal fun HomeScreen(
 @Composable
 internal fun HomeContent(
     state: HomeState,
-    onHomeEvent: HomeEvent.() -> Unit,
-    onNavigateTo: (route: String) -> Unit
+    handleEvent: HomeEvent.() -> Unit,
+    navigateTo: (route: String) -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -83,12 +83,12 @@ internal fun HomeContent(
             modifier = Modifier.fillMaxSize()
         ) {
             HomeTopBar()
-            SectionsList(state, onNavigateTo)
+            SectionsList(state, navigateTo)
         }
         state.error?.let { error: Int ->
             CoreErrorDialog(
                 errorMessage = stringResource(error),
-                dismissError = { onHomeEvent.invoke(HomeEvent.ErrorDismissed) }
+                dismissError = { handleEvent.invoke(HomeEvent.ErrorDismissed) }
             )
         }
     }
@@ -114,7 +114,7 @@ internal fun HomeTopBar() {
 @Composable
 internal fun SectionsList(
     state: HomeState,
-    onNavigateTo: (route: String) -> Unit
+    navigateTo: (route: String) -> Unit
 ) {
     val listState = rememberLazyListState()
     LazyColumn(
@@ -131,7 +131,7 @@ internal fun SectionsList(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable { onNavigateTo(item.screen.route) }
+                        .clickable { navigateTo(item.screen.route) }
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(16.dp)
@@ -193,8 +193,8 @@ private fun HomeScreenPreview() {
     CoreTheme {
         HomeContent(
             state = state,
-            onHomeEvent = {},
-            onNavigateTo = {}
+            handleEvent = {},
+            navigateTo = {}
         )
     }
 }

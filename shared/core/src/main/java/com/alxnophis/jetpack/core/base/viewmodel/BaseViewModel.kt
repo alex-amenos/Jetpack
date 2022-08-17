@@ -1,13 +1,11 @@
 package com.alxnophis.jetpack.core.base.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.updateAndGet
 import timber.log.Timber
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -21,47 +19,33 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
 
-    private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
-    val uiEvent = _event.asSharedFlow()
-
-    init {
-        subscribeEvents()
-    }
-
-    /**
-     * Start listening to Event
-     */
-    private fun subscribeEvents() {
-        viewModelScope.launch {
-            uiEvent.collect {
-                handleEvent(it)
-            }
-        }
-    }
-
     /**
      * Handle each Event
      */
     abstract fun handleEvent(event: Event)
 
     /**
-     * Set new Event
+     * Update a new State
      */
-    fun setEvent(event: Event) {
-        Timber.d("## Set new event: $event")
-        viewModelScope.launch {
-            _event.emit(event)
-        }
+    protected fun updateState(reduce: State.() -> State) {
+        _uiState
+            .update { it.reduce() }
+            .also { Timber.d("## Set new state: $currentState") }
     }
 
     /**
-     * Set new State
+     * Update a new State and get prior State
      */
-    protected fun setState(reduce: State.() -> State) {
-        _uiState.update {
-            currentState
-                .reduce()
-                .also { Timber.d("## Set new state: $it") }
-        }
-    }
+    protected fun getPriorStateAndUpdate(reduce: State.() -> State): State =
+        _uiState
+            .getAndUpdate { it.reduce() }
+            .also { Timber.d("## Set new state: $currentState") }
+
+    /**
+     * Update and get a new State
+     */
+    protected fun updateAndGetState(reduce: State.() -> State): State =
+        _uiState
+            .updateAndGet { it.reduce() }
+            .also { newState -> Timber.d("## Set new state: $newState") }
 }

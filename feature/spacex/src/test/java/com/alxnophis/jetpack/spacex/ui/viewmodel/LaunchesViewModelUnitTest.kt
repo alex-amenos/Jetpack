@@ -9,11 +9,11 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
-import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModelMother
-import com.alxnophis.jetpack.spacex.ui.model.PastLaunchesModelMother
+import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
+import com.alxnophis.jetpack.spacex.ui.model.PastLaunchesModelMother
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import java.util.Date
 import java.util.stream.Stream
@@ -28,6 +28,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
@@ -58,42 +59,30 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN init THEN validate get past launches event`() {
+    fun `WHEN init THEN validate get past launches not fetched from network only`() {
         runTest {
             val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother.pastLaunch(launchDateUtc = Date()))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
-            viewModel.uiEvent.test {
-                assertEquals(
-                    LaunchesEvent.GetPastLaunches,
-                    awaitItem()
-                )
-                expectNoEvents()
-            }
+            runCurrent()
+
+            verify(launchesRepositoryMock).getPastLaunches(false)
         }
     }
 
     @Test
-    fun `WHEN refresh launches THEN validate refresh past launches event`() {
+    fun `WHEN refresh launches THEN validate get past launches fetched from network only after the init`() {
         runTest {
             val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother.pastLaunch(launchDateUtc = Date()))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
-            whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
+            whenever(launchesRepositoryMock.getPastLaunches(any())).thenReturn(pastLaunchesDataModel.right())
 
-            viewModel.setEvent(LaunchesEvent.RefreshPastLaunches)
+            viewModel.handleEvent(LaunchesEvent.RefreshPastLaunches)
+            runCurrent()
 
-            viewModel.uiEvent.test {
-                assertEquals(
-                    LaunchesEvent.GetPastLaunches,
-                    awaitItem()
-                )
-                assertEquals(
-                    LaunchesEvent.RefreshPastLaunches,
-                    awaitItem()
-                )
-                expectNoEvents()
-            }
+            verify(launchesRepositoryMock).getPastLaunches(false)
+            verify(launchesRepositoryMock).getPastLaunches(true)
         }
     }
 
@@ -191,7 +180,7 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
                 )
             }
 
-            viewModel.setEvent(LaunchesEvent.DismissError(RANDOM_UUID_SIGNIFICANT_BITS))
+            viewModel.handleEvent(LaunchesEvent.DismissError(RANDOM_UUID_SIGNIFICANT_BITS))
             runCurrent()
 
             viewModel.uiState.test {

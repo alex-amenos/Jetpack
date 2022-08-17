@@ -26,15 +26,17 @@ internal class LocationTrackerViewModel(
 ) : BaseViewModel<LocationTrackerEvent, LocationTrackerState>(initialState) {
 
     override fun handleEvent(event: LocationTrackerEvent) {
-        when (event) {
-            LocationTrackerEvent.FineLocationPermissionGranted -> {
-                // TODO - Check if location is enabled
-                startTrackingUserLocation()
-                subscribeToUserLocation()
-                subscribeToLastKnownLocation()
-            }
-            LocationTrackerEvent.EndTracking -> {
-                stopTrackUserLocation()
+        viewModelScope.launch {
+            when (event) {
+                LocationTrackerEvent.FineLocationPermissionGranted -> {
+                    // TODO - Check if location is enabled
+                    startTrackingUserLocation()
+                    subscribeToUserLocation()
+                    subscribeToLastKnownLocation()
+                }
+                LocationTrackerEvent.EndTracking -> {
+                    stopTrackUserLocation()
+                }
             }
         }
     }
@@ -49,7 +51,7 @@ internal class LocationTrackerViewModel(
 
     private fun subscribeToUserLocation() = viewModelScope.launch {
         locationStateUseCase().collectLatest { locationState ->
-            setState {
+            updateState {
                 currentState.copy(
                     userLocation = locationState.parseToString()
                 )
@@ -59,7 +61,7 @@ internal class LocationTrackerViewModel(
 
     private fun subscribeToLastKnownLocation() = viewModelScope.launch {
         lastKnownLocationUseCase().collectLatest { lastKnownLocation ->
-            setState {
+            updateState {
                 currentState.copy(
                     lastKnownLocation = lastKnownLocation?.parseToString()
                 )
