@@ -43,7 +43,7 @@ internal class LaunchesViewModel(
 
     private fun renderPastLaunches(hasToFetchDataFromNetworkOnly: Boolean) {
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
+            updateState { copy(isLoading = true) }
             getPastLaunches(hasToFetchDataFromNetworkOnly)
                 .map { pastLaunches ->
                     pastLaunches.mapTo { date: Date? ->
@@ -63,7 +63,7 @@ internal class LaunchesViewModel(
                                 else -> R.string.spacex_error_unknown
                             }
                         )
-                        setState {
+                        updateState {
                             copy(
                                 isLoading = false,
                                 errorMessages = errorMessages
@@ -71,7 +71,7 @@ internal class LaunchesViewModel(
                         }
                     },
                     { pastLaunches: List<PastLaunchModel> ->
-                        setState {
+                        updateState {
                             copy(
                                 isLoading = false,
                                 pastLaunches = pastLaunches
@@ -87,7 +87,7 @@ internal class LaunchesViewModel(
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
-        setState {
+        updateState {
             copy(errorMessages = errorMessages)
         }
     }

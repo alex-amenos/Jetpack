@@ -37,13 +37,13 @@ internal class AuthenticationViewModel(
             AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
             else -> AuthenticationMode.SIGN_IN
         }
-        setState {
+        updateState {
             copy(authenticationMode = newAuthenticationMode)
         }
     }
 
     private fun updateEmail(newEmail: String) {
-        setState {
+        updateState {
             copy(email = newEmail)
         }
     }
@@ -62,7 +62,7 @@ internal class AuthenticationViewModel(
                     requirements.add(PasswordRequirements.NUMBER)
                 }
             }
-            setState {
+            updateState {
                 copy(
                     password = newPassword,
                     passwordRequirements = requirements.toList()
@@ -72,15 +72,15 @@ internal class AuthenticationViewModel(
     }
 
     private fun dismissError() {
-        setState { copy(error = null) }
+        updateState { copy(error = null) }
     }
 
     private fun authenticate() {
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
+            updateState { copy(isLoading = true) }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
-                    setState {
+                    updateState {
                         copy(
                             isLoading = false,
                             error = R.string.authentication_auth_error,
@@ -88,7 +88,7 @@ internal class AuthenticationViewModel(
                     }
                 },
                 {
-                    setState {
+                    updateState {
                         copy(
                             isLoading = false,
                             isUserAuthorized = true,

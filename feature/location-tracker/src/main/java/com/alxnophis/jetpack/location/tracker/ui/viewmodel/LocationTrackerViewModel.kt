@@ -51,7 +51,7 @@ internal class LocationTrackerViewModel(
 
     private fun subscribeToUserLocation() = viewModelScope.launch {
         locationStateUseCase().collectLatest { locationState ->
-            setState {
+            updateState {
                 currentState.copy(
                     userLocation = locationState.parseToString()
                 )
@@ -61,7 +61,7 @@ internal class LocationTrackerViewModel(
 
     private fun subscribeToLastKnownLocation() = viewModelScope.launch {
         lastKnownLocationUseCase().collectLatest { lastKnownLocation ->
-            setState {
+            updateState {
                 currentState.copy(
                     lastKnownLocation = lastKnownLocation?.parseToString()
                 )

@@ -30,25 +30,25 @@ internal class SettingsViewModel(
     }
 
     private fun toggleNotifications() {
-        setState {
+        updateState {
             copy(notificationsEnabled = !this.notificationsEnabled)
         }
     }
 
     private fun toggleHint() {
-        setState {
+        updateState {
             copy(hintsEnabled = !this.hintsEnabled)
         }
     }
 
     private fun setMarketing(option: MarketingOption) {
-        setState {
+        updateState {
             copy(marketingOption = option)
         }
     }
 
     private fun setTheme(theme: Theme) {
-        setState {
+        updateState {
             copy(themeOption = theme)
         }
     }

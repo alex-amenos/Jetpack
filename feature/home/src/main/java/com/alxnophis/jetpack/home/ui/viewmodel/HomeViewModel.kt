@@ -34,11 +34,11 @@ internal class HomeViewModel(
 
     private fun loadNavigationItems() {
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
+            updateState { copy(isLoading = true) }
             getNavigationItems()
                 .fold(
                     {
-                        setState {
+                        updateState {
                             copy(
                                 isLoading = false,
                                 error = R.string.home_error_loading_navigation_items
@@ -46,7 +46,7 @@ internal class HomeViewModel(
                         }
                     },
                     { navigationItems ->
-                        setState {
+                        updateState {
                             copy(
                                 isLoading = false,
                                 data = navigationItems
@@ -64,7 +64,7 @@ internal class HomeViewModel(
 
     private fun dismissError() {
         viewModelScope.launch {
-            setState { copy(error = null) }
+            updateState { copy(error = null) }
         }
     }
 }

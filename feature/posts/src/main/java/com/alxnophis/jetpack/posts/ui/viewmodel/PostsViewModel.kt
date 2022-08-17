@@ -33,7 +33,7 @@ internal class PostsViewModel(
 
     private fun renderPosts() {
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
+            updateState { copy(isLoading = true) }
             getPosts().fold(
                 { error ->
                     val errorMessages: List<ErrorMessage> = currentState.errorMessages + ErrorMessage(
@@ -45,7 +45,7 @@ internal class PostsViewModel(
                             PostsError.Unexpected -> R.string.posts_error_unexpected
                         }
                     )
-                    setState {
+                    updateState {
                         copy(
                             isLoading = false,
                             errorMessages = errorMessages
@@ -53,7 +53,7 @@ internal class PostsViewModel(
                     }
                 },
                 { posts ->
-                    setState {
+                    updateState {
                         copy(
                             isLoading = false,
                             posts = posts
@@ -68,7 +68,7 @@ internal class PostsViewModel(
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
-        setState {
+        updateState {
             copy(errorMessages = errorMessages)
         }
     }
