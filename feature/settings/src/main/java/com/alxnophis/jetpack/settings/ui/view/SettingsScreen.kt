@@ -60,6 +60,7 @@ internal fun SettingsContent(
                 .verticalScroll(rememberScrollState())
         ) {
             CoreTopBar(
+                modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_title),
                 onBack = { navigateBack() }
             )

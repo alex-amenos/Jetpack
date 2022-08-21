@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.core.ui.composable
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -15,16 +16,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.R
+import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 
 @Composable
 fun CoreTopBar(
+    modifier: Modifier,
     title: String,
     onBack: () -> Unit,
 ) {
     TopAppBar(
+        modifier = modifier,
         backgroundColor = MaterialTheme.colors.primaryVariant,
         contentPadding = PaddingValues(start = 12.dp)
     ) {
@@ -44,6 +49,18 @@ fun CoreTopBar(
             color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CoreTopBarPreview() {
+    CoreTheme {
+        CoreTopBar(
+            modifier = Modifier.fillMaxWidth(),
+            title = "Lorem ipsum",
+            onBack = {}
         )
     }
 }

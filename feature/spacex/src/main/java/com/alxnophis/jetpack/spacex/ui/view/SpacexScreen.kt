@@ -83,6 +83,7 @@ internal fun SpacexContent(
                 .background(MaterialTheme.colors.surface)
         ) {
             CoreTopBar(
+                modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.spacex_title),
                 onBack = { navigateBack() }
             )
