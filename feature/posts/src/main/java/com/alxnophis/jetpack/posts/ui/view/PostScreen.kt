@@ -85,7 +85,7 @@ internal fun PostsContent(
     CoreTheme {
         val toolbarHeight = 56.dp
         val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
-        val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
+        val toolbarOffsetHeightPx = remember { mutableStateOf(ZERO_FLOAT) }
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
                 override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -99,10 +99,11 @@ internal fun PostsContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colors.surface)
                 .nestedScroll(nestedScrollConnection)
         ) {
             PostList(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxSize(),
                 state = state,
                 toolbarHeight = toolbarHeight,
                 handleEvent = handleEvent,
@@ -134,6 +135,7 @@ internal fun PostList(
     val listState = rememberLazyListState()
     SwipeRefresh(
         modifier = modifier,
+        indicatorPadding = PaddingValues(top = toolbarHeight),
         state = rememberSwipeRefreshState(state.isLoading),
         onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) },
     ) {
@@ -141,7 +143,6 @@ internal fun PostList(
             state = listState,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.surface)
                 .drawVerticalScrollbar(listState),
             contentPadding = PaddingValues(top = toolbarHeight, start = 16.dp, end = 16.dp)
         ) {
