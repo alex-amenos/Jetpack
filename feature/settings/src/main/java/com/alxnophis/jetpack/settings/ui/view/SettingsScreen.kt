@@ -33,17 +33,15 @@ internal fun SettingsScreen(
     viewModel: SettingsViewModel = getViewModel(),
     appVersion: String = LocalContext.current.getVersion()
 ) {
-    CoreTheme {
-        val state = viewModel.uiState.collectAsState().value
-        val navigateBack: () -> Unit = { navController.popBackStack() }
-        BackHandler { navigateBack() }
-        SettingsContent(
-            state = state,
-            appVersion = appVersion,
-            handleEvent = viewModel::handleEvent,
-            navigateBack = navigateBack
-        )
-    }
+    val state = viewModel.uiState.collectAsState().value
+    val navigateBack: () -> Unit = { navController.popBackStack() }
+    BackHandler { navigateBack() }
+    SettingsContent(
+        state = state,
+        appVersion = appVersion,
+        handleEvent = viewModel::handleEvent,
+        navigateBack = navigateBack
+    )
 }
 
 @Composable
@@ -53,69 +51,71 @@ internal fun SettingsContent(
     handleEvent: SettingsEvent.() -> Unit,
     navigateBack: () -> Unit
 ) {
-    val context = LocalContext.current
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.surface)
-            .verticalScroll(rememberScrollState())
-    ) {
-        CoreTopBar(
-            title = stringResource(id = R.string.settings_title),
-            onBack = { navigateBack() }
-        )
-        Divider()
-        SettingsNotificationItem(
-            modifier = Modifier.fillMaxWidth(),
-            title = stringResource(id = R.string.settings_option_notifications),
-            checked = state.notificationsEnabled,
-            onToggleNotificationSettings = { handleEvent(SettingsEvent.SetNotifications) }
-        )
-        Divider()
-        SettingsHintItem(
-            modifier = Modifier.fillMaxWidth(),
-            title = stringResource(id = R.string.settings_option_hints),
-            checked = state.hintsEnabled,
-            onShowHintToggled = { handleEvent(SettingsEvent.SetHint) }
-        )
-        Divider()
-        SettingsManageSubscriptionItem(
-            modifier = Modifier.fillMaxWidth(),
-            title = stringResource(id = R.string.settings_option_manage_subscription),
-            onSubscriptionClicked = {
-                Toast
-                    .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
-                    .show()
-                handleEvent(SettingsEvent.ManageSubscription)
-            }
-        )
-        Divider()
-        SettingsSectionSpacer(
-            modifier = Modifier.fillMaxWidth()
-        )
-        SettingsMarketingItem(
-            modifier = Modifier.fillMaxWidth(),
-            selectedOption = state.marketingOption,
-            onOptionSelected = { marketingOption ->
-                handleEvent(SettingsEvent.SetMarketingOption(marketingOption))
-            }
-        )
-        Divider()
-        SettingsThemeItem(
-            modifier = Modifier.fillMaxWidth(),
-            selectedTheme = state.themeOption,
-            onOptionSelected = { theme ->
-                handleEvent(SettingsEvent.SetTheme(theme))
-            }
-        )
-        SettingsSectionSpacer(
-            modifier = Modifier.fillMaxWidth()
-        )
-        SettingsAppVersion(
-            modifier = Modifier.fillMaxWidth(),
-            appVersion = appVersion
-        )
-        Divider()
+    CoreTheme {
+        val context = LocalContext.current
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.surface)
+                .verticalScroll(rememberScrollState())
+        ) {
+            CoreTopBar(
+                title = stringResource(id = R.string.settings_title),
+                onBack = { navigateBack() }
+            )
+            Divider()
+            SettingsNotificationItem(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(id = R.string.settings_option_notifications),
+                checked = state.notificationsEnabled,
+                onToggleNotificationSettings = { handleEvent(SettingsEvent.SetNotifications) }
+            )
+            Divider()
+            SettingsHintItem(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(id = R.string.settings_option_hints),
+                checked = state.hintsEnabled,
+                onShowHintToggled = { handleEvent(SettingsEvent.SetHint) }
+            )
+            Divider()
+            SettingsManageSubscriptionItem(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(id = R.string.settings_option_manage_subscription),
+                onSubscriptionClicked = {
+                    Toast
+                        .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
+                        .show()
+                    handleEvent(SettingsEvent.ManageSubscription)
+                }
+            )
+            Divider()
+            SettingsSectionSpacer(
+                modifier = Modifier.fillMaxWidth()
+            )
+            SettingsMarketingItem(
+                modifier = Modifier.fillMaxWidth(),
+                selectedOption = state.marketingOption,
+                onOptionSelected = { marketingOption ->
+                    handleEvent(SettingsEvent.SetMarketingOption(marketingOption))
+                }
+            )
+            Divider()
+            SettingsThemeItem(
+                modifier = Modifier.fillMaxWidth(),
+                selectedTheme = state.themeOption,
+                onOptionSelected = { theme ->
+                    handleEvent(SettingsEvent.SetTheme(theme))
+                }
+            )
+            SettingsSectionSpacer(
+                modifier = Modifier.fillMaxWidth()
+            )
+            SettingsAppVersion(
+                modifier = Modifier.fillMaxWidth(),
+                appVersion = appVersion
+            )
+            Divider()
+        }
     }
 }
 
@@ -123,12 +123,10 @@ internal fun SettingsContent(
 @ExperimentalComposeUiApi
 @Composable
 private fun SettingsScreenPreview() {
-    CoreTheme {
-        SettingsContent(
-            state = SettingsState(),
-            appVersion = "1.0.0",
-            handleEvent = {},
-            navigateBack = {}
-        )
-    }
+    SettingsContent(
+        state = SettingsState(),
+        appVersion = "1.0.0",
+        handleEvent = {},
+        navigateBack = {}
+    )
 }

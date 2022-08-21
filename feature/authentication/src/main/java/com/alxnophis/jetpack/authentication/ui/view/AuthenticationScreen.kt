@@ -28,22 +28,20 @@ internal fun AuthenticationScreen(
     navController: NavController,
     viewModel: AuthenticationViewModel = getViewModel()
 ) {
-    CoreTheme {
-        val state = viewModel.uiState.collectAsState().value
-        AuthenticationContent(
-            state,
-            viewModel::handleEvent
-        )
-        BackHandler {
-            navController.popBackStack()
-        }
-        LaunchedEffect(state) {
-            if (state.isUserAuthorized) {
-                navController.navigate(Screen.Authorized.routeWithParams(state.email)) {
-                    // Remove Authentication screen form back stack
-                    popUpTo(Screen.Authentication.route) {
-                        inclusive = true
-                    }
+    val state = viewModel.uiState.collectAsState().value
+    AuthenticationContent(
+        state,
+        viewModel::handleEvent
+    )
+    BackHandler {
+        navController.popBackStack()
+    }
+    LaunchedEffect(state.isUserAuthorized, state.email) {
+        if (state.isUserAuthorized) {
+            navController.navigate(Screen.Authorized.routeWithParams(state.email)) {
+                // Remove Authentication screen form back stack
+                popUpTo(Screen.Authentication.route) {
+                    inclusive = true
                 }
             }
         }
@@ -56,44 +54,46 @@ internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
     handleEvent: AuthenticationEvent.() -> Unit,
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.surface),
-        contentAlignment = Alignment.Center
-    ) {
-        AuthenticationForm(
-            modifier = Modifier.fillMaxSize(),
-            authenticationMode = authenticationState.authenticationMode,
-            isLoading = authenticationState.isLoading,
-            email = authenticationState.email,
-            password = authenticationState.password,
-            completedPasswordRequirements = authenticationState.passwordRequirements,
-            enableAuthentication = if (authenticationState.isFormValid()) {
-                !authenticationState.isLoading
-            } else {
-                false
-            },
-            onEmailChanged = { email ->
-                handleEvent(AuthenticationEvent.EmailChanged(email))
-            },
-            onPasswordChanged = { password ->
-                handleEvent(AuthenticationEvent.PasswordChanged(password))
-            },
-            onAuthenticate = {
-                handleEvent(AuthenticationEvent.Authenticate)
-            },
-            onToggleMode = {
-                handleEvent(AuthenticationEvent.ToggleAuthenticationMode)
-            }
-        )
-        authenticationState.error?.let { error: Int ->
-            CoreErrorDialog(
-                errorMessage = stringResource(error),
-                dismissError = {
-                    handleEvent(AuthenticationEvent.ErrorDismissed)
+    CoreTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.surface),
+            contentAlignment = Alignment.Center
+        ) {
+            AuthenticationForm(
+                modifier = Modifier.fillMaxSize(),
+                authenticationMode = authenticationState.authenticationMode,
+                isLoading = authenticationState.isLoading,
+                email = authenticationState.email,
+                password = authenticationState.password,
+                completedPasswordRequirements = authenticationState.passwordRequirements,
+                enableAuthentication = if (authenticationState.isFormValid()) {
+                    !authenticationState.isLoading
+                } else {
+                    false
+                },
+                onEmailChanged = { email ->
+                    handleEvent(AuthenticationEvent.EmailChanged(email))
+                },
+                onPasswordChanged = { password ->
+                    handleEvent(AuthenticationEvent.PasswordChanged(password))
+                },
+                onAuthenticate = {
+                    handleEvent(AuthenticationEvent.Authenticate)
+                },
+                onToggleMode = {
+                    handleEvent(AuthenticationEvent.ToggleAuthenticationMode)
                 }
             )
+            authenticationState.error?.let { error: Int ->
+                CoreErrorDialog(
+                    errorMessage = stringResource(error),
+                    dismissError = {
+                        handleEvent(AuthenticationEvent.ErrorDismissed)
+                    }
+                )
+            }
         }
     }
 }
@@ -102,10 +102,8 @@ internal fun AuthenticationContent(
 @ExperimentalComposeUiApi
 @Composable
 private fun AuthenticationFormPreview() {
-    CoreTheme {
-        AuthenticationContent(
-            authenticationState = AuthenticationState(),
-            handleEvent = {},
-        )
-    }
+    AuthenticationContent(
+        authenticationState = AuthenticationState(),
+        handleEvent = {},
+    )
 }
