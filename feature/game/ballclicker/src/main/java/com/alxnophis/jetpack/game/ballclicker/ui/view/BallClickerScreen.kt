@@ -48,75 +48,75 @@ internal fun BallClickerScreen(
     navController: NavController,
     viewModel: BallClickerViewModel = getViewModel()
 ) {
-    CoreTheme {
-        BackHandler {
-            viewModel
-                .handleEvent(BallClickerEvent.Stop)
-                .also { navController.popBackStack() }
-        }
-        BallClicker(
-            viewModel.uiState.collectAsState().value,
-            viewModel::handleEvent
-        )
+    BackHandler {
+        viewModel
+            .handleEvent(BallClickerEvent.Stop)
+            .also { navController.popBackStack() }
     }
+    BallClickerContent(
+        viewModel.uiState.collectAsState().value,
+        viewModel::handleEvent
+    )
 }
 
 @Composable
-internal fun BallClicker(
+internal fun BallClickerContent(
     state: BallClickerState,
     handleEvent: BallClickerEvent.() -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colors.surface)
-    ) {
-        Row(
+    CoreTheme {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxSize()
+                .background(color = MaterialTheme.colors.surface)
         ) {
-            Text(
-                text = buildString {
-                    append(stringResource(R.string.ball_clicker_points))
-                    append(WHITE_SPACE)
-                    append(state.points)
-                },
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = state.currentTimeInSeconds.toString(),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Button(
-                onClick = {
-                    if (state.isTimerRunning) {
-                        handleEvent(BallClickerEvent.Stop)
-                    } else {
-                        handleEvent(BallClickerEvent.Start)
-                    }
-                }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = when {
-                        state.isTimerRunning -> stringResource(R.string.ball_clicker_reset)
-                        else -> stringResource(R.string.ball_clicker_start)
-                    }
+                    text = buildString {
+                        append(stringResource(R.string.ball_clicker_points))
+                        append(WHITE_SPACE)
+                        append(state.points)
+                    },
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 )
+                Text(
+                    text = state.currentTimeInSeconds.toString(),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Button(
+                    onClick = {
+                        if (state.isTimerRunning) {
+                            handleEvent(BallClickerEvent.Stop)
+                        } else {
+                            handleEvent(BallClickerEvent.Start)
+                        }
+                    }
+                ) {
+                    Text(
+                        text = when {
+                            state.isTimerRunning -> stringResource(R.string.ball_clicker_reset)
+                            else -> stringResource(R.string.ball_clicker_start)
+                        }
+                    )
+                }
             }
-        }
-        BallClicker(enabled = state.isTimerRunning) {
-            handleEvent(BallClickerEvent.BallClicked)
+            BallClickerContent(enabled = state.isTimerRunning) {
+                handleEvent(BallClickerEvent.BallClicked)
+            }
         }
     }
 }
 
 @Composable
-private fun BallClicker(
+private fun BallClickerContent(
     radius: Float = 100f,
     enabled: Boolean = false,
     ballColor: Color = MaterialTheme.colors.secondary,
@@ -171,5 +171,5 @@ private fun randomOffset(radius: Float, width: Int, height: Int): Offset {
 @Preview
 @Composable
 private fun BallClickerPreview() {
-    BallClicker()
+    BallClickerContent()
 }

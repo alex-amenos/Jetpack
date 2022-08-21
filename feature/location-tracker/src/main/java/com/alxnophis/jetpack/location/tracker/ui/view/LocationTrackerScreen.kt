@@ -39,51 +39,51 @@ internal fun LocationTrackerScreen(
     navController: NavController,
     viewModel: LocationTrackerViewModel = getViewModel(),
 ) {
-    CoreTheme {
-        val state = viewModel.uiState.collectAsState().value
-        val navigateBack: () -> Unit = { navController.popBackStack() }
-        LocationTracker(
-            state = state,
-            handleEvent = viewModel::handleEvent,
-            navigateBack = navigateBack
-        )
-        BackHandler {
-            viewModel
-                .handleEvent(LocationTrackerEvent.EndTracking)
-                .also { navigateBack() }
-        }
+    val state = viewModel.uiState.collectAsState().value
+    val navigateBack: () -> Unit = { navController.popBackStack() }
+    BackHandler {
+        viewModel
+            .handleEvent(LocationTrackerEvent.EndTracking)
+            .also { navigateBack() }
     }
+    LocationTrackerContent(
+        state = state,
+        handleEvent = viewModel::handleEvent,
+        navigateBack = navigateBack
+    )
 }
 
 @Composable
-internal fun LocationTracker(
+internal fun LocationTrackerContent(
     state: LocationTrackerState,
     handleEvent: LocationTrackerEvent.() -> Unit,
     navigateBack: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.surface)
-    ) {
-        CoreTopBar(
-            title = stringResource(id = R.string.location_tracker_title),
-            onBack = {
-                handleEvent(LocationTrackerEvent.EndTracking)
-                navigateBack()
-            },
-        )
-        LocationPermission(
-            composableWhenPermissionGranted = { UserLocation(state = state) },
-            handleEvent = handleEvent
-        )
+    CoreTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.surface)
+        ) {
+            CoreTopBar(
+                title = stringResource(id = R.string.location_tracker_title),
+                onBack = {
+                    handleEvent(LocationTrackerEvent.EndTracking)
+                    navigateBack()
+                },
+            )
+            LocationPermission(
+                composableWithPermissionGranted = { UserLocation(state = state) },
+                handleEvent = handleEvent
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun LocationPermission(
-    composableWhenPermissionGranted: @Composable () -> Unit,
+    composableWithPermissionGranted: @Composable () -> Unit,
     handleEvent: LocationTrackerEvent.() -> Unit,
 ) {
     val locationPermissionsState = rememberMultiplePermissionsState(
@@ -94,7 +94,7 @@ private fun LocationPermission(
     )
     if (locationPermissionsState.allPermissionsGranted) {
         handleEvent(LocationTrackerEvent.FineLocationPermissionGranted)
-        composableWhenPermissionGranted()
+        composableWithPermissionGranted()
     } else {
         Column(
             modifier = Modifier.wrapContentSize(),

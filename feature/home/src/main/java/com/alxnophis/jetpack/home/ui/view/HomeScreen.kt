@@ -53,20 +53,18 @@ internal fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = getViewModel()
 ) {
-    CoreTheme {
-        val state: HomeState = viewModel.uiState.collectAsState().value
-        val activity: Activity? = (LocalContext.current as? Activity)
-        BackHandler {
-            if (!navController.popBackStack()) {
-                activity?.finish()
-            }
+    val state: HomeState = viewModel.uiState.collectAsState().value
+    val activity: Activity? = (LocalContext.current as? Activity)
+    BackHandler {
+        if (!navController.popBackStack()) {
+            activity?.finish()
         }
-        HomeContent(
-            state = state,
-            handleEvent = viewModel::handleEvent,
-            navigateTo = { route -> navController.navigate(route) },
-        )
     }
+    HomeContent(
+        state = state,
+        handleEvent = viewModel::handleEvent,
+        navigateTo = { route -> navController.navigate(route) },
+    )
 }
 
 @Composable
@@ -75,21 +73,23 @@ internal fun HomeContent(
     handleEvent: HomeEvent.() -> Unit,
     navigateTo: (route: String) -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
+    CoreTheme {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            HomeTopBar()
-            SectionsList(state, navigateTo)
-        }
-        state.error?.let { error: Int ->
-            CoreErrorDialog(
-                errorMessage = stringResource(error),
-                dismissError = { handleEvent.invoke(HomeEvent.ErrorDismissed) }
-            )
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                HomeTopBar()
+                SectionsList(state, navigateTo)
+            }
+            state.error?.let { error: Int ->
+                CoreErrorDialog(
+                    errorMessage = stringResource(error),
+                    dismissError = { handleEvent.invoke(HomeEvent.ErrorDismissed) }
+                )
+            }
         }
     }
 }
@@ -190,11 +190,9 @@ private fun HomeScreenPreview() {
         ),
         error = null
     )
-    CoreTheme {
-        HomeContent(
-            state = state,
-            handleEvent = {},
-            navigateTo = {}
-        )
-    }
+    HomeContent(
+        state = state,
+        handleEvent = {},
+        navigateTo = {}
+    )
 }
