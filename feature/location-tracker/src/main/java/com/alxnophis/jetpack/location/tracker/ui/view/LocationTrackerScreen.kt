@@ -66,6 +66,7 @@ internal fun LocationTrackerContent(
                 .background(MaterialTheme.colors.surface)
         ) {
             CoreTopBar(
+                modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.location_tracker_title),
                 onBack = {
                     handleEvent(LocationTrackerEvent.EndTracking)

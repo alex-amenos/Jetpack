@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -19,13 +21,21 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -34,6 +44,8 @@ import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
+import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
@@ -42,6 +54,7 @@ import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlin.math.roundToInt
 
 @Composable
 internal fun PostsScreen(
@@ -59,6 +72,10 @@ internal fun PostsScreen(
     )
 }
 
+/**
+ * Nestedscroll
+ * Link: https://developer.android.com/reference/kotlin/androidx/compose/ui/input/nestedscroll/package-summary
+ */
 @Composable
 internal fun PostsContent(
     state: PostsState,
@@ -66,28 +83,43 @@ internal fun PostsContent(
     navigateBack: () -> Unit
 ) {
     CoreTheme {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CoreTopBar(
-                    title = stringResource(id = R.string.posts_title),
-                    onBack = { navigateBack() }
-                )
-                PostList(
-                    modifier = Modifier.fillMaxSize(),
-                    state = state,
-                    handleEvent = handleEvent,
-                )
-                state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
-                    CoreErrorDialog(
-                        errorMessage = stringResource(error.messageId),
-                        dismissError = { handleEvent.invoke(PostsEvent.DismissError(error.id)) }
-                    )
+        val toolbarHeight = 56.dp
+        val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
+        val toolbarOffsetHeightPx = remember { mutableStateOf(ZERO_FLOAT) }
+        val nestedScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                    val delta = available.y
+                    val newOffset = toolbarOffsetHeightPx.value + delta
+                    toolbarOffsetHeightPx.value = newOffset.coerceIn(-toolbarHeightPx, ZERO_FLOAT)
+                    return Offset.Zero
                 }
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.surface)
+                .nestedScroll(nestedScrollConnection)
+        ) {
+            PostList(
+                modifier = Modifier.fillMaxSize(),
+                state = state,
+                toolbarHeight = toolbarHeight,
+                handleEvent = handleEvent,
+            )
+            CoreTopBar(
+                modifier = Modifier
+                    .height(toolbarHeight)
+                    .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
+                title = stringResource(id = R.string.posts_title),
+                onBack = { navigateBack() }
+            )
+            state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
+                CoreErrorDialog(
+                    errorMessage = stringResource(error.messageId),
+                    dismissError = { handleEvent.invoke(PostsEvent.DismissError(error.id)) }
+                )
             }
         }
     }
@@ -97,19 +129,22 @@ internal fun PostsContent(
 internal fun PostList(
     modifier: Modifier,
     state: PostsState,
+    toolbarHeight: Dp,
     handleEvent: PostsEvent.() -> Unit,
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
+        modifier = modifier,
+        indicatorPadding = PaddingValues(top = toolbarHeight),
         state = rememberSwipeRefreshState(state.isLoading),
         onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) },
     ) {
         LazyColumn(
             state = listState,
-            modifier = modifier
-                .background(MaterialTheme.colors.surface)
+            modifier = Modifier
+                .fillMaxWidth()
                 .drawVerticalScrollbar(listState),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(top = toolbarHeight, start = 16.dp, end = 16.dp)
         ) {
             items(
                 items = state.posts,
