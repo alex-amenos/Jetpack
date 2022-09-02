@@ -12,6 +12,7 @@ class JsonPlaceholderRetrofitFactory {
     private val okHttpClient =
         OkHttpClient
             .Builder()
+            .callTimeout(TIMEOUT_CALL, TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
@@ -37,6 +38,7 @@ class JsonPlaceholderRetrofitFactory {
 
     companion object {
         private const val BASE_URL = "https://jsonplaceholder.typicode.com"
+        private const val TIMEOUT_CALL = 15L
         private const val TIMEOUT_CONNECT = 10L
         private const val TIMEOUT_READ = 10L
         private const val TIMEOUT_WRITE = 10L
