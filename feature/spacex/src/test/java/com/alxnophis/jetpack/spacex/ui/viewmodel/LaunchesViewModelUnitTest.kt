@@ -48,9 +48,25 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN init THEN validate initial state`() {
         runTest {
+            val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother.pastLaunch(launchDateUtc = Date()))
+            val pastLaunches = listOf(PastLaunchesModelMother.pastLaunch(launchDateUtc = "DATE"))
+            whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
+            whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
+            
             viewModel.uiState.test {
                 assertEquals(
                     initialLaunchesState,
+                    awaitItem()
+                )
+                assertEquals(
+                    initialLaunchesState.copy(isLoading = true),
+                    awaitItem()
+                )
+                assertEquals(
+                    initialLaunchesState.copy(
+                        isLoading = false,
+                        pastLaunches = pastLaunches
+                    ),
                     awaitItem()
                 )
                 expectNoEvents()

@@ -156,28 +156,6 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN Authenticate event started THEN show loading state`() {
-        runTest {
-            whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
-            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false)
-            val viewModel = viewModelMother(initialState = initialState)
-
-            viewModel.handleEvent(AuthenticationEvent.Authenticate)
-
-            viewModel.uiState.test {
-                assertEquals(
-                    initialState,
-                    awaitItem()
-                )
-                assertEquals(
-                    initialState.copy(isLoading = true),
-                    awaitItem()
-                )
-            }
-        }
-    }
-
-    @Test
     fun `WHEN Authenticate event with correct credentials THEN update state accordingly`() {
         runTest {
             whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
