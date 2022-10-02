@@ -52,7 +52,7 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             val pastLaunches = listOf(PastLaunchesModelMother.pastLaunch(launchDateUtc = "DATE"))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
-            
+
             viewModel.uiState.test {
                 assertEquals(
                     initialLaunchesState,
