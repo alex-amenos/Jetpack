@@ -4,6 +4,16 @@ It is a personal project to experiment with Android development.
 
 ℹ️ Some experiments are not completed in terms of development, you can see on code maybe is missing testing or some data/domain layer.
 
+## Project Status
+
+### Main
+
+![Jetpack - Main status](https://github.com/alex-amenos/Caelum/actions/workflows/android_ci.yml/badge.svg?branch=main)
+
+### Develop
+
+![Jetpack - Develop status](https://github.com/alex-amenos/Jetpack/actions/workflows/android_ci.yml/badge.svg?branch=develop)
+
 ## Home
 
 It is the home screen where you can select some of experiments of this project.
