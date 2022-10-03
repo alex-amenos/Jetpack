@@ -1,23 +1,18 @@
-### Proposed Changes
+### ⚡️ Proposed Changes
 * Add proposed change 1
-* Add change 2
 
-### Additional Info
+### ℹ️ Additional Info
 * Add any additional useful context or info
 
-### Related Links
+### 🔗 Related Links
 * Add helpful links for this pull request
 
-### Checklist
+### ✅ Checklist
 - [ ] Unit Tests
 - [ ] Integration Tests
-- [ ] Instrumentation Tests
-- [ ] Screenshot Tests  
+- [ ] Compose Tests
+- [ ] Maestro Tests
 - [ ] Updated string
 - [ ] Manually tested
 
-### Screenshots
-
-Original             |  Updated
-:-------------------------:|:-------------------------:
-** original screenshot **  |  ** updated screenshot **
+### 📷 Screenshots
