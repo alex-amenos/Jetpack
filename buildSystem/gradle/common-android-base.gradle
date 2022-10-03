@@ -4,6 +4,7 @@ apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.adarshr.test-logger'
 apply plugin: 'de.mannodermaus.android-junit5'
+apply plugin: 'kover'
 
 android {
     compileSdkVersion AppConfig.COMPILE_SDK_VERSION
@@ -49,7 +50,7 @@ android {
             if (name == "testDebugUnitTest") {
                 kover {
                     enabled = true
-                    binaryReportFile.set(file("$buildDir/reports/kover/debug-report.bin"))
+                    reportFile.set(file("$buildDir/reports/kover/debug-report.bin"))
                     includes = ['com.alxnophis.jetpack.*']
                     excludes = []
                 }
@@ -79,11 +80,7 @@ android {
     packagingOptions {
         resources {
             excludes += [
-                    'META-INF/AL2.0',
-                    'META-INF/LICENSE.md',
-                    'META-INF/LICENSE-notice.md',
-                    'META-INF/LGPL2.1',
-                    'META-INF/storage_debug.kotlin_module'
+                    'META-INF/*',
             ]
         }
     }

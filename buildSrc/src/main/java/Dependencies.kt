@@ -3,7 +3,7 @@
 object AppVersion {
     private const val MAJOR = 0
     private const val MINOR = 0
-    private const val BUILD = 4
+    private const val BUILD = 5
 
     const val NAME: String = "${MAJOR}.${MINOR}.${BUILD}"
     val CODE = "${MAJOR}${MINOR.format()}${BUILD.format()}".toInt()
@@ -15,10 +15,10 @@ object AppConfig {
     const val APPLICATION_ID = "com.alxnophis.jetpack"
     const val APP_PACKAGE_NAME = APPLICATION_ID
     const val APP_PACKAGE_NAME_DEBUG = "$APPLICATION_ID.debug"
-    const val COMPILE_SDK_VERSION = 32
-    const val BUILD_TOOLS_VERSION = "32.0.0"
-    const val MIN_SDK_VERSION = 24
-    const val TARGET_SDK_VERSION = 32
+    const val COMPILE_SDK_VERSION = 33
+    const val BUILD_TOOLS_VERSION = "33.0.0"
+    const val MIN_SDK_VERSION = 26
+    const val TARGET_SDK_VERSION = 33
 }
 
 object Modules {
@@ -42,16 +42,17 @@ object Modules {
 }
 
 private object Version {
-    const val ANDROIDX_ANNOTATIONS = "1.2.0"
+    const val ANDROIDX_ANNOTATIONS = "1.4.0"
     const val ANDROIDX_ACTIVITY = "1.5.0"
     const val ANDROIDX_APPCOMPAT = "1.4.2"
     const val ANDROIDX_ARCH_CORE_COMMON = "2.1.0"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "2.1.0"
-    const val ANDROIDX_COMPOSE = "1.2.0"
+    const val ANDROIDX_COMPOSE = "1.2.1"
+    const val ANDROIDX_COMPOSE_COMPILER = "1.2.0"
     const val ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT = "1.0.1"
-    const val ANDROIDX_COMPOSE_NAVIGATION = "2.4.1"
-    const val ANDROIDX_CORE_KTX = "1.7.0"
-    const val ANDROIDX_LIFECYCLE = "2.5.0"
+    const val ANDROIDX_COMPOSE_NAVIGATION = "2.5.2"
+    const val ANDROIDX_CORE_KTX = "1.8.0"
+    const val ANDROIDX_LIFECYCLE = "2.5.1"
     const val ANDROIDX_LIFECYCLE_EXTENSIONS = "2.2.0"
     const val ANDROIDX_TEST_ARCH_CORE = "2.1.0"
     const val ANDROIDX_TEST_JUNIT = "1.1.3"
@@ -65,10 +66,11 @@ private object Version {
     const val COIL = "2.1.0"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
     const val GOOGLE_PLAY_SERVICES_LOCATION = "18.0.0"
-    const val GOOGLE_ACCOMPANITS = "0.24.13-rc"
+    const val GOOGLE_ACCOMPANITS = "0.25.1"
     const val JUNIT = "4.13.2"
     const val JUNIT_JUPITER = "5.8.2"
-    const val KOTLIN_COROUTINES = "1.6.2"
+    const val KOTLIN = "1.7.0"
+    const val KOTLIN_COROUTINES = "1.6.4"
     const val KOTLINX_SERIALIZATION_JSON = "1.3.2"
     const val KOIN = "3.1.6"
     const val MOSHI = "1.12.0"
@@ -79,7 +81,7 @@ private object Version {
     const val PERMISSION_DISPATCHER = "4.9.1"
     const val RETROFIT = "2.9.0"
     const val TIMBER = "5.0.1"
-    const val TURBINE = "0.8.0"
+    const val TURBINE = "0.11.0"
 }
 
 object Dep {
