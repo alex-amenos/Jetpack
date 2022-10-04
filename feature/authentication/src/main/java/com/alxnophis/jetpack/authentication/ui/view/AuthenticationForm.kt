@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -57,6 +58,7 @@ import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.constants.EMPTY
+import com.alxnophis.jetpack.core.ui.composable.autofill
 import com.alxnophis.jetpack.core.ui.theme.CoreTheme
 
 @ExperimentalComposeUiApi
@@ -173,6 +175,7 @@ internal fun AuthenticationTitle(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EmailInput(
     modifier: Modifier = Modifier.fillMaxWidth(),
@@ -181,7 +184,11 @@ fun EmailInput(
     onNextClicked: () -> Unit
 ) {
     TextField(
-        modifier = modifier,
+        modifier = modifier
+            .autofill(
+                autofillTypes = listOf(AutofillType.EmailAddress),
+                onFill = { onEmailChanged(it) },
+            ),
         value = email,
         singleLine = true,
         onValueChange = { emailChanged -> onEmailChanged(emailChanged) },
@@ -218,7 +225,11 @@ fun PasswordInput(
     val keyboardController = LocalSoftwareKeyboardController.current
     var isPasswordHidden by remember { mutableStateOf(true) }
     TextField(
-        modifier = modifier,
+        modifier = modifier
+            .autofill(
+                autofillTypes = listOf(AutofillType.Password),
+                onFill = { onPasswordChanged(it) },
+            ),
         value = password,
         singleLine = true,
         onValueChange = { onPasswordChanged(it) },
