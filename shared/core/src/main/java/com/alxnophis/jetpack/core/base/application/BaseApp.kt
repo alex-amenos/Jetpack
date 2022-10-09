@@ -1,9 +1,11 @@
 package com.alxnophis.jetpack.core.base.application
 
 import android.app.Application
+import android.app.NotificationManager
 import android.os.StrictMode
 import com.alxnophis.jetpack.api.di.apiModule
 import com.alxnophis.jetpack.core.BuildConfig
+import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
 import com.alxnophis.jetpack.core.di.KoinLogger
 import com.alxnophis.jetpack.core.di.coreModule
 import com.alxnophis.jetpack.core.extensions.isDebugBuildType
@@ -18,6 +20,7 @@ open class BaseApp : Application() {
 
         initKoin()
         initLogger()
+        initNotificationChannels()
         initStrictMode()
     }
 
@@ -39,6 +42,16 @@ open class BaseApp : Application() {
     private fun initLogger() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        }
+    }
+
+    private fun initNotificationChannels() {
+        NotificationChannelProvider(this).apply {
+            createNotificationChannel(
+                channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
+                channelName = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_NAME,
+                notificationImportance = NotificationManager.IMPORTANCE_HIGH
+            )
         }
     }
 
