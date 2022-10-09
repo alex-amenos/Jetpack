@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.alxnophis.jetpack.notifications.di.injectNotifications
-import com.alxnophis.jetpack.notifications.view.NotificationsScreen
+import com.alxnophis.jetpack.notifications.ui.view.NotificationsScreen
 import com.alxnophis.jetpack.router.screen.NOTIFICATIONS_ROUTE
 import com.alxnophis.jetpack.router.screen.Screen
 

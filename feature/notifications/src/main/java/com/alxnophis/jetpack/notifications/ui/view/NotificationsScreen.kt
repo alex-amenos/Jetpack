@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.notifications.view
+package com.alxnophis.jetpack.notifications.ui.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
