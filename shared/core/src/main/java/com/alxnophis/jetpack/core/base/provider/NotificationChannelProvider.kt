@@ -27,6 +27,6 @@ class NotificationChannelProvider(
 
     companion object {
         const val DEFAULT_NOTIFICATION_CHANNEL_ID = "Default"
-        const val DEFAULT_NOTIFICATION_CHANNEL_NAME = "Default Communication Channel"
+        const val DEFAULT_NOTIFICATION_CHANNEL_NAME = "Default Communication"
     }
 }
