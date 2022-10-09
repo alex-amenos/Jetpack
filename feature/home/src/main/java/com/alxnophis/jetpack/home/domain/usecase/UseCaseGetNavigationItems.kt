@@ -11,12 +11,13 @@ class UseCaseGetNavigationItems {
         { NavigationError.Unknown },
         {
             listOf(
+                notifications,
                 authentication,
                 settings,
                 posts,
                 locationTracker,
                 gameBallClicker,
-                spacex
+                spacex,
             )
         }
     )
@@ -52,6 +53,11 @@ class UseCaseGetNavigationItems {
             name = "SpaceX",
             description = "Welcome to the SpaceX GraphQL API",
             screen = Screen.Spacex
+        )
+        private val notifications = NavigationItem(
+            name = "Notifications",
+            description = "Push notifications",
+            screen = Screen.Notifications
         )
     }
 }

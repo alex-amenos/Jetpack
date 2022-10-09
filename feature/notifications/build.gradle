@@ -1,0 +1,10 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
+
+android {
+    resourcePrefix = 'notifications'
+    namespace = 'com.alxnophis.jetpack.notifications'
+}
+
+dependencies {
+    implementation Dep.GOOGLE_ACCOMPANITS_PERMISSIONS
+}
