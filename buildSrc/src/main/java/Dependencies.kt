@@ -45,7 +45,7 @@ object Modules {
 private object Version {
     const val ANDROIDX_ANNOTATIONS = "1.4.0"
     const val ANDROIDX_ACTIVITY = "1.5.0"
-    const val ANDROIDX_APPCOMPAT = "1.4.2"
+    const val ANDROIDX_APPCOMPAT = "1.5.1"
     const val ANDROIDX_ARCH_CORE_COMMON = "2.1.0"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "2.1.0"
     const val ANDROIDX_COMPOSE = "1.2.1"
@@ -62,7 +62,7 @@ private object Version {
     const val ANDROIDX_VECTOR_DRAWABLE = "1.0.1"
     const val ANDROIDX_WORK = "2.7.1"
     const val APOLLO = "3.4.0"
-    const val ARROW = "1.1.2"
+    const val ARROW = "1.1.3"
     const val ARROW_META = "1.6.0"
     const val COIL = "2.1.0"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
