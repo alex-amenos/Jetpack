@@ -11,9 +11,9 @@ class UseCaseGetNavigationItems {
         { NavigationError.Unknown },
         {
             listOf(
-                notifications,
                 authentication,
                 settings,
+                notifications,
                 posts,
                 locationTracker,
                 gameBallClicker,
