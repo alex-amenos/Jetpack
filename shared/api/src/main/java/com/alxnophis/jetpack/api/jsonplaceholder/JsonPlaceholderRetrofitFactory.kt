@@ -1,7 +1,9 @@
 package com.alxnophis.jetpack.api.jsonplaceholder
 
+import com.alxnophis.jetpack.api.BuildConfig
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
+import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,7 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class JsonPlaceholderRetrofitFactory {
-    private val okHttpClient =
+    private val okHttpClient: OkHttpClient =
         OkHttpClient
             .Builder()
             .callTimeout(TIMEOUT_CALL, TimeUnit.SECONDS)
@@ -17,6 +19,12 @@ class JsonPlaceholderRetrofitFactory {
             .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor())
+            .also { okHttpClientBuilder ->
+                if (BuildConfig.DEBUG) {
+                    okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
+                }
+                okHttpClientBuilder
+            }
             .build()
 
     operator fun invoke(): JsonPlaceholderRetrofitService =

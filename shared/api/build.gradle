@@ -14,6 +14,7 @@ dependencies {
     implementation Dep.APOLLO_TESTING_SUPPORT
     implementation Dep.OKHTTP
     implementation Dep.OKHTTP_LOGGING_INTERCEPTOR
+    implementation Dep.OKHTTP_PROFILER
     implementation Dep.RETROFIT
     implementation Dep.RETROFIT_CONVERTER_MOSHI
     implementation Dep.NETWORK_RESPONSE_ADAPTER

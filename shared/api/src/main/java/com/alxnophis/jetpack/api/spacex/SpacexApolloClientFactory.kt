@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.api.spacex
 
+import com.alxnophis.jetpack.api.BuildConfig
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.alxnophis.jetpack.spacex.type.Date
 import com.apollographql.apollo3.ApolloClient
@@ -7,6 +8,7 @@ import com.apollographql.apollo3.adapter.DateAdapter
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.network.okHttpClient
+import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -16,13 +18,19 @@ class SpacexApolloClientFactory {
         maxSizeBytes = MEMORY_MAX_SIZE_BYTES,
         expireAfterMillis = MEMORY_EXPIRATION_TIME_MILLIS
     )
-    private val okHttpClient =
+    private val okHttpClient: OkHttpClient =
         OkHttpClient
             .Builder()
             .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor())
+            .also { okHttpClientBuilder ->
+                if (BuildConfig.DEBUG) {
+                    okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
+                }
+                okHttpClientBuilder
+            }
             .build()
 
     operator fun invoke() =

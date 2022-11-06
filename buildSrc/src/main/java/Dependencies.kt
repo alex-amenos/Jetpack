@@ -81,6 +81,7 @@ private object Version {
     const val NETWORK_RESPONSE_ADAPTER = "5.0.0"
     const val LEAK_CANARY = "2.9.1"
     const val OKHTTP = "4.10.0"
+    const val OKHTTP_PROFILER = "1.0.8"
     const val PERMISSION_DISPATCHER = "4.9.1"
     const val RETROFIT = "2.9.0"
     const val TIMBER = "5.0.1"
@@ -168,6 +169,7 @@ object Dep {
     const val RETROFIT_CONVERTER_MOSHI = "com.squareup.retrofit2:converter-moshi:${Version.RETROFIT}"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:${Version.OKHTTP}"
     const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Version.OKHTTP}"
+    const val OKHTTP_PROFILER = "com.localebro:okhttpprofiler:${Version.OKHTTP_PROFILER}"
     const val TURBINE = "app.cash.turbine:turbine:${Version.TURBINE}"
     const val TIMBER = "com.jakewharton.timber:timber:${Version.TIMBER}"
 }
