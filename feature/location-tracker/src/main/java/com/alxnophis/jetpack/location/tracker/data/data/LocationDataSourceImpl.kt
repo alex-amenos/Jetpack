@@ -42,19 +42,21 @@ internal class LocationDataSourceImpl(
         override fun onLocationResult(locationResult: LocationResult) {
             coroutineScope.launch {
                 Timber.d("LocationDataSource - New Location ${locationResult.lastLocation}")
-                locationResult.lastLocation.apply {
-                    mutableLocationSharedFlow.emit(
-                        Location(
-                            latitude = latitude,
-                            longitude = longitude,
-                            altitude = altitude,
-                            accuracy = accuracy,
-                            speed = speed,
-                            bearing = bearing,
-                            time = time
+                locationResult
+                    .lastLocation
+                    ?.apply {
+                        mutableLocationSharedFlow.emit(
+                            Location(
+                                latitude = latitude,
+                                longitude = longitude,
+                                altitude = altitude,
+                                accuracy = accuracy,
+                                speed = speed,
+                                bearing = bearing,
+                                time = time
+                            )
                         )
-                    )
-                }
+                    }
             }
         }
     }
@@ -105,12 +107,13 @@ internal class LocationDataSourceImpl(
             locationJob = coroutineScope.launch {
                 Timber.d("LocationDataSource started with $locationParameters")
                 fusedLocationProvider.let {
-                    val locationRequest = LocationRequest.create()
-                    locationRequest.apply {
-                        priority = locationParameters.priority
-                        fastestInterval = locationParameters.fastestInterval
-                        smallestDisplacement = locationParameters.smallestDisplacement
-                    }
+                    val locationRequest = LocationRequest
+                        .Builder(
+                            locationParameters.priority,
+                            locationParameters.fastestInterval,
+                        )
+                        .setPriority(locationParameters.priority)
+                        .build()
                     it.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
                 }
             }

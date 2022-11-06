@@ -68,7 +68,7 @@ private object Version {
     const val COIL = "2.1.0"
     const val COMPOSE_STATE_EVENTS = "1.1.0"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
-    const val GOOGLE_PLAY_SERVICES_LOCATION = "18.0.0"
+    const val GOOGLE_PLAY_SERVICES_LOCATION = "21.0.1"
     const val GOOGLE_ACCOMPANITS = "0.25.1"
     const val JUNIT = "4.13.2"
     const val JUNIT_JUPITER = "5.8.2"
