@@ -55,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.authentication.R
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.constants.EMPTY
@@ -71,10 +72,7 @@ internal fun AuthenticationForm(
     authenticationMode: AuthenticationMode,
     completedPasswordRequirements: List<PasswordRequirements>,
     enableAuthentication: Boolean,
-    onEmailChanged: (email: String) -> Unit,
-    onPasswordChanged: (password: String) -> Unit,
-    onAuthenticate: () -> Unit,
-    onToggleMode: () -> Unit
+    handleEvent: AuthenticationEvent.() -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -90,7 +88,8 @@ internal fun AuthenticationForm(
         }
         Spacer(modifier = Modifier.height(32.dp))
         AuthenticationTitle(
-            authenticationMode = authenticationMode
+            authenticationMode = authenticationMode,
+            handleEvent = handleEvent
         )
         Spacer(modifier = Modifier.height(40.dp))
         val passwordFocusRequester = FocusRequester()
@@ -107,7 +106,7 @@ internal fun AuthenticationForm(
                 EmailInput(
                     modifier = Modifier.fillMaxWidth(),
                     email = email,
-                    onEmailChanged = onEmailChanged
+                    onEmailChanged = { handleEvent(AuthenticationEvent.EmailChanged(email)) }
                 ) {
                     passwordFocusRequester.requestFocus()
                 }
@@ -119,9 +118,9 @@ internal fun AuthenticationForm(
                         .fillMaxWidth()
                         .focusRequester(passwordFocusRequester),
                     password = password,
-                    onPasswordChanged = onPasswordChanged
+                    onPasswordChanged = { handleEvent(AuthenticationEvent.PasswordChanged(password)) }
                 ) {
-                    onAuthenticate()
+                    handleEvent(AuthenticationEvent.Authenticate)
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -140,7 +139,7 @@ internal fun AuthenticationForm(
                 AuthenticationButton(
                     enableAuthentication = enableAuthentication,
                     authenticationMode = authenticationMode,
-                    onAuthenticate = onAuthenticate
+                    onAuthenticate = { handleEvent(AuthenticationEvent.Authenticate) }
                 )
             }
         }
@@ -152,7 +151,7 @@ internal fun AuthenticationForm(
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 50.dp),
             authenticationMode = authenticationMode,
-            toggleAuthentication = { onToggleMode() }
+            toggleAuthentication = { handleEvent(AuthenticationEvent.ToggleAuthenticationMode) }
         )
     }
 }
@@ -160,10 +159,15 @@ internal fun AuthenticationForm(
 @Composable
 internal fun AuthenticationTitle(
     modifier: Modifier = Modifier,
-    authenticationMode: AuthenticationMode
+    authenticationMode: AuthenticationMode,
+    handleEvent: AuthenticationEvent.() -> Unit,
 ) {
     Text(
-        modifier = modifier,
+        modifier = modifier.clickable {
+            if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorization)
+            }
+        },
         text = stringResource(
             if (authenticationMode == AuthenticationMode.SIGN_IN) {
                 R.string.authentication_label_sign_in_to_account
@@ -413,10 +417,7 @@ private fun AuthenticationSighInFormPreview() {
             password = EMPTY,
             completedPasswordRequirements = emptyList(),
             enableAuthentication = true,
-            onEmailChanged = {},
-            onPasswordChanged = {},
-            onAuthenticate = {},
-            onToggleMode = {},
+            handleEvent = {},
         )
     }
 }
@@ -438,10 +439,7 @@ private fun AuthenticationSignUpFormPreview() {
                 PasswordRequirements.NUMBER,
             ),
             enableAuthentication = true,
-            onEmailChanged = {},
-            onPasswordChanged = {},
-            onAuthenticate = {},
-            onToggleMode = {},
+            handleEvent = {},
         )
     }
 }
