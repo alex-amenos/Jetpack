@@ -18,13 +18,7 @@ class RootActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectRoot()
-        lifecycle.addObserver(viewModel)
         renderContent()
-    }
-
-    override fun onDestroy() {
-        lifecycle.removeObserver(viewModel)
-        super.onDestroy()
     }
 
     private fun renderContent() {

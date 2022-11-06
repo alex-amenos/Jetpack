@@ -5,9 +5,11 @@ android {
 }
 
 dependencies {
+    def composeBom = platform(Dep.ANDROIDX_COMPOSE_BOM)
+
+    implementation(composeBom)
     implementation project(Modules.SHARED_CORE)
     implementation project(Modules.SHARED_KOTLIN)
-
     implementation Dep.ANDROIDX_ARCH_CORE_TESTING
     implementation Dep.ANDROIDX_COMPOSE_UI_TEST_MANIFEST
     implementation Dep.ANDROIDX_COMPOSE_UI_TEST

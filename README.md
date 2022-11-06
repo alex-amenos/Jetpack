@@ -32,6 +32,12 @@ Settings options screen
 
 <img alt="Settings screen" src="./docs/images/settings_screen.png" width="300" />
 
+## Notifications
+
+Push Notifications screen
+
+<img alt="Notifications screen" src="./docs/images/notifications.png" width="300" />
+
 ## Posts
 
 Load posts from JsonPlaceholder Rest API
