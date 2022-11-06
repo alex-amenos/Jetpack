@@ -25,7 +25,7 @@ sealed class Screen(val route: String) {
 
     object Home : Screen(route = "home_screen")
     object GameBallClicker : Screen(route = "game_ball_clicker_screen")
-    object Notifications: Screen(route = "notifications_screen")
+    object Notifications : Screen(route = "notifications_screen")
     object LocationTracker : Screen(route = "location_tracker_screen")
     object Posts : Screen(route = "posts_screen")
     object Settings : Screen(route = "settings_screen")
