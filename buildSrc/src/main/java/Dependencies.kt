@@ -75,7 +75,7 @@ private object Version {
     const val KOTLIN = "1.7.20"
     const val KOTLIN_COROUTINES = "1.6.4"
     const val KOTLINX_SERIALIZATION_JSON = "1.3.2"
-    const val KOIN = "3.1.6"
+    const val KOIN = "3.3.0"
     const val MOSHI = "1.12.0"
     const val MOCKITO = "4.0.0"
     const val NETWORK_RESPONSE_ADAPTER = "5.0.0"
