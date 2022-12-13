@@ -67,19 +67,23 @@ internal class LocationDataSourceImpl(
     override fun provideLastKnownLocationFlow(): Flow<Location?> = callbackFlow {
         fusedLocationProvider
             .lastLocation
-            .addOnSuccessListener { location: AndroidLocation ->
+            .addOnSuccessListener { location: AndroidLocation? ->
                 try {
-                    trySend(
-                        Location(
-                            latitude = location.latitude,
-                            longitude = location.longitude,
-                            altitude = location.altitude,
-                            accuracy = location.accuracy,
-                            speed = location.speed,
-                            bearing = location.bearing,
-                            time = location.time
-                        )
-                    )
+                    location
+                        ?.let {
+                            trySend(
+                                Location(
+                                    latitude = it.latitude,
+                                    longitude = it.longitude,
+                                    altitude = it.altitude,
+                                    accuracy = it.accuracy,
+                                    speed = it.speed,
+                                    bearing = it.bearing,
+                                    time = it.time
+                                )
+                            )
+                        }
+                        ?: trySend(null)
                 } catch (exception: Exception) {
                     Timber.e("Error getting last known location: ${exception.message}")
                     trySend(null)
