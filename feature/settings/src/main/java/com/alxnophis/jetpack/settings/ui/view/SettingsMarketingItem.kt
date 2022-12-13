@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
@@ -74,7 +74,7 @@ internal fun SettingsMarketingItem(
 @ExperimentalComposeUiApi
 @Composable
 private fun SettingsMarketingItemPreview() {
-    CoreTheme {
+    AppTheme {
         SettingsMarketingItem(
             modifier = Modifier.fillMaxWidth(),
             selectedOption = MarketingOption.NOT_ALLOWED,

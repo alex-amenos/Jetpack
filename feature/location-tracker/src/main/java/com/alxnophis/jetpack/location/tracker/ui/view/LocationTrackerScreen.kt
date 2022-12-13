@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.location.tracker.R
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
@@ -59,7 +59,7 @@ internal fun LocationTrackerContent(
     handleEvent: LocationTrackerEvent.() -> Unit,
     navigateBack: () -> Unit
 ) {
-    CoreTheme {
+    AppTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -172,7 +172,7 @@ private fun UserLocationPreview() {
         lastKnownLocation = "Last known location",
         userLocation = "Current Location"
     )
-    CoreTheme {
+    AppTheme {
         Column(modifier = Modifier.fillMaxSize()) {
             UserLocation(state)
         }

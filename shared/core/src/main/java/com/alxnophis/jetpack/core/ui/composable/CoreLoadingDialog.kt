@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @Composable
 fun CoreLoadingDialog(isLoading: Boolean) {
@@ -50,7 +50,7 @@ fun CoreLoadingDialog(isLoading: Boolean) {
 @Preview(showBackground = true, widthDp = 300, heightDp = 400)
 @Composable
 private fun CoreLoadingDialogPreview() {
-    CoreTheme {
+    AppTheme {
         CoreLoadingDialog(isLoading = true)
     }
 }

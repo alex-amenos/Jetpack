@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.R
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @Composable
 fun CoreTopBar(
@@ -56,7 +56,7 @@ fun CoreTopBar(
 @Preview
 @Composable
 private fun CoreTopBarPreview() {
-    CoreTheme {
+    AppTheme {
         CoreTopBar(
             modifier = Modifier.fillMaxWidth(),
             title = "Lorem ipsum",

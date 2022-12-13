@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.R
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @Composable
 fun CoreErrorDialog(
@@ -61,7 +61,7 @@ fun CoreErrorDialog(
 @Preview(showBackground = true)
 @Composable
 fun CoreErrorDialogPreview() {
-    CoreTheme {
+    AppTheme {
         CoreErrorDialog(
             modifier = Modifier.wrapContentSize(),
             errorMessage = "Error message",

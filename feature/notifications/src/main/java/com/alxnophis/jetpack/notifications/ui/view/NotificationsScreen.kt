@@ -29,7 +29,7 @@ import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
 import com.alxnophis.jetpack.core.extensions.showNotification
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.notifications.R
 
 @Composable
@@ -47,7 +47,7 @@ internal fun NotificationsScreen(
 private fun NotificationsContent(
     navigateBack: () -> Unit
 ) {
-    CoreTheme {
+    AppTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize()

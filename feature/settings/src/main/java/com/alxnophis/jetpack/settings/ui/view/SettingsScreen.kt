@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
@@ -51,7 +51,7 @@ internal fun SettingsContent(
     handleEvent: SettingsEvent.() -> Unit,
     navigateBack: () -> Unit
 ) {
-    CoreTheme {
+    AppTheme {
         val context = LocalContext.current
         Column(
             modifier = Modifier

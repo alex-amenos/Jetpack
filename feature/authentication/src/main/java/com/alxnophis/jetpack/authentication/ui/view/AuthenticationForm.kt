@@ -60,7 +60,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.ui.composable.autofill
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @ExperimentalComposeUiApi
 @Composable
@@ -408,7 +408,7 @@ fun ToggleAuthenticationMode(
 @Preview(showBackground = true)
 @Composable
 private fun AuthenticationSighInFormPreview() {
-    CoreTheme {
+    AppTheme {
         AuthenticationForm(
             modifier = Modifier.wrapContentSize(),
             authenticationMode = AuthenticationMode.SIGN_IN,
@@ -426,7 +426,7 @@ private fun AuthenticationSighInFormPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun AuthenticationSignUpFormPreview() {
-    CoreTheme {
+    AppTheme {
         AuthenticationForm(
             modifier = Modifier.wrapContentSize(),
             authenticationMode = AuthenticationMode.SIGN_UP,

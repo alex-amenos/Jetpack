@@ -17,7 +17,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.router.screen.Screen
 import de.palm.composestateevents.EventEffect
 import org.koin.androidx.compose.getViewModel
@@ -55,7 +55,7 @@ internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
     handleEvent: AuthenticationEvent.() -> Unit,
 ) {
-    CoreTheme {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()

@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.Theme
 
@@ -76,7 +76,7 @@ internal fun SettingsThemeItem(
 @ExperimentalComposeUiApi
 @Composable
 private fun SettingsThemeItemPreview() {
-    CoreTheme {
+    AppTheme {
         SettingsThemeItem(
             modifier = Modifier.fillMaxWidth(),
             selectedTheme = Theme.SYSTEM,
