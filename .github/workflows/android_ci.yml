@@ -7,15 +7,24 @@ on:
     branches: [ develop, main ]
 
 jobs:
-  build:
 
+  cancel_previous:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Cancel Previous Workflow Runs
+        uses: n1hility/cancel-previous-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  quality_and_build_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Setup JDK 11
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'adopt'
@@ -28,21 +37,20 @@ jobs:
         run: ./gradlew testDebugUnitTest
       - name: Assemble Release
         run: ./gradlew assembleRelease
-      - name: Sign Release
-        uses: r0adkll/sign-android-release@v1
+      - name: Sign Release APK
+        uses: ilharp/sign-android-release@v1
         # ID used to access action output
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.ALX_STORE_FILE }}
-          alias: ${{ secrets.ALX_KEY_ALIAS }}
+          releaseDir: app/build/outputs/apk/release
+          signingKey: ${{ secrets.ALX_STORE_FILE }}
+          keyAlias: ${{ secrets.ALX_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ALX_STORE_PASSWORD }}
           keyPassword: ${{ secrets.ALX_KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "31.0.0"
+          buildToolsVersion: "33.0.0"
       # Example use of `signedReleaseFile` output -- not needed
       - name: Upload Release APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: JetpackSignedApp
-          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+          name: Signed Jetpack APK
+          path: ${{steps.sign_app.outputs.signedFile}}
