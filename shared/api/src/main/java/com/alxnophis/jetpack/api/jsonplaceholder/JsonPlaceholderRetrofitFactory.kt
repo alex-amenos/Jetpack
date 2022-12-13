@@ -23,7 +23,6 @@ class JsonPlaceholderRetrofitFactory {
                 if (BuildConfig.DEBUG) {
                     okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
                 }
-                okHttpClientBuilder
             }
             .build()
 
