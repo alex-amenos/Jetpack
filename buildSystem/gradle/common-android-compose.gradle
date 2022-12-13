@@ -4,7 +4,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion Version.KOTLIN
         kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE_COMPILER
     }
 }
