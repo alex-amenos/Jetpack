@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "SpellCheckingInspection")
+@file:Suppress("unsued", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
 
 object Version {
     const val ANDROIDX_ANNOTATIONS = "1.4.0"

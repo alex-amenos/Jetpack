@@ -29,7 +29,6 @@ class SpacexApolloClientFactory {
                 if (BuildConfig.DEBUG) {
                     okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
                 }
-                okHttpClientBuilder
             }
             .build()
 
