@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.settings.R
 
 @Composable
@@ -51,7 +51,7 @@ internal fun SettingsManageSubscriptionItem(
 @ExperimentalComposeUiApi
 @Composable
 private fun SettingsManageSubscriptionItemPreview() {
-    CoreTheme {
+    AppTheme {
         SettingsManageSubscriptionItem(
             modifier = Modifier.fillMaxWidth(),
             title = "Lorem ipsum dolor sit amet",

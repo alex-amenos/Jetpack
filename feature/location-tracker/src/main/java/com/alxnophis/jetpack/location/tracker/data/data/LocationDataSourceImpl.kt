@@ -42,19 +42,21 @@ internal class LocationDataSourceImpl(
         override fun onLocationResult(locationResult: LocationResult) {
             coroutineScope.launch {
                 Timber.d("LocationDataSource - New Location ${locationResult.lastLocation}")
-                locationResult.lastLocation.apply {
-                    mutableLocationSharedFlow.emit(
-                        Location(
-                            latitude = latitude,
-                            longitude = longitude,
-                            altitude = altitude,
-                            accuracy = accuracy,
-                            speed = speed,
-                            bearing = bearing,
-                            time = time
+                locationResult
+                    .lastLocation
+                    ?.apply {
+                        mutableLocationSharedFlow.emit(
+                            Location(
+                                latitude = latitude,
+                                longitude = longitude,
+                                altitude = altitude,
+                                accuracy = accuracy,
+                                speed = speed,
+                                bearing = bearing,
+                                time = time
+                            )
                         )
-                    )
-                }
+                    }
             }
         }
     }
@@ -65,19 +67,23 @@ internal class LocationDataSourceImpl(
     override fun provideLastKnownLocationFlow(): Flow<Location?> = callbackFlow {
         fusedLocationProvider
             .lastLocation
-            .addOnSuccessListener { location: AndroidLocation ->
+            .addOnSuccessListener { location: AndroidLocation? ->
                 try {
-                    trySend(
-                        Location(
-                            latitude = location.latitude,
-                            longitude = location.longitude,
-                            altitude = location.altitude,
-                            accuracy = location.accuracy,
-                            speed = location.speed,
-                            bearing = location.bearing,
-                            time = location.time
-                        )
-                    )
+                    location
+                        ?.let {
+                            trySend(
+                                Location(
+                                    latitude = it.latitude,
+                                    longitude = it.longitude,
+                                    altitude = it.altitude,
+                                    accuracy = it.accuracy,
+                                    speed = it.speed,
+                                    bearing = it.bearing,
+                                    time = it.time
+                                )
+                            )
+                        }
+                        ?: trySend(null)
                 } catch (exception: Exception) {
                     Timber.e("Error getting last known location: ${exception.message}")
                     trySend(null)
@@ -105,12 +111,13 @@ internal class LocationDataSourceImpl(
             locationJob = coroutineScope.launch {
                 Timber.d("LocationDataSource started with $locationParameters")
                 fusedLocationProvider.let {
-                    val locationRequest = LocationRequest.create()
-                    locationRequest.apply {
-                        priority = locationParameters.priority
-                        fastestInterval = locationParameters.fastestInterval
-                        smallestDisplacement = locationParameters.smallestDisplacement
-                    }
+                    val locationRequest = LocationRequest
+                        .Builder(
+                            locationParameters.priority,
+                            locationParameters.fastestInterval,
+                        )
+                        .setPriority(locationParameters.priority)
+                        .build()
                     it.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
                 }
             }

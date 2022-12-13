@@ -18,12 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @Preview(showBackground = true)
 @Composable
 private fun CoreColorsThemePreview() {
-    CoreTheme {
+    AppTheme {
         val colorsMap: Map<String, Color> = mapOf(
             "primary" to MaterialTheme.colors.primary,
             "primaryVariant" to MaterialTheme.colors.primaryVariant,

@@ -11,6 +11,7 @@
 - [ ] Unit Tests
 - [ ] Integration Tests
 - [ ] Compose Tests
+- [ ] Snapshot Tests
 - [ ] Maestro Tests
 - [ ] Updated string
 - [ ] Manually tested

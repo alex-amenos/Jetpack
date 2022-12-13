@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.game.ballclicker.R
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
@@ -64,7 +64,7 @@ internal fun BallClickerContent(
     state: BallClickerState,
     handleEvent: BallClickerEvent.() -> Unit
 ) {
-    CoreTheme {
+    AppTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize()

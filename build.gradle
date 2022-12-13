@@ -1,21 +1,24 @@
 buildscript {
     repositories {
         google()
-        maven { url 'https://plugins.gradle.org/m2/' }
         mavenCentral()
         gradlePluginPortal()
     }
 
     dependencies {
+        classpath 'com.adarshr:gradle-test-logger-plugin:3.2.0'
         classpath 'com.android.tools.build:gradle:7.3.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.42.0'
-        classpath 'com.adarshr:gradle-test-logger-plugin:3.2.0'
         classpath "com.apollographql.apollo3:apollo-gradle-plugin:${Version.APOLLO}"
         classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Version.KOTLIN}"
         classpath 'org.jetbrains.kotlinx:kover:0.6.1'
         classpath 'org.jlleitschuh.gradle:ktlint-gradle:11.0.0'
     }
+}
+
+plugins {
+    id 'org.jetbrains.kotlinx.kover' version '0.6.1'
 }
 
 allprojects {
@@ -53,4 +56,38 @@ task installGitHook(type: Copy) {
 
 tasks.getByPath(':app:preBuild').dependsOn installGitHook
 
+// Multi-module reports for instrumented tests
+// https://developer.android.com/studio/test/command-line#multi-module-reports-instrumented-tests
 apply plugin: 'android-reporting'
+
+// Helpful example:
+// https://github.com/Kotlin/kotlinx-kover/blob/release/examples/android_groovy/build.gradle
+koverMerged {
+    enable()
+
+    filters {
+        classes {
+            includes.addAll("com.alxnophis.jetpack.*")
+            excludes.addAll(
+                    'com.alxnophis.jetpack.core.base.*',
+                    'com.alxnophis.jetpack.*.di.*',
+                    'com.alxnophis.jetpack.di.*',
+                    'com.alxnophis.jetpack.core.base.*',
+                    'com.alxnophis.jetpack.router.*',
+                    'com.alxnophis.jetpack.*.ui.navigation.*',
+                    "*Activity",
+                    "BuildConfig",
+                    '*Mother',
+                    '*NavGraph\$*',
+            )
+        }
+
+        projects {
+            excludes.addAll(
+                    ":app",
+                    ":shared:api",
+                    ":shared:testing"
+            )
+        }
+    }
+}

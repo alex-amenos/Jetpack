@@ -1,6 +1,7 @@
 <resources>
 
-    <style name="CoreTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="CoreTheme" parent="Theme.AppCompat">
+        <item name="android:windowBackground">#FFFFFF</item>
         <item name="colorPrimary">#26B378</item>
         <item name="colorPrimaryDark">#1E8F60</item>
     </style>

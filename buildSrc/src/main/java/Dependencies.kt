@@ -1,55 +1,13 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
+@file:Suppress("unsued", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
 
-object AppVersion {
-    private const val MAJOR = 0
-    private const val MINOR = 0
-    private const val BUILD = 5
-
-    const val NAME: String = "${MAJOR}.${MINOR}.${BUILD}"
-    val CODE = "${MAJOR}${MINOR.format()}${BUILD.format()}".toInt()
-
-    private fun Int.format() = "%03d".format(this)
-}
-
-object AppConfig {
-    const val APPLICATION_ID = "com.alxnophis.jetpack"
-    const val APP_PACKAGE_NAME = APPLICATION_ID
-    const val APP_PACKAGE_NAME_DEBUG = "$APPLICATION_ID.debug"
-    const val COMPILE_SDK_VERSION = 33
-    const val BUILD_TOOLS_VERSION = "33.0.0"
-    const val MIN_SDK_VERSION = 26
-    const val TARGET_SDK_VERSION = 33
-}
-
-object Modules {
-    // App modules
-    const val APP = ":app"
-    // Shared modules
-    const val SHARED_API = ":shared:api"
-    const val SHARED_CORE = ":shared:core"
-    const val SHARED_KOTLIN = ":shared:kotlin"
-    const val SHARED_ROUTER = ":shared:router"
-    const val SHARED_TESTING = ":shared:testing"
-    // Feature modules
-    const val FEATURE_HOME = ":feature:home"
-    const val FEATURE_AUTHENTICATION = ":feature:authentication"
-    const val FEATURE_GAME_BALL_CLICKER = ":feature:game:ballclicker"
-    const val FEATURE_NOTIFICATIONS = ":feature:notifications"
-    const val FEATURE_LOCATION_TRACKER =":feature:location-tracker"
-    const val FEATURE_POSTS = ":feature:posts"
-    const val FEATURE_ROOT = ":feature:root"
-    const val FEATURE_SETTINGS = ":feature:settings"
-    const val FEATURE_SPACEX = ":feature:spacex"
-}
-
-private object Version {
+object Version {
     const val ANDROIDX_ANNOTATIONS = "1.4.0"
     const val ANDROIDX_ACTIVITY = "1.5.0"
     const val ANDROIDX_APPCOMPAT = "1.5.1"
     const val ANDROIDX_ARCH_CORE_COMMON = "2.1.0"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "2.1.0"
     const val ANDROIDX_COMPOSE = "1.2.1"
-    const val ANDROIDX_COMPOSE_BOM = "2022.10.00"
+    const val ANDROIDX_COMPOSE_BOM = "2022.12.00"
     const val ANDROIDX_COMPOSE_COMPILER = "1.3.2"
     const val ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT = "1.0.1"
     const val ANDROIDX_COMPOSE_NAVIGATION = "2.5.2"
@@ -68,19 +26,21 @@ private object Version {
     const val COIL = "2.1.0"
     const val COMPOSE_STATE_EVENTS = "1.1.0"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
-    const val GOOGLE_PLAY_SERVICES_LOCATION = "18.0.0"
+    const val GOOGLE_PLAY_SERVICES_LOCATION = "21.0.1"
     const val GOOGLE_ACCOMPANITS = "0.25.1"
     const val JUNIT = "4.13.2"
     const val JUNIT_JUPITER = "5.8.2"
     const val KOTLIN = "1.7.20"
     const val KOTLIN_COROUTINES = "1.6.4"
     const val KOTLINX_SERIALIZATION_JSON = "1.3.2"
-    const val KOIN = "3.1.6"
+    const val KOIN = "3.3.0"
+    const val KOIN_TEST = "3.2.2"
     const val MOSHI = "1.12.0"
     const val MOCKITO = "4.0.0"
     const val NETWORK_RESPONSE_ADAPTER = "5.0.0"
     const val LEAK_CANARY = "2.9.1"
     const val OKHTTP = "4.10.0"
+    const val OKHTTP_PROFILER = "1.0.8"
     const val PERMISSION_DISPATCHER = "4.9.1"
     const val RETROFIT = "2.9.0"
     const val TIMBER = "5.0.1"
@@ -152,7 +112,7 @@ object Dep {
     const val KOIN_ANDROID = "io.insert-koin:koin-android:${Version.KOIN}"
     const val KOIN_ANDROID_COMPOSE = "io.insert-koin:koin-androidx-compose:${Version.KOIN}"
     const val KOIN_ANDROID_WORK_MANAGER = "io.insert-koin:koin-androidx-workmanager:${Version.KOIN}"
-    const val KOIN_TEST = "io.insert-koin:koin-test:${Version.KOIN}"
+    const val KOIN_TEST = "io.insert-koin:koin-test:${Version.KOIN_TEST}"
     const val MOCKITO = "org.mockito:mockito-junit-jupiter:${Version.MOCKITO}"
     const val MOCKITO_ANDROID = "org.mockito:mockito-android:${Version.MOCKITO}"
     const val MOCKITO_INLINE = "org.mockito:mockito-inline:${Version.MOCKITO}"
@@ -168,6 +128,7 @@ object Dep {
     const val RETROFIT_CONVERTER_MOSHI = "com.squareup.retrofit2:converter-moshi:${Version.RETROFIT}"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:${Version.OKHTTP}"
     const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Version.OKHTTP}"
+    const val OKHTTP_PROFILER = "com.localebro:okhttpprofiler:${Version.OKHTTP_PROFILER}"
     const val TURBINE = "app.cash.turbine:turbine:${Version.TURBINE}"
     const val TIMBER = "com.jakewharton.timber:timber:${Version.TIMBER}"
 }

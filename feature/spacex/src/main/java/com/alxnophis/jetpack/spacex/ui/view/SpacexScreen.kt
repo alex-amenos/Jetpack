@@ -45,7 +45,7 @@ import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
@@ -76,7 +76,7 @@ internal fun SpacexContent(
     handleEvent: LaunchesEvent.() -> Unit,
     navigateBack: () -> Unit,
 ) {
-    CoreTheme {
+    AppTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize()

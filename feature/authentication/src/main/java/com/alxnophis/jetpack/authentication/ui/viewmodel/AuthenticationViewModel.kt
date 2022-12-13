@@ -5,12 +5,17 @@ import arrow.core.Either
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
+import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_EMAIL
+import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_PASSWORD
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
+import de.palm.composestateevents.consumed
+import de.palm.composestateevents.triggered
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -24,9 +29,13 @@ internal class AuthenticationViewModel(
         viewModelScope.launch {
             when (event) {
                 AuthenticationEvent.Authenticate -> authenticate()
-                AuthenticationEvent.ErrorDismissed -> dismissError()
+                AuthenticationEvent.ErrorDismissed -> updateState { copy(error = null) }
                 AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-                is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
+                AuthenticationEvent.UserAuthorizedEventConsumed -> updateState { copy(userAuthorizedEvent = consumed) }
+                AuthenticationEvent.AutoCompleteAuthorization -> updateState {
+                    copy(email = AUTHORIZED_EMAIL, password = AUTHORIZED_PASSWORD)
+                }
+                is AuthenticationEvent.EmailChanged -> updateState { copy(email = event.email) }
                 is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
             }
         }
@@ -38,13 +47,11 @@ internal class AuthenticationViewModel(
             else -> AuthenticationMode.SIGN_IN
         }
         updateState {
-            copy(authenticationMode = newAuthenticationMode)
-        }
-    }
-
-    private fun updateEmail(newEmail: String) {
-        updateState {
-            copy(email = newEmail)
+            copy(
+                authenticationMode = newAuthenticationMode,
+                email = EMPTY,
+                password = EMPTY
+            )
         }
     }
 
@@ -71,10 +78,6 @@ internal class AuthenticationViewModel(
         }
     }
 
-    private fun dismissError() {
-        updateState { copy(error = null) }
-    }
-
     private fun authenticate() {
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
@@ -91,7 +94,7 @@ internal class AuthenticationViewModel(
                     updateState {
                         copy(
                             isLoading = false,
-                            isUserAuthorized = true,
+                            userAuthorizedEvent = triggered,
                         )
                     }
                 }

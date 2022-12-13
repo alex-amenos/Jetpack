@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.alxnophis.jetpack.authentication.R
-import com.alxnophis.jetpack.core.ui.theme.CoreTheme
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @Composable
 internal fun AuthorizedScreen(
@@ -31,7 +31,7 @@ internal fun AuthorizedScreen(
 internal fun AuthorizedContent(
     userEmail: String,
 ) {
-    CoreTheme {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
