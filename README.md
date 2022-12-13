@@ -61,3 +61,7 @@ Ball clicker game (custom view with compose).
 This experiment shows past launches of SpaceX using SpaceX GraphQL API with expandable card detail.
 
 <img alt="Ball clicker game" src="./docs/images/spacex_past_launches.png" width="300" />
+
+## Android Studio Plugins used on this project
+
+[OkHttp Profiler](https://plugins.jetbrains.com/plugin/11249-okhttp-profiler)
