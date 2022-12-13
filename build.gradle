@@ -85,6 +85,7 @@ koverMerged {
         projects {
             excludes.addAll(
                     ":app",
+                    ":shared:api",
                     ":shared:testing"
             )
         }
