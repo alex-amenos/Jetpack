@@ -7,7 +7,7 @@ object Version {
     const val ANDROIDX_ARCH_CORE_COMMON = "2.1.0"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "2.1.0"
     const val ANDROIDX_COMPOSE = "1.2.1"
-    const val ANDROIDX_COMPOSE_BOM = "2022.11.00"
+    const val ANDROIDX_COMPOSE_BOM = "2022.12.00"
     const val ANDROIDX_COMPOSE_COMPILER = "1.3.2"
     const val ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT = "1.0.1"
     const val ANDROIDX_COMPOSE_NAVIGATION = "2.5.2"
