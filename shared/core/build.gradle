@@ -17,6 +17,7 @@ dependencies {
     implementation Dep.ANDROIDX_LIFECYCLE_COMMON
     implementation Dep.ANDROIDX_LIFECYCLE_RUNTIME
     implementation Dep.ANDROIDX_LIFECYCLE_VIEWMODEL
+    implementation Dep.GOOGLE_ANDROID_MATERIAL
     implementation Dep.KOIN_ANDROID
     implementation Dep.TIMBER
 
