@@ -3,10 +3,11 @@ package com.alxnophis.jetpack.spacex.data.repository
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.alxnophis.jetpack.api.spacex.mother.LaunchMother
+import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.alxnophis.jetpack.spacex.data.datasource.LaunchesDataSource
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
-import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModelMother
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import com.apollographql.apollo3.annotations.ApolloExperimental
 import java.util.stream.Stream
@@ -41,7 +42,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
         runTest {
-            whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PAST_LAUNCHES.right())
+            whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(LAUNCHES.right())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
@@ -55,7 +56,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
         runTest {
-            whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(emptyList<PastLaunchDataModel>().right())
+            whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(EMPTY_PAST_LAUNCHES.right())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
@@ -80,7 +81,24 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
 
     companion object {
         private const val STATUS_CODE_SERVER_ERROR = 500
-        private val PAST_LAUNCHES = listOf(PastLaunchesDataModelMother.pastLaunch())
+        private val EMPTY_PAST_LAUNCHES = LaunchesQuery.Data(launches = emptyList())
+        private val LAUNCHES = LaunchesQuery.Data(
+            launches = listOf(
+                LaunchMother(id = "id")
+            )
+        )
+        private val PAST_LAUNCHES = listOf(
+            PastLaunchDataModel(
+                id = "id",
+                missionName = "mission_name",
+                details = "details",
+                rocketName = "rocket_name",
+                launchSiteShort = "launch_site_name",
+                launchSite = "launch_site_name_long",
+                missionPatchSmallUrl = "mission_patch",
+                launchDateUtc = null
+            ),
+        )
 
         @JvmStatic
         private fun pastLaunchesSuccessTestProvider(): Stream<Arguments> = Stream.of(

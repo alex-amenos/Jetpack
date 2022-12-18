@@ -6,8 +6,6 @@ import com.alxnophis.jetpack.api.spacex.model.SpacexApiError
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
-import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
-import com.alxnophis.jetpack.spacex.data.model.mapper.mapTo
 import kotlinx.coroutines.withContext
 
 internal class LaunchesDataSourceImpl(
@@ -15,11 +13,10 @@ internal class LaunchesDataSourceImpl(
     private val spacexApi: SpacexApi
 ) : LaunchesDataSource {
 
-    override suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchDataModel>> =
+    override suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, LaunchesQuery.Data?> =
         withContext(dispatcherProvider.io()) {
             spacexApi
                 .pastLaunches(hasToFetchDataFromNetworkOnly)
-                .map { pastLaunches: LaunchesQuery.Data? -> pastLaunches?.mapTo() ?: emptyList() }
                 .mapLeft { error: SpacexApiError ->
                     when (error) {
                         is SpacexApiError.Parse -> LaunchesError.Parse

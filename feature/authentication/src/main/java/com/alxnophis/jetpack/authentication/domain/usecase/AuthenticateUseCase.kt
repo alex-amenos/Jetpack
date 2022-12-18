@@ -6,7 +6,7 @@ import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-typealias Authorized = Unit
+typealias Authenticated = Unit
 
 class AuthenticateUseCase(
     private val dispatchers: DispatcherProvider,
@@ -16,13 +16,13 @@ class AuthenticateUseCase(
     suspend fun invoke(
         email: String,
         password: String
-    ): Either<AuthenticationError, Authorized> = Either.catch(
+    ): Either<AuthenticationError, Authenticated> = Either.catch(
         { AuthenticationError.WrongAuthentication },
         {
             withContext(dispatchers.io()) {
                 delay(delay)
                 if (hasAuthorization(email, password)) {
-                    Authorized
+                    Authenticated
                 } else {
                     throw AuthenticationError.WrongAuthentication
                 }
