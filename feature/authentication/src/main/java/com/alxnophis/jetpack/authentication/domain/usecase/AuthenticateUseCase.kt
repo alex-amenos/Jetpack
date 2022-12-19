@@ -2,22 +2,29 @@ package com.alxnophis.jetpack.authentication.domain.usecase
 
 import arrow.core.Either
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
-import kotlinx.coroutines.coroutineScope
+import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
-class AuthenticateUseCase {
+typealias Authenticated = Unit
+
+class AuthenticateUseCase(
+    private val dispatchers: DispatcherProvider,
+    private val delay: Long = DELAY,
+) {
 
     suspend fun invoke(
         email: String,
         password: String
-    ): Either<AuthenticationError, Unit> = Either.catch(
+    ): Either<AuthenticationError, Authenticated> = Either.catch(
         { AuthenticationError.WrongAuthentication },
         {
-            coroutineScope {
-                delay(3000L)
-                when {
-                    hasAuthorization(email, password) -> Unit
-                    else -> throw AuthenticationError.WrongAuthentication
+            withContext(dispatchers.io()) {
+                delay(delay)
+                if (hasAuthorization(email, password)) {
+                    Authenticated
+                } else {
+                    throw AuthenticationError.WrongAuthentication
                 }
             }
         }
@@ -29,5 +36,6 @@ class AuthenticateUseCase {
     companion object {
         const val AUTHORIZED_EMAIL = "my@email.com"
         const val AUTHORIZED_PASSWORD = "12345678Aab"
+        private const val DELAY = 3000L
     }
 }

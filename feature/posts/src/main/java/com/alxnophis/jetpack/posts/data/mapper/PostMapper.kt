@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.posts.data.datasource.mapper
+package com.alxnophis.jetpack.posts.data.mapper
 
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
 import com.alxnophis.jetpack.posts.domain.model.Post

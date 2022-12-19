@@ -3,10 +3,12 @@ package com.alxnophis.jetpack.spacex.data.repository
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.alxnophis.jetpack.spacex.data.datasource.LaunchesDataSource
+import com.alxnophis.jetpack.api.spacex.SpacexApi
+import com.alxnophis.jetpack.api.spacex.model.SpacexApiError
+import com.alxnophis.jetpack.api.spacex.mother.LaunchMother
+import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
-import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModelMother
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import com.apollographql.apollo3.annotations.ApolloExperimental
 import java.util.stream.Stream
@@ -24,14 +26,15 @@ import org.mockito.kotlin.whenever
 @ExperimentalCoroutinesApi
 internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
 
-    private val launchesDataSourceMock: LaunchesDataSource = mock()
+    private val apiDataSourceMock: SpacexApi = mock()
     private lateinit var launchesRepository: LaunchesRepository
 
     @BeforeEach
     override fun beforeEach() {
         super.beforeEach()
         launchesRepository = LaunchesRepositoryImpl(
-            launchesDataSource = launchesDataSourceMock
+            dispatcherProvider = testDispatcherProvider,
+            apiDataSource = apiDataSourceMock
         )
     }
 
@@ -41,7 +44,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
         runTest {
-            whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(PAST_LAUNCHES.right())
+            whenever(apiDataSourceMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(LAUNCHES.right())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
@@ -55,7 +58,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
         hasToFetchDataFromNetworkOnly: Boolean
     ) {
         runTest {
-            whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(emptyList<PastLaunchDataModel>().right())
+            whenever(apiDataSourceMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(EMPTY_PAST_LAUNCHES.right())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
@@ -67,20 +70,38 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
     @MethodSource("pastLaunchesErrorTestProvider")
     fun `WHEN get past launches failure then return launches error`(
         hasToFetchDataFromNetworkOnly: Boolean,
-        exception: LaunchesError,
+        exception: SpacexApiError,
+        launchesError: LaunchesError
     ) {
         runTest {
-            whenever(launchesDataSourceMock.getPastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(exception.left())
+            whenever(apiDataSourceMock.pastLaunches(hasToFetchDataFromNetworkOnly)).thenReturn(exception.left())
 
             val result: Either<LaunchesError, List<PastLaunchDataModel>> = launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
-            assertEquals(exception.left(), result)
+            assertEquals(launchesError.left(), result)
         }
     }
 
     companion object {
         private const val STATUS_CODE_SERVER_ERROR = 500
-        private val PAST_LAUNCHES = listOf(PastLaunchesDataModelMother.pastLaunch())
+        private val EMPTY_PAST_LAUNCHES = LaunchesQuery.Data(launches = emptyList())
+        private val LAUNCHES = LaunchesQuery.Data(
+            launches = listOf(
+                LaunchMother(id = "id")
+            )
+        )
+        private val PAST_LAUNCHES = listOf(
+            PastLaunchDataModel(
+                id = "id",
+                missionName = "mission_name",
+                details = "details",
+                rocketName = "rocket_name",
+                launchSiteShort = "launch_site_name",
+                launchSite = "launch_site_name_long",
+                missionPatchSmallUrl = "mission_patch",
+                launchDateUtc = null
+            ),
+        )
 
         @JvmStatic
         private fun pastLaunchesSuccessTestProvider(): Stream<Arguments> = Stream.of(
@@ -90,16 +111,56 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
 
         @JvmStatic
         private fun pastLaunchesErrorTestProvider(): Stream<Arguments> = Stream.of(
-            Arguments.of(true, LaunchesError.Parse),
-            Arguments.of(false, LaunchesError.Parse),
-            Arguments.of(true, LaunchesError.Http(STATUS_CODE_SERVER_ERROR)),
-            Arguments.of(false, LaunchesError.Http(STATUS_CODE_SERVER_ERROR)),
-            Arguments.of(true, LaunchesError.Network),
-            Arguments.of(false, LaunchesError.Network),
-            Arguments.of(true, LaunchesError.Unknown),
-            Arguments.of(false, LaunchesError.Unknown),
-            Arguments.of(true, LaunchesError.Unexpected),
-            Arguments.of(false, LaunchesError.Unexpected),
+            Arguments.of(
+                true,
+                SpacexApiError.Parse,
+                LaunchesError.Parse,
+            ),
+            Arguments.of(
+                false,
+                SpacexApiError.Parse,
+                LaunchesError.Parse
+            ),
+            Arguments.of(
+                true,
+                SpacexApiError.Http(STATUS_CODE_SERVER_ERROR),
+                LaunchesError.Http(STATUS_CODE_SERVER_ERROR),
+            ),
+            Arguments.of(
+                false,
+                SpacexApiError.Http(STATUS_CODE_SERVER_ERROR),
+                LaunchesError.Http(STATUS_CODE_SERVER_ERROR),
+            ),
+            Arguments.of(
+                true,
+                SpacexApiError.Network,
+                LaunchesError.Network,
+            ),
+            Arguments.of(
+                false,
+                SpacexApiError.Network,
+                LaunchesError.Network,
+            ),
+            Arguments.of(
+                true,
+                SpacexApiError.Unknown,
+                LaunchesError.Unknown,
+            ),
+            Arguments.of(
+                false,
+                SpacexApiError.Unknown,
+                LaunchesError.Unknown,
+            ),
+            Arguments.of(
+                true,
+                SpacexApiError.Unexpected,
+                LaunchesError.Unexpected,
+            ),
+            Arguments.of(
+                false,
+                SpacexApiError.Unexpected,
+                LaunchesError.Unexpected,
+            )
         )
     }
 }

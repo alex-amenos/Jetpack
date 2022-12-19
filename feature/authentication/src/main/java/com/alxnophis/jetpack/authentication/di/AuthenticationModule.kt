@@ -17,7 +17,7 @@ private val loadAuthenticationModules by lazy {
 }
 
 private val authenticationModule: Module = module {
-    factory { AuthenticateUseCase() }
+    factory { AuthenticateUseCase(dispatchers = get()) }
     factory<DispatcherProvider> { DefaultDispatcherProvider() }
     viewModel {
         AuthenticationViewModel(

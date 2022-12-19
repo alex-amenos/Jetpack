@@ -1,7 +1,5 @@
 package com.alxnophis.jetpack.spacex.di
 
-import com.alxnophis.jetpack.spacex.data.datasource.LaunchesDataSource
-import com.alxnophis.jetpack.spacex.data.datasource.LaunchesDataSourceImpl
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepositoryImpl
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
@@ -18,8 +16,12 @@ private val loadSpacexModules by lazy {
 }
 
 private val spacexModule: Module = module {
-    factory<LaunchesDataSource> { LaunchesDataSourceImpl(dispatcherProvider = get(), spacexApi = get()) }
-    factory<LaunchesRepository> { LaunchesRepositoryImpl(launchesDataSource = get()) }
+    factory<LaunchesRepository> {
+        LaunchesRepositoryImpl(
+            dispatcherProvider = get(),
+            apiDataSource = get()
+        )
+    }
     viewModel {
         LaunchesViewModel(
             initialState = LaunchesState(),

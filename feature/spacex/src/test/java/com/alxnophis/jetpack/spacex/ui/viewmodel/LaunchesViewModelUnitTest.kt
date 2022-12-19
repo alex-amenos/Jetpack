@@ -48,8 +48,8 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN init THEN validate initial state`() {
         runTest {
-            val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother.pastLaunch(launchDateUtc = Date()))
-            val pastLaunches = listOf(PastLaunchesModelMother.pastLaunch(launchDateUtc = "DATE"))
+            val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
+            val pastLaunches = listOf(PastLaunchesModelMother.invoke(launchDateUtc = "DATE"))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
@@ -77,7 +77,7 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN init THEN validate get past launches not fetched from network only`() {
         runTest {
-            val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother.pastLaunch(launchDateUtc = Date()))
+            val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
@@ -90,7 +90,7 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN refresh launches THEN validate get past launches fetched from network only after the init`() {
         runTest {
-            val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother.pastLaunch(launchDateUtc = Date()))
+            val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(any())).thenReturn(pastLaunchesDataModel.right())
 
@@ -105,8 +105,8 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN init AND get past launches succeed THEN validate state`() {
         runTest {
-            val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother.pastLaunch(launchDateUtc = Date()))
-            val pastLaunches = listOf(PastLaunchesModelMother.pastLaunch(launchDateUtc = "DATE"))
+            val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
+            val pastLaunches = listOf(PastLaunchesModelMother.invoke(launchDateUtc = "DATE"))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 class AuthenticateUseCaseUnitTest : BaseUnitTest() {
 
     private val useCase by lazy {
-        AuthenticateUseCase()
+        AuthenticateUseCase(testDispatcherProvider)
     }
 
     @Test

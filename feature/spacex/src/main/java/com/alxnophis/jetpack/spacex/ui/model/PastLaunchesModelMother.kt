@@ -6,7 +6,7 @@ import org.jetbrains.annotations.TestOnly
 @TestOnly
 internal object PastLaunchesModelMother {
 
-    fun pastLaunch(
+    operator fun invoke(
         id: String = "id",
         missionName: String = "mission_name",
         details: String = "details",
