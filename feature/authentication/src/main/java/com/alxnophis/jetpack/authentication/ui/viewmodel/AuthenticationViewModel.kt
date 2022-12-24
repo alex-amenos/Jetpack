@@ -33,7 +33,7 @@ internal class AuthenticationViewModel(
                 AuthenticationEvent.AutoCompleteAuthorization -> updateState {
                     copy(email = AUTHORIZED_EMAIL, password = AUTHORIZED_PASSWORD)
                 }
-                is AuthenticationEvent.EmailChanged -> updateState { copy(email = event.email) }
+                is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
                 is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
             }
         }
@@ -50,6 +50,14 @@ internal class AuthenticationViewModel(
                 email = EMPTY,
                 password = EMPTY
             )
+        }
+    }
+
+    private fun updateEmail(email: String) {
+        viewModelScope.launch {
+            updateState {
+                copy(email = email)
+            }
         }
     }
 

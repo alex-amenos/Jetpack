@@ -86,12 +86,16 @@ internal fun AuthenticationForm(
                 color = MaterialTheme.colors.secondary,
             )
         }
+
         Spacer(modifier = Modifier.height(32.dp))
+
         AuthenticationTitle(
             authenticationMode = authenticationMode,
             handleEvent = handleEvent
         )
+
         Spacer(modifier = Modifier.height(40.dp))
+
         val passwordFocusRequester = FocusRequester()
         Card(
             modifier = Modifier
@@ -182,7 +186,7 @@ internal fun AuthenticationTitle(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EmailInput(
-    modifier: Modifier = Modifier.fillMaxWidth(),
+    modifier: Modifier = Modifier,
     email: String,
     onEmailChanged: (email: String) -> Unit,
     onNextClicked: () -> Unit
