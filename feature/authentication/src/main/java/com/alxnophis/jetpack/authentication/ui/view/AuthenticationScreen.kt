@@ -29,13 +29,6 @@ internal fun AuthenticationScreen(
     viewModel: AuthenticationViewModel = getViewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
-    AuthenticationContent(
-        state,
-        viewModel::handleEvent
-    )
-    BackHandler {
-        navController.popBackStack()
-    }
     LaunchedEffect(state.isUserAuthorized) {
         if (state.isUserAuthorized) {
             navController.navigate(Screen.Authorized.routeWithParams(state.email)) {
@@ -47,6 +40,13 @@ internal fun AuthenticationScreen(
             viewModel.handleEvent(AuthenticationEvent.UserAuthorizedConsumed)
         }
     }
+    BackHandler {
+        navController.popBackStack()
+    }
+    AuthenticationContent(
+        state,
+        viewModel::handleEvent
+    )
 }
 
 @ExperimentalComposeUiApi

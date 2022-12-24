@@ -28,8 +28,8 @@ internal data class AuthenticationState(
 
     fun isFormValid(): Boolean {
         return password.isNotEmpty() &&
-                email.isNotEmpty() &&
-                (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
+            email.isNotEmpty() &&
+            (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
     }
 }
 
