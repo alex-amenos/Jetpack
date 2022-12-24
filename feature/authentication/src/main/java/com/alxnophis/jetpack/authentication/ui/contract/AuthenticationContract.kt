@@ -5,21 +5,19 @@ import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
-import de.palm.composestateevents.StateEvent
-import de.palm.composestateevents.consumed
 
 internal sealed class AuthenticationEvent : UiEvent {
     object Authenticate : AuthenticationEvent()
     object AutoCompleteAuthorization : AuthenticationEvent()
     object ErrorDismissed : AuthenticationEvent()
     object ToggleAuthenticationMode : AuthenticationEvent()
-    object UserAuthorizedEventConsumed : AuthenticationEvent()
+    object UserAuthorizedConsumed : AuthenticationEvent()
     data class EmailChanged(val email: String) : AuthenticationEvent()
     data class PasswordChanged(val password: String) : AuthenticationEvent()
 }
 
 internal data class AuthenticationState(
-    val userAuthorizedEvent: StateEvent = consumed,
+    val isUserAuthorized: Boolean = false,
     val authenticationMode: AuthenticationMode = AuthenticationMode.SIGN_IN,
     val email: String = EMPTY,
     val password: String = EMPTY,
@@ -30,8 +28,8 @@ internal data class AuthenticationState(
 
     fun isFormValid(): Boolean {
         return password.isNotEmpty() &&
-            email.isNotEmpty() &&
-            (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
+                email.isNotEmpty() &&
+                (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
     }
 }
 

@@ -14,8 +14,6 @@ import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
-import de.palm.composestateevents.consumed
-import de.palm.composestateevents.triggered
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -31,7 +29,7 @@ internal class AuthenticationViewModel(
                 AuthenticationEvent.Authenticate -> authenticate()
                 AuthenticationEvent.ErrorDismissed -> updateState { copy(error = null) }
                 AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-                AuthenticationEvent.UserAuthorizedEventConsumed -> updateState { copy(userAuthorizedEvent = consumed) }
+                AuthenticationEvent.UserAuthorizedConsumed -> updateState { copy(isUserAuthorized = false) }
                 AuthenticationEvent.AutoCompleteAuthorization -> updateState {
                     copy(email = AUTHORIZED_EMAIL, password = AUTHORIZED_PASSWORD)
                 }
@@ -94,7 +92,7 @@ internal class AuthenticationViewModel(
                     updateState {
                         copy(
                             isLoading = false,
-                            userAuthorizedEvent = triggered,
+                            isUserAuthorized = true,
                         )
                     }
                 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -19,7 +20,6 @@ import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.router.screen.Screen
-import de.palm.composestateevents.EventEffect
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -36,15 +36,15 @@ internal fun AuthenticationScreen(
     BackHandler {
         navController.popBackStack()
     }
-    EventEffect(
-        event = state.userAuthorizedEvent,
-        onConsumed = { viewModel.handleEvent(AuthenticationEvent.UserAuthorizedEventConsumed) }
-    ) {
-        navController.navigate(Screen.Authorized.routeWithParams(state.email)) {
-            // Remove Authentication screen form back stack
-            popUpTo(Screen.Authentication.route) {
-                inclusive = true
+    LaunchedEffect(state.isUserAuthorized) {
+        if (state.isUserAuthorized) {
+            navController.navigate(Screen.Authorized.routeWithParams(state.email)) {
+                // Remove Authentication screen form back stack
+                popUpTo(Screen.Authentication.route) {
+                    inclusive = true
+                }
             }
+            viewModel.handleEvent(AuthenticationEvent.UserAuthorizedConsumed)
         }
     }
 }

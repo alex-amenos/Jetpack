@@ -14,8 +14,6 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
-import de.palm.composestateevents.consumed
-import de.palm.composestateevents.triggered
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -178,7 +176,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                 assertEquals(
                     initialState.copy(
                         isLoading = false,
-                        userAuthorizedEvent = triggered
+                        isUserAuthorized = true
                     ),
                     awaitItem()
                 )
@@ -191,10 +189,10 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     fun `WHEN userAuthorizedEvent consumed THEN update state accordingly`() {
         runTest {
             whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
-            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false, userAuthorizedEvent = triggered)
+            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false, isUserAuthorized = true)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.handleEvent(AuthenticationEvent.UserAuthorizedEventConsumed)
+            viewModel.handleEvent(AuthenticationEvent.UserAuthorizedConsumed)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -203,7 +201,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                 )
                 assertEquals(
                     initialState.copy(
-                        userAuthorizedEvent = consumed
+                        isUserAuthorized = false
                     ),
                     awaitItem()
                 )

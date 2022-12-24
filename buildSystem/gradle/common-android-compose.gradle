@@ -26,7 +26,6 @@ dependencies {
     implementation Dep.ANDROIDX_COMPOSE_UI_UTIL
     implementation Dep.ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW
     implementation Dep.ANDROIDX_COMPOSE_VIEWMODEL
-    implementation Dep.COMPOSE_STATE_EVENTS
     implementation Dep.KOIN_ANDROID_COMPOSE
 
     debugImplementation Dep.ANDROIDX_COMPOSE_UI_TOOLING
