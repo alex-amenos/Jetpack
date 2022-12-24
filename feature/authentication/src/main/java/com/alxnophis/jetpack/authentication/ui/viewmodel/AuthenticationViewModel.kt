@@ -14,8 +14,6 @@ import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
-import de.palm.composestateevents.consumed
-import de.palm.composestateevents.triggered
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -31,11 +29,11 @@ internal class AuthenticationViewModel(
                 AuthenticationEvent.Authenticate -> authenticate()
                 AuthenticationEvent.ErrorDismissed -> updateState { copy(error = null) }
                 AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-                AuthenticationEvent.UserAuthorizedEventConsumed -> updateState { copy(userAuthorizedEvent = consumed) }
+                AuthenticationEvent.UserAuthorizedConsumed -> updateState { copy(isUserAuthorized = false) }
                 AuthenticationEvent.AutoCompleteAuthorization -> updateState {
                     copy(email = AUTHORIZED_EMAIL, password = AUTHORIZED_PASSWORD)
                 }
-                is AuthenticationEvent.EmailChanged -> updateState { copy(email = event.email) }
+                is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
                 is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
             }
         }
@@ -52,6 +50,14 @@ internal class AuthenticationViewModel(
                 email = EMPTY,
                 password = EMPTY
             )
+        }
+    }
+
+    private fun updateEmail(email: String) {
+        viewModelScope.launch {
+            updateState {
+                copy(email = email)
+            }
         }
     }
 
@@ -94,7 +100,7 @@ internal class AuthenticationViewModel(
                     updateState {
                         copy(
                             isLoading = false,
-                            userAuthorizedEvent = triggered,
+                            isUserAuthorized = true,
                         )
                     }
                 }

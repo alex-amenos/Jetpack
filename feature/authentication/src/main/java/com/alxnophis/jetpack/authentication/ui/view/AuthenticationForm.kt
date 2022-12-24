@@ -20,10 +20,10 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Email
@@ -86,12 +86,16 @@ internal fun AuthenticationForm(
                 color = MaterialTheme.colors.secondary,
             )
         }
+
         Spacer(modifier = Modifier.height(32.dp))
+
         AuthenticationTitle(
             authenticationMode = authenticationMode,
             handleEvent = handleEvent
         )
+
         Spacer(modifier = Modifier.height(40.dp))
+
         val passwordFocusRequester = FocusRequester()
         Card(
             modifier = Modifier
@@ -106,7 +110,7 @@ internal fun AuthenticationForm(
                 EmailInput(
                     modifier = Modifier.fillMaxWidth(),
                     email = email,
-                    onEmailChanged = { handleEvent(AuthenticationEvent.EmailChanged(email)) }
+                    onEmailChanged = { email -> handleEvent(AuthenticationEvent.EmailChanged(email)) }
                 ) {
                     passwordFocusRequester.requestFocus()
                 }
@@ -118,7 +122,7 @@ internal fun AuthenticationForm(
                         .fillMaxWidth()
                         .focusRequester(passwordFocusRequester),
                     password = password,
-                    onPasswordChanged = { handleEvent(AuthenticationEvent.PasswordChanged(password)) }
+                    onPasswordChanged = { password -> handleEvent(AuthenticationEvent.PasswordChanged(password)) }
                 ) {
                     handleEvent(AuthenticationEvent.Authenticate)
                 }
@@ -182,12 +186,12 @@ internal fun AuthenticationTitle(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EmailInput(
-    modifier: Modifier = Modifier.fillMaxWidth(),
+    modifier: Modifier = Modifier,
     email: String,
     onEmailChanged: (email: String) -> Unit,
     onNextClicked: () -> Unit
 ) {
-    TextField(
+    OutlinedTextField(
         modifier = modifier
             .autofill(
                 autofillTypes = listOf(AutofillType.EmailAddress),
@@ -228,7 +232,7 @@ fun PasswordInput(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var isPasswordHidden by remember { mutableStateOf(true) }
-    TextField(
+    OutlinedTextField(
         modifier = modifier
             .autofill(
                 autofillTypes = listOf(AutofillType.Password),
