@@ -110,7 +110,7 @@ internal fun AuthenticationForm(
                 EmailInput(
                     modifier = Modifier.fillMaxWidth(),
                     email = email,
-                    onEmailChanged = { handleEvent(AuthenticationEvent.EmailChanged(email)) }
+                    onEmailChanged = { email -> handleEvent(AuthenticationEvent.EmailChanged(email)) }
                 ) {
                     passwordFocusRequester.requestFocus()
                 }
@@ -122,7 +122,7 @@ internal fun AuthenticationForm(
                         .fillMaxWidth()
                         .focusRequester(passwordFocusRequester),
                     password = password,
-                    onPasswordChanged = { handleEvent(AuthenticationEvent.PasswordChanged(password)) }
+                    onPasswordChanged = { password -> handleEvent(AuthenticationEvent.PasswordChanged(password)) }
                 ) {
                     handleEvent(AuthenticationEvent.Authenticate)
                 }

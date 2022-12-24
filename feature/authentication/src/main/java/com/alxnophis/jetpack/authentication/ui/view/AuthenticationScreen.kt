@@ -2,13 +2,11 @@ package com.alxnophis.jetpack.authentication.ui.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -56,34 +54,29 @@ internal fun AuthenticationContent(
     handleEvent: AuthenticationEvent.() -> Unit,
 ) {
     AppTheme {
-        Box(
+        AuthenticationForm(
             modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.surface),
-            contentAlignment = Alignment.Center
-        ) {
-            AuthenticationForm(
-                modifier = Modifier.fillMaxSize(),
-                authenticationMode = authenticationState.authenticationMode,
-                isLoading = authenticationState.isLoading,
-                email = authenticationState.email,
-                password = authenticationState.password,
-                completedPasswordRequirements = authenticationState.passwordRequirements,
-                enableAuthentication = if (authenticationState.isFormValid()) {
-                    !authenticationState.isLoading
-                } else {
-                    false
-                },
-                handleEvent = handleEvent
+                .background(MaterialTheme.colors.surface)
+                .fillMaxSize(),
+            authenticationMode = authenticationState.authenticationMode,
+            isLoading = authenticationState.isLoading,
+            email = authenticationState.email,
+            password = authenticationState.password,
+            completedPasswordRequirements = authenticationState.passwordRequirements,
+            enableAuthentication = if (authenticationState.isFormValid()) {
+                !authenticationState.isLoading
+            } else {
+                false
+            },
+            handleEvent = handleEvent
+        )
+        authenticationState.error?.let { error: Int ->
+            CoreErrorDialog(
+                errorMessage = stringResource(error),
+                dismissError = {
+                    handleEvent(AuthenticationEvent.ErrorDismissed)
+                }
             )
-            authenticationState.error?.let { error: Int ->
-                CoreErrorDialog(
-                    errorMessage = stringResource(error),
-                    dismissError = {
-                        handleEvent(AuthenticationEvent.ErrorDismissed)
-                    }
-                )
-            }
         }
     }
 }
