@@ -20,12 +20,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -136,10 +133,18 @@ internal fun SectionsList(
                         .wrapContentHeight()
                         .padding(16.dp)
                 ) {
+                    Text(
+                        modifier = Modifier.wrapContentSize(),
+                        style = MaterialTheme.typography.h4,
+                        color = MaterialTheme.colors.onSurface,
+                        text = item.emoji,
+                        fontWeight = FontWeight.Medium,
+                    )
                     Column(
                         modifier = Modifier
                             .weight(0.9f)
                             .fillMaxWidth()
+                            .padding(start = 16.dp)
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -159,12 +164,6 @@ internal fun SectionsList(
                             fontWeight = FontWeight.Light,
                         )
                     }
-                    Icon(
-                        modifier = Modifier.weight(0.1f),
-                        tint = MaterialTheme.colors.onSurface,
-                        imageVector = Icons.Default.ArrowForwardIos,
-                        contentDescription = null,
-                    )
                 }
                 Divider(color = Color.LightGray)
             }
@@ -179,11 +178,13 @@ private fun HomeScreenPreview() {
         data = listOf(
             NavigationItem(
                 name = "Screen 1",
+                emoji = "🐻",
                 description = stringResource(id = R.string.core_lorem_ipsum_s),
                 screen = Screen.Authentication
             ),
             NavigationItem(
                 name = "Screen 2",
+                emoji = "🦊",
                 description = stringResource(id = R.string.core_lorem_ipsum_m),
                 screen = Screen.Settings
             ),
