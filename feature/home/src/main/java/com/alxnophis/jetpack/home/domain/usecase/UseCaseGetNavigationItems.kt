@@ -11,6 +11,7 @@ class UseCaseGetNavigationItems {
         { NavigationError.Unknown },
         {
             listOf(
+                myPlayground,
                 authentication,
                 settings,
                 notifications,
@@ -58,6 +59,11 @@ class UseCaseGetNavigationItems {
             name = "Notifications",
             description = "Push notifications",
             screen = Screen.Notifications
+        )
+        private val myPlayground = NavigationItem(
+            name = "MyPlayground",
+            description = "My Jetpack Compose playground",
+            screen = Screen.MyPlayground
         )
     }
 }

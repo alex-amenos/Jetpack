@@ -7,6 +7,7 @@ import com.alxnophis.jetpack.authentication.ui.navigation.authenticationNavGraph
 import com.alxnophis.jetpack.game.ballclicker.ui.navigation.ballClickerNavGraph
 import com.alxnophis.jetpack.home.ui.navigation.homeNavGraph
 import com.alxnophis.jetpack.location.tracker.ui.navigation.locationTrackerNavGraph
+import com.alxnophis.jetpack.myplayground.navigation.myPlaygroundNavGraph
 import com.alxnophis.jetpack.notifications.navigation.notificationsNavGraph
 import com.alxnophis.jetpack.posts.ui.navigation.postsNavGraph
 import com.alxnophis.jetpack.router.screen.HOME_ROUTE
@@ -24,10 +25,11 @@ fun SetupNavGraph(navController: NavHostController) {
         homeNavGraph(navController)
         authenticationNavGraph(navController)
         ballClickerNavGraph(navController)
+        myPlaygroundNavGraph(navController)
+        notificationsNavGraph(navController)
         locationTrackerNavGraph(navController)
         postsNavGraph(navController)
         settingsNavGraph(navController)
         spacexNavGraph(navController)
-        notificationsNavGraph(navController)
     }
 }

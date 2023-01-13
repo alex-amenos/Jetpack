@@ -5,6 +5,7 @@ const val ROOT_ROUTE = "root"
 const val HOME_ROUTE = "home"
 const val AUTHENTICATION_ROUTE = "authentication"
 const val GAME_BALL_CLICKER_ROUTE = "game-ball-clicker"
+const val MY_PLAYGROUND_ROUTE = "my_playground"
 const val NOTIFICATIONS_ROUTE = "notifications"
 const val LOCATION_TRACKER_ROUTE = "location-tracker"
 const val POSTS_ROUTE = "posts"
@@ -25,6 +26,7 @@ sealed class Screen(val route: String) {
 
     object Home : Screen(route = "home_screen")
     object GameBallClicker : Screen(route = "game_ball_clicker_screen")
+    object MyPlayground : Screen(route = "my_playground_screen")
     object Notifications : Screen(route = "notifications_screen")
     object LocationTracker : Screen(route = "location_tracker_screen")
     object Posts : Screen(route = "posts_screen")
