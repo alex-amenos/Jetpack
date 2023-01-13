@@ -1,0 +1,6 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
+
+android {
+    resourcePrefix 'myplayground'
+    namespace 'com.alxnophis.jetpack.myplayground'
+}
