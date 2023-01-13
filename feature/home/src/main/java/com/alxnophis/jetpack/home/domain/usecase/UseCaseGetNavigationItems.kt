@@ -62,7 +62,7 @@ class UseCaseGetNavigationItems {
         )
         private val myPlayground = NavigationItem(
             name = "MyPlayground",
-            description = "My Jetpack Compose playground",
+            description = "My Jetpack playground module",
             screen = Screen.MyPlayground
         )
     }
