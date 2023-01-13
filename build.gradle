@@ -7,7 +7,7 @@ buildscript {
 
     dependencies {
         classpath 'com.adarshr:gradle-test-logger-plugin:3.2.0'
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.android.tools.build:gradle:7.4.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.42.0'
         classpath "com.apollographql.apollo3:apollo-gradle-plugin:${Version.APOLLO}"
         classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0'
@@ -19,16 +19,11 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.kotlinx.kover' version '0.6.1'
+    id 'com.android.application' version '7.4.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.7.21' apply false
 }
 
 allprojects {
-    repositories {
-        google()
-        maven { url 'https://maven.google.com' }
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-    }
-
     tasks.withType(Test) {
         testLogging {
             exceptionFormat 'full'
