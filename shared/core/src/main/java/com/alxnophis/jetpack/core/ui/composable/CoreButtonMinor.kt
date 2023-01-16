@@ -32,33 +32,31 @@ fun CoreButtonMinor(
     isEnabled: Boolean = true,
     onClick: (() -> Unit),
 ) {
-    AppTheme {
-        OutlinedButton(
-            modifier = modifier,
-            enabled = isEnabled,
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(
-                width = 1.dp,
-                color = if (isEnabled) {
-                    MaterialTheme.colors.primary
-                } else {
-                    MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
-                }
-            ),
-            onClick = { onClick() },
-        ) {
-            Text(
-                style = MaterialTheme.typography.button,
-                color = if (isEnabled) {
-                    MaterialTheme.colors.primary
-                } else {
-                    MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
-                },
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(extraSmallPadding),
-                text = text,
-            )
-        }
+    OutlinedButton(
+        modifier = modifier,
+        enabled = isEnabled,
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = if (isEnabled) {
+                MaterialTheme.colors.primary
+            } else {
+                MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
+            }
+        ),
+        onClick = { onClick() },
+    ) {
+        Text(
+            style = MaterialTheme.typography.button,
+            color = if (isEnabled) {
+                MaterialTheme.colors.primary
+            } else {
+                MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
+            },
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(extraSmallPadding),
+            text = text,
+        )
     }
 }
 
@@ -69,24 +67,26 @@ private fun CoreButtonMinorPreview() {
     val clicked: (() -> Unit) = {
         Toast.makeText(context, "Clicked", Toast.LENGTH_LONG).show()
     }
-    Column(
-        modifier = Modifier
-            .wrapContentHeight()
-            .padding(mediumPadding),
-    ) {
-        CoreButtonMinor(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Button",
-            onClick = clicked,
-        )
+    AppTheme {
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .padding(mediumPadding),
+        ) {
+            CoreButtonMinor(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Button",
+                onClick = clicked,
+            )
 
-        Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
-        CoreButtonMinor(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Button disabled",
-            isEnabled = false,
-            onClick = clicked,
-        )
+            CoreButtonMinor(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Button disabled",
+                isEnabled = false,
+                onClick = clicked,
+            )
+        }
     }
 }

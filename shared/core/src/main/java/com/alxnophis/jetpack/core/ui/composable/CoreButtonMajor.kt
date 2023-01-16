@@ -31,34 +31,32 @@ fun CoreButtonMajor(
     isEnabled: Boolean = true,
     onClick: (() -> Unit),
 ) {
-    AppTheme {
-        TextButton(
-            onClick = { onClick() },
-            modifier = modifier,
-            enabled = isEnabled,
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(
-                width = 1.dp,
-                color = if (isEnabled) {
-                    MaterialTheme.colors.primary
-                } else {
-                    MaterialTheme.colors.primary.copy(alpha = 0f)
-                }
-            ),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MaterialTheme.colors.primary,
-                disabledBackgroundColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled),
-                disabledContentColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled),
-            ),
-        ) {
-            Text(
-                style = MaterialTheme.typography.button,
-                color = MaterialTheme.colors.onPrimary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(extraSmallPadding),
-                text = text,
-            )
-        }
+    TextButton(
+        onClick = { onClick() },
+        modifier = modifier,
+        enabled = isEnabled,
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = if (isEnabled) {
+                MaterialTheme.colors.primary
+            } else {
+                MaterialTheme.colors.primary.copy(alpha = 0f)
+            }
+        ),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = MaterialTheme.colors.primary,
+            disabledBackgroundColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled),
+            disabledContentColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled),
+        ),
+    ) {
+        Text(
+            style = MaterialTheme.typography.button,
+            color = MaterialTheme.colors.onPrimary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(extraSmallPadding),
+            text = text,
+        )
     }
 }
 
@@ -69,24 +67,26 @@ private fun CoreButtonMajorPreview() {
     val clicked: (() -> Unit) = {
         Toast.makeText(context, "Clicked", Toast.LENGTH_LONG).show()
     }
-    Column(
-        modifier = Modifier
-            .wrapContentHeight()
-            .padding(mediumPadding),
-    ) {
-        CoreButtonMajor(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Button",
-            onClick = clicked,
-        )
+    AppTheme {
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .padding(mediumPadding),
+        ) {
+            CoreButtonMajor(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Button",
+                onClick = clicked,
+            )
 
-        Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
-        CoreButtonMajor(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Button disabled",
-            isEnabled = false,
-            onClick = clicked,
-        )
+            CoreButtonMajor(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Button disabled",
+                isEnabled = false,
+                onClick = clicked,
+            )
+        }
     }
 }
