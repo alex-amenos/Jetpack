@@ -37,6 +37,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
@@ -95,7 +98,7 @@ internal fun HomeContent(
 internal fun HomeTopBar() {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primaryVariant,
-        contentPadding = PaddingValues(start = 12.dp)
+        contentPadding = PaddingValues(start = smallPadding)
     ) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
@@ -131,7 +134,7 @@ internal fun SectionsList(
                         .clickable { navigateTo(item.screen.route) }
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .padding(16.dp)
+                        .padding(mediumPadding)
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
@@ -144,7 +147,7 @@ internal fun SectionsList(
                         modifier = Modifier
                             .weight(0.9f)
                             .fillMaxWidth()
-                            .padding(start = 16.dp)
+                            .padding(start = mediumPadding)
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -157,7 +160,7 @@ internal fun SectionsList(
                         Text(
                             modifier = Modifier
                                 .wrapContentSize()
-                                .padding(top = 4.dp),
+                                .padding(top = extraSmallPadding),
                             style = MaterialTheme.typography.subtitle1,
                             color = MaterialTheme.colors.onSurface,
                             text = item.description,

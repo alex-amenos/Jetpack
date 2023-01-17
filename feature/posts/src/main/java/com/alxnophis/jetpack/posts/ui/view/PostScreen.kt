@@ -44,6 +44,8 @@ import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
@@ -144,7 +146,7 @@ internal fun PostList(
             modifier = Modifier
                 .fillMaxWidth()
                 .drawVerticalScrollbar(listState),
-            contentPadding = PaddingValues(top = toolbarHeight, start = 16.dp, end = 16.dp)
+            contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding)
         ) {
             items(
                 items = state.posts,
@@ -165,14 +167,14 @@ private fun CardPostItem(
     Card(
         elevation = 10.dp,
         modifier = Modifier
-            .padding(vertical = 16.dp)
+            .padding(vertical = mediumPadding)
             .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(16.dp),
+                .padding(mediumPadding),
         ) {
             Text(
                 modifier = Modifier
@@ -190,7 +192,7 @@ private fun CardPostItem(
             Text(
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(top = 8.dp, bottom = 16.dp)
+                    .padding(top = smallPadding, bottom = mediumPadding)
                     .placeholder(
                         visible = state.isLoading,
                         color = Color.Gray,

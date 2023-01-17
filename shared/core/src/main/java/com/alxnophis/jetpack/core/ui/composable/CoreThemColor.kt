@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 
 @Preview(showBackground = true)
 @Composable
@@ -69,7 +70,7 @@ private fun ColorItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 8.dp),
+                .padding(start = smallPadding),
             text = colorName
         )
     }

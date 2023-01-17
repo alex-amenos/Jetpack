@@ -13,8 +13,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.settings.R
 
 @Composable
@@ -33,7 +33,7 @@ internal fun SettingsManageSubscriptionItem(
                 ) {
                     onSubscriptionClicked()
                 }
-                .padding(16.dp),
+                .padding(mediumPadding),
         ) {
             Text(
                 modifier = Modifier.weight(1f),
