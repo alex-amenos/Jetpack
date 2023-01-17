@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.location.tracker.R
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
@@ -121,7 +123,7 @@ private fun LocationPermission(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(mediumPadding),
                 textAlign = TextAlign.Justify,
                 text = stringResource(textIdToShow)
             )
@@ -138,7 +140,7 @@ private fun UserLocation(
     state: LocationTrackerState
 ) {
     Text(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+        modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
         fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colors.primary,
         fontSize = 16.sp,
@@ -147,11 +149,11 @@ private fun UserLocation(
     Text(
         modifier = Modifier
             .wrapContentSize()
-            .padding(16.dp),
+            .padding(mediumPadding),
         text = state.lastKnownLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
     )
     Text(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+        modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
         fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colors.primary,
         fontSize = 16.sp,
@@ -160,7 +162,7 @@ private fun UserLocation(
     Text(
         modifier = Modifier
             .wrapContentSize()
-            .padding(16.dp),
+            .padding(mediumPadding),
         text = state.userLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
     )
 }

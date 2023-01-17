@@ -16,8 +16,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_TOGGLE_ITEM
 
@@ -45,7 +45,7 @@ internal fun SettingsNotificationItem(
                     role = Role.Switch
                 )
                 .semantics { stateDescription = notificationsEnabledState }
-                .padding(16.dp)
+                .padding(mediumPadding)
                 .testTag(TAG_TOGGLE_ITEM),
         ) {
             Text(

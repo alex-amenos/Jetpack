@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 
 @Composable
 fun CoreTopBar(
@@ -31,7 +32,7 @@ fun CoreTopBar(
     TopAppBar(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.primaryVariant,
-        contentPadding = PaddingValues(start = 12.dp)
+        contentPadding = PaddingValues(start = smallPadding)
     ) {
         IconButton(
             modifier = Modifier.testTag(CoreTags.TAG_CORE_BACK),

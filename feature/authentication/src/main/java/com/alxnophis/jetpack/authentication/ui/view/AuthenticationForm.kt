@@ -61,6 +61,9 @@ import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.ui.composable.autofill
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.extraLargePadding
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 
 @ExperimentalComposeUiApi
 @Composable
@@ -100,11 +103,11 @@ internal fun AuthenticationForm(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = extraLargePadding),
             elevation = 4.dp
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(mediumPadding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 EmailInput(
@@ -307,7 +310,7 @@ fun Requirement(
     }
     Row(
         modifier = modifier
-            .padding(6.dp)
+            .padding(extraSmallPadding)
             .semantics(mergeDescendants = true) {
                 text = AnnotatedString(requirementStatus)
             },

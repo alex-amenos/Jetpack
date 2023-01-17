@@ -1,4 +1,5 @@
 package com.alxnophis.jetpack.core.ui.composable
+
 import android.view.ViewConfiguration
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -38,6 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastSumBy
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -227,7 +230,7 @@ fun ScrollbarPreview() {
                 text = "Item ${it + 1}",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(mediumPadding)
             )
         }
     }
@@ -246,7 +249,7 @@ fun LazyListScrollbarPreview() {
                 text = "Item ${it + 1}",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(mediumPadding)
             )
         }
     }
@@ -265,7 +268,7 @@ fun HorizontalScrollbarPreview() {
             Text(
                 text = (it + 1).toString(),
                 modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 16.dp)
+                    .padding(horizontal = smallPadding, vertical = mediumPadding)
             )
         }
     }
@@ -283,7 +286,7 @@ fun LazyListHorizontalScrollbarPreview() {
             Text(
                 text = (it + 1).toString(),
                 modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 16.dp)
+                    .padding(horizontal = smallPadding, vertical = mediumPadding)
             )
         }
     }
