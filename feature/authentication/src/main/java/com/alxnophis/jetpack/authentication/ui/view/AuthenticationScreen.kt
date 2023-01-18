@@ -11,35 +11,29 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.router.screen.Screen
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun AuthenticationScreen(
-    navController: NavController,
+    navigateNextStep: (String) -> Unit,
+    popBackStack: () -> Unit,
     viewModel: AuthenticationViewModel = getViewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
     LaunchedEffect(state.isUserAuthorized) {
         if (state.isUserAuthorized) {
-            navController.navigate(Screen.Authorized.routeWithParams(state.email)) {
-                // Remove Authentication screen form back stack
-                popUpTo(Screen.Authentication.route) {
-                    inclusive = true
-                }
-            }
+            navigateNextStep(state.email)
             viewModel.handleEvent(AuthenticationEvent.UserAuthorizedConsumed)
         }
     }
     BackHandler {
-        navController.popBackStack()
+        popBackStack()
     }
     AuthenticationContent(
         state,

@@ -22,7 +22,7 @@ fun NavGraphBuilder.locationTrackerNavGraph(
         ) {
             injectLocationTracker()
             LocationTrackerScreen(
-                navController = navController,
+                popBackStack = { navController.popBackStack() },
                 viewModel = getViewModel()
             )
         }

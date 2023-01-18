@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
@@ -60,17 +59,16 @@ import kotlin.math.roundToInt
 
 @Composable
 internal fun PostsScreen(
-    navController: NavController,
+    popBackStack: () -> Unit,
     viewModel: PostsViewModel
 ) {
-    val navigateBack: () -> Unit = { navController.popBackStack() }
     BackHandler {
-        navigateBack()
+        popBackStack()
     }
     PostsContent(
         state = viewModel.uiState.collectAsState().value,
         handleEvent = viewModel::handleEvent,
-        navigateBack = navigateBack
+        navigateBack = popBackStack
     )
 }
 

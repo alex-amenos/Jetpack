@@ -38,7 +38,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
@@ -60,15 +59,14 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 internal fun SpacexScreen(
-    navController: NavController,
+    popBackStack: () -> Unit,
     viewModel: LaunchesViewModel
 ) {
-    val navigateBack: () -> Unit = { navController.popBackStack() }
-    BackHandler { navigateBack() }
+    BackHandler { popBackStack() }
     SpacexContent(
         state = viewModel.uiState.collectAsState().value,
         handleEvent = viewModel::handleEvent,
-        navigateBack = navigateBack
+        navigateBack = popBackStack
     )
 }
 
@@ -274,7 +272,7 @@ private fun SpacexContentPreview() {
                 id = "1",
                 missionName = "Mission XYZ",
                 details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                    "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 rocket = "Rocket Name (Company)",
                 launchSite = "Launch Site",
                 missionPatchUrl = null,

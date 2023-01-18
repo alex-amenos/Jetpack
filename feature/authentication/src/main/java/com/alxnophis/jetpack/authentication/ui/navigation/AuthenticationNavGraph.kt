@@ -25,7 +25,15 @@ fun NavGraphBuilder.authenticationNavGraph(
         ) {
             injectAuthentication()
             AuthenticationScreen(
-                navController = navController,
+                navigateNextStep = { userEmail: String ->
+                    navController.navigate(Screen.Authorized.routeWithParams(userEmail)) {
+                        // Remove Authentication screen form back stack
+                        popUpTo(Screen.Authentication.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                popBackStack = { navController.popBackStack() },
                 viewModel = getViewModel()
             )
         }
@@ -33,7 +41,7 @@ fun NavGraphBuilder.authenticationNavGraph(
             route = Screen.Authorized.route
         ) {
             AuthorizedScreen(
-                navController = navController,
+                popBackStack = { navController.popBackStack() },
                 userEmail = it.arguments?.getString(AUTHENTICATION_ARGUMENT_EMAIL) ?: EMPTY
             )
         }

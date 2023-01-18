@@ -16,18 +16,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.myplayground.R
 
 @Composable
-fun MyPlaygroundScreen(navController: NavController) {
-    val navigateBack: () -> Unit = { navController.popBackStack() }
+fun MyPlaygroundScreen(
+    popBackStack: () -> Unit
+) {
     BackHandler {
-        navigateBack()
+        popBackStack()
     }
-    MyPlaygroundContent(navigateBack)
+    MyPlaygroundContent(navigateBack = popBackStack)
 }
 
 @Composable
