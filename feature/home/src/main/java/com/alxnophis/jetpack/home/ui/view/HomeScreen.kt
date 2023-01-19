@@ -105,7 +105,7 @@ internal fun HomeTopBar() {
             text = stringResource(id = R.string.home_title),
             color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Black,
+            fontWeight = FontWeight.SemiBold,
         )
         Spacer(modifier = Modifier.width(8.dp))
     }
