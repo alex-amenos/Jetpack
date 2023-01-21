@@ -47,7 +47,7 @@ fun SetupNavGraph(
 }
 
 @Composable
-fun setStatusBarColor(){
+internal fun setStatusBarColor(){
     val activity = LocalView.current.context as Activity
     val backgroundArgb = MaterialTheme.colors.primaryVariant.toArgb()
     activity.window.statusBarColor = backgroundArgb
