@@ -59,8 +59,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 internal fun SpacexScreen(
+    viewModel: LaunchesViewModel,
     popBackStack: () -> Unit,
-    viewModel: LaunchesViewModel
 ) {
     BackHandler { popBackStack() }
     SpacexContent(

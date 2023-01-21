@@ -16,19 +16,18 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun AuthenticationScreen(
-    navigateNextStep: (String) -> Unit,
+    viewModel: AuthenticationViewModel,
     popBackStack: () -> Unit,
-    viewModel: AuthenticationViewModel = getViewModel()
+    navigateTo: (String) -> Unit,
 ) {
     val state = viewModel.uiState.collectAsState().value
     LaunchedEffect(state.isUserAuthorized) {
         if (state.isUserAuthorized) {
-            navigateNextStep(state.email)
+            navigateTo(state.email)
             viewModel.handleEvent(AuthenticationEvent.UserAuthorizedConsumed)
         }
     }

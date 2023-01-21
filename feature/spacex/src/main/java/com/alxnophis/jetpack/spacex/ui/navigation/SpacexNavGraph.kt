@@ -22,8 +22,8 @@ fun NavGraphBuilder.spacexNavGraph(
         ) {
             injectSpacex()
             SpacexScreen(
+                viewModel = getViewModel(),
                 popBackStack = { navController.popBackStack() },
-                viewModel = getViewModel()
             )
         }
     }

@@ -8,6 +8,7 @@ import com.alxnophis.jetpack.game.ballclicker.di.injectBallClicker
 import com.alxnophis.jetpack.game.ballclicker.ui.view.BallClickerScreen
 import com.alxnophis.jetpack.router.screen.GAME_BALL_CLICKER_ROUTE
 import com.alxnophis.jetpack.router.screen.Screen
+import org.koin.androidx.compose.getViewModel
 
 fun NavGraphBuilder.ballClickerNavGraph(
     navController: NavController
@@ -21,6 +22,7 @@ fun NavGraphBuilder.ballClickerNavGraph(
         ) {
             injectBallClicker()
             BallClickerScreen(
+                viewModel = getViewModel(),
                 popBackStack = { navController.popBackStack() },
             )
         }

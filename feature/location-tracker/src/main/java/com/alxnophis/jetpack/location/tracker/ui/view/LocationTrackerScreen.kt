@@ -33,12 +33,11 @@ import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun LocationTrackerScreen(
+    viewModel: LocationTrackerViewModel,
     popBackStack: () -> Unit,
-    viewModel: LocationTrackerViewModel = getViewModel(),
 ) {
     val state = viewModel.uiState.collectAsState().value
     BackHandler {

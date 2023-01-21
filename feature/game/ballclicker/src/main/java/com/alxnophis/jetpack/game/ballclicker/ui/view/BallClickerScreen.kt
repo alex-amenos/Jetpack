@@ -40,12 +40,11 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlin.random.Random
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun BallClickerScreen(
+    viewModel: BallClickerViewModel,
     popBackStack: () -> Unit,
-    viewModel: BallClickerViewModel = getViewModel()
 ) {
     BackHandler {
         viewModel

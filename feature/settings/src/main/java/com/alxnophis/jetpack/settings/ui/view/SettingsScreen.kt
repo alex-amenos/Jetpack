@@ -24,12 +24,11 @@ import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun SettingsScreen(
+    viewModel: SettingsViewModel,
     popBackStack: () -> Unit,
-    viewModel: SettingsViewModel = getViewModel(),
     appVersion: String = LocalContext.current.getVersion()
 ) {
     val state = viewModel.uiState.collectAsState().value
