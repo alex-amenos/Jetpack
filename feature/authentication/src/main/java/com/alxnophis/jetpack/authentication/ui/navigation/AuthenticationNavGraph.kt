@@ -29,7 +29,7 @@ fun NavGraphBuilder.authenticationNavGraph(
             AuthenticationScreen(
                 navigateNextStep = { userEmail: String ->
                     navController.navigate(
-                        route = Screen.Authorized.replaceArgument(ARGUMENT_EMAIL, userEmail)
+                        route = Screen.Authorized.route.replaceArgument(ARGUMENT_EMAIL, userEmail)
                     ) {
                         // Remove Authentication screen form back stack
                         popUpTo(Screen.Authentication.route) {

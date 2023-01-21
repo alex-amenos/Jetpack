@@ -33,12 +33,6 @@ sealed class Screen(val route: String) {
 }
 
 @Suppress("unused")
-fun Screen.replaceArgument(oldValue: String, newValue: String): String = this.route.replace(
-    oldValue = ARGUMENT_MARKER_START + oldValue + ARGUMENT_MARKER_END,
-    newValue = newValue
-)
-
-@Suppress("unused")
 fun String.replaceArgument(oldValue: String, newValue: String): String = this.replace(
     oldValue = ARGUMENT_MARKER_START + oldValue + ARGUMENT_MARKER_END,
     newValue = newValue
