@@ -71,7 +71,7 @@ internal fun MyPlaygroundContent() {
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colors.secondary,
             textAlign = TextAlign.Center,
-            text = "Let's PLAY!",
+            text = stringResource(R.string.myplayground_quote),
         )
     }
 }
