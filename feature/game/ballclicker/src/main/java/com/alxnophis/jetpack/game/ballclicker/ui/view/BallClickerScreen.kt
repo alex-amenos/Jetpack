@@ -29,9 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.game.ballclicker.R
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
@@ -46,13 +44,13 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun BallClickerScreen(
-    navController: NavController,
+    popBackStack: () -> Unit,
     viewModel: BallClickerViewModel = getViewModel()
 ) {
     BackHandler {
         viewModel
             .handleEvent(BallClickerEvent.Stop)
-            .also { navController.popBackStack() }
+            .also { popBackStack() }
     }
     BallClickerContent(
         viewModel.uiState.collectAsState().value,
@@ -136,7 +134,6 @@ private fun BallClickerContent(
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(extraSmallPadding)
                 .pointerInput(enabled) {
                     if (!enabled) {
                         return@pointerInput

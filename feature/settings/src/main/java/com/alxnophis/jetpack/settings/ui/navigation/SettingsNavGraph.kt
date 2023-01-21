@@ -22,7 +22,7 @@ fun NavGraphBuilder.settingsNavGraph(
         ) {
             injectSettings()
             SettingsScreen(
-                navController = navController,
+                popBackStack = { navController.popBackStack() },
                 viewModel = getViewModel()
             )
         }

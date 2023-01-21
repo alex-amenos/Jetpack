@@ -49,7 +49,7 @@ fun CoreTopBar(
             text = title,
             color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
         )
     }
 }

@@ -20,7 +20,9 @@ fun NavGraphBuilder.ballClickerNavGraph(
             route = Screen.GameBallClicker.route
         ) {
             injectBallClicker()
-            BallClickerScreen(navController = navController)
+            BallClickerScreen(
+                popBackStack = { navController.popBackStack() },
+            )
         }
     }
 }

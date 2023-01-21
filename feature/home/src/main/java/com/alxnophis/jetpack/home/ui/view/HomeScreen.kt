@@ -1,11 +1,11 @@
 package com.alxnophis.jetpack.home.ui.view
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -21,8 +21,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -67,6 +69,7 @@ internal fun HomeScreen(
     )
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 internal fun HomeContent(
     state: HomeState,
@@ -74,14 +77,12 @@ internal fun HomeContent(
     navigateTo: (route: String) -> Unit
 ) {
     AppTheme {
-        Box(
+        Scaffold(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            scaffoldState = rememberScaffoldState(),
+            topBar = { HomeTopBar() },
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                HomeTopBar()
+            Column(modifier = Modifier.fillMaxSize()) {
                 SectionsList(state, navigateTo)
             }
             state.error?.let { error: Int ->
@@ -105,7 +106,7 @@ internal fun HomeTopBar() {
             text = stringResource(id = R.string.home_title),
             color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Black,
+            fontWeight = FontWeight.SemiBold,
         )
         Spacer(modifier = Modifier.width(8.dp))
     }

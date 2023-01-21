@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -38,20 +37,19 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun LocationTrackerScreen(
-    navController: NavController,
+    popBackStack: () -> Unit,
     viewModel: LocationTrackerViewModel = getViewModel(),
 ) {
     val state = viewModel.uiState.collectAsState().value
-    val navigateBack: () -> Unit = { navController.popBackStack() }
     BackHandler {
         viewModel
             .handleEvent(LocationTrackerEvent.EndTracking)
-            .also { navigateBack() }
+            .also { popBackStack() }
     }
     LocationTrackerContent(
         state = state,
         handleEvent = viewModel::handleEvent,
-        navigateBack = navigateBack
+        navigateBack = popBackStack
     )
 }
 
