@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.root.navigation
+package com.alxnophis.jetpack.root.ui.navigation
 
 import android.app.Activity
 import androidx.compose.material.MaterialTheme
