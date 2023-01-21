@@ -8,7 +8,6 @@ import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.navigation.compose.rememberNavController
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
@@ -108,8 +107,8 @@ class SettingsTest : BaseComposeTest() {
     private fun setSettingsContent() {
         composeTestRule.setContent {
             SettingsScreen(
-                navController = rememberNavController(),
                 viewModel = SettingsViewModel(initialState = SettingsState()),
+                popBackStack = {},
                 appVersion = APP_VERSION
             )
         }

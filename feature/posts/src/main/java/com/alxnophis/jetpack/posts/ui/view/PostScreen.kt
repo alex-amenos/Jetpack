@@ -59,8 +59,8 @@ import kotlin.math.roundToInt
 
 @Composable
 internal fun PostsScreen(
+    viewModel: PostsViewModel,
     popBackStack: () -> Unit,
-    viewModel: PostsViewModel
 ) {
     BackHandler {
         popBackStack()

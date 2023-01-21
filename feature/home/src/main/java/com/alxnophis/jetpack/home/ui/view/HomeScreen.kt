@@ -47,13 +47,12 @@ import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
 import com.alxnophis.jetpack.router.screen.Screen
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun HomeScreen(
+    viewModel: HomeViewModel,
     backOrFinish: (Activity?) -> Unit,
-    navigateNextStep: (String) -> Unit,
-    viewModel: HomeViewModel = getViewModel()
+    navigateTo: (String) -> Unit,
 ) {
     val state: HomeState = viewModel.uiState.collectAsState().value
     val activity: Activity? = (LocalContext.current as? Activity)
@@ -63,7 +62,7 @@ internal fun HomeScreen(
     HomeContent(
         state = state,
         handleEvent = viewModel::handleEvent,
-        navigateTo = { route -> navigateNextStep(route) },
+        navigateTo = { route -> navigateTo(route) },
     )
 }
 

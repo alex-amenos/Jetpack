@@ -17,8 +17,8 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @Composable
 internal fun AuthorizedScreen(
-    popBackStack: () -> Unit,
     userEmail: String,
+    popBackStack: () -> Unit,
 ) {
     BackHandler {
         popBackStack()

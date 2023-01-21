@@ -23,13 +23,13 @@ fun NavGraphBuilder.homeNavGraph(
         ) {
             injectHome()
             HomeScreen(
+                viewModel = getViewModel(),
                 backOrFinish = { activity: Activity? ->
                     if (!navController.popBackStack()) {
                         activity?.finish()
                     }
                 },
-                navigateNextStep = { route -> navController.navigate(route) },
-                viewModel = getViewModel()
+                navigateTo = { route -> navController.navigate(route) },
             )
         }
     }

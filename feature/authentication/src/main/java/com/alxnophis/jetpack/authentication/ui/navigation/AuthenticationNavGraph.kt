@@ -27,7 +27,9 @@ fun NavGraphBuilder.authenticationNavGraph(
         ) {
             injectAuthentication()
             AuthenticationScreen(
-                navigateNextStep = { userEmail: String ->
+                viewModel = getViewModel(),
+                popBackStack = { navController.popBackStack() },
+                navigateTo = { userEmail: String ->
                     navController.navigate(
                         route = Screen.Authorized.route.replaceArgument(ARGUMENT_EMAIL, userEmail)
                     ) {
@@ -37,8 +39,6 @@ fun NavGraphBuilder.authenticationNavGraph(
                         }
                     }
                 },
-                popBackStack = { navController.popBackStack() },
-                viewModel = getViewModel()
             )
         }
         composable(
@@ -50,8 +50,8 @@ fun NavGraphBuilder.authenticationNavGraph(
             val email = it.arguments?.getString(ARGUMENT_EMAIL)
             requireNotNull(email) { "Email can not be null, is required to login" }
             AuthorizedScreen(
+                userEmail = email,
                 popBackStack = { navController.popBackStack() },
-                userEmail = email
             )
         }
     }
