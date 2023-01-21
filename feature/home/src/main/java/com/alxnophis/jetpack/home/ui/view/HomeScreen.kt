@@ -36,7 +36,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
@@ -52,20 +51,19 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun HomeScreen(
-    navController: NavController,
+    backOrFinish: (Activity?) -> Unit,
+    navigateNextStep: (String) -> Unit,
     viewModel: HomeViewModel = getViewModel()
 ) {
     val state: HomeState = viewModel.uiState.collectAsState().value
     val activity: Activity? = (LocalContext.current as? Activity)
     BackHandler {
-        if (!navController.popBackStack()) {
-            activity?.finish()
-        }
+        backOrFinish(activity)
     }
     HomeContent(
         state = state,
         handleEvent = viewModel::handleEvent,
-        navigateTo = { route -> navController.navigate(route) },
+        navigateTo = { route -> navigateNextStep(route) },
     )
 }
 
