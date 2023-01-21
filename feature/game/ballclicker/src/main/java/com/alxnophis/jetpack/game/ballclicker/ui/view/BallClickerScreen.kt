@@ -30,7 +30,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.game.ballclicker.R
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
@@ -135,7 +134,6 @@ private fun BallClickerContent(
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(extraSmallPadding)
                 .pointerInput(enabled) {
                     if (!enabled) {
                         return@pointerInput
