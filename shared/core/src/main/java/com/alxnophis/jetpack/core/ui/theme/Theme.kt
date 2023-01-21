@@ -11,6 +11,12 @@ internal val lightColorPalette = lightColors(
     secondary = coreColorOrange,
     secondaryVariant = coreColorOrangeDark,
     onSecondary = coreColorVulcan,
+    error = coreColorRed,
+    onError = coreColorWhite,
+    surface = coreColorWhite,
+    onSurface = coreColorCarbon,
+    background = coreColorWhite,
+    onBackground = coreColorCarbon,
 )
 
 @Composable
