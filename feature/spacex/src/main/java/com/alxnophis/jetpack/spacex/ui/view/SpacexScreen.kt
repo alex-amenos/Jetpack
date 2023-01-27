@@ -94,7 +94,7 @@ internal fun SpacexContent(
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
-                    errorMessage = stringResource(error.messageId),
+                    errorMessage = error.composableMessage(),
                     dismissError = { handleEvent.invoke(LaunchesEvent.DismissError(error.id)) }
                 )
             }
@@ -271,15 +271,14 @@ private fun SpacexContentPreview() {
             PastLaunchModel(
                 id = "1",
                 missionName = "Mission XYZ",
-                details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                    "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.".repeat(5),
                 rocket = "Rocket Name (Company)",
                 launchSite = "Launch Site",
                 missionPatchUrl = null,
                 launchDateUtc = "10 May 21 - 11:00"
             )
         ),
-        errorMessages = listOf()
+        errorMessages = emptyList()
     )
     SpacexContent(
         state = state,

@@ -117,7 +117,7 @@ internal fun PostsContent(
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
-                    errorMessage = stringResource(error.messageId),
+                    errorMessage = error.composableMessage(),
                     dismissError = { handleEvent.invoke(PostsEvent.DismissError(error.id)) }
                 )
             }
@@ -224,7 +224,7 @@ private fun PostScreenPreview() {
     val state = PostsState(
         isLoading = false,
         posts = listOf(post1, post2),
-        errorMessages = listOf()
+        errorMessages = emptyList()
     )
     PostsContent(
         state = state,
