@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.spacex.ui.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
@@ -133,7 +135,6 @@ private fun PastLaunchesList(
 
 @Composable
 private fun PastLaunchItem(item: PastLaunchModel) {
-    val localContext = LocalContext.current
     Card(
         elevation = 10.dp,
         modifier = Modifier
@@ -172,17 +173,10 @@ private fun PastLaunchItem(item: PastLaunchModel) {
             Row(
                 modifier = Modifier.padding(top = mediumPadding)
             ) {
-                AsyncImage(
+                MissionImage(
                     modifier = Modifier.size(60.dp),
-                    model = ImageRequest
-                        .Builder(localContext)
-                        .data(item.missionPatchUrl)
-                        .fallback(R.drawable.ic_rocket_launch)
-                        .diskCacheKey(item.missionPatchUrl)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = item.missionName,
-                    contentScale = ContentScale.FillBounds
+                    missionPatchUrl = item.missionPatchUrl,
+                    imageContentDescription = item.missionName,
                 )
                 Column(
                     modifier = Modifier
@@ -218,6 +212,35 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun MissionImage(
+    modifier: Modifier,
+    missionPatchUrl: String?,
+    imageContentDescription: String?
+) {
+    if (missionPatchUrl == null) {
+        Image(
+            modifier = modifier,
+            painter = painterResource(R.drawable.ic_rocket_launch),
+            contentDescription = imageContentDescription,
+        )
+    } else {
+        val localContext = LocalContext.current
+        AsyncImage(
+            modifier = modifier,
+            model = ImageRequest
+                .Builder(localContext)
+                .data(missionPatchUrl)
+                .fallback(R.drawable.ic_rocket_launch)
+                .diskCacheKey(missionPatchUrl)
+                .crossfade(true)
+                .build(),
+            contentDescription = imageContentDescription,
+            contentScale = ContentScale.FillBounds,
+        )
     }
 }
 
