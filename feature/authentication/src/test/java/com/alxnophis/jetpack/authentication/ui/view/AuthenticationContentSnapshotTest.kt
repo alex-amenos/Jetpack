@@ -1,14 +1,13 @@
 package com.alxnophis.jetpack.authentication.ui.view
 
 import androidx.compose.ui.ExperimentalComposeUiApi
+import app.cash.paparazzi.DeviceConfig
+import app.cash.paparazzi.Paparazzi
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.testing.constants.PAPARAZZI_MAX_PERCENT_DIFFERENCE
-import de.palm.composestateevents.consumed
 import org.junit.Rule
 import org.junit.Test
-import app.cash.paparazzi.DeviceConfig
-import app.cash.paparazzi.Paparazzi
 
 @ExperimentalComposeUiApi
 internal class AuthenticationContentSnapshotTest {
@@ -21,15 +20,20 @@ internal class AuthenticationContentSnapshotTest {
 
     @Test
     fun composable_sign_in() {
-        val state = AuthenticationState(
-            userAuthorizedEvent = consumed,
-            authenticationMode = AuthenticationMode.SIGN_IN,
-            email = EMAIL,
-            password = PASSWORD,
-            passwordRequirements = listOf(),
-            isLoading = false,
-            error = null
+        snapshot(
+            state = AuthenticationState(
+                isUserAuthorized = false,
+                authenticationMode = AuthenticationMode.SIGN_IN,
+                email = EMAIL,
+                password = PASSWORD,
+                passwordRequirements = listOf(),
+                isLoading = false,
+                error = null
+            )
         )
+    }
+
+    private fun snapshot(state: AuthenticationState) {
         paparazzi.snapshot {
             AuthenticationContent(
                 authenticationState = state,

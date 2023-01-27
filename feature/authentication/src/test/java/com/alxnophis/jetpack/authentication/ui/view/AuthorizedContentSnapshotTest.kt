@@ -1,5 +1,7 @@
 package com.alxnophis.jetpack.authentication.ui.view
 
+import app.cash.paparazzi.DeviceConfig
+import app.cash.paparazzi.Paparazzi
 import com.alxnophis.jetpack.testing.constants.PAPARAZZI_MAX_PERCENT_DIFFERENCE
 import org.junit.Rule
 import org.junit.Test

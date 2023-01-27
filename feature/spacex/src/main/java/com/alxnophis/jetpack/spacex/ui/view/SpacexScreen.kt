@@ -265,19 +265,18 @@ private fun ExpandingText(
 @Preview(showBackground = true)
 @Composable
 private fun SpacexContentPreview() {
+    val pastLaunch = PastLaunchModel(
+        id = "1",
+        missionName = "Mission XYZ",
+        details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.".repeat(5),
+        rocket = "Rocket Name (Company)",
+        launchSite = "Launch Site",
+        missionPatchUrl = null,
+        launchDateUtc = "10 May 21 - 11:00"
+    )
     val state = LaunchesState(
         isLoading = false,
-        pastLaunches = listOf(
-            PastLaunchModel(
-                id = "1",
-                missionName = "Mission XYZ",
-                details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.".repeat(5),
-                rocket = "Rocket Name (Company)",
-                launchSite = "Launch Site",
-                missionPatchUrl = null,
-                launchDateUtc = "10 May 21 - 11:00"
-            )
-        ),
+        pastLaunches = listOf(pastLaunch),
         errorMessages = emptyList()
     )
     SpacexContent(
