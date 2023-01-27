@@ -192,7 +192,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false, isUserAuthorized = true)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.handleEvent(AuthenticationEvent.UserAuthorizedConsumed)
+            viewModel.handleEvent(AuthenticationEvent.SetUserNotAuthorized)
 
             viewModel.uiState.test {
                 assertEquals(
