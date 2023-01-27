@@ -29,7 +29,7 @@ internal class AuthenticationViewModel(
                 AuthenticationEvent.Authenticate -> authenticate()
                 AuthenticationEvent.ErrorDismissed -> updateState { copy(error = null) }
                 AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-                AuthenticationEvent.UserAuthorizedConsumed -> updateState { copy(isUserAuthorized = false) }
+                AuthenticationEvent.SetUserNotAuthorized -> updateState { copy(isUserAuthorized = false) }
                 AuthenticationEvent.AutoCompleteAuthorization -> updateState {
                     copy(email = AUTHORIZED_EMAIL, password = AUTHORIZED_PASSWORD)
                 }

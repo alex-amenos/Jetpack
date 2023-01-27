@@ -28,7 +28,7 @@ internal fun AuthenticationScreen(
     LaunchedEffect(state.isUserAuthorized) {
         if (state.isUserAuthorized) {
             navigateTo(state.email)
-            viewModel.handleEvent(AuthenticationEvent.UserAuthorizedConsumed)
+            viewModel.handleEvent(AuthenticationEvent.SetUserNotAuthorized)
         }
     }
     BackHandler {
