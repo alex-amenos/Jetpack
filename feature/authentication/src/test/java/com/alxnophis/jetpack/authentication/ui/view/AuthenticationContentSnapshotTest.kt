@@ -47,5 +47,3 @@ internal class AuthenticationContentSnapshotTest {
         private const val PASSWORD = "123456789Abc"
     }
 }
-
-

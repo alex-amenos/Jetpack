@@ -27,5 +27,3 @@ internal class AuthorizedContentSnapshotTest {
         private const val EMAIL = "your@email.com"
     }
 }
-
-
