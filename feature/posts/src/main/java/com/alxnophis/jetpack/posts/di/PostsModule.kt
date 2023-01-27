@@ -1,7 +1,5 @@
 package com.alxnophis.jetpack.posts.di
 
-import com.alxnophis.jetpack.posts.data.datasource.PostDataSource
-import com.alxnophis.jetpack.posts.data.datasource.PostDataSourceImpl
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
 import com.alxnophis.jetpack.posts.data.repository.PostsRepositoryImpl
 import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
@@ -19,8 +17,12 @@ private val loadPostsModules by lazy {
 }
 
 private val postModule: Module = module {
-    factory<PostDataSource> { PostDataSourceImpl(dispatcherProvider = get(), api = get()) }
-    factory<PostsRepository> { PostsRepositoryImpl(dataSource = get()) }
+    factory<PostsRepository> {
+        PostsRepositoryImpl(
+            dispatcherProvider = get(),
+            apiDataSource = get()
+        )
+    }
     factory { PostsUseCase(repository = get()) }
     viewModel {
         PostsViewModel(

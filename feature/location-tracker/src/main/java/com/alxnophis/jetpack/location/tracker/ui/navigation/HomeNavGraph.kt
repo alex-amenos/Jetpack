@@ -22,8 +22,8 @@ fun NavGraphBuilder.locationTrackerNavGraph(
         ) {
             injectLocationTracker()
             LocationTrackerScreen(
-                navController = navController,
-                viewModel = getViewModel()
+                viewModel = getViewModel(),
+                popBackStack = { navController.popBackStack() },
             )
         }
     }

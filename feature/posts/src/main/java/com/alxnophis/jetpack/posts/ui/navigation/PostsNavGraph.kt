@@ -22,8 +22,8 @@ fun NavGraphBuilder.postsNavGraph(
         ) {
             injectPosts()
             PostsScreen(
-                navController = navController,
-                viewModel = getViewModel()
+                viewModel = getViewModel(),
+                popBackStack = { navController.popBackStack() },
             )
         }
     }

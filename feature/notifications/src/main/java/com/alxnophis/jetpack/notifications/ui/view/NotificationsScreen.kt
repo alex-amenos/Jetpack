@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
 import com.alxnophis.jetpack.core.extensions.showNotification
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
@@ -34,13 +33,12 @@ import com.alxnophis.jetpack.notifications.R
 
 @Composable
 internal fun NotificationsScreen(
-    navController: NavController,
+    popBackStack: () -> Unit
 ) {
-    val navigateBack: () -> Unit = { navController.popBackStack() }
     BackHandler {
-        navigateBack()
+        popBackStack()
     }
-    NotificationsContent(navigateBack)
+    NotificationsContent(navigateBack = popBackStack)
 }
 
 @Composable

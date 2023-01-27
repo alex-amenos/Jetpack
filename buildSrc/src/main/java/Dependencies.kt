@@ -1,4 +1,4 @@
-@file:Suppress("unsued", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
+@file:Suppress("MemberVisibilityCanBePrivate", "SpellCheckingInspection", "unused")
 
 object Version {
     const val ANDROIDX_ANNOTATIONS = "1.4.0"
@@ -7,7 +7,7 @@ object Version {
     const val ANDROIDX_ARCH_CORE_COMMON = "2.1.0"
     const val ANDROIDX_ARCH_CORE_RUNTIME = "2.1.0"
     const val ANDROIDX_COMPOSE = "1.2.1"
-    const val ANDROIDX_COMPOSE_BOM = "2022.12.00"
+    const val ANDROIDX_COMPOSE_BOM = "2023.01.00"
     const val ANDROIDX_COMPOSE_COMPILER = "1.3.2"
     const val ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT = "1.0.1"
     const val ANDROIDX_COMPOSE_NAVIGATION = "2.5.2"
@@ -24,7 +24,6 @@ object Version {
     const val ARROW = "1.1.3"
     const val ARROW_META = "1.6.0"
     const val COIL = "2.1.0"
-    const val COMPOSE_STATE_EVENTS = "1.1.0"
     const val GOOGLE_ANDROID_MATERIAL = "1.4.0"
     const val GOOGLE_PLAY_SERVICES_LOCATION = "21.0.1"
     const val GOOGLE_ACCOMPANITS = "0.25.1"
@@ -73,7 +72,6 @@ object Dep {
     const val ANDROIDX_COMPOSE_UI_TOOLING = "androidx.compose.ui:ui-tooling"
     const val ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW = "androidx.compose.ui:ui-tooling-preview"
     const val ANDROIDX_COMPOSE_VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:${Version.ANDROIDX_LIFECYCLE}"
-    const val COMPOSE_STATE_EVENTS = "com.github.leonard-palm:compose-state-events:${Version.COMPOSE_STATE_EVENTS}"
     const val GOOGLE_ACCOMPANITS_SWIPEREFRESH = "com.google.accompanist:accompanist-swiperefresh:${Version.GOOGLE_ACCOMPANITS}"
     const val GOOGLE_ACCOMPANITS_PERMISSIONS = "com.google.accompanist:accompanist-permissions:${Version.GOOGLE_ACCOMPANITS}"
     const val GOOGLE_ACCOMPANITS_PLACEHOLDER = "com.google.accompanist:accompanist-placeholder-material:${Version.GOOGLE_ACCOMPANITS}"

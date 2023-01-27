@@ -1,11 +1,11 @@
 package com.alxnophis.jetpack.home.ui.view
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,12 +20,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -37,36 +36,37 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
 import com.alxnophis.jetpack.router.screen.Screen
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun HomeScreen(
-    navController: NavController,
-    viewModel: HomeViewModel = getViewModel()
+    viewModel: HomeViewModel,
+    backOrFinish: (Activity?) -> Unit,
+    navigateTo: (String) -> Unit,
 ) {
     val state: HomeState = viewModel.uiState.collectAsState().value
     val activity: Activity? = (LocalContext.current as? Activity)
     BackHandler {
-        if (!navController.popBackStack()) {
-            activity?.finish()
-        }
+        backOrFinish(activity)
     }
     HomeContent(
         state = state,
         handleEvent = viewModel::handleEvent,
-        navigateTo = { route -> navController.navigate(route) },
+        navigateTo = { route -> navigateTo(route) },
     )
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 internal fun HomeContent(
     state: HomeState,
@@ -74,14 +74,12 @@ internal fun HomeContent(
     navigateTo: (route: String) -> Unit
 ) {
     AppTheme {
-        Box(
+        Scaffold(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            scaffoldState = rememberScaffoldState(),
+            topBar = { HomeTopBar() },
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                HomeTopBar()
+            Column(modifier = Modifier.fillMaxSize()) {
                 SectionsList(state, navigateTo)
             }
             state.error?.let { error: Int ->
@@ -98,14 +96,14 @@ internal fun HomeContent(
 internal fun HomeTopBar() {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primaryVariant,
-        contentPadding = PaddingValues(start = 12.dp)
+        contentPadding = PaddingValues(start = smallPadding)
     ) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = stringResource(id = R.string.home_title),
             color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Black,
+            fontWeight = FontWeight.SemiBold,
         )
         Spacer(modifier = Modifier.width(8.dp))
     }
@@ -134,12 +132,20 @@ internal fun SectionsList(
                         .clickable { navigateTo(item.screen.route) }
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .padding(16.dp)
+                        .padding(mediumPadding)
                 ) {
+                    Text(
+                        modifier = Modifier.wrapContentSize(),
+                        style = MaterialTheme.typography.h4,
+                        color = MaterialTheme.colors.onSurface,
+                        text = item.emoji,
+                        fontWeight = FontWeight.Medium,
+                    )
                     Column(
                         modifier = Modifier
                             .weight(0.9f)
                             .fillMaxWidth()
+                            .padding(start = mediumPadding)
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -152,19 +158,13 @@ internal fun SectionsList(
                         Text(
                             modifier = Modifier
                                 .wrapContentSize()
-                                .padding(top = 4.dp),
+                                .padding(top = extraSmallPadding),
                             style = MaterialTheme.typography.subtitle1,
                             color = MaterialTheme.colors.onSurface,
                             text = item.description,
                             fontWeight = FontWeight.Light,
                         )
                     }
-                    Icon(
-                        modifier = Modifier.weight(0.1f),
-                        tint = MaterialTheme.colors.onSurface,
-                        imageVector = Icons.Default.ArrowForwardIos,
-                        contentDescription = null,
-                    )
                 }
                 Divider(color = Color.LightGray)
             }
@@ -179,11 +179,13 @@ private fun HomeScreenPreview() {
         data = listOf(
             NavigationItem(
                 name = "Screen 1",
+                emoji = "🐻",
                 description = stringResource(id = R.string.core_lorem_ipsum_s),
                 screen = Screen.Authentication
             ),
             NavigationItem(
                 name = "Screen 2",
+                emoji = "🦊",
                 description = stringResource(id = R.string.core_lorem_ipsum_m),
                 screen = Screen.Settings
             ),

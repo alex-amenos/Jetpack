@@ -35,35 +35,35 @@ class SpacexScreenTest : BaseComposeTest() {
     @Test
     fun spacex_past_launches_date_is_displayed() {
         val date = "01 aug 2022 15:39"
-        val pastLaunch = PastLaunchesModelMother.pastLaunch(launchDateUtc = date)
+        val pastLaunch = PastLaunchesModelMother(launchDateUtc = date)
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(date)
     }
 
     @Test
     fun spacex_past_launches_launch_site_is_displayed() {
-        val pastLaunch = PastLaunchesModelMother.pastLaunch()
+        val pastLaunch = PastLaunchesModelMother()
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(pastLaunch.launchSite)
     }
 
     @Test
     fun spacex_past_launches_mission_name_is_displayed() {
-        val pastLaunch = PastLaunchesModelMother.pastLaunch()
+        val pastLaunch = PastLaunchesModelMother()
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(pastLaunch.missionName)
     }
 
     @Test
     fun spacex_past_launches_rocket_name_is_displayed() {
-        val pastLaunch = PastLaunchesModelMother.pastLaunch()
+        val pastLaunch = PastLaunchesModelMother()
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(pastLaunch.rocket)
     }
 
     @Test
     fun spacex_past_launches_detail_is_displayed_and_clickable() {
-        val pastLaunch = PastLaunchesModelMother.pastLaunch(details = LONG_LOREM_IPSUM)
+        val pastLaunch = PastLaunchesModelMother(details = LONG_LOREM_IPSUM)
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         composeTestRule
             .onNodeWithTag(TAG_SPACEX_LAUNCH_DETAIL + pastLaunch.id)
@@ -73,7 +73,7 @@ class SpacexScreenTest : BaseComposeTest() {
 
     @Test
     fun spacex_past_launches_detail_is_displayed_and_performs_click() {
-        val pastLaunch = PastLaunchesModelMother.pastLaunch(details = LONG_LOREM_IPSUM)
+        val pastLaunch = PastLaunchesModelMother(details = LONG_LOREM_IPSUM)
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         composeTestRule
             .onNodeWithTag(TAG_SPACEX_LAUNCH_DETAIL + pastLaunch.id)

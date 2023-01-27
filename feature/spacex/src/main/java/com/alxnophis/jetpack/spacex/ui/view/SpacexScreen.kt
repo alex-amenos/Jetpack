@@ -38,7 +38,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
@@ -46,6 +45,8 @@ import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
@@ -58,15 +59,14 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 internal fun SpacexScreen(
-    navController: NavController,
-    viewModel: LaunchesViewModel
+    viewModel: LaunchesViewModel,
+    popBackStack: () -> Unit,
 ) {
-    val navigateBack: () -> Unit = { navController.popBackStack() }
-    BackHandler { navigateBack() }
+    BackHandler { popBackStack() }
     SpacexContent(
         state = viewModel.uiState.collectAsState().value,
         handleEvent = viewModel::handleEvent,
-        navigateBack = navigateBack
+        navigateBack = popBackStack
     )
 }
 
@@ -118,7 +118,7 @@ private fun PastLaunchesList(
             modifier = modifier
                 .background(MaterialTheme.colors.surface)
                 .drawVerticalScrollbar(listState),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(mediumPadding)
         ) {
             items(
                 items = state.pastLaunches,
@@ -137,14 +137,14 @@ private fun PastLaunchItem(item: PastLaunchModel) {
     Card(
         elevation = 10.dp,
         modifier = Modifier
-            .padding(vertical = 16.dp)
+            .padding(vertical = mediumPadding)
             .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(16.dp)
+                .padding(mediumPadding)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -170,7 +170,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                 }
             }
             Row(
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = mediumPadding)
             ) {
                 AsyncImage(
                     modifier = Modifier.size(60.dp),
@@ -188,7 +188,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .padding(start = 16.dp)
+                        .padding(start = mediumPadding)
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
@@ -199,7 +199,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                     )
                     Text(
                         modifier = Modifier
-                            .padding(top = 4.dp)
+                            .padding(top = extraSmallPadding)
                             .wrapContentSize(),
                         text = item.rocket,
                         color = MaterialTheme.colors.onSurface,
@@ -211,7 +211,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
             if (item.details.isNotEmpty()) {
                 ExpandingText(
                     modifier = Modifier
-                        .padding(top = 16.dp)
+                        .padding(top = mediumPadding)
                         .wrapContentSize()
                         .testTag(TAG_SPACEX_LAUNCH_DETAIL + item.id),
                     item = item,

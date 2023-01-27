@@ -1,10 +1,34 @@
+pluginManagement {
+    repositories {
+        google()
+        maven { url 'https://maven.google.com' }
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        maven { url 'https://maven.google.com' }
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+rootProject.name = "Jetpack"
+
+// App modules
 include ":app"
+
 // Shared modules
 include ':shared:api'
 include ":shared:core"
 include ':shared:kotlin'
 include ':shared:router'
 include ':shared:testing'
+
 // Feature modules
 include ':feature:root'
 include ':feature:authentication'
@@ -15,3 +39,4 @@ include ':feature:posts'
 include ':feature:settings'
 include ':feature:spacex'
 include ':feature:notifications'
+include ':feature:my-playground'

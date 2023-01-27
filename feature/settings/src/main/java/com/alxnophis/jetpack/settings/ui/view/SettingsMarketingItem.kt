@@ -16,8 +16,9 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.largePadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
@@ -34,7 +35,7 @@ internal fun SettingsMarketingItem(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(mediumPadding),
                 text = stringResource(R.string.settings_option_marketing),
             )
             options.forEachIndexed { index, option ->
@@ -53,7 +54,7 @@ internal fun SettingsMarketingItem(
                             role = Role.RadioButton,
                         )
                         .fillMaxWidth()
-                        .padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 12.dp)
+                        .padding(start = largePadding, end = mediumPadding, top = mediumPadding, bottom = mediumPadding)
                         .testTag(TAG_MARKETING_OPTION + index),
                 ) {
                     RadioButton(
@@ -62,7 +63,7 @@ internal fun SettingsMarketingItem(
                     )
                     Text(
                         text = option,
-                        modifier = Modifier.padding(start = 18.dp)
+                        modifier = Modifier.padding(start = mediumPadding)
                     )
                 }
             }
