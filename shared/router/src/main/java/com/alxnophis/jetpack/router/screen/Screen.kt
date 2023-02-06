@@ -4,6 +4,7 @@ package com.alxnophis.jetpack.router.screen
 const val ROOT_ROUTE = "root"
 const val HOME_ROUTE = "home"
 const val AUTHENTICATION_ROUTE = "authentication"
+const val FILE_DOWNLOADER = "file-downloader"
 const val GAME_BALL_CLICKER_ROUTE = "game-ball-clicker"
 const val MY_PLAYGROUND_ROUTE = "my_playground"
 const val NOTIFICATIONS_ROUTE = "notifications"
@@ -23,6 +24,7 @@ sealed class Screen(val route: String) {
     object Authorized : Screen(route = "authorized_screen?$ARGUMENT_EMAIL=${ARGUMENT_EMAIL.addArgumentMarkers()}")
 
     object Home : Screen(route = "home_screen")
+    object FileDownloader : Screen(route = "file_downloader_screen")
     object GameBallClicker : Screen(route = "game_ball_clicker_screen")
     object MyPlayground : Screen(route = "my_playground_screen")
     object Notifications : Screen(route = "notifications_screen")
