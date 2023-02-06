@@ -8,6 +8,7 @@ import com.alxnophis.jetpack.filedownloader.di.injectFileDownloader
 import com.alxnophis.jetpack.filedownloader.ui.view.FileDownloaderScreen
 import com.alxnophis.jetpack.router.screen.FILE_DOWNLOADER
 import com.alxnophis.jetpack.router.screen.Screen
+import org.koin.androidx.compose.getViewModel
 
 fun NavGraphBuilder.fileDownloaderNavGraph(
     navController: NavController
@@ -21,6 +22,7 @@ fun NavGraphBuilder.fileDownloaderNavGraph(
         ){
             injectFileDownloader()
             FileDownloaderScreen(
+                viewModel = getViewModel(),
                 popBackStack = { navController.popBackStack() },
             )
         }

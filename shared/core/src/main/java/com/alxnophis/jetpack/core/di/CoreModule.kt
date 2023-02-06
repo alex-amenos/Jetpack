@@ -7,7 +7,7 @@ import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-val coreModule: Module = module() {
+val coreModule: Module = module {
     factory<DispatcherProvider> { DefaultDispatcherProvider() }
     factory { BaseDateFormatter() }
     factory { BaseRandomProvider() }
