@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.extensions.isValidUrl
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
+import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -78,6 +79,14 @@ private fun FileDownloaderScaffold(
                 handleEvent = handleEvent
             )
         }
+        state.error?.let { error: Int ->
+            CoreErrorDialog(
+                errorMessage = stringResource(error),
+                dismissError = {
+                    handleEvent(FileDownloaderEvent.ErrorDismissed)
+                }
+            )
+        }
     }
 }
 
@@ -121,7 +130,8 @@ private fun FileDownloaderContent(
 
         CoreButtonMajor(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.file_downloader_download_file)
+            text = stringResource(id = R.string.file_downloader_download_file),
+            isEnabled = state.url.trim().isNotBlank()
         ) {
             downloadFileEvent()
         }
@@ -132,7 +142,7 @@ private fun FileDownloaderContent(
 @Composable
 private fun FileDownloaderScaffoldPreview() {
     FileDownloaderScaffold(
-        state = FileDownloaderState(url = ""),
+        state = FileDownloaderState(url = EMPTY),
         navigateBack = {},
         handleEvent = {},
     )

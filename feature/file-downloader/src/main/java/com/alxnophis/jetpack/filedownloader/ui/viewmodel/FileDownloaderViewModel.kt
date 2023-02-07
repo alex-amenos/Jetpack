@@ -2,17 +2,19 @@ package com.alxnophis.jetpack.filedownloader.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
-import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.extensions.isValidUrl
-import com.alxnophis.jetpack.filedownloader.domain.AndroidDownloader
+import com.alxnophis.jetpack.filedownloader.R
+import com.alxnophis.jetpack.filedownloader.data.model.FileDownloaderError
+import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepository
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
+import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 internal class FileDownloaderViewModel(
     initialState: FileDownloaderState,
-    private val downloader: AndroidDownloader,
+    private val fileDownloaderRepository: FileDownloaderRepository,
 ) : BaseViewModel<FileDownloaderEvent, FileDownloaderState>(initialState) {
 
     override fun handleEvent(event: FileDownloaderEvent) {
@@ -21,6 +23,7 @@ internal class FileDownloaderViewModel(
             when (event) {
                 is FileDownloaderEvent.UrlChanged -> updateUrl(event.url)
                 is FileDownloaderEvent.DownloadFile -> downloadFile()
+                is FileDownloaderEvent.ErrorDismissed -> updateState { copy(error = null) }
             }
         }
     }
@@ -36,9 +39,26 @@ internal class FileDownloaderViewModel(
     private fun downloadFile() {
         viewModelScope.launch {
             val urlFile = currentState.url
-            when {
-                urlFile.isValidUrl() -> downloader.downloadFile(urlFile)
-                else -> doNothing()
+            if (urlFile.isValidUrl()) {
+                fileDownloaderRepository
+                    .downloadFile(urlFile)
+                    .fold(
+                        { error ->
+                            val errorResId = when (error) {
+                                FileDownloaderError.FileDownloaded -> R.string.file_downloader_file_downloaded
+                                FileDownloaderError.FileDownloading -> R.string.file_downloader_file_downloading
+                                FileDownloaderError.Unknown -> R.string.file_downloader_generic_error
+                            }
+                            updateState {
+                                currentState.copy(error = errorResId)
+                            }
+                        },
+                        {
+                            updateState {
+                                currentState.copy(url = EMPTY)
+                            }
+                        }
+                    )
             }
         }
     }

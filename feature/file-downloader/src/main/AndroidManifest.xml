@@ -5,7 +5,7 @@
 
     <application>
         <receiver
-            android:name=".ui.receiver.DownloadCompletedReceiver"
+            android:name=".data.repository.DownloadCompletedReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />

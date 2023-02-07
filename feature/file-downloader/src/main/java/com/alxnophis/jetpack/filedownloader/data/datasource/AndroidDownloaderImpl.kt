@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.filedownloader.domain
+package com.alxnophis.jetpack.filedownloader.data.datasource
 
 import android.app.DownloadManager
 import android.content.Context
@@ -20,7 +20,7 @@ internal class AndroidDownloaderImpl(
     private val dateFormatter: BaseDateFormatter
 ) : AndroidDownloader {
 
-    private val downloadManager = context.getSystemService(DownloadManager::class.java)
+    private val downloadManager: DownloadManager = context.getSystemService(DownloadManager::class.java)
 
     override fun downloadFile(fileUlr: String): Long {
         val mimeType = fileUlr.getContentType()

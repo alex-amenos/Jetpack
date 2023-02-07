@@ -1,7 +1,9 @@
 package com.alxnophis.jetpack.filedownloader.di
 
-import com.alxnophis.jetpack.filedownloader.domain.AndroidDownloader
-import com.alxnophis.jetpack.filedownloader.domain.AndroidDownloaderImpl
+import com.alxnophis.jetpack.filedownloader.data.datasource.AndroidDownloader
+import com.alxnophis.jetpack.filedownloader.data.datasource.AndroidDownloaderImpl
+import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepository
+import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepositoryImpl
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
 import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import org.koin.android.ext.koin.androidContext
@@ -16,17 +18,23 @@ private val loadFileDownloaderModules by lazy {
     loadKoinModules(fileDownloaderModule)
 }
 
-private val fileDownloaderModule: Module = module {
+internal val fileDownloaderModule: Module = module {
     factory<AndroidDownloader> {
         AndroidDownloaderImpl(
             context = androidContext(),
             dateFormatter = get()
         )
     }
+    single<FileDownloaderRepository> {
+        FileDownloaderRepositoryImpl(
+            androidDownloader = get(),
+            dispatcherProvider = get(),
+        )
+    }
     viewModel {
         FileDownloaderViewModel(
             initialState = FileDownloaderState(),
-            downloader = get()
+            fileDownloaderRepository = get(),
         )
     }
 }
