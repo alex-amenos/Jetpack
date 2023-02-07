@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import timber.log.Timber
 
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate", "unused")
 abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     initialState: State
 ) : ViewModel() {
