@@ -2,15 +2,16 @@ package com.alxnophis.jetpack.filedownloader.ui.view
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
@@ -101,11 +102,12 @@ private fun FileDownloaderContent(
     }
     Column(modifier = modifier) {
         OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             value = state.url,
             singleLine = true,
-            onValueChange = { urlValueChanged -> handleEvent.invoke(FileDownloaderEvent.UrlChanged(urlValueChanged)) },
+            onValueChange = { urlValueChanged ->
+                handleEvent.invoke(FileDownloaderEvent.UrlChanged(urlValueChanged))
+            },
             label = {
                 Text(
                     text = stringResource(R.string.file_downloader_url),
@@ -113,12 +115,19 @@ private fun FileDownloaderContent(
                 )
             },
             trailingIcon = {
-                Icon(
+                IconButton(
                     modifier = Modifier
-                        .clickable { handleEvent.invoke(FileDownloaderEvent.UrlChanged(EMPTY)) },
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = null
-                )
+                        .wrapContentSize()
+                        .padding(4.dp),
+                    onClick = {
+                        handleEvent.invoke(FileDownloaderEvent.UrlChanged(EMPTY))
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null
+                    )
+                }
             },
             keyboardActions = KeyboardActions(
                 onSend = { downloadFileEvent() }
@@ -131,7 +140,7 @@ private fun FileDownloaderContent(
         CoreButtonMajor(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = R.string.file_downloader_download_file),
-            isEnabled = state.url.trim().isNotBlank()
+            isEnabled = state.url.isValidUrl()
         ) {
             downloadFileEvent()
         }
