@@ -29,18 +29,18 @@ internal class FileDownloaderRepositoryImpl(
                         isFileDownloading(fileUrl) -> throw FileDownloadingException()
                         isFileDownloaded(fileUrl) -> throw FileDownloadedException()
                         else -> {
-                            download(fileUrl).also { downloadId ->
-                                synchronized(downloadingFiles) {
-                                    downloadingFiles.add(DownloadingFile(id = downloadId, url = fileUrl))
+                            androidDownloader
+                                .downloadFile(fileUrl)
+                                .also { downloadId ->
+                                    synchronized(downloadingFiles) {
+                                        downloadingFiles.add(DownloadingFile(id = downloadId, url = fileUrl))
+                                    }
                                 }
-                            }
                         }
                     }
                 }
             )
         }
-
-    private fun download(fileUrl: String): Long = androidDownloader.downloadFile(fileUrl)
 
     override fun fileDownloaded(downloadId: Long) {
         downloadingFiles
