@@ -13,7 +13,7 @@ class BaseDateFormatter(
 
     fun formatToDayMonthYearTime(date: Date): String = date.formatDateWith(PATTERN_DAY_MONTH_YEAR_TIME)
 
-    fun formatToReadableDateTimeForFile(date: Date): String = date.formatDateWith(PATTERN_READABLE_DATE_TIME_FILE)
+    fun formatToReadableDateTimeSnakeCase(date: Date): String = date.formatDateWith(PATTERN_READABLE_DATE_TIME_FILE)
 
     private fun Date.formatDateWith(pattern: String): String {
         val formatter = SimpleDateFormat(pattern, locale)

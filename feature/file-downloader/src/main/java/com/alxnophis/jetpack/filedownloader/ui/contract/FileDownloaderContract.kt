@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.filedownloader.ui.contract
 
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
+import com.alxnophis.jetpack.kotlin.constants.EMPTY
 
 internal sealed class FileDownloaderEvent : UiEvent {
     object DownloadFile : FileDownloaderEvent()
@@ -9,5 +10,5 @@ internal sealed class FileDownloaderEvent : UiEvent {
 }
 
 internal data class FileDownloaderState(
-    val url: String = "https://images.pexels.com/photos/1212487/pexels-photo-1212487.jpeg",
+    val url: String = EMPTY,
 ) : UiState
