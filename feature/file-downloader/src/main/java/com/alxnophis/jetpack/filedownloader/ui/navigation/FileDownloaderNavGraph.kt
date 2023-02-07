@@ -12,14 +12,14 @@ import org.koin.androidx.compose.getViewModel
 
 fun NavGraphBuilder.fileDownloaderNavGraph(
     navController: NavController
-){
+) {
     navigation(
         startDestination = Screen.FileDownloader.route,
         route = FILE_DOWNLOADER
-    ){
+    ) {
         composable(
             route = Screen.FileDownloader.route
-        ){
+        ) {
             injectFileDownloader()
             FileDownloaderScreen(
                 viewModel = getViewModel(),
