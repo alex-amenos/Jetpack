@@ -11,23 +11,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.DismissValue
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Snackbar
-import androidx.compose.material.SnackbarData
-import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.rememberDismissState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -175,6 +170,7 @@ private fun FileDownloaderErrors(
             onDismiss = dismissError
         )
         state.error != null -> SnackbarError(
+            modifier = Modifier.fillMaxSize(),
             error = state.error,
             onDismiss = dismissError
         )
@@ -195,6 +191,7 @@ private fun DialogError(
 
 @Composable
 private fun SnackbarError(
+    modifier: Modifier = Modifier,
     error: Int,
     onDismiss: () -> Unit,
 ) {
@@ -203,43 +200,28 @@ private fun SnackbarError(
     val scope = rememberCoroutineScope()
     LaunchedEffect(error) {
         scope.launch {
-            snackbarHostState.showSnackbar(
+            val result = snackbarHostState.showSnackbar(
                 message = errorMessage,
-                actionLabel = null,
-                duration = SnackbarDuration.Short,
+                actionLabel = null
             )
+            when (result) {
+                SnackbarResult.Dismissed -> onDismiss()
+                SnackbarResult.ActionPerformed -> doNothing()
+            }
         }
     }
-    snackbarHostState.currentSnackbarData?.let {
-        SwipeToDismissSnackbar(
-            onDismiss = onDismiss,
-            data = it,
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun SwipeToDismissSnackbar(
-    data: SnackbarData,
-    onDismiss: () -> Unit,
-    snackbar: @Composable (SnackbarData) -> Unit = { Snackbar(it) },
-) {
-    val dismissState = rememberDismissState {
-        if (it != DismissValue.Default) {
-            data.dismiss()
-            onDismiss.invoke()
-        }
-        true
-    }
-    Box(modifier = Modifier.fillMaxSize()) {
-        SwipeToDismiss(
+    Box(modifier) {
+        SnackbarHost(
+            hostState = snackbarHostState,
             modifier = Modifier.align(Alignment.BottomCenter),
-            state = dismissState,
-            directions = setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart),
-            background = {},
-            dismissContent = { snackbar(data) }
-        )
+        ) { snackbarData ->
+            Snackbar(
+                modifier = Modifier.padding(10.dp),
+                action = {}
+            ) {
+                Text(snackbarData.message)
+            }
+        }
     }
 }
 
