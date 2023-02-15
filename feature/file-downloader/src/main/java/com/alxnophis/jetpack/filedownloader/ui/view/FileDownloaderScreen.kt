@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.filedownloader.ui.view
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,21 +11,37 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.DismissValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarData
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.rememberDismissState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.extensions.isValidUrl
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
@@ -36,6 +53,7 @@ import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
 import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun FileDownloaderScreen(
@@ -79,18 +97,15 @@ private fun FileDownloaderScaffold(
                 state = state,
                 handleEvent = handleEvent
             )
-        }
-        state.error?.let { error: Int ->
-            CoreErrorDialog(
-                errorMessage = stringResource(error),
-                dismissError = {
-                    handleEvent(FileDownloaderEvent.ErrorDismissed)
-                }
+            FileDownloaderErrors(
+                state = state,
+                dismissError = { handleEvent(FileDownloaderEvent.ErrorDismissed) }
             )
         }
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun FileDownloaderContent(
     modifier: Modifier,
@@ -100,6 +115,7 @@ private fun FileDownloaderContent(
     val downloadFileEvent: () -> Unit = {
         handleEvent.invoke(FileDownloaderEvent.DownloadFile)
     }
+    val keyboardController = LocalSoftwareKeyboardController.current
     Column(modifier = modifier) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -142,16 +158,100 @@ private fun FileDownloaderContent(
             text = stringResource(id = R.string.file_downloader_download_file),
             isEnabled = state.url.isValidUrl()
         ) {
+            keyboardController?.hide()
             downloadFileEvent()
         }
+    }
+}
+
+@Composable
+private fun FileDownloaderErrors(
+    state: FileDownloaderState,
+    dismissError: () -> Unit,
+) {
+    when {
+        state.error == R.string.file_downloader_generic_error -> DialogError(
+            error = state.error,
+            onDismiss = dismissError
+        )
+        state.error != null -> SnackbarError(
+            error = state.error,
+            onDismiss = dismissError
+        )
+        else -> doNothing()
+    }
+}
+
+@Composable
+private fun DialogError(
+    error: Int,
+    onDismiss: () -> Unit
+) {
+    CoreErrorDialog(
+        errorMessage = stringResource(error),
+        dismissError = onDismiss
+    )
+}
+
+@Composable
+private fun SnackbarError(
+    error: Int,
+    onDismiss: () -> Unit,
+) {
+    val errorMessage = stringResource(id = error)
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(error) {
+        scope.launch {
+            snackbarHostState.showSnackbar(
+                message = errorMessage,
+                actionLabel = null,
+                duration = SnackbarDuration.Short,
+            )
+        }
+    }
+    snackbarHostState.currentSnackbarData?.let {
+        SwipeToDismissSnackbar(
+            onDismiss = onDismiss,
+            data = it,
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SwipeToDismissSnackbar(
+    data: SnackbarData,
+    onDismiss: () -> Unit,
+    snackbar: @Composable (SnackbarData) -> Unit = { Snackbar(it) },
+) {
+    val dismissState = rememberDismissState {
+        if (it != DismissValue.Default) {
+            data.dismiss()
+            onDismiss.invoke()
+        }
+        true
+    }
+    Box(modifier = Modifier.fillMaxSize()) {
+        SwipeToDismiss(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            state = dismissState,
+            directions = setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart),
+            background = {},
+            dismissContent = { snackbar(data) }
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun FileDownloaderScaffoldPreview() {
+    val state = FileDownloaderState(
+        url = EMPTY,
+        error = R.string.core_error_title,
+    )
     FileDownloaderScaffold(
-        state = FileDownloaderState(url = EMPTY),
+        state = state,
         navigateBack = {},
         handleEvent = {},
     )
