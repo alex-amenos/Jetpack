@@ -24,7 +24,7 @@ internal class LaunchesViewModel(
     private val dateFormatter: BaseDateFormatter,
     private val randomProvider: BaseRandomProvider,
     private val dispatcherProvider: DispatcherProvider,
-    private val launchesRepository: LaunchesRepository,
+    private val launchesRepository: LaunchesRepository
 ) : BaseViewModel<LaunchesEvent, LaunchesState>(initialState) {
 
     init {
@@ -77,7 +77,6 @@ internal class LaunchesViewModel(
     private suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchDataModel>> =
         launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
-
     private suspend fun List<PastLaunchDataModel>.mapTo(formatDate: (Date?) -> String): List<PastLaunchModel> =
         withContext(dispatcherProvider.io()) {
             map { launch ->
@@ -88,7 +87,7 @@ internal class LaunchesViewModel(
                     rocket = launch.rocketName ?: EMPTY,
                     launchSite = launch.launchSiteShort ?: EMPTY,
                     missionPatchUrl = launch.missionPatchSmallUrl,
-                    launchDateUtc = formatDate(launch.launchDateUtc),
+                    launchDateUtc = formatDate(launch.launchDateUtc)
                 )
             }
         }
@@ -104,7 +103,7 @@ internal class LaunchesViewModel(
             }
         )
     }
-    
+
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
         updateState {

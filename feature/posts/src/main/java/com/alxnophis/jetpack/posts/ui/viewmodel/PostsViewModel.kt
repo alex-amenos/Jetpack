@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 internal class PostsViewModel(
     initialState: PostsState,
     private val dispatcherProvider: DispatcherProvider,
-    private val postsUseCase: PostsUseCase,
+    private val postsUseCase: PostsUseCase
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 
     init {
