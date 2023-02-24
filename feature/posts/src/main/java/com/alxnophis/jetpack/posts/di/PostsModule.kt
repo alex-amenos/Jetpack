@@ -27,6 +27,7 @@ private val postModule: Module = module {
     viewModel {
         PostsViewModel(
             initialState = PostsState(),
+            dispatcherProvider = get(),
             postsUseCase = get(),
         )
     }
