@@ -23,7 +23,7 @@ fun NavGraphBuilder.authenticationNavGraph(
         route = AUTHENTICATION_ROUTE
     ) {
         composable(
-            route = Screen.Authentication.route,
+            route = Screen.Authentication.route
         ) {
             injectAuthentication()
             AuthenticationScreen(
@@ -38,7 +38,7 @@ fun NavGraphBuilder.authenticationNavGraph(
                             inclusive = true
                         }
                     }
-                },
+                }
             )
         }
         composable(
@@ -51,7 +51,7 @@ fun NavGraphBuilder.authenticationNavGraph(
             requireNotNull(email) { "Email can not be null, is required to login" }
             AuthorizedScreen(
                 userEmail = email,
-                popBackStack = { navController.popBackStack() },
+                popBackStack = { navController.popBackStack() }
             )
         }
     }

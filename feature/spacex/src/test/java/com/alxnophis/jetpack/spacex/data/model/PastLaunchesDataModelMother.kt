@@ -23,6 +23,6 @@ internal object PastLaunchesDataModelMother {
         launchSiteShort = launchSiteShort,
         launchSite = launchSite,
         missionPatchSmallUrl = missionPatchSmallUrl,
-        launchDateUtc = launchDateUtc,
+        launchDateUtc = launchDateUtc
     )
 }

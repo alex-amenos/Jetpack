@@ -62,7 +62,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 internal fun SpacexScreen(
     viewModel: LaunchesViewModel,
-    popBackStack: () -> Unit,
+    popBackStack: () -> Unit
 ) {
     BackHandler { popBackStack() }
     SpacexContent(
@@ -76,7 +76,7 @@ internal fun SpacexScreen(
 internal fun SpacexContent(
     state: LaunchesState,
     handleEvent: LaunchesEvent.() -> Unit,
-    navigateBack: () -> Unit,
+    navigateBack: () -> Unit
 ) {
     AppTheme {
         Column(
@@ -157,7 +157,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                         text = item.launchSite,
                         color = MaterialTheme.colors.onSurface,
                         fontSize = 13.sp,
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.Light
                     )
                 }
                 if (item.launchDateUtc.isNotEmpty()) {
@@ -166,7 +166,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                         text = item.launchDateUtc,
                         color = MaterialTheme.colors.onSurface,
                         fontSize = 13.sp,
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.Light
                     )
                 }
             }
@@ -176,7 +176,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                 MissionImage(
                     modifier = Modifier.size(60.dp),
                     missionPatchUrl = item.missionPatchUrl,
-                    imageContentDescription = item.missionName,
+                    imageContentDescription = item.missionName
                 )
                 Column(
                     modifier = Modifier
@@ -198,7 +198,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                         text = item.rocket,
                         color = MaterialTheme.colors.onSurface,
                         fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
@@ -208,7 +208,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                         .padding(top = mediumPadding)
                         .wrapContentSize()
                         .testTag(TAG_SPACEX_LAUNCH_DETAIL + item.id),
-                    item = item,
+                    item = item
                 )
             }
         }
@@ -225,7 +225,7 @@ private fun MissionImage(
         Image(
             modifier = modifier,
             painter = painterResource(R.drawable.ic_rocket_launch),
-            contentDescription = imageContentDescription,
+            contentDescription = imageContentDescription
         )
     } else {
         val localContext = LocalContext.current
@@ -239,7 +239,7 @@ private fun MissionImage(
                 .crossfade(true)
                 .build(),
             contentDescription = imageContentDescription,
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.FillBounds
         )
     }
 }
@@ -247,7 +247,7 @@ private fun MissionImage(
 @Composable
 private fun ExpandingText(
     modifier: Modifier = Modifier,
-    item: PastLaunchModel,
+    item: PastLaunchModel
 ) {
     val showMoreString = stringResource(R.string.spacex_show_more)
     val textLayoutResultState = remember { mutableStateOf<TextLayoutResult?>(null) }
@@ -281,7 +281,7 @@ private fun ExpandingText(
         fontSize = 14.sp,
         fontWeight = FontWeight.Light,
         maxLines = if (isExpanded) Int.MAX_VALUE else MINIMIZED_LINES,
-        onTextLayout = { textLayoutResultState.value = it },
+        onTextLayout = { textLayoutResultState.value = it }
     )
 }
 

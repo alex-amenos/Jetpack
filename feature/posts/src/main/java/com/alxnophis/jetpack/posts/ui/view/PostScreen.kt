@@ -60,7 +60,7 @@ import kotlin.math.roundToInt
 @Composable
 internal fun PostsScreen(
     viewModel: PostsViewModel,
-    popBackStack: () -> Unit,
+    popBackStack: () -> Unit
 ) {
     BackHandler {
         popBackStack()
@@ -106,7 +106,7 @@ internal fun PostsContent(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 toolbarHeight = toolbarHeight,
-                handleEvent = handleEvent,
+                handleEvent = handleEvent
             )
             CoreTopBar(
                 modifier = Modifier
@@ -130,14 +130,14 @@ internal fun PostList(
     modifier: Modifier,
     state: PostsState,
     toolbarHeight: Dp,
-    handleEvent: PostsEvent.() -> Unit,
+    handleEvent: PostsEvent.() -> Unit
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
         modifier = modifier,
         indicatorPadding = PaddingValues(top = toolbarHeight),
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) },
+        onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) }
     ) {
         LazyColumn(
             state = listState,
@@ -172,7 +172,7 @@ private fun CardPostItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(mediumPadding),
+                .padding(mediumPadding)
         ) {
             Text(
                 modifier = Modifier
@@ -180,12 +180,12 @@ private fun CardPostItem(
                     .placeholder(
                         visible = state.isLoading,
                         color = Color.Gray,
-                        shape = RoundedCornerShape(4.dp),
+                        shape = RoundedCornerShape(4.dp)
                     ),
                 text = item.title.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colors.primary,
                 fontSize = 22.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.SemiBold
             )
             Text(
                 modifier = Modifier
@@ -194,13 +194,13 @@ private fun CardPostItem(
                     .placeholder(
                         visible = state.isLoading,
                         color = Color.Gray,
-                        shape = RoundedCornerShape(4.dp),
+                        shape = RoundedCornerShape(4.dp)
                     ),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 textAlign = TextAlign.Justify,
                 color = MaterialTheme.colors.onSurface,
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Light,
+                fontWeight = FontWeight.Light
             )
         }
     }
@@ -213,13 +213,13 @@ private fun PostScreenPreview() {
         id = 1,
         userId = 1,
         title = "Title 1",
-        body = stringResource(id = R.string.core_lorem_ipsum_m),
+        body = stringResource(id = R.string.core_lorem_ipsum_m)
     )
     val post2 = Post(
         id = 2,
         userId = 1,
         title = "Title 2",
-        body = stringResource(id = R.string.core_lorem_ipsum_xl),
+        body = stringResource(id = R.string.core_lorem_ipsum_xl)
     )
     val state = PostsState(
         isLoading = false,

@@ -18,12 +18,12 @@ fun NavGraphBuilder.postsNavGraph(
         route = POSTS_ROUTE
     ) {
         composable(
-            route = Screen.Posts.route,
+            route = Screen.Posts.route
         ) {
             injectPosts()
             PostsScreen(
                 viewModel = getViewModel(),
-                popBackStack = { navController.popBackStack() },
+                popBackStack = { navController.popBackStack() }
             )
         }
     }

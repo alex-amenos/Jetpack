@@ -145,7 +145,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                         passwordRequirements = listOf(
                             PasswordRequirements.EIGHT_CHARACTERS,
                             PasswordRequirements.CAPITAL_LETTER,
-                            PasswordRequirements.NUMBER,
+                            PasswordRequirements.NUMBER
                         )
                     ),
                     awaitItem()
@@ -231,7 +231,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                 assertEquals(
                     initialState.copy(
                         isLoading = false,
-                        error = R.string.authentication_auth_error,
+                        error = R.string.authentication_auth_error
                     ),
                     awaitItem()
                 )
@@ -243,7 +243,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     private fun viewModelMother(
         initialState: AuthenticationState = initialAuthenticationState,
         dispatcherProvider: DispatcherProvider = testDispatcherProvider,
-        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock,
+        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock
     ) = AuthenticationViewModel(initialState, dispatcherProvider, authenticateUseCase)
 
     companion object {

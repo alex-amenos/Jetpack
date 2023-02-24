@@ -14,5 +14,5 @@ internal sealed class LaunchesEvent : UiEvent {
 internal data class LaunchesState(
     val isLoading: Boolean = false,
     val pastLaunches: List<PastLaunchModel> = emptyList(),
-    val errorMessages: List<ErrorMessage> = emptyList(),
+    val errorMessages: List<ErrorMessage> = emptyList()
 ) : UiState

@@ -17,7 +17,7 @@ private val ballClickerModule: Module = module {
     viewModel {
         BallClickerViewModel(
             initialState = BallClickerState(),
-            dispatcherProvider = get(),
+            dispatcherProvider = get()
         )
     }
 }

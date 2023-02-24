@@ -19,7 +19,7 @@ class UseCaseGetNavigationItems {
                 posts,
                 locationTracker,
                 gameBallClicker,
-                spacex,
+                spacex
             )
         }
     )
@@ -30,25 +30,25 @@ class UseCaseGetNavigationItems {
             name = "Authentication",
             emoji = "🗝",
             description = "Authentication form with SignUp and SignIn",
-            screen = Screen.Authentication,
+            screen = Screen.Authentication
         )
         private val settings = NavigationItem(
             name = "Settings",
             emoji = "⚙️",
             description = "Settings options screen",
-            screen = Screen.Settings,
+            screen = Screen.Settings
         )
         private val posts = NavigationItem(
             name = "Posts",
             emoji = "📄",
             description = "Load posts from JsonPlaceholder API",
-            screen = Screen.Posts,
+            screen = Screen.Posts
         )
         private val locationTracker = NavigationItem(
             name = "Location Tracker",
             emoji = "📍",
             description = "User location tracking",
-            screen = Screen.LocationTracker,
+            screen = Screen.LocationTracker
         )
         private val gameBallClicker = NavigationItem(
             name = "Ball Clicker Game",

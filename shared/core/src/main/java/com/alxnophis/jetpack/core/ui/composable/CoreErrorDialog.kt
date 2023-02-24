@@ -34,14 +34,14 @@ fun CoreErrorDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = extraSmallPadding, end = smallPadding),
-                contentAlignment = Alignment.CenterEnd,
+                contentAlignment = Alignment.CenterEnd
             ) {
                 TextButton(
-                    onClick = { dismissError() },
+                    onClick = { dismissError() }
                 ) {
                     Text(
                         text = stringResource(R.string.core_ok),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.body1
                     )
                 }
             }
@@ -50,7 +50,7 @@ fun CoreErrorDialog(
             Text(
                 text = stringResource(R.string.core_error_title),
                 fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.SemiBold
             )
         },
         text = {

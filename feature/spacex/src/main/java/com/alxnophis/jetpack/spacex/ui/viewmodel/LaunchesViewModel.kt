@@ -24,7 +24,7 @@ internal class LaunchesViewModel(
     private val dateFormatter: BaseDateFormatter,
     private val randomProvider: BaseRandomProvider,
     private val dispatcherProvider: DispatcherProvider,
-    private val launchesRepository: LaunchesRepository,
+    private val launchesRepository: LaunchesRepository
 ) : BaseViewModel<LaunchesEvent, LaunchesState>(initialState) {
 
     init {
@@ -52,17 +52,9 @@ internal class LaunchesViewModel(
                             ?: EMPTY
                     }
                 }
+                .mapLeft { error: LaunchesError -> error.mapTo() }
                 .fold(
-                    { error: LaunchesError ->
-                        val errorMessages: List<ErrorMessage> = currentState.errorMessages + ErrorMessage(
-                            id = randomProvider.mostSignificantBitsRandomUUID(),
-                            messageId = when (error) {
-                                is LaunchesError.Http -> R.string.spacex_error_http
-                                LaunchesError.Network -> R.string.spacex_error_network
-                                LaunchesError.Parse -> R.string.spacex_error_parse
-                                else -> R.string.spacex_error_unknown
-                            }
-                        )
+                    { errorMessages: List<ErrorMessage> ->
                         updateState {
                             copy(
                                 isLoading = false,
@@ -85,15 +77,8 @@ internal class LaunchesViewModel(
     private suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchDataModel>> =
         launchesRepository.getPastLaunches(hasToFetchDataFromNetworkOnly)
 
-    private fun dismissError(errorId: Long) {
-        val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
-        updateState {
-            copy(errorMessages = errorMessages)
-        }
-    }
-
     private suspend fun List<PastLaunchDataModel>.mapTo(formatDate: (Date?) -> String): List<PastLaunchModel> =
-        withContext(dispatcherProvider.default()) {
+        withContext(dispatcherProvider.io()) {
             map { launch ->
                 PastLaunchModel(
                     id = launch.id,
@@ -102,8 +87,27 @@ internal class LaunchesViewModel(
                     rocket = launch.rocketName ?: EMPTY,
                     launchSite = launch.launchSiteShort ?: EMPTY,
                     missionPatchUrl = launch.missionPatchSmallUrl,
-                    launchDateUtc = formatDate(launch.launchDateUtc),
+                    launchDateUtc = formatDate(launch.launchDateUtc)
                 )
             }
         }
+
+    private suspend fun LaunchesError.mapTo(): List<ErrorMessage> = withContext(dispatcherProvider.io()) {
+        currentState.errorMessages + ErrorMessage(
+            id = randomProvider.mostSignificantBitsRandomUUID(),
+            messageId = when (this@mapTo) {
+                is LaunchesError.Http -> R.string.spacex_error_http
+                LaunchesError.Network -> R.string.spacex_error_network
+                LaunchesError.Parse -> R.string.spacex_error_parse
+                else -> R.string.spacex_error_unknown
+            }
+        )
+    }
+
+    private fun dismissError(errorId: Long) {
+        val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
+        updateState {
+            copy(errorMessages = errorMessages)
+        }
+    }
 }

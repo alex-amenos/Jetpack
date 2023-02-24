@@ -19,7 +19,7 @@ fun NavGraphBuilder.homeNavGraph(
         route = HOME_ROUTE
     ) {
         composable(
-            route = Screen.Home.route,
+            route = Screen.Home.route
         ) {
             injectHome()
             HomeScreen(
@@ -29,7 +29,7 @@ fun NavGraphBuilder.homeNavGraph(
                         activity?.finish()
                     }
                 },
-                navigateTo = { route -> navController.navigate(route) },
+                navigateTo = { route -> navController.navigate(route) }
             )
         }
     }

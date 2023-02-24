@@ -36,7 +36,7 @@ internal fun SettingsMarketingItem(
         ) {
             Text(
                 modifier = Modifier.padding(mediumPadding),
-                text = stringResource(R.string.settings_option_marketing),
+                text = stringResource(R.string.settings_option_marketing)
             )
             options.forEachIndexed { index, option ->
                 Row(
@@ -51,11 +51,11 @@ internal fun SettingsMarketingItem(
                                 }
                                 onOptionSelected(marketingOption)
                             },
-                            role = Role.RadioButton,
+                            role = Role.RadioButton
                         )
                         .fillMaxWidth()
                         .padding(start = largePadding, end = mediumPadding, top = mediumPadding, bottom = mediumPadding)
-                        .testTag(TAG_MARKETING_OPTION + index),
+                        .testTag(TAG_MARKETING_OPTION + index)
                 ) {
                     RadioButton(
                         selected = selectedOption.id == index,

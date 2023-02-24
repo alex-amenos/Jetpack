@@ -48,9 +48,9 @@ internal fun MyPlaygroundScaffold(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.myplayground_title),
-                    onBack = { navigateBack() },
+                    onBack = { navigateBack() }
                 )
-            },
+            }
         ) { _ -> MyPlaygroundContent() }
     }
 }
@@ -71,7 +71,7 @@ internal fun MyPlaygroundContent() {
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colors.secondary,
             textAlign = TextAlign.Center,
-            text = stringResource(R.string.myplayground_quote),
+            text = stringResource(R.string.myplayground_quote)
         )
     }
 }

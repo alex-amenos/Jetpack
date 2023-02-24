@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 internal class BallClickerViewModel(
     initialState: BallClickerState,
-    dispatcherProvider: DispatcherProvider,
+    dispatcherProvider: DispatcherProvider
 ) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
 
     private val timerScope = CoroutineScope(dispatcherProvider.default() + SupervisorJob())
@@ -61,7 +61,7 @@ internal class BallClickerViewModel(
                 updateState {
                     copy(
                         currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS,
-                        isTimerRunning = false,
+                        isTimerRunning = false
                     )
                 }
             }
