@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 internal class AuthenticationViewModel(
     initialState: AuthenticationState,
     private val dispatchers: DispatcherProvider,
-    private val authenticateUseCase: AuthenticateUseCase,
+    private val authenticateUseCase: AuthenticateUseCase
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
 
     override fun handleEvent(event: AuthenticationEvent) {
@@ -92,7 +92,7 @@ internal class AuthenticationViewModel(
                     updateState {
                         copy(
                             isLoading = false,
-                            error = R.string.authentication_auth_error,
+                            error = R.string.authentication_auth_error
                         )
                     }
                 },
@@ -100,7 +100,7 @@ internal class AuthenticationViewModel(
                     updateState {
                         copy(
                             isLoading = false,
-                            isUserAuthorized = true,
+                            isUserAuthorized = true
                         )
                     }
                 }

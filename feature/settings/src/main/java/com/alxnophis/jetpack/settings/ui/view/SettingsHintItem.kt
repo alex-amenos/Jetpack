@@ -26,7 +26,7 @@ fun SettingsHintItem(
     modifier: Modifier = Modifier,
     title: String,
     checked: Boolean,
-    onShowHintToggled: () -> Unit,
+    onShowHintToggled: () -> Unit
 ) {
     val hintsEnabledState = if (checked) {
         stringResource(id = R.string.settings_cd_hints_enabled)
@@ -46,15 +46,15 @@ fun SettingsHintItem(
                 )
                 .semantics { stateDescription = hintsEnabledState }
                 .padding(mediumPadding)
-                .testTag(TAG_CHECK_ITEM),
+                .testTag(TAG_CHECK_ITEM)
         ) {
             Text(
                 text = title,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             )
             Checkbox(
                 checked = checked,
-                onCheckedChange = null,
+                onCheckedChange = null
             )
         }
     }

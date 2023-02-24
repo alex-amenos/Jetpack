@@ -16,7 +16,7 @@ object LaunchMother {
         siteName: String = "launch_site_name",
         siteNameLong: String = "launch_site_name_long",
         missionPatchSmall: String = "mission_patch",
-        launchDateUtc: Date? = null,
+        launchDateUtc: Date? = null
     ) = Launch(
         id = id,
         mission_name = missionName,

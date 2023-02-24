@@ -71,7 +71,8 @@ private fun Modifier.drawScrollbar(
     orientation: Orientation,
     reverseScrolling: Boolean
 ): Modifier = drawScrollbar(
-    orientation, reverseScrolling
+    orientation,
+    reverseScrolling
 ) { reverseDirection, atEnd, thickness, color, alpha ->
     val showScrollbar = state.maxValue > 0
     val canvasSize = if (orientation == Orientation.Horizontal) size.width else size.height
@@ -93,7 +94,8 @@ private fun Modifier.drawScrollbar(
     orientation: Orientation,
     reverseScrolling: Boolean
 ): Modifier = drawScrollbar(
-    orientation, reverseScrolling
+    orientation,
+    reverseScrolling
 ) { reverseDirection, atEnd, thickness, color, alpha ->
     val layoutInfo = state.layoutInfo
     val viewportSize = layoutInfo.viewportEndOffset - layoutInfo.viewportStartOffset
@@ -104,11 +106,15 @@ private fun Modifier.drawScrollbar(
     val totalSize = estimatedItemSize * layoutInfo.totalItemsCount
     val canvasSize = if (orientation == Orientation.Horizontal) size.width else size.height
     val thumbSize = viewportSize / totalSize * canvasSize
-    val startOffset = if (items.isEmpty()) 0f else items
-        .first()
-        .run {
-            (estimatedItemSize * index - offset) / totalSize * canvasSize
-        }
+    val startOffset = if (items.isEmpty()) {
+        0f
+    } else {
+        items
+            .first()
+            .run {
+                (estimatedItemSize * index - offset) / totalSize * canvasSize
+            }
+    }
     val drawScrollbar = onDrawScrollbar(orientation, reverseDirection, atEnd, showScrollbar, thickness, color, alpha, thumbSize, startOffset)
     onDrawWithContent {
         drawContent()
@@ -199,7 +205,9 @@ private fun Modifier.drawScrollbar(
     val isLtr = LocalLayoutDirection.current == LayoutDirection.Ltr
     val reverseDirection = if (orientation == Orientation.Horizontal) {
         if (isLtr) reverseScrolling else !reverseScrolling
-    } else reverseScrolling
+    } else {
+        reverseScrolling
+    }
     val atEnd = if (orientation == Orientation.Vertical) isLtr else true
 
     // Calculate thickness here to workaround https://issuetracker.google.com/issues/206972664
@@ -223,7 +231,7 @@ fun ScrollbarPreview() {
     Column(
         modifier = Modifier
             .drawVerticalScrollbar(state)
-            .verticalScroll(state),
+            .verticalScroll(state)
     ) {
         repeat(50) {
             Text(

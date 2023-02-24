@@ -29,7 +29,7 @@ fun CoreButtonMajor(
     modifier: Modifier = Modifier,
     text: String,
     isEnabled: Boolean = true,
-    onClick: (() -> Unit),
+    onClick: (() -> Unit)
 ) {
     TextButton(
         onClick = { onClick() },
@@ -47,15 +47,15 @@ fun CoreButtonMajor(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.primary,
             disabledBackgroundColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled),
-            disabledContentColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled),
-        ),
+            disabledContentColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
+        )
     ) {
         Text(
             style = MaterialTheme.typography.button,
             color = MaterialTheme.colors.onPrimary,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(extraSmallPadding),
-            text = text,
+            text = text
         )
     }
 }
@@ -71,12 +71,12 @@ private fun CoreButtonMajorPreview() {
         Column(
             modifier = Modifier
                 .wrapContentHeight()
-                .padding(mediumPadding),
+                .padding(mediumPadding)
         ) {
             CoreButtonMajor(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Button",
-                onClick = clicked,
+                onClick = clicked
             )
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -85,7 +85,7 @@ private fun CoreButtonMajorPreview() {
                 modifier = Modifier.fillMaxWidth(),
                 text = "Button disabled",
                 isEnabled = false,
-                onClick = clicked,
+                onClick = clicked
             )
         }
     }

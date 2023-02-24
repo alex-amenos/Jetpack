@@ -30,7 +30,7 @@ fun CoreButtonMinor(
     modifier: Modifier = Modifier,
     text: String,
     isEnabled: Boolean = true,
-    onClick: (() -> Unit),
+    onClick: (() -> Unit)
 ) {
     OutlinedButton(
         modifier = modifier,
@@ -44,7 +44,7 @@ fun CoreButtonMinor(
                 MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
             }
         ),
-        onClick = { onClick() },
+        onClick = { onClick() }
     ) {
         Text(
             style = MaterialTheme.typography.button,
@@ -55,7 +55,7 @@ fun CoreButtonMinor(
             },
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(extraSmallPadding),
-            text = text,
+            text = text
         )
     }
 }
@@ -71,12 +71,12 @@ private fun CoreButtonMinorPreview() {
         Column(
             modifier = Modifier
                 .wrapContentHeight()
-                .padding(mediumPadding),
+                .padding(mediumPadding)
         ) {
             CoreButtonMinor(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Button",
-                onClick = clicked,
+                onClick = clicked
             )
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -85,7 +85,7 @@ private fun CoreButtonMinorPreview() {
                 modifier = Modifier.fillMaxWidth(),
                 text = "Button disabled",
                 isEnabled = false,
-                onClick = clicked,
+                onClick = clicked
             )
         }
     }

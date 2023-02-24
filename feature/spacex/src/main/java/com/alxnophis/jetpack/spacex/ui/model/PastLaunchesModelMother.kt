@@ -21,6 +21,6 @@ internal object PastLaunchesModelMother {
         rocket = rocketName,
         launchSite = launchSiteName,
         missionPatchUrl = missionPatchSmallUrl,
-        launchDateUtc = launchDateUtc,
+        launchDateUtc = launchDateUtc
     )
 }

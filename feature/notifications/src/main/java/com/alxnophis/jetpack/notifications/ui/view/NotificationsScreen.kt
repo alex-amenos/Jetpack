@@ -51,12 +51,12 @@ private fun NotificationsContent(
                 .fillMaxSize()
                 .background(MaterialTheme.colors.surface),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CoreTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.notifications_title),
-                onBack = { navigateBack() },
+                onBack = { navigateBack() }
             )
             NotificationPermission()
         }
@@ -84,7 +84,7 @@ private fun NotificationPermission() {
             .fillMaxSize()
             .background(MaterialTheme.colors.surface),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Button(

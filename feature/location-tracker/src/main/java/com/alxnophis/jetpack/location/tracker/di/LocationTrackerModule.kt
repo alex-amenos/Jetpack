@@ -40,7 +40,7 @@ private val locationTrackerModule: Module = module {
             dispatcherProvider = get(),
             fusedLocationProvider = LocationServices.getFusedLocationProviderClient(androidContext()),
             locationManager = androidContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager,
-            mutableLocationSharedFlow = MutableSharedFlow(),
+            mutableLocationSharedFlow = MutableSharedFlow()
         )
     }
     factory<DispatcherProvider> { DefaultDispatcherProvider() }

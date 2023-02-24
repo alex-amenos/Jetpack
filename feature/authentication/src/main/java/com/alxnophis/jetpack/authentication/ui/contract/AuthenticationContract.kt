@@ -23,7 +23,7 @@ internal data class AuthenticationState(
     val password: String = EMPTY,
     val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
-    val error: Int? = null,
+    val error: Int? = null
 ) : UiState {
 
     fun isFormValid(): Boolean {

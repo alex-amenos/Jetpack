@@ -27,7 +27,7 @@ import com.alxnophis.jetpack.core.ui.theme.smallPadding
 fun CoreTopBar(
     modifier: Modifier,
     title: String,
-    onBack: () -> Unit,
+    onBack: () -> Unit
 ) {
     TopAppBar(
         modifier = modifier,
@@ -36,12 +36,12 @@ fun CoreTopBar(
     ) {
         IconButton(
             modifier = Modifier.testTag(CoreTags.TAG_CORE_BACK),
-            onClick = onBack,
+            onClick = onBack
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = stringResource(id = R.string.core_cd_go_back),
-                tint = MaterialTheme.colors.onPrimary,
+                tint = MaterialTheme.colors.onPrimary
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -49,7 +49,7 @@ fun CoreTopBar(
             text = title,
             color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

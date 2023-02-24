@@ -52,7 +52,7 @@ import com.alxnophis.jetpack.router.screen.Screen
 internal fun HomeScreen(
     viewModel: HomeViewModel,
     backOrFinish: (Activity?) -> Unit,
-    navigateTo: (String) -> Unit,
+    navigateTo: (String) -> Unit
 ) {
     val state: HomeState = viewModel.uiState.collectAsState().value
     val activity: Activity? = (LocalContext.current as? Activity)
@@ -62,7 +62,7 @@ internal fun HomeScreen(
     HomeContent(
         state = state,
         handleEvent = viewModel::handleEvent,
-        navigateTo = { route -> navigateTo(route) },
+        navigateTo = { route -> navigateTo(route) }
     )
 }
 
@@ -77,7 +77,7 @@ internal fun HomeContent(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             scaffoldState = rememberScaffoldState(),
-            topBar = { HomeTopBar() },
+            topBar = { HomeTopBar() }
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 SectionsList(state, navigateTo)
@@ -103,7 +103,7 @@ internal fun HomeTopBar() {
             text = stringResource(id = R.string.home_title),
             color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.width(8.dp))
     }
@@ -139,7 +139,7 @@ internal fun SectionsList(
                         style = MaterialTheme.typography.h4,
                         color = MaterialTheme.colors.onSurface,
                         text = item.emoji,
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.Medium
                     )
                     Column(
                         modifier = Modifier
@@ -153,7 +153,7 @@ internal fun SectionsList(
                             color = MaterialTheme.colors.onSurface,
                             text = item.name,
                             fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium,
+                            fontWeight = FontWeight.Medium
                         )
                         Text(
                             modifier = Modifier
@@ -162,7 +162,7 @@ internal fun SectionsList(
                             style = MaterialTheme.typography.subtitle1,
                             color = MaterialTheme.colors.onSurface,
                             text = item.description,
-                            fontWeight = FontWeight.Light,
+                            fontWeight = FontWeight.Light
                         )
                     }
                 }
@@ -188,7 +188,7 @@ private fun HomeScreenPreview() {
                 emoji = "🦊",
                 description = stringResource(id = R.string.core_lorem_ipsum_m),
                 screen = Screen.Settings
-            ),
+            )
         ),
         error = null
     )

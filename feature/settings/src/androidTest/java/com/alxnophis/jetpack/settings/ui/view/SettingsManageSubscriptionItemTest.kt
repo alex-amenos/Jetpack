@@ -16,7 +16,7 @@ class SettingsManageSubscriptionItemTest : BaseComposeTest() {
         composeTestRule.setContent {
             SettingsManageSubscriptionItem(
                 title = title,
-                onSubscriptionClicked = {},
+                onSubscriptionClicked = {}
             )
         }
         composeTestRule
@@ -31,7 +31,7 @@ class SettingsManageSubscriptionItemTest : BaseComposeTest() {
         composeTestRule.setContent {
             SettingsManageSubscriptionItem(
                 title = title,
-                onSubscriptionClicked = onSettingClicked,
+                onSubscriptionClicked = onSettingClicked
             )
         }
         composeTestRule

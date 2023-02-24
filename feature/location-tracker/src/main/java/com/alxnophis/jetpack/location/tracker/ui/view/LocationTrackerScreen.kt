@@ -37,7 +37,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 @Composable
 internal fun LocationTrackerScreen(
     viewModel: LocationTrackerViewModel,
-    popBackStack: () -> Unit,
+    popBackStack: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
     BackHandler {
@@ -70,7 +70,7 @@ internal fun LocationTrackerContent(
                 onBack = {
                     handleEvent(LocationTrackerEvent.EndTracking)
                     navigateBack()
-                },
+                }
             )
             LocationPermission(
                 composableWithPermissionGranted = { UserLocation(state = state) },
@@ -84,12 +84,12 @@ internal fun LocationTrackerContent(
 @Composable
 private fun LocationPermission(
     composableWithPermissionGranted: @Composable () -> Unit,
-    handleEvent: LocationTrackerEvent.() -> Unit,
+    handleEvent: LocationTrackerEvent.() -> Unit
 ) {
     val locationPermissionsState = rememberMultiplePermissionsState(
         listOf(
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
         )
     )
     if (locationPermissionsState.allPermissionsGranted) {

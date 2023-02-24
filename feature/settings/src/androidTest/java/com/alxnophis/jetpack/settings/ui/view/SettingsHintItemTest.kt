@@ -16,7 +16,7 @@ class SettingsHintItemTest : BaseComposeTest() {
             SettingsHintItem(
                 title = title,
                 checked = true,
-                onShowHintToggled = {},
+                onShowHintToggled = {}
             )
         }
         composeTestRule
@@ -30,7 +30,7 @@ class SettingsHintItemTest : BaseComposeTest() {
             SettingsHintItem(
                 title = "Show Hints",
                 checked = true,
-                onShowHintToggled = {},
+                onShowHintToggled = {}
             )
         }
         composeTestRule

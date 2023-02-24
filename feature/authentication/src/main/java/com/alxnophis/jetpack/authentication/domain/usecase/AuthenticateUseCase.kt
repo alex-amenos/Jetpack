@@ -10,7 +10,7 @@ typealias Authenticated = Unit
 
 class AuthenticateUseCase(
     private val dispatchers: DispatcherProvider,
-    private val delay: Long = DELAY,
+    private val delay: Long = DELAY
 ) {
 
     suspend fun invoke(
