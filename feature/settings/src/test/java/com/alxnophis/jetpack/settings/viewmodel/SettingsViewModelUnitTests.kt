@@ -49,24 +49,24 @@ internal class SettingsViewModelUnitTests : BaseUnitTest() {
         private fun testProvider(): Stream<Arguments> = Stream.of(
             Arguments.of(
                 SettingsEvent.SetNotifications,
-                initialSettingsState.copy(notificationsEnabled = !initialSettingsState.notificationsEnabled),
+                initialSettingsState.copy(notificationsEnabled = !initialSettingsState.notificationsEnabled)
             ),
             Arguments.of(
                 SettingsEvent.SetHint,
-                initialSettingsState.copy(hintsEnabled = !initialSettingsState.hintsEnabled),
+                initialSettingsState.copy(hintsEnabled = !initialSettingsState.hintsEnabled)
             ),
             Arguments.of(
                 SettingsEvent.SetMarketingOption(MarketingOption.NOT_ALLOWED),
-                initialSettingsState.copy(marketingOption = MarketingOption.NOT_ALLOWED),
+                initialSettingsState.copy(marketingOption = MarketingOption.NOT_ALLOWED)
             ),
             Arguments.of(
                 SettingsEvent.SetTheme(Theme.LIGHT),
-                initialSettingsState.copy(themeOption = Theme.LIGHT),
+                initialSettingsState.copy(themeOption = Theme.LIGHT)
             ),
             Arguments.of(
                 SettingsEvent.SetTheme(Theme.DARK),
-                initialSettingsState.copy(themeOption = Theme.DARK),
-            ),
+                initialSettingsState.copy(themeOption = Theme.DARK)
+            )
         )
     }
 }

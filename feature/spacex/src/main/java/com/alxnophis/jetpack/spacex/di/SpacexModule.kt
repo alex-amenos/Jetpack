@@ -28,7 +28,7 @@ private val spacexModule: Module = module {
             dateFormatter = get(),
             randomProvider = get(),
             dispatcherProvider = get(),
-            launchesRepository = get(),
+            launchesRepository = get()
         )
     }
 }

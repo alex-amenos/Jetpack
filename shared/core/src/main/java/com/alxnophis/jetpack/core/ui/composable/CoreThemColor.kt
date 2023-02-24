@@ -37,7 +37,7 @@ private fun CoreColorsThemePreview() {
             "surface" to MaterialTheme.colors.surface,
             "onSurface" to MaterialTheme.colors.onSurface,
             "error" to MaterialTheme.colors.error,
-            "onError" to MaterialTheme.colors.onError,
+            "onError" to MaterialTheme.colors.onError
         )
         Column(
             modifier = Modifier
@@ -55,7 +55,7 @@ private fun CoreColorsThemePreview() {
 @Composable
 private fun ColorItem(
     colorName: String,
-    color: Color,
+    color: Color
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),

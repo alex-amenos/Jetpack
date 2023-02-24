@@ -10,5 +10,5 @@ internal sealed class LocationTrackerEvent : UiEvent {
 
 internal data class LocationTrackerState(
     val userLocation: String? = null,
-    val lastKnownLocation: String? = null,
+    val lastKnownLocation: String? = null
 ) : UiState

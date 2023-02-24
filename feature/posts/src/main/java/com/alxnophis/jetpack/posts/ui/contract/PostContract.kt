@@ -13,5 +13,5 @@ internal sealed class PostsEvent : UiEvent {
 internal data class PostsState(
     val isLoading: Boolean = false,
     val posts: List<Post> = emptyList(),
-    val errorMessages: List<ErrorMessage> = emptyList(),
+    val errorMessages: List<ErrorMessage> = emptyList()
 ) : UiState

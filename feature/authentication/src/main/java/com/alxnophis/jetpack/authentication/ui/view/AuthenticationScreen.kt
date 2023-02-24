@@ -22,7 +22,7 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 internal fun AuthenticationScreen(
     viewModel: AuthenticationViewModel,
     popBackStack: () -> Unit,
-    navigateTo: (String) -> Unit,
+    navigateTo: (String) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
     LaunchedEffect(state.isUserAuthorized) {
@@ -44,7 +44,7 @@ internal fun AuthenticationScreen(
 @Composable
 internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
-    handleEvent: AuthenticationEvent.() -> Unit,
+    handleEvent: AuthenticationEvent.() -> Unit
 ) {
     AppTheme {
         AuthenticationForm(
@@ -80,6 +80,6 @@ internal fun AuthenticationContent(
 private fun AuthenticationFormPreview() {
     AuthenticationContent(
         authenticationState = AuthenticationState(),
-        handleEvent = {},
+        handleEvent = {}
     )
 }

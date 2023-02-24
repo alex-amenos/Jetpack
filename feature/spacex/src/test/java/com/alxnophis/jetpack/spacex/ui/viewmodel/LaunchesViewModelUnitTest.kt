@@ -214,7 +214,7 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
         dateFormatter: BaseDateFormatter = dateFormatterMock,
         randomProvider: BaseRandomProvider = randomProviderMock,
         dispatcherProvider: DispatcherProvider = testDispatcherProvider,
-        launchesRepository: LaunchesRepository = launchesRepositoryMock,
+        launchesRepository: LaunchesRepository = launchesRepositoryMock
     ) = LaunchesViewModel(initialState, dateFormatter, randomProvider, dispatcherProvider, launchesRepository)
 
     companion object {
@@ -233,7 +233,7 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             Arguments.of(LaunchesError.Unknown, R.string.spacex_error_unknown),
             Arguments.of(LaunchesError.Unknown, R.string.spacex_error_unknown),
             Arguments.of(LaunchesError.Unexpected, R.string.spacex_error_unknown),
-            Arguments.of(LaunchesError.Unexpected, R.string.spacex_error_unknown),
+            Arguments.of(LaunchesError.Unexpected, R.string.spacex_error_unknown)
         )
     }
 }

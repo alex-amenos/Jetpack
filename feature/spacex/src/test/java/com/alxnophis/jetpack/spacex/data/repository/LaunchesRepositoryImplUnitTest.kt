@@ -100,13 +100,13 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
                 launchSite = "launch_site_name_long",
                 missionPatchSmallUrl = "mission_patch",
                 launchDateUtc = null
-            ),
+            )
         )
 
         @JvmStatic
         private fun pastLaunchesSuccessTestProvider(): Stream<Arguments> = Stream.of(
             Arguments.of(true),
-            Arguments.of(false),
+            Arguments.of(false)
         )
 
         @JvmStatic
@@ -114,7 +114,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
             Arguments.of(
                 true,
                 SpacexApiError.Parse,
-                LaunchesError.Parse,
+                LaunchesError.Parse
             ),
             Arguments.of(
                 false,
@@ -124,42 +124,42 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
             Arguments.of(
                 true,
                 SpacexApiError.Http(STATUS_CODE_SERVER_ERROR),
-                LaunchesError.Http(STATUS_CODE_SERVER_ERROR),
+                LaunchesError.Http(STATUS_CODE_SERVER_ERROR)
             ),
             Arguments.of(
                 false,
                 SpacexApiError.Http(STATUS_CODE_SERVER_ERROR),
-                LaunchesError.Http(STATUS_CODE_SERVER_ERROR),
+                LaunchesError.Http(STATUS_CODE_SERVER_ERROR)
             ),
             Arguments.of(
                 true,
                 SpacexApiError.Network,
-                LaunchesError.Network,
+                LaunchesError.Network
             ),
             Arguments.of(
                 false,
                 SpacexApiError.Network,
-                LaunchesError.Network,
+                LaunchesError.Network
             ),
             Arguments.of(
                 true,
                 SpacexApiError.Unknown,
-                LaunchesError.Unknown,
+                LaunchesError.Unknown
             ),
             Arguments.of(
                 false,
                 SpacexApiError.Unknown,
-                LaunchesError.Unknown,
+                LaunchesError.Unknown
             ),
             Arguments.of(
                 true,
                 SpacexApiError.Unexpected,
-                LaunchesError.Unexpected,
+                LaunchesError.Unexpected
             ),
             Arguments.of(
                 false,
                 SpacexApiError.Unexpected,
-                LaunchesError.Unexpected,
+                LaunchesError.Unexpected
             )
         )
     }

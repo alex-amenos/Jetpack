@@ -30,7 +30,7 @@ import com.alxnophis.jetpack.settings.ui.contract.Theme
 internal fun SettingsThemeItem(
     modifier: Modifier = Modifier,
     selectedTheme: Theme,
-    onOptionSelected: (option: Theme) -> Unit,
+    onOptionSelected: (option: Theme) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     SettingsItem(modifier = modifier) {
@@ -56,7 +56,7 @@ internal fun SettingsThemeItem(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             offset = DpOffset(x = 16.dp, y = 0.dp),
-            properties = PopupProperties(usePlatformDefaultWidth = true),
+            properties = PopupProperties(usePlatformDefaultWidth = true)
         ) {
             Theme.values().forEach { theme ->
                 DropdownMenuItem(

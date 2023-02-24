@@ -16,7 +16,7 @@ class SettingsNotificationItemTest : BaseComposeTest() {
             SettingsNotificationItem(
                 title = title,
                 checked = true,
-                onToggleNotificationSettings = {},
+                onToggleNotificationSettings = {}
             )
         }
         composeTestRule
@@ -30,7 +30,7 @@ class SettingsNotificationItemTest : BaseComposeTest() {
             SettingsNotificationItem(
                 title = "Enable Notifications",
                 checked = true,
-                onToggleNotificationSettings = {},
+                onToggleNotificationSettings = {}
             )
         }
         composeTestRule

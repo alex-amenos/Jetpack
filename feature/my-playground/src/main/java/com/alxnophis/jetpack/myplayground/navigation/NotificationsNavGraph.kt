@@ -21,7 +21,7 @@ fun NavGraphBuilder.myPlaygroundNavGraph(
         ) {
             injectMyPlayground()
             MyPlaygroundScreen(
-                popBackStack = { navController.popBackStack() },
+                popBackStack = { navController.popBackStack() }
             )
         }
     }

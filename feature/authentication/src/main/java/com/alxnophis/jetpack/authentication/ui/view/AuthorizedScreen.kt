@@ -18,7 +18,7 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 @Composable
 internal fun AuthorizedScreen(
     userEmail: String,
-    popBackStack: () -> Unit,
+    popBackStack: () -> Unit
 ) {
     BackHandler {
         popBackStack()
@@ -28,7 +28,7 @@ internal fun AuthorizedScreen(
 
 @Composable
 internal fun AuthorizedContent(
-    userEmail: String,
+    userEmail: String
 ) {
     AppTheme {
         Box(

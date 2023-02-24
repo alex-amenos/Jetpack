@@ -32,7 +32,7 @@ internal class LocationDataSourceImpl(
     dispatcherProvider: DispatcherProvider,
     private val fusedLocationProvider: FusedLocationProviderClient,
     private val locationManager: LocationManager,
-    private val mutableLocationSharedFlow: MutableSharedFlow<Location>,
+    private val mutableLocationSharedFlow: MutableSharedFlow<Location>
 ) : LocationDataSource {
 
     override val locationSharedFlow: SharedFlow<Location> = mutableLocationSharedFlow.asSharedFlow()
@@ -107,20 +107,21 @@ internal class LocationDataSourceImpl(
 
     @SuppressLint("MissingPermission")
     override suspend fun startLocationProvider(locationParameters: LocationParameters) {
-        if (locationJob == null)
+        if (locationJob == null) {
             locationJob = coroutineScope.launch {
                 Timber.d("LocationDataSource started with $locationParameters")
                 fusedLocationProvider.let {
                     val locationRequest = LocationRequest
                         .Builder(
                             locationParameters.priority,
-                            locationParameters.fastestInterval,
+                            locationParameters.fastestInterval
                         )
                         .setPriority(locationParameters.priority)
                         .build()
                     it.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
                 }
             }
+        }
     }
 
     override suspend fun stopLocationProvider() {

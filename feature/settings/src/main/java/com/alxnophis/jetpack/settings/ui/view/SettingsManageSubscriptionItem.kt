@@ -21,7 +21,7 @@ import com.alxnophis.jetpack.settings.R
 internal fun SettingsManageSubscriptionItem(
     modifier: Modifier = Modifier,
     title: String,
-    onSubscriptionClicked: () -> Unit,
+    onSubscriptionClicked: () -> Unit
 ) {
     SettingsItem(
         modifier = modifier
@@ -29,19 +29,19 @@ internal fun SettingsManageSubscriptionItem(
         Row(
             modifier = Modifier
                 .clickable(
-                    onClickLabel = stringResource(id = R.string.settings_cd_open_subscription),
+                    onClickLabel = stringResource(id = R.string.settings_cd_open_subscription)
                 ) {
                     onSubscriptionClicked()
                 }
-                .padding(mediumPadding),
+                .padding(mediumPadding)
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = title,
+                text = title
             )
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = null,
+                contentDescription = null
             )
         }
     }

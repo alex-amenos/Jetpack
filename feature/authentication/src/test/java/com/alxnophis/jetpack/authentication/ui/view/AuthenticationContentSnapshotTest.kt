@@ -15,7 +15,7 @@ internal class AuthenticationContentSnapshotTest {
     @get:Rule
     val paparazzi = Paparazzi(
         deviceConfig = DeviceConfig.PIXEL_6,
-        maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE,
+        maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE
     )
 
     @Test

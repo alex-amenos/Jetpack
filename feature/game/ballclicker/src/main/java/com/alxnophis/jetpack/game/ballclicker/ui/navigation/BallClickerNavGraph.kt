@@ -23,7 +23,7 @@ fun NavGraphBuilder.ballClickerNavGraph(
             injectBallClicker()
             BallClickerScreen(
                 viewModel = getViewModel(),
-                popBackStack = { navController.popBackStack() },
+                popBackStack = { navController.popBackStack() }
             )
         }
     }

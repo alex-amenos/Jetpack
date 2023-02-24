@@ -75,7 +75,7 @@ internal fun AuthenticationForm(
     authenticationMode: AuthenticationMode,
     completedPasswordRequirements: List<PasswordRequirements>,
     enableAuthentication: Boolean,
-    handleEvent: AuthenticationEvent.() -> Unit,
+    handleEvent: AuthenticationEvent.() -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -86,7 +86,7 @@ internal fun AuthenticationForm(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp),
-                color = MaterialTheme.colors.secondary,
+                color = MaterialTheme.colors.secondary
             )
         }
 
@@ -137,7 +137,7 @@ internal fun AuthenticationForm(
                 ) {
                     PasswordRequirementsView(
                         modifier = Modifier.fillMaxWidth(),
-                        satisfiedRequirements = completedPasswordRequirements,
+                        satisfiedRequirements = completedPasswordRequirements
                     )
                 }
 
@@ -167,7 +167,7 @@ internal fun AuthenticationForm(
 internal fun AuthenticationTitle(
     modifier: Modifier = Modifier,
     authenticationMode: AuthenticationMode,
-    handleEvent: AuthenticationEvent.() -> Unit,
+    handleEvent: AuthenticationEvent.() -> Unit
 ) {
     Text(
         modifier = modifier.clickable {
@@ -198,7 +198,7 @@ fun EmailInput(
         modifier = modifier
             .autofill(
                 autofillTypes = listOf(AutofillType.EmailAddress),
-                onFill = { onEmailChanged(it) },
+                onFill = { onEmailChanged(it) }
             ),
         value = email,
         singleLine = true,
@@ -206,7 +206,7 @@ fun EmailInput(
         label = {
             Text(
                 text = stringResource(R.string.authentication_label_email),
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.body1
             )
         },
         leadingIcon = {
@@ -231,7 +231,7 @@ fun PasswordInput(
     modifier: Modifier = Modifier,
     password: String,
     onPasswordChanged: (email: String) -> Unit,
-    onDoneClicked: () -> Unit,
+    onDoneClicked: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var isPasswordHidden by remember { mutableStateOf(true) }
@@ -239,7 +239,7 @@ fun PasswordInput(
         modifier = modifier
             .autofill(
                 autofillTypes = listOf(AutofillType.Password),
-                onFill = { onPasswordChanged(it) },
+                onFill = { onPasswordChanged(it) }
             ),
         value = password,
         singleLine = true,
@@ -355,7 +355,7 @@ fun AuthenticationButton(
     modifier: Modifier = Modifier,
     authenticationMode: AuthenticationMode,
     enableAuthentication: Boolean,
-    onAuthenticate: () -> Unit,
+    onAuthenticate: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Button(
@@ -424,7 +424,7 @@ private fun AuthenticationSighInFormPreview() {
             password = EMPTY,
             completedPasswordRequirements = emptyList(),
             enableAuthentication = true,
-            handleEvent = {},
+            handleEvent = {}
         )
     }
 }
@@ -443,10 +443,10 @@ private fun AuthenticationSignUpFormPreview() {
             completedPasswordRequirements = listOf(
                 PasswordRequirements.CAPITAL_LETTER,
                 PasswordRequirements.EIGHT_CHARACTERS,
-                PasswordRequirements.NUMBER,
+                PasswordRequirements.NUMBER
             ),
             enableAuthentication = true,
-            handleEvent = {},
+            handleEvent = {}
         )
     }
 }

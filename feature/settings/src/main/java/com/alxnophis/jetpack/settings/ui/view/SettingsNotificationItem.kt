@@ -26,7 +26,7 @@ internal fun SettingsNotificationItem(
     modifier: Modifier = Modifier,
     title: String,
     checked: Boolean,
-    onToggleNotificationSettings: () -> Unit,
+    onToggleNotificationSettings: () -> Unit
 ) {
     val notificationsEnabledState = if (checked) {
         stringResource(id = R.string.settings_cd_notifications_enabled)
@@ -46,15 +46,15 @@ internal fun SettingsNotificationItem(
                 )
                 .semantics { stateDescription = notificationsEnabledState }
                 .padding(mediumPadding)
-                .testTag(TAG_TOGGLE_ITEM),
+                .testTag(TAG_TOGGLE_ITEM)
         ) {
             Text(
                 text = title,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             )
             Switch(
                 checked = checked,
-                onCheckedChange = null,
+                onCheckedChange = null
             )
         }
     }

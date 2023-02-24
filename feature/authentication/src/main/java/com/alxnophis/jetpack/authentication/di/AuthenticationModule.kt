@@ -23,7 +23,7 @@ private val authenticationModule: Module = module {
         AuthenticationViewModel(
             initialState = AuthenticationState(),
             dispatchers = get(),
-            authenticateUseCase = get(),
+            authenticateUseCase = get()
         )
     }
 }

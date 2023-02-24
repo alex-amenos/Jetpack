@@ -14,5 +14,5 @@ internal val lightColorPalette = lightColors(
     surface = coreColorWhite,
     onSurface = coreColorCarbon,
     background = coreColorWhite,
-    onBackground = coreColorCarbon,
+    onBackground = coreColorCarbon
 )

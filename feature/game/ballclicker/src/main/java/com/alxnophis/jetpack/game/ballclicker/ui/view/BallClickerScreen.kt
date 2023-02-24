@@ -44,7 +44,7 @@ import kotlin.random.Random
 @Composable
 internal fun BallClickerScreen(
     viewModel: BallClickerViewModel,
-    popBackStack: () -> Unit,
+    popBackStack: () -> Unit
 ) {
     BackHandler {
         viewModel

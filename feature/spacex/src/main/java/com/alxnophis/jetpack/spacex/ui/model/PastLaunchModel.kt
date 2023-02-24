@@ -7,5 +7,5 @@ internal data class PastLaunchModel(
     val rocket: String,
     val launchSite: String,
     val missionPatchUrl: String?,
-    val launchDateUtc: String,
+    val launchDateUtc: String
 )
