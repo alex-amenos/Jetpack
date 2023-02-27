@@ -8,6 +8,7 @@ import com.alxnophis.jetpack.myplayground.di.injectMyPlayground
 import com.alxnophis.jetpack.myplayground.ui.view.MyPlaygroundScreen
 import com.alxnophis.jetpack.router.screen.MY_PLAYGROUND_ROUTE
 import com.alxnophis.jetpack.router.screen.Screen
+import org.koin.androidx.compose.getViewModel
 
 fun NavGraphBuilder.myPlaygroundNavGraph(
     navController: NavController
@@ -21,6 +22,7 @@ fun NavGraphBuilder.myPlaygroundNavGraph(
         ) {
             injectMyPlayground()
             MyPlaygroundScreen(
+                viewModel = getViewModel(),
                 popBackStack = { navController.popBackStack() }
             )
         }
