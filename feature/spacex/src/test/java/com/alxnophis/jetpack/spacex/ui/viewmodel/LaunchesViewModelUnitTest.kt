@@ -217,7 +217,7 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
     companion object {
         private const val RANDOM_UUID_SIGNIFICANT_BITS: Long = 1L
-        private const val STATUS_CODE_SERVER_ERROR = 500
+        private const val STATUS_CODE_SERVER_ERROR: Int = 500
         private val initialLaunchesState = LaunchesState()
 
         @JvmStatic
