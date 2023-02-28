@@ -6,9 +6,11 @@ import arrow.core.right
 import com.alxnophis.jetpack.api.spacex.SpacexApi
 import com.alxnophis.jetpack.api.spacex.model.SpacexApiError
 import com.alxnophis.jetpack.api.spacex.mother.LaunchMother
+import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
+import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModelMother
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import com.apollographql.apollo3.annotations.ApolloExperimental
 import java.util.stream.Stream
@@ -86,19 +88,17 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
         private const val STATUS_CODE_SERVER_ERROR = 500
         private val EMPTY_PAST_LAUNCHES = LaunchesQuery.Data(launches = emptyList())
         private val LAUNCHES = LaunchesQuery.Data(
-            launches = listOf(
-                LaunchMother(id = "id")
-            )
+            launches = listOf(LaunchMother(id = "id"))
         )
         private val PAST_LAUNCHES = listOf(
-            PastLaunchDataModel(
+            PastLaunchesDataModelMother(
                 id = "id",
-                missionName = "mission_name",
-                details = "details",
-                rocketName = "rocket_name",
-                launchSiteShort = "launch_site_name",
-                launchSite = "launch_site_name_long",
-                missionPatchSmallUrl = "mission_patch",
+                missionName = EMPTY,
+                details = EMPTY,
+                rocketName = EMPTY,
+                launchSiteShort = EMPTY,
+                launchSite = EMPTY,
+                missionPatchSmallUrl = EMPTY,
                 launchDateUtc = null
             )
         )
