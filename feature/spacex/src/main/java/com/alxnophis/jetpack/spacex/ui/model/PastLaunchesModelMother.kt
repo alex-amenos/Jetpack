@@ -7,12 +7,12 @@ import org.jetbrains.annotations.TestOnly
 internal object PastLaunchesModelMother {
 
     operator fun invoke(
-        id: String = "id",
-        missionName: String = "mission_name",
-        details: String = "details",
-        rocketName: String = "rocket_name",
-        launchSiteName: String = "launch_site_name",
-        missionPatchSmallUrl: String? = "mission_patch",
+        id: String = EMPTY,
+        missionName: String = EMPTY,
+        details: String = EMPTY,
+        rocketName: String = EMPTY,
+        launchSiteName: String = EMPTY,
+        missionPatchSmallUrl: String? = null,
         launchDateUtc: String = EMPTY
     ) = PastLaunchModel(
         id = id,

@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.api.spacex.mother
 
+import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.alxnophis.jetpack.spacex.LaunchesQuery.Launch
 import java.util.Date
@@ -9,13 +10,13 @@ import org.jetbrains.annotations.TestOnly
 object LaunchMother {
 
     operator fun invoke(
-        id: String = "id",
-        missionName: String = "mission_name",
-        details: String = "details",
-        rocketName: String = "rocket_name",
-        siteName: String = "launch_site_name",
-        siteNameLong: String = "launch_site_name_long",
-        missionPatchSmall: String = "mission_patch",
+        id: String = EMPTY,
+        missionName: String = EMPTY,
+        details: String = EMPTY,
+        rocketName: String = EMPTY,
+        siteName: String = EMPTY,
+        siteNameLong: String = EMPTY,
+        missionPatchSmall: String = EMPTY,
         launchDateUtc: Date? = null
     ) = Launch(
         id = id,
