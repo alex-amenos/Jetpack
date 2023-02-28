@@ -16,7 +16,7 @@ internal class LaunchesRepositoryImpl(
 ) : LaunchesRepository {
 
     override suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchDataModel>> =
-        withContext(dispatcherProvider.io()) {
+        withContext(dispatcherProvider.io) {
             apiDataSource
                 .pastLaunches(hasToFetchDataFromNetworkOnly)
                 .map { pastLaunches: LaunchesQuery.Data? -> pastLaunches?.mapTo() ?: emptyList() }

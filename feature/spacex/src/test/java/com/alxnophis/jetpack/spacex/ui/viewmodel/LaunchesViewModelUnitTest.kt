@@ -6,7 +6,6 @@ import arrow.core.right
 import com.alxnophis.jetpack.core.base.formatter.BaseDateFormatter
 import com.alxnophis.jetpack.core.base.provider.BaseRandomProvider
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModelMother
@@ -213,9 +212,8 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
         initialState: LaunchesState = LaunchesState(),
         dateFormatter: BaseDateFormatter = dateFormatterMock,
         randomProvider: BaseRandomProvider = randomProviderMock,
-        dispatcherProvider: DispatcherProvider = testDispatcherProvider,
         launchesRepository: LaunchesRepository = launchesRepositoryMock
-    ) = LaunchesViewModel(initialState, dateFormatter, randomProvider, dispatcherProvider, launchesRepository)
+    ) = LaunchesViewModel(initialState, dateFormatter, randomProvider, launchesRepository)
 
     companion object {
         private const val RANDOM_UUID_SIGNIFICANT_BITS: Long = 1L

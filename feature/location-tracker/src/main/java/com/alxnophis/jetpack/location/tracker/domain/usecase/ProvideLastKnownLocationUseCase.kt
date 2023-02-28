@@ -8,7 +8,7 @@ class ProvideLastKnownLocationUseCase(
     private val dispatchers: DispatcherProvider,
     private val locationRepository: LocationRepository
 ) {
-    suspend operator fun invoke() = withContext(dispatchers.io()) {
+    suspend operator fun invoke() = withContext(dispatchers.io) {
         locationRepository.provideLastKnownLocationFlow()
     }
 }

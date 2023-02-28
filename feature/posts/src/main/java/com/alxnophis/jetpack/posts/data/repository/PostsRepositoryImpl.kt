@@ -15,7 +15,7 @@ class PostsRepositoryImpl(
     private val apiDataSource: JsonPlaceholderApi
 ) : PostsRepository {
     override suspend fun getPosts(): Either<PostsError, List<Post>> =
-        withContext(dispatcherProvider.io()) {
+        withContext(dispatcherProvider.io) {
             apiDataSource
                 .getPost()
                 .map { posts: List<PostApiModel> -> posts.mapToPostList() }

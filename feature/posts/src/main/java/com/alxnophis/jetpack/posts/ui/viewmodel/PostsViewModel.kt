@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.domain.model.PostsError
@@ -13,11 +12,9 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import java.util.UUID
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 internal class PostsViewModel(
     initialState: PostsState,
-    private val dispatcherProvider: DispatcherProvider,
     private val postsUseCase: PostsUseCase
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 
@@ -62,7 +59,7 @@ internal class PostsViewModel(
 
     private suspend fun getPosts(): Either<PostsError, List<Post>> = postsUseCase.invoke()
 
-    private suspend fun PostsError.mapTo(): List<ErrorMessage> = withContext(dispatcherProvider.io()) {
+    private fun PostsError.mapTo(): List<ErrorMessage> =
         currentState.errorMessages + ErrorMessage(
             id = UUID.randomUUID().mostSignificantBits,
             messageId = when (this@mapTo) {
@@ -72,7 +69,6 @@ internal class PostsViewModel(
                 PostsError.Unexpected -> R.string.posts_error_unexpected
             }
         )
-    }
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }

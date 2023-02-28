@@ -20,15 +20,15 @@ import org.junit.jupiter.api.BeforeEach
 @ExperimentalCoroutinesApi
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 @VisibleForTesting
-open class BaseUnitTest {
+abstract class BaseUnitTest {
     val testScheduler = TestCoroutineScheduler()
-    open val testDispatcher = StandardTestDispatcher(testScheduler)
-    open val testScope = TestScope(testDispatcher)
+    val testDispatcher = StandardTestDispatcher(testScheduler)
+    val testScope = TestScope(testDispatcher)
     val testDispatcherProvider = object : DispatcherProvider {
-        override fun default(): CoroutineDispatcher = testDispatcher
-        override fun io(): CoroutineDispatcher = testDispatcher
-        override fun main(): CoroutineDispatcher = testDispatcher
-        override fun unconfined(): CoroutineDispatcher = testDispatcher
+        override val default: CoroutineDispatcher = testDispatcher
+        override val io: CoroutineDispatcher = testDispatcher
+        override val main: CoroutineDispatcher = testDispatcher
+        override val unconfined: CoroutineDispatcher = testDispatcher
     }
 
     @BeforeEach
