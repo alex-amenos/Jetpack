@@ -13,13 +13,10 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 internal class AuthenticationViewModel(
     initialState: AuthenticationState,
-    private val dispatchers: DispatcherProvider,
     private val authenticateUseCase: AuthenticateUseCase
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
 
@@ -64,16 +61,14 @@ internal class AuthenticationViewModel(
     private fun updatePassword(newPassword: String) {
         viewModelScope.launch {
             val requirements = mutableListOf<PasswordRequirements>()
-            withContext(dispatchers.default()) {
-                if (newPassword.length >= MIN_PASSWORD_LENGTH) {
-                    requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
-                }
-                if (newPassword.any { it.isUpperCase() }) {
-                    requirements.add(PasswordRequirements.CAPITAL_LETTER)
-                }
-                if (newPassword.any { it.isDigit() }) {
-                    requirements.add(PasswordRequirements.NUMBER)
-                }
+            if (newPassword.length >= MIN_PASSWORD_LENGTH) {
+                requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
+            }
+            if (newPassword.any { it.isUpperCase() }) {
+                requirements.add(PasswordRequirements.CAPITAL_LETTER)
+            }
+            if (newPassword.any { it.isDigit() }) {
+                requirements.add(PasswordRequirements.NUMBER)
             }
             updateState {
                 copy(
@@ -109,9 +104,7 @@ internal class AuthenticationViewModel(
     }
 
     private suspend fun authenticateUser(email: String, password: String): Either<AuthenticationError, Unit> =
-        withContext(dispatchers.io()) {
-            authenticateUseCase.invoke(email, password)
-        }
+        authenticateUseCase.invoke(email, password)
 
     companion object {
         private const val MIN_PASSWORD_LENGTH = 8

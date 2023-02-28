@@ -37,7 +37,7 @@ internal class LocationDataSourceImpl(
 
     override val locationSharedFlow: SharedFlow<Location> = mutableLocationSharedFlow.asSharedFlow()
 
-    private val coroutineScope: CoroutineScope = CoroutineScope(dispatcherProvider.io() + SupervisorJob())
+    private val coroutineScope: CoroutineScope = CoroutineScope(dispatcherProvider.io + SupervisorJob())
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             coroutineScope.launch {

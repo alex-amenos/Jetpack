@@ -3,25 +3,32 @@ package com.alxnophis.jetpack.home.domain.usecase
 import arrow.core.Either
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
+import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.router.screen.Screen
+import kotlinx.coroutines.withContext
 
-class UseCaseGetNavigationItems {
+class UseCaseGetNavigationItems(
+    private val dispatcherProvider: DispatcherProvider
+) {
 
-    operator fun invoke(): Either<NavigationError, List<NavigationItem>> = Either.catch(
-        { NavigationError.Unknown },
-        {
-            listOf(
-                myPlayground,
-                authentication,
-                settings,
-                notifications,
-                posts,
-                locationTracker,
-                gameBallClicker,
-                spacex
+    suspend operator fun invoke(): Either<NavigationError, List<NavigationItem>> =
+        withContext(dispatcherProvider.io) {
+            Either.catch(
+                { NavigationError.Unknown },
+                {
+                    listOf(
+                        myPlayground,
+                        authentication,
+                        settings,
+                        notifications,
+                        posts,
+                        locationTracker,
+                        gameBallClicker,
+                        spacex
+                    )
+                }
             )
         }
-    )
 
     // TODO - Update Home navigation here
     companion object {
