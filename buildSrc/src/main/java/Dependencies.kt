@@ -37,7 +37,7 @@ object Version {
     const val MOSHI = "1.12.0"
     const val MOCKITO = "4.0.0"
     const val NETWORK_RESPONSE_ADAPTER = "5.0.0"
-    const val LEAK_CANARY = "2.9.1"
+    const val LEAK_CANARY = "2.10"
     const val OKHTTP = "4.10.0"
     const val OKHTTP_PROFILER = "1.0.8"
     const val PERMISSION_DISPATCHER = "4.9.1"

@@ -15,7 +15,7 @@ internal class FileDownloaderRepositoryImpl(
     private val downloadedFiles = mutableListOf<DownloadingFile>()
 
     override suspend fun downloadFile(fileUrl: String): Either<FileDownloaderError, Long> =
-        withContext(dispatcherProvider.io()) {
+        withContext(dispatcherProvider.io) {
             Either.catch(
                 { exception ->
                     when (exception) {
@@ -66,7 +66,7 @@ internal class FileDownloaderRepositoryImpl(
 
 private data class DownloadingFile(
     val id: Long,
-    val url: String,
+    val url: String
 )
 
 private class FileDownloadingException : Exception()

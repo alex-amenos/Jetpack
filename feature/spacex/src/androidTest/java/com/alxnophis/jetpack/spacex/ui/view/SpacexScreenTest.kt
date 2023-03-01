@@ -42,21 +42,21 @@ class SpacexScreenTest : BaseComposeTest() {
 
     @Test
     fun spacex_past_launches_launch_site_is_displayed() {
-        val pastLaunch = PastLaunchesModelMother()
+        val pastLaunch = PastLaunchesModelMother(launchSiteName = "LaunchSiteName")
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(pastLaunch.launchSite)
     }
 
     @Test
     fun spacex_past_launches_mission_name_is_displayed() {
-        val pastLaunch = PastLaunchesModelMother()
+        val pastLaunch = PastLaunchesModelMother(missionName = "MissionName")
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(pastLaunch.missionName)
     }
 
     @Test
     fun spacex_past_launches_rocket_name_is_displayed() {
-        val pastLaunch = PastLaunchesModelMother()
+        val pastLaunch = PastLaunchesModelMother(rocketName = "RocketName")
         setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(pastLaunch.rocket)
     }

@@ -17,12 +17,11 @@ private val loadHomeModules by lazy {
 }
 
 private val homeModule: Module = module {
-    factory { UseCaseGetNavigationItems() }
+    factory { UseCaseGetNavigationItems(dispatcherProvider = get()) }
     factory<DispatcherProvider> { DefaultDispatcherProvider() }
     viewModel {
         HomeViewModel(
             initialState = HomeState(),
-            dispatchers = get(),
             useCaseGetNavigationItems = get()
         )
     }

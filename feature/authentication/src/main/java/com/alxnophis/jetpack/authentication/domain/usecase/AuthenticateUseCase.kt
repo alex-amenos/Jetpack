@@ -13,22 +13,20 @@ class AuthenticateUseCase(
     private val delay: Long = DELAY
 ) {
 
-    suspend fun invoke(
-        email: String,
-        password: String
-    ): Either<AuthenticationError, Authenticated> = Either.catch(
-        { AuthenticationError.WrongAuthentication },
-        {
-            withContext(dispatchers.io()) {
-                delay(delay)
-                if (hasAuthorization(email, password)) {
-                    Authenticated
-                } else {
-                    throw AuthenticationError.WrongAuthentication
+    suspend fun invoke(email: String, password: String): Either<AuthenticationError, Authenticated> =
+        withContext(dispatchers.io) {
+            Either.catch(
+                { AuthenticationError.WrongAuthentication },
+                {
+                    delay(delay)
+                    if (hasAuthorization(email, password)) {
+                        Authenticated
+                    } else {
+                        throw AuthenticationError.WrongAuthentication
+                    }
                 }
-            }
+            )
         }
-    )
 
     private fun hasAuthorization(email: String, password: String): Boolean =
         email == AUTHORIZED_EMAIL && password == AUTHORIZED_PASSWORD

@@ -9,13 +9,10 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.domain.usecase.UseCaseGetNavigationItems
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 internal class HomeViewModel(
     initialState: HomeState,
-    private val dispatchers: DispatcherProvider,
     private val useCaseGetNavigationItems: UseCaseGetNavigationItems
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
 
@@ -57,10 +54,7 @@ internal class HomeViewModel(
         }
     }
 
-    private suspend fun getNavigationItems(): Either<NavigationError, List<NavigationItem>> =
-        withContext(dispatchers.io()) {
-            useCaseGetNavigationItems.invoke()
-        }
+    private suspend fun getNavigationItems(): Either<NavigationError, List<NavigationItem>> = useCaseGetNavigationItems.invoke()
 
     private fun dismissError() {
         viewModelScope.launch {

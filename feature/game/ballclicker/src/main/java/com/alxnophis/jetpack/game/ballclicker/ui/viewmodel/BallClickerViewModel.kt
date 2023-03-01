@@ -24,7 +24,7 @@ internal class BallClickerViewModel(
     dispatcherProvider: DispatcherProvider
 ) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
 
-    private val timerScope = CoroutineScope(dispatcherProvider.default() + SupervisorJob())
+    private val timerScope = CoroutineScope(dispatcherProvider.default + SupervisorJob())
 
     private var timerJob: Job? = null
 
