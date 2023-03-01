@@ -18,6 +18,7 @@ dependencies {
     implementation(platform(Dep.ARROW_STACK))
     implementation Dep.ARROW_CORE
     implementation Dep.ARROW_FX_COROUTINES
+    implementation Dep.ARROW_RETROFIT
     implementation Dep.COIL
     implementation Dep.COROUTINES_CORE
     implementation Dep.COROUTINES_ANDROID
