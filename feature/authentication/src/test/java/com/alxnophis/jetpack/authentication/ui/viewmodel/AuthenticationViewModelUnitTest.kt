@@ -16,7 +16,6 @@ import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -27,9 +26,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     private lateinit var viewModel: AuthenticationViewModel
 
-    @BeforeEach
-    override fun beforeEach() {
-        super.beforeEach()
+    override fun beforeEachCompleted() {
         viewModel = viewModelMother()
     }
 

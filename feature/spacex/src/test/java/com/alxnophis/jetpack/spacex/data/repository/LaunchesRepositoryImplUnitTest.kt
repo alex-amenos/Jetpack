@@ -17,7 +17,6 @@ import java.util.stream.Stream
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -31,9 +30,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
     private val apiDataSourceMock: SpacexApi = mock()
     private lateinit var launchesRepository: LaunchesRepository
 
-    @BeforeEach
-    override fun beforeEach() {
-        super.beforeEach()
+    override fun beforeEachCompleted() {
         launchesRepository = LaunchesRepositoryImpl(
             dispatcherProvider = testDispatcherProvider,
             apiDataSource = apiDataSourceMock

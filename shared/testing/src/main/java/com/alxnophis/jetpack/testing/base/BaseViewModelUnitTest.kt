@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.alxnophis.jetpack.testing.base
 
 import androidx.annotation.VisibleForTesting
@@ -15,7 +17,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 
-@ExperimentalCoroutinesApi
 @VisibleForTesting
 @ExtendWith(InstantExecutorExtension::class)
 @Suppress("MemberVisibilityCanBePrivate", "unused")
@@ -34,10 +35,16 @@ open class BaseViewModelUnitTest {
     @BeforeEach
     open fun beforeEach() {
         Dispatchers.setMain(testDispatcher)
+        beforeEachCompleted()
     }
+
+    open fun beforeEachCompleted() {}
 
     @AfterEach
     open fun afterEach() {
         Dispatchers.resetMain()
+        afterEachCompleted()
     }
+
+    open fun afterEachCompleted() {}
 }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.alxnophis.jetpack.testing.base
 
 import androidx.annotation.VisibleForTesting
@@ -17,7 +19,6 @@ import org.junit.jupiter.api.BeforeEach
  * Module kotlinx-coroutines-test info:
  * https://github.com/Kotlin/kotlinx.coroutines/tree/master/kotlinx-coroutines-test#eagerly-entering-launch-and-async-blocks
  */
-@ExperimentalCoroutinesApi
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 @VisibleForTesting
 abstract class BaseUnitTest {
@@ -34,10 +35,16 @@ abstract class BaseUnitTest {
     @BeforeEach
     open fun beforeEach() {
         Dispatchers.setMain(testDispatcher)
+        beforeEachCompleted()
     }
+
+    open fun beforeEachCompleted() {}
 
     @AfterEach
     open fun afterEach() {
         Dispatchers.resetMain()
+        afterEachCompleted()
     }
+
+    open fun afterEachCompleted() {}
 }
