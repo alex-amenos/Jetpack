@@ -25,7 +25,7 @@ import org.mockito.kotlin.whenever
 
 @ApolloExperimental
 @ExperimentalCoroutinesApi
-internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
+private class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
 
     private val apiDataSourceMock: SpacexApi = mock()
     private lateinit var launchesRepository: LaunchesRepository

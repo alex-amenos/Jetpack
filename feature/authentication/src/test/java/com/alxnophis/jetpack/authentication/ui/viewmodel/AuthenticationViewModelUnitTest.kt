@@ -22,7 +22,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
+private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     private lateinit var viewModel: AuthenticationViewModel
 

@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
 @ExperimentalCoroutinesApi
-internal class SettingsViewModelUnitTests : BaseUnitTest() {
+private class SettingsViewModelUnitTests : BaseUnitTest() {
 
     @ParameterizedTest
     @MethodSource("testProvider")

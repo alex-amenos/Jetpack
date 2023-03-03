@@ -21,7 +21,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class PostsRepositoryUnitTests : BaseUnitTest() {
+private class PostsRepositoryUnitTests : BaseUnitTest() {
 
     private val apiDataSourceMock: JsonPlaceholderRetrofitService = mock()
     private lateinit var repositoryMock: PostsRepository

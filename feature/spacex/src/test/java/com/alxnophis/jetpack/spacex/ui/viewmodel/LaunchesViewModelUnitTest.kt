@@ -30,7 +30,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
+private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
     private val dateFormatterMock: BaseDateFormatter = mock()
     private val randomProviderMock: BaseRandomProvider = mock()
