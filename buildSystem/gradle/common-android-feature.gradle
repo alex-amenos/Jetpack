@@ -37,6 +37,9 @@ dependencies {
     testImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
     testImplementation Dep.COROUTINES_TEST
     testImplementation Dep.KOIN_TEST
+    testImplementation Dep.KOTEST_ASSERTIONS
+    testImplementation Dep.KOTEST_PROPERTY
+    testImplementation Dep.KOTEST_RUNNER
     testImplementation Dep.MOCKITO
     testImplementation Dep.MOCKITO_INLINE
     testImplementation Dep.MOCKITO_KOTLIN
