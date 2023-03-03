@@ -6,9 +6,9 @@ dependencies {
     implementation Dep.ARROW_CORE
     implementation Dep.ARROW_FX_COROUTINES
     implementation Dep.ARROW_RETROFIT
-    implementation Dep.KOIN_ANDROID
     implementation Dep.COROUTINES_ANDROID
     implementation Dep.COROUTINES_CORE
+    implementation Dep.KOIN_ANDROID
     implementation Dep.TIMBER
 
     debugImplementation Dep.LEAK_CANARY
@@ -21,6 +21,7 @@ dependencies {
     testImplementation Dep.KOTEST_ASSERTIONS
     testImplementation Dep.KOTEST_PROPERTY
     testImplementation Dep.KOTEST_RUNNER
+    testImplementation Dep.KOTLIN_REFLECT
     testImplementation Dep.MOCKITO
     testImplementation Dep.MOCKITO_INLINE
     testImplementation Dep.MOCKITO_KOTLIN

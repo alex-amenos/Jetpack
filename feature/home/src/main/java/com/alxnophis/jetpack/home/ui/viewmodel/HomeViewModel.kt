@@ -12,7 +12,7 @@ import com.alxnophis.jetpack.home.ui.contract.HomeState
 import kotlinx.coroutines.launch
 
 internal class HomeViewModel(
-    initialState: HomeState,
+    initialState: HomeState = HomeState(),
     private val useCaseGetNavigationItems: UseCaseGetNavigationItems
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
 

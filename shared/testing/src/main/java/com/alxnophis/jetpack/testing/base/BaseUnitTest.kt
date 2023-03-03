@@ -3,8 +3,6 @@
 package com.alxnophis.jetpack.testing.base
 
 import androidx.annotation.VisibleForTesting
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -25,12 +23,6 @@ abstract class BaseUnitTest {
     val testScheduler = TestCoroutineScheduler()
     val testDispatcher = StandardTestDispatcher(testScheduler)
     val testScope = TestScope(testDispatcher)
-    val testDispatcherProvider = object : DispatcherProvider {
-        override val default: CoroutineDispatcher = testDispatcher
-        override val io: CoroutineDispatcher = testDispatcher
-        override val main: CoroutineDispatcher = testDispatcher
-        override val unconfined: CoroutineDispatcher = testDispatcher
-    }
 
     @BeforeEach
     open fun beforeEach() {

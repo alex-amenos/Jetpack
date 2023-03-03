@@ -7,20 +7,21 @@ import arrow.retrofit.adapter.either.networkhandling.IOError
 import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.posts.data.mapper.mapToPostList
 import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.domain.model.PostsError
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class PostsRepositoryImpl(
-    private val dispatcherProvider: DispatcherProvider,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val apiDataSource: JsonPlaceholderRetrofitService
 ) : PostsRepository {
 
     override suspend fun getPosts(): Either<PostsError, List<Post>> =
-        withContext(dispatcherProvider.io) {
+        withContext(ioDispatcher) {
             apiDataSource
                 .getPosts()
                 .map { posts: List<PostApiModel> -> posts.mapToPostList() }

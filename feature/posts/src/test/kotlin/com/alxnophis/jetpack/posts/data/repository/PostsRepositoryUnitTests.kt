@@ -28,13 +28,13 @@ private class PostsRepositoryUnitTests : BaseUnitTest() {
 
     override fun beforeEachCompleted() {
         repositoryMock = PostsRepositoryImpl(
-            dispatcherProvider = testDispatcherProvider,
+            ioDispatcher = testDispatcher,
             apiDataSource = apiDataSourceMock
         )
     }
 
     @Test
-    fun `WHEN get posts from API succeed THEN return a list of posts `() = runTest {
+    fun `WHEN get posts from API succeed THEN return a list of posts`() = runTest {
         whenever(apiDataSourceMock.getPosts()).thenReturn(POST_API_LIST.right())
 
         val result = repositoryMock.getPosts()

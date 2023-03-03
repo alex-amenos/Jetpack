@@ -108,6 +108,7 @@ object Dep {
     const val JUNIT_JUPITER_ENGINE = "org.junit.jupiter:junit-jupiter-engine:${Version.JUNIT_JUPITER}"
     const val JUNIT_JUPITER_PARAMS = "org.junit.jupiter:junit-jupiter-params:${Version.JUNIT_JUPITER}"
     const val KOTLINX_SERIALIZATION_JSON = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.KOTLINX_SERIALIZATION_JSON}"
+    const val KOTLIN_REFLECT = "org.jetbrains.kotlin:kotlin-reflect"
     const val KOIN_ANDROID = "io.insert-koin:koin-android:${Version.KOIN}"
     const val KOIN_ANDROID_COMPOSE = "io.insert-koin:koin-androidx-compose:${Version.KOIN}"
     const val KOIN_ANDROID_WORK_MANAGER = "io.insert-koin:koin-androidx-workmanager:${Version.KOIN}"

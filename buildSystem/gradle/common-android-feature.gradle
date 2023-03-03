@@ -40,6 +40,7 @@ dependencies {
     testImplementation Dep.KOTEST_ASSERTIONS
     testImplementation Dep.KOTEST_PROPERTY
     testImplementation Dep.KOTEST_RUNNER
+    testImplementation Dep.KOTLIN_REFLECT
     testImplementation Dep.MOCKITO
     testImplementation Dep.MOCKITO_INLINE
     testImplementation Dep.MOCKITO_KOTLIN
