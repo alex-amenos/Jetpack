@@ -14,7 +14,7 @@ import java.util.UUID
 import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
-    initialState: PostsState,
+    initialState: PostsState = PostsState(),
     private val postsUseCase: PostsUseCase
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 

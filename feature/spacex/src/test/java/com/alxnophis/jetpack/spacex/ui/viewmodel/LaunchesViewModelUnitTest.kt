@@ -20,7 +20,6 @@ import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -31,16 +30,14 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
+private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
     private val dateFormatterMock: BaseDateFormatter = mock()
     private val randomProviderMock: BaseRandomProvider = mock()
     private val launchesRepositoryMock: LaunchesRepository = mock()
     private lateinit var viewModel: LaunchesViewModel
 
-    @BeforeEach
-    override fun beforeEach() {
-        super.beforeEach()
+    override fun beforeEachCompleted() {
         viewModel = viewModelMother()
     }
 

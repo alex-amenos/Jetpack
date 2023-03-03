@@ -3,16 +3,17 @@ package com.alxnophis.jetpack.home.domain.usecase
 import arrow.core.Either
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.router.screen.Screen
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class UseCaseGetNavigationItems(
-    private val dispatcherProvider: DispatcherProvider
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
     suspend operator fun invoke(): Either<NavigationError, List<NavigationItem>> =
-        withContext(dispatcherProvider.io) {
+        withContext(ioDispatcher) {
             Either.catch(
                 { NavigationError.Unknown },
                 {

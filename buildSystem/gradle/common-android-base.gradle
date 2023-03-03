@@ -47,6 +47,7 @@ android {
 
     testOptions {
         unitTests.all {
+            it.useJUnitPlatform()
             if (name == "testDebugUnitTest") {
                 kover {
                     enabled = true

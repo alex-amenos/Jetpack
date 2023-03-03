@@ -7,7 +7,7 @@ import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundState
 import kotlinx.coroutines.launch
 
 internal class MyPlaygroundViewModel(
-    initialState: MyPlaygroundState
+    initialState: MyPlaygroundState = MyPlaygroundState()
 ) : BaseViewModel<MyPlaygroundEvent, MyPlaygroundState>(initialState) {
 
     override fun handleEvent(event: MyPlaygroundEvent) {

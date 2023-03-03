@@ -1,10 +1,7 @@
 package com.alxnophis.jetpack.home.di
 
 import com.alxnophis.jetpack.home.domain.usecase.UseCaseGetNavigationItems
-import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
-import com.alxnophis.jetpack.kotlin.utils.DefaultDispatcherProvider
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
@@ -17,12 +14,8 @@ private val loadHomeModules by lazy {
 }
 
 private val homeModule: Module = module {
-    factory { UseCaseGetNavigationItems(dispatcherProvider = get()) }
-    factory<DispatcherProvider> { DefaultDispatcherProvider() }
+    factory { UseCaseGetNavigationItems() }
     viewModel {
-        HomeViewModel(
-            initialState = HomeState(),
-            useCaseGetNavigationItems = get()
-        )
+        HomeViewModel(useCaseGetNavigationItems = get())
     }
 }
