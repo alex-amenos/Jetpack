@@ -1,8 +1,8 @@
 package com.alxnophis.jetpack.api.jsonplaceholder
 
+import arrow.retrofit.adapter.either.EitherCallAdapterFactory
 import com.alxnophis.jetpack.api.BuildConfig
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
-import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
@@ -31,7 +31,7 @@ class JsonPlaceholderRetrofitFactory {
             .Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addCallAdapterFactory(NetworkResponseAdapterFactory())
+            .addCallAdapterFactory(EitherCallAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(JsonPlaceholderRetrofitService::class.java)

@@ -1,5 +1,5 @@
 package com.alxnophis.jetpack.filedownloader.data.datasource
 
-interface AndroidDownloader {
+interface DownloaderDataSource {
     fun downloadFile(url: String): Long
 }

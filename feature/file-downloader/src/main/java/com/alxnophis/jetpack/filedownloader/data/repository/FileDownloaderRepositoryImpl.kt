@@ -1,21 +1,22 @@
 package com.alxnophis.jetpack.filedownloader.data.repository
 
 import arrow.core.Either
-import com.alxnophis.jetpack.filedownloader.data.datasource.AndroidDownloader
+import com.alxnophis.jetpack.filedownloader.data.datasource.DownloaderDataSource
 import com.alxnophis.jetpack.filedownloader.data.model.FileDownloaderError
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 internal class FileDownloaderRepositoryImpl(
-    private val androidDownloader: AndroidDownloader,
-    private val dispatcherProvider: DispatcherProvider
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val androidDownloaderDataSource: DownloaderDataSource
 ) : FileDownloaderRepository {
 
     private val downloadingFiles = mutableListOf<DownloadingFile>()
     private val downloadedFiles = mutableListOf<DownloadingFile>()
 
     override suspend fun downloadFile(fileUrl: String): Either<FileDownloaderError, Long> =
-        withContext(dispatcherProvider.io) {
+        withContext(ioDispatcher) {
             Either.catch(
                 { exception ->
                     when (exception) {
@@ -29,7 +30,7 @@ internal class FileDownloaderRepositoryImpl(
                         isFileDownloading(fileUrl) -> throw FileDownloadingException()
                         isFileDownloaded(fileUrl) -> throw FileDownloadedException()
                         else -> {
-                            androidDownloader
+                            androidDownloaderDataSource
                                 .downloadFile(fileUrl)
                                 .also { downloadId ->
                                     synchronized(downloadingFiles) {

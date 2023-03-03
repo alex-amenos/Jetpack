@@ -1,30 +1,38 @@
 package com.alxnophis.jetpack.posts.data.repository
 
 import arrow.core.Either
-import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderApi
-import com.alxnophis.jetpack.api.jsonplaceholder.model.JsonPlaceholderApiError
+import arrow.retrofit.adapter.either.networkhandling.CallError
+import arrow.retrofit.adapter.either.networkhandling.HttpError
+import arrow.retrofit.adapter.either.networkhandling.IOError
+import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
+import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.posts.data.mapper.mapToPostList
 import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.domain.model.PostsError
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class PostsRepositoryImpl(
-    private val dispatcherProvider: DispatcherProvider,
-    private val apiDataSource: JsonPlaceholderApi
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val apiDataSource: JsonPlaceholderRetrofitService
 ) : PostsRepository {
+
     override suspend fun getPosts(): Either<PostsError, List<Post>> =
-        withContext(dispatcherProvider.io) {
+        withContext(ioDispatcher) {
             apiDataSource
-                .getPost()
+                .getPosts()
                 .map { posts: List<PostApiModel> -> posts.mapToPostList() }
-                .mapLeft { error ->
-                    when (error) {
-                        JsonPlaceholderApiError.Network -> PostsError.Network
-                        JsonPlaceholderApiError.Unexpected -> PostsError.Unexpected
-                        is JsonPlaceholderApiError.Server -> PostsError.Server
-                        is JsonPlaceholderApiError.Unknown -> PostsError.Unknown
+                .mapLeft { error: CallError ->
+                    Timber.d("GET posts error: $error")
+                    when {
+                        error is IOError -> PostsError.Unexpected
+                        error is UnexpectedCallError -> PostsError.Unexpected
+                        error is HttpError && error.code >= 500 -> PostsError.Server
+                        error is HttpError -> PostsError.Network
+                        else -> PostsError.Unknown
                     }
                 }
         }

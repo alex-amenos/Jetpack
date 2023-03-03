@@ -15,10 +15,10 @@ import java.util.Date
 typealias FileUrl = String
 typealias ContentType = String
 
-internal class AndroidDownloaderImpl(
+internal class AndroidDownloaderDataSourceImpl(
     private val context: Context,
     private val dateFormatter: BaseDateFormatter
-) : AndroidDownloader {
+) : DownloaderDataSource {
 
     private val downloadManager: DownloadManager = context.getSystemService(DownloadManager::class.java)
 

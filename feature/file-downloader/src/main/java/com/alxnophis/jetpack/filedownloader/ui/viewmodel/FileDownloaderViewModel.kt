@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 internal class FileDownloaderViewModel(
-    initialState: FileDownloaderState,
+    initialState: FileDownloaderState = FileDownloaderState(),
     private val fileDownloaderRepository: FileDownloaderRepository
 ) : BaseViewModel<FileDownloaderEvent, FileDownloaderState>(initialState) {
 
