@@ -32,7 +32,7 @@ private class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
 
     override fun beforeEachCompleted() {
         launchesRepository = LaunchesRepositoryImpl(
-            dispatcherProvider = testDispatcherProvider,
+            ioDispatcher = testDispatcher,
             apiDataSource = apiDataSourceMock
         )
     }
