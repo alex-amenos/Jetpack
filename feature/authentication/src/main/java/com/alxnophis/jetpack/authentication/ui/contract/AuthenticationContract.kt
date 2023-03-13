@@ -11,7 +11,7 @@ internal sealed class AuthenticationEvent : UiEvent {
     object AutoCompleteAuthorization : AuthenticationEvent()
     object ErrorDismissed : AuthenticationEvent()
     object ToggleAuthenticationMode : AuthenticationEvent()
-    object UserAuthorizedConsumed : AuthenticationEvent()
+    object SetUserNotAuthorized : AuthenticationEvent()
     data class EmailChanged(val email: String) : AuthenticationEvent()
     data class PasswordChanged(val password: String) : AuthenticationEvent()
 }
@@ -23,7 +23,7 @@ internal data class AuthenticationState(
     val password: String = EMPTY,
     val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
-    val error: Int? = null,
+    val error: Int? = null
 ) : UiState {
 
     fun isFormValid(): Boolean {

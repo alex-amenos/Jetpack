@@ -14,8 +14,8 @@ import java.util.UUID
 import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
-    initialState: PostsState,
-    private val postsUseCase: PostsUseCase,
+    initialState: PostsState = PostsState(),
+    private val postsUseCase: PostsUseCase
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 
     init {
@@ -34,37 +34,41 @@ internal class PostsViewModel(
     private fun renderPosts() {
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
-            getPosts().fold(
-                { error ->
-                    val errorMessages: List<ErrorMessage> = currentState.errorMessages + ErrorMessage(
-                        id = UUID.randomUUID().mostSignificantBits,
-                        messageId = when (error) {
-                            PostsError.Network -> R.string.posts_error_network
-                            PostsError.Server -> R.string.posts_error_server
-                            PostsError.Unknown -> R.string.posts_error_unknown
-                            PostsError.Unexpected -> R.string.posts_error_unexpected
+            getPosts()
+                .mapLeft { error: PostsError -> error.mapTo() }
+                .fold(
+                    { errorMessages: List<ErrorMessage> ->
+                        updateState {
+                            copy(
+                                isLoading = false,
+                                errorMessages = errorMessages
+                            )
                         }
-                    )
-                    updateState {
-                        copy(
-                            isLoading = false,
-                            errorMessages = errorMessages
-                        )
+                    },
+                    { posts ->
+                        updateState {
+                            copy(
+                                isLoading = false,
+                                posts = posts
+                            )
+                        }
                     }
-                },
-                { posts ->
-                    updateState {
-                        copy(
-                            isLoading = false,
-                            posts = posts
-                        )
-                    }
-                }
-            )
+                )
         }
     }
 
     private suspend fun getPosts(): Either<PostsError, List<Post>> = postsUseCase.invoke()
+
+    private fun PostsError.mapTo(): List<ErrorMessage> =
+        currentState.errorMessages + ErrorMessage(
+            id = UUID.randomUUID().mostSignificantBits,
+            messageId = when (this@mapTo) {
+                PostsError.Network -> R.string.posts_error_network
+                PostsError.Server -> R.string.posts_error_server
+                PostsError.Unknown -> R.string.posts_error_unknown
+                PostsError.Unexpected -> R.string.posts_error_unexpected
+            }
+        )
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }

@@ -13,15 +13,15 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.settings.R
 
 @Composable
 internal fun SettingsManageSubscriptionItem(
     modifier: Modifier = Modifier,
     title: String,
-    onSubscriptionClicked: () -> Unit,
+    onSubscriptionClicked: () -> Unit
 ) {
     SettingsItem(
         modifier = modifier
@@ -29,19 +29,19 @@ internal fun SettingsManageSubscriptionItem(
         Row(
             modifier = Modifier
                 .clickable(
-                    onClickLabel = stringResource(id = R.string.settings_cd_open_subscription),
+                    onClickLabel = stringResource(id = R.string.settings_cd_open_subscription)
                 ) {
                     onSubscriptionClicked()
                 }
-                .padding(16.dp),
+                .padding(mediumPadding)
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = title,
+                text = title
             )
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = null,
+                contentDescription = null
             )
         }
     }

@@ -12,24 +12,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @Composable
 internal fun AuthorizedScreen(
-    navController: NavController,
     userEmail: String,
+    popBackStack: () -> Unit
 ) {
     BackHandler {
-        navController.popBackStack()
+        popBackStack()
     }
     AuthorizedContent(userEmail)
 }
 
 @Composable
 internal fun AuthorizedContent(
-    userEmail: String,
+    userEmail: String
 ) {
     AppTheme {
         Box(

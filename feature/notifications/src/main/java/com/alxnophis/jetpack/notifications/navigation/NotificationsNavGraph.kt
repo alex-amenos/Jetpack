@@ -21,7 +21,7 @@ fun NavGraphBuilder.notificationsNavGraph(
         ) {
             injectNotifications()
             NotificationsScreen(
-                navController = navController
+                popBackStack = { navController.popBackStack() }
             )
         }
     }

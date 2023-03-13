@@ -5,18 +5,23 @@ dependencies {
     implementation(platform(Dep.ARROW_STACK))
     implementation Dep.ARROW_CORE
     implementation Dep.ARROW_FX_COROUTINES
-    implementation Dep.KOIN_ANDROID
+    implementation Dep.ARROW_RETROFIT
     implementation Dep.COROUTINES_ANDROID
     implementation Dep.COROUTINES_CORE
+    implementation Dep.KOIN_ANDROID
     implementation Dep.TIMBER
 
     debugImplementation Dep.LEAK_CANARY
 
+    testImplementation Dep.COROUTINES_TEST
     testImplementation Dep.JUNIT
     testImplementation Dep.JUNIT_JUPITER_API
     testImplementation Dep.JUNIT_JUPITER_PARAMS
     testImplementation Dep.KOIN_TEST
-    testImplementation Dep.COROUTINES_TEST
+    testImplementation Dep.KOTEST_ASSERTIONS
+    testImplementation Dep.KOTEST_PROPERTY
+    testImplementation Dep.KOTEST_RUNNER
+    testImplementation Dep.KOTLIN_REFLECT
     testImplementation Dep.MOCKITO
     testImplementation Dep.MOCKITO_INLINE
     testImplementation Dep.MOCKITO_KOTLIN

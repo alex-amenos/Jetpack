@@ -21,26 +21,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 
 @Composable
 fun CoreTopBar(
     modifier: Modifier,
     title: String,
-    onBack: () -> Unit,
+    onBack: () -> Unit
 ) {
     TopAppBar(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.primaryVariant,
-        contentPadding = PaddingValues(start = 12.dp)
+        contentPadding = PaddingValues(start = smallPadding)
     ) {
         IconButton(
             modifier = Modifier.testTag(CoreTags.TAG_CORE_BACK),
-            onClick = onBack,
+            onClick = onBack
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = stringResource(id = R.string.core_cd_go_back),
-                tint = MaterialTheme.colors.onPrimary,
+                tint = MaterialTheme.colors.onPrimary
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -48,7 +49,7 @@ fun CoreTopBar(
             text = title,
             color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

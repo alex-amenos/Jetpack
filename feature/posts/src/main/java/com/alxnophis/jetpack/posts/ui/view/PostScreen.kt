@@ -38,12 +38,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
@@ -58,17 +59,16 @@ import kotlin.math.roundToInt
 
 @Composable
 internal fun PostsScreen(
-    navController: NavController,
-    viewModel: PostsViewModel
+    viewModel: PostsViewModel,
+    popBackStack: () -> Unit
 ) {
-    val navigateBack: () -> Unit = { navController.popBackStack() }
     BackHandler {
-        navigateBack()
+        popBackStack()
     }
     PostsContent(
         state = viewModel.uiState.collectAsState().value,
         handleEvent = viewModel::handleEvent,
-        navigateBack = navigateBack
+        navigateBack = popBackStack
     )
 }
 
@@ -106,7 +106,7 @@ internal fun PostsContent(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 toolbarHeight = toolbarHeight,
-                handleEvent = handleEvent,
+                handleEvent = handleEvent
             )
             CoreTopBar(
                 modifier = Modifier
@@ -117,7 +117,7 @@ internal fun PostsContent(
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
-                    errorMessage = stringResource(error.messageId),
+                    errorMessage = error.composableMessage(),
                     dismissError = { handleEvent.invoke(PostsEvent.DismissError(error.id)) }
                 )
             }
@@ -130,21 +130,21 @@ internal fun PostList(
     modifier: Modifier,
     state: PostsState,
     toolbarHeight: Dp,
-    handleEvent: PostsEvent.() -> Unit,
+    handleEvent: PostsEvent.() -> Unit
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
         modifier = modifier,
         indicatorPadding = PaddingValues(top = toolbarHeight),
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) },
+        onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) }
     ) {
         LazyColumn(
             state = listState,
             modifier = Modifier
                 .fillMaxWidth()
                 .drawVerticalScrollbar(listState),
-            contentPadding = PaddingValues(top = toolbarHeight, start = 16.dp, end = 16.dp)
+            contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding)
         ) {
             items(
                 items = state.posts,
@@ -165,14 +165,14 @@ private fun CardPostItem(
     Card(
         elevation = 10.dp,
         modifier = Modifier
-            .padding(vertical = 16.dp)
+            .padding(vertical = mediumPadding)
             .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(16.dp),
+                .padding(mediumPadding)
         ) {
             Text(
                 modifier = Modifier
@@ -180,27 +180,27 @@ private fun CardPostItem(
                     .placeholder(
                         visible = state.isLoading,
                         color = Color.Gray,
-                        shape = RoundedCornerShape(4.dp),
+                        shape = RoundedCornerShape(4.dp)
                     ),
                 text = item.title.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colors.primary,
                 fontSize = 22.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.SemiBold
             )
             Text(
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(top = 8.dp, bottom = 16.dp)
+                    .padding(top = smallPadding, bottom = mediumPadding)
                     .placeholder(
                         visible = state.isLoading,
                         color = Color.Gray,
-                        shape = RoundedCornerShape(4.dp),
+                        shape = RoundedCornerShape(4.dp)
                     ),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 textAlign = TextAlign.Justify,
                 color = MaterialTheme.colors.onSurface,
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Light,
+                fontWeight = FontWeight.Light
             )
         }
     }
@@ -213,18 +213,18 @@ private fun PostScreenPreview() {
         id = 1,
         userId = 1,
         title = "Title 1",
-        body = stringResource(id = R.string.core_lorem_ipsum_m),
+        body = stringResource(id = R.string.core_lorem_ipsum_m)
     )
     val post2 = Post(
         id = 2,
         userId = 1,
         title = "Title 2",
-        body = stringResource(id = R.string.core_lorem_ipsum_xl),
+        body = stringResource(id = R.string.core_lorem_ipsum_xl)
     )
     val state = PostsState(
         isLoading = false,
         posts = listOf(post1, post2),
-        errorMessages = listOf()
+        errorMessages = emptyList()
     )
     PostsContent(
         state = state,

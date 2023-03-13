@@ -13,14 +13,11 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 internal class AuthenticationViewModel(
-    initialState: AuthenticationState,
-    private val dispatchers: DispatcherProvider,
-    private val authenticateUseCase: AuthenticateUseCase,
+    initialState: AuthenticationState = AuthenticationState(),
+    private val authenticateUseCase: AuthenticateUseCase
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
 
     override fun handleEvent(event: AuthenticationEvent) {
@@ -29,7 +26,7 @@ internal class AuthenticationViewModel(
                 AuthenticationEvent.Authenticate -> authenticate()
                 AuthenticationEvent.ErrorDismissed -> updateState { copy(error = null) }
                 AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-                AuthenticationEvent.UserAuthorizedConsumed -> updateState { copy(isUserAuthorized = false) }
+                AuthenticationEvent.SetUserNotAuthorized -> updateState { copy(isUserAuthorized = false) }
                 AuthenticationEvent.AutoCompleteAuthorization -> updateState {
                     copy(email = AUTHORIZED_EMAIL, password = AUTHORIZED_PASSWORD)
                 }
@@ -64,16 +61,14 @@ internal class AuthenticationViewModel(
     private fun updatePassword(newPassword: String) {
         viewModelScope.launch {
             val requirements = mutableListOf<PasswordRequirements>()
-            withContext(dispatchers.default()) {
-                if (newPassword.length >= MIN_PASSWORD_LENGTH) {
-                    requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
-                }
-                if (newPassword.any { it.isUpperCase() }) {
-                    requirements.add(PasswordRequirements.CAPITAL_LETTER)
-                }
-                if (newPassword.any { it.isDigit() }) {
-                    requirements.add(PasswordRequirements.NUMBER)
-                }
+            if (newPassword.length >= MIN_PASSWORD_LENGTH) {
+                requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
+            }
+            if (newPassword.any { it.isUpperCase() }) {
+                requirements.add(PasswordRequirements.CAPITAL_LETTER)
+            }
+            if (newPassword.any { it.isDigit() }) {
+                requirements.add(PasswordRequirements.NUMBER)
             }
             updateState {
                 copy(
@@ -92,7 +87,7 @@ internal class AuthenticationViewModel(
                     updateState {
                         copy(
                             isLoading = false,
-                            error = R.string.authentication_auth_error,
+                            error = R.string.authentication_auth_error
                         )
                     }
                 },
@@ -100,7 +95,7 @@ internal class AuthenticationViewModel(
                     updateState {
                         copy(
                             isLoading = false,
-                            isUserAuthorized = true,
+                            isUserAuthorized = true
                         )
                     }
                 }
@@ -109,9 +104,7 @@ internal class AuthenticationViewModel(
     }
 
     private suspend fun authenticateUser(email: String, password: String): Either<AuthenticationError, Unit> =
-        withContext(dispatchers.io()) {
-            authenticateUseCase.invoke(email, password)
-        }
+        authenticateUseCase.invoke(email, password)
 
     companion object {
         private const val MIN_PASSWORD_LENGTH = 8

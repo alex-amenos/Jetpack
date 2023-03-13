@@ -11,35 +11,28 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.router.screen.Screen
-import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun AuthenticationScreen(
-    navController: NavController,
-    viewModel: AuthenticationViewModel = getViewModel()
+    viewModel: AuthenticationViewModel,
+    popBackStack: () -> Unit,
+    navigateTo: (String) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
     LaunchedEffect(state.isUserAuthorized) {
         if (state.isUserAuthorized) {
-            navController.navigate(Screen.Authorized.routeWithParams(state.email)) {
-                // Remove Authentication screen form back stack
-                popUpTo(Screen.Authentication.route) {
-                    inclusive = true
-                }
-            }
-            viewModel.handleEvent(AuthenticationEvent.UserAuthorizedConsumed)
+            navigateTo(state.email)
+            viewModel.handleEvent(AuthenticationEvent.SetUserNotAuthorized)
         }
     }
     BackHandler {
-        navController.popBackStack()
+        popBackStack()
     }
     AuthenticationContent(
         state,
@@ -51,7 +44,7 @@ internal fun AuthenticationScreen(
 @Composable
 internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
-    handleEvent: AuthenticationEvent.() -> Unit,
+    handleEvent: AuthenticationEvent.() -> Unit
 ) {
     AppTheme {
         AuthenticationForm(
@@ -87,6 +80,6 @@ internal fun AuthenticationContent(
 private fun AuthenticationFormPreview() {
     AuthenticationContent(
         authenticationState = AuthenticationState(),
-        handleEvent = {},
+        handleEvent = {}
     )
 }

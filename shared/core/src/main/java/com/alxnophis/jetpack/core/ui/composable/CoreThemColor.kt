@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 
 @Preview(showBackground = true)
 @Composable
@@ -36,7 +37,7 @@ private fun CoreColorsThemePreview() {
             "surface" to MaterialTheme.colors.surface,
             "onSurface" to MaterialTheme.colors.onSurface,
             "error" to MaterialTheme.colors.error,
-            "onError" to MaterialTheme.colors.onError,
+            "onError" to MaterialTheme.colors.onError
         )
         Column(
             modifier = Modifier
@@ -54,7 +55,7 @@ private fun CoreColorsThemePreview() {
 @Composable
 private fun ColorItem(
     colorName: String,
-    color: Color,
+    color: Color
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -69,7 +70,7 @@ private fun ColorItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 8.dp),
+                .padding(start = smallPadding),
             text = colorName
         )
     }

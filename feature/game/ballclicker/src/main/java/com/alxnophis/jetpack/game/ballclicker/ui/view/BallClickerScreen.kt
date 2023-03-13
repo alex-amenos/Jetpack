@@ -28,10 +28,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.game.ballclicker.R
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
@@ -41,17 +40,16 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlin.random.Random
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun BallClickerScreen(
-    navController: NavController,
-    viewModel: BallClickerViewModel = getViewModel()
+    viewModel: BallClickerViewModel,
+    popBackStack: () -> Unit
 ) {
     BackHandler {
         viewModel
             .handleEvent(BallClickerEvent.Stop)
-            .also { navController.popBackStack() }
+            .also { popBackStack() }
     }
     BallClickerContent(
         viewModel.uiState.collectAsState().value,
@@ -73,7 +71,7 @@ internal fun BallClickerContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
+                    .padding(mediumPadding),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {

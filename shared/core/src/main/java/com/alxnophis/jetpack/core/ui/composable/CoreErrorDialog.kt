@@ -14,10 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 
 @Composable
 fun CoreErrorDialog(
@@ -32,15 +33,15 @@ fun CoreErrorDialog(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 4.dp, end = 8.dp),
-                contentAlignment = Alignment.CenterEnd,
+                    .padding(bottom = extraSmallPadding, end = smallPadding),
+                contentAlignment = Alignment.CenterEnd
             ) {
                 TextButton(
-                    onClick = { dismissError() },
+                    onClick = { dismissError() }
                 ) {
                     Text(
                         text = stringResource(R.string.core_ok),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.body1
                     )
                 }
             }
@@ -49,7 +50,7 @@ fun CoreErrorDialog(
             Text(
                 text = stringResource(R.string.core_error_title),
                 fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.SemiBold
             )
         },
         text = {

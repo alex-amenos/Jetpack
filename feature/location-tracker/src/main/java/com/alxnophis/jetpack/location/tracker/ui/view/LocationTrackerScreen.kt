@@ -23,33 +23,32 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.location.tracker.R
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun LocationTrackerScreen(
-    navController: NavController,
-    viewModel: LocationTrackerViewModel = getViewModel(),
+    viewModel: LocationTrackerViewModel,
+    popBackStack: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
-    val navigateBack: () -> Unit = { navController.popBackStack() }
     BackHandler {
         viewModel
             .handleEvent(LocationTrackerEvent.EndTracking)
-            .also { navigateBack() }
+            .also { popBackStack() }
     }
     LocationTrackerContent(
         state = state,
         handleEvent = viewModel::handleEvent,
-        navigateBack = navigateBack
+        navigateBack = popBackStack
     )
 }
 
@@ -71,7 +70,7 @@ internal fun LocationTrackerContent(
                 onBack = {
                     handleEvent(LocationTrackerEvent.EndTracking)
                     navigateBack()
-                },
+                }
             )
             LocationPermission(
                 composableWithPermissionGranted = { UserLocation(state = state) },
@@ -85,12 +84,12 @@ internal fun LocationTrackerContent(
 @Composable
 private fun LocationPermission(
     composableWithPermissionGranted: @Composable () -> Unit,
-    handleEvent: LocationTrackerEvent.() -> Unit,
+    handleEvent: LocationTrackerEvent.() -> Unit
 ) {
     val locationPermissionsState = rememberMultiplePermissionsState(
         listOf(
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
         )
     )
     if (locationPermissionsState.allPermissionsGranted) {
@@ -121,7 +120,7 @@ private fun LocationPermission(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(mediumPadding),
                 textAlign = TextAlign.Justify,
                 text = stringResource(textIdToShow)
             )
@@ -138,7 +137,7 @@ private fun UserLocation(
     state: LocationTrackerState
 ) {
     Text(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+        modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
         fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colors.primary,
         fontSize = 16.sp,
@@ -147,11 +146,11 @@ private fun UserLocation(
     Text(
         modifier = Modifier
             .wrapContentSize()
-            .padding(16.dp),
+            .padding(mediumPadding),
         text = state.lastKnownLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
     )
     Text(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+        modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
         fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colors.primary,
         fontSize = 16.sp,
@@ -160,7 +159,7 @@ private fun UserLocation(
     Text(
         modifier = Modifier
             .wrapContentSize()
-            .padding(16.dp),
+            .padding(mediumPadding),
         text = state.userLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
     )
 }

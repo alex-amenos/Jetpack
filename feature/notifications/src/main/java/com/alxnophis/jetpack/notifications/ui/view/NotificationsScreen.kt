@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
 import com.alxnophis.jetpack.core.extensions.showNotification
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
@@ -34,13 +33,12 @@ import com.alxnophis.jetpack.notifications.R
 
 @Composable
 internal fun NotificationsScreen(
-    navController: NavController,
+    popBackStack: () -> Unit
 ) {
-    val navigateBack: () -> Unit = { navController.popBackStack() }
     BackHandler {
-        navigateBack()
+        popBackStack()
     }
-    NotificationsContent(navigateBack)
+    NotificationsContent(navigateBack = popBackStack)
 }
 
 @Composable
@@ -53,12 +51,12 @@ private fun NotificationsContent(
                 .fillMaxSize()
                 .background(MaterialTheme.colors.surface),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CoreTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.notifications_title),
-                onBack = { navigateBack() },
+                onBack = { navigateBack() }
             )
             NotificationPermission()
         }
@@ -86,7 +84,7 @@ private fun NotificationPermission() {
             .fillMaxSize()
             .background(MaterialTheme.colors.surface),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Button(

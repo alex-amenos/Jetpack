@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -25,22 +24,20 @@ import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 internal fun SettingsScreen(
-    navController: NavController,
-    viewModel: SettingsViewModel = getViewModel(),
+    viewModel: SettingsViewModel,
+    popBackStack: () -> Unit,
     appVersion: String = LocalContext.current.getVersion()
 ) {
     val state = viewModel.uiState.collectAsState().value
-    val navigateBack: () -> Unit = { navController.popBackStack() }
-    BackHandler { navigateBack() }
+    BackHandler { popBackStack() }
     SettingsContent(
         state = state,
         appVersion = appVersion,
         handleEvent = viewModel::handleEvent,
-        navigateBack = navigateBack
+        navigateBack = popBackStack
     )
 }
 

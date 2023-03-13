@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.spacex.data.model
 
+import com.alxnophis.jetpack.core.base.constants.EMPTY
 import java.util.Date
 import org.jetbrains.annotations.TestOnly
 
@@ -7,13 +8,13 @@ import org.jetbrains.annotations.TestOnly
 internal object PastLaunchesDataModelMother {
 
     operator fun invoke(
-        id: String = "id",
-        missionName: String? = "mission_name",
-        details: String? = "details",
-        rocketName: String? = "rocket_name",
-        launchSiteShort: String? = "launch_site_name",
-        launchSite: String? = "launch_site_name_long",
-        missionPatchSmallUrl: String? = "mission_patch",
+        id: String = EMPTY,
+        missionName: String? = null,
+        details: String? = null,
+        rocketName: String? = null,
+        launchSiteShort: String? = null,
+        launchSite: String? = null,
+        missionPatchSmallUrl: String? = null,
         launchDateUtc: Date? = null
     ) = PastLaunchDataModel(
         id = id,
@@ -23,6 +24,6 @@ internal object PastLaunchesDataModelMother {
         launchSiteShort = launchSiteShort,
         launchSite = launchSite,
         missionPatchSmallUrl = missionPatchSmallUrl,
-        launchDateUtc = launchDateUtc,
+        launchDateUtc = launchDateUtc
     )
 }

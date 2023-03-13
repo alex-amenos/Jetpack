@@ -1,16 +1,5 @@
 @file:Suppress("unused", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
 
-object AppVersion {
-    private const val MAJOR = 0
-    private const val MINOR = 0
-    private const val BUILD = 5
-
-    const val NAME: String = "${MAJOR}.${MINOR}.${BUILD}"
-    val CODE = "${MAJOR}${MINOR.format()}${BUILD.format()}".toInt()
-
-    private fun Int.format() = "%03d".format(this)
-}
-
 object AppConfig {
     const val APPLICATION_ID = "com.alxnophis.jetpack"
     const val APP_PACKAGE_NAME = APPLICATION_ID
@@ -24,19 +13,21 @@ object AppConfig {
 object Modules {
     // App modules
     const val APP = ":app"
+
     // Shared modules
     const val SHARED_API = ":shared:api"
     const val SHARED_CORE = ":shared:core"
     const val SHARED_KOTLIN = ":shared:kotlin"
     const val SHARED_ROUTER = ":shared:router"
     const val SHARED_TESTING = ":shared:testing"
+
     // Feature modules
     const val FEATURE_HOME = ":feature:home"
     const val FEATURE_AUTHENTICATION = ":feature:authentication"
     const val FEATURE_GAME_BALL_CLICKER = ":feature:game:ballclicker"
     const val FEATURE_MY_PLAYGROUND = ":feature:my-playground"
     const val FEATURE_NOTIFICATIONS = ":feature:notifications"
-    const val FEATURE_LOCATION_TRACKER =":feature:location-tracker"
+    const val FEATURE_LOCATION_TRACKER = ":feature:location-tracker"
     const val FEATURE_POSTS = ":feature:posts"
     const val FEATURE_ROOT = ":feature:root"
     const val FEATURE_SETTINGS = ":feature:settings"

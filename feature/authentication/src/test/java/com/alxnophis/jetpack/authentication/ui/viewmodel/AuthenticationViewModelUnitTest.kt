@@ -12,25 +12,21 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
+private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     private lateinit var viewModel: AuthenticationViewModel
 
-    @BeforeEach
-    override fun beforeEach() {
-        super.beforeEach()
+    override fun beforeEachCompleted() {
         viewModel = viewModelMother()
     }
 
@@ -145,7 +141,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                         passwordRequirements = listOf(
                             PasswordRequirements.EIGHT_CHARACTERS,
                             PasswordRequirements.CAPITAL_LETTER,
-                            PasswordRequirements.NUMBER,
+                            PasswordRequirements.NUMBER
                         )
                     ),
                     awaitItem()
@@ -192,7 +188,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, isLoading = false, isUserAuthorized = true)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.handleEvent(AuthenticationEvent.UserAuthorizedConsumed)
+            viewModel.handleEvent(AuthenticationEvent.SetUserNotAuthorized)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -231,7 +227,7 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                 assertEquals(
                     initialState.copy(
                         isLoading = false,
-                        error = R.string.authentication_auth_error,
+                        error = R.string.authentication_auth_error
                     ),
                     awaitItem()
                 )
@@ -242,9 +238,8 @@ internal class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     private fun viewModelMother(
         initialState: AuthenticationState = initialAuthenticationState,
-        dispatcherProvider: DispatcherProvider = testDispatcherProvider,
-        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock,
-    ) = AuthenticationViewModel(initialState, dispatcherProvider, authenticateUseCase)
+        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock
+    ) = AuthenticationViewModel(initialState, authenticateUseCase)
 
     companion object {
         private const val EMAIL = AUTHORIZED_EMAIL

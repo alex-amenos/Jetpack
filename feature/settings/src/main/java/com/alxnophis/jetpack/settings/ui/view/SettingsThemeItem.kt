@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.Theme
 
@@ -29,7 +30,7 @@ import com.alxnophis.jetpack.settings.ui.contract.Theme
 internal fun SettingsThemeItem(
     modifier: Modifier = Modifier,
     selectedTheme: Theme,
-    onOptionSelected: (option: Theme) -> Unit,
+    onOptionSelected: (option: Theme) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     SettingsItem(modifier = modifier) {
@@ -39,7 +40,7 @@ internal fun SettingsThemeItem(
                     onClick = { expanded = !expanded },
                     onClickLabel = stringResource(R.string.settings_cd_select_theme)
                 )
-                .padding(16.dp)
+                .padding(mediumPadding)
                 .testTag(SettingsTags.TAG_SELECT_THEME)
         ) {
             Text(
@@ -55,7 +56,7 @@ internal fun SettingsThemeItem(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             offset = DpOffset(x = 16.dp, y = 0.dp),
-            properties = PopupProperties(usePlatformDefaultWidth = true),
+            properties = PopupProperties(usePlatformDefaultWidth = true)
         ) {
             Theme.values().forEach { theme ->
                 DropdownMenuItem(

@@ -10,7 +10,7 @@ import com.alxnophis.jetpack.settings.ui.contract.Theme
 import kotlinx.coroutines.launch
 
 internal class SettingsViewModel(
-    initialState: SettingsState,
+    initialState: SettingsState = SettingsState()
 ) : BaseViewModel<SettingsEvent, SettingsState>(initialState) {
 
     override fun handleEvent(event: SettingsEvent) {

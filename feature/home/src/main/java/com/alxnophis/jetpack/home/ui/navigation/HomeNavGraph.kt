@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.home.ui.navigation
 
+import android.app.Activity
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -18,12 +19,17 @@ fun NavGraphBuilder.homeNavGraph(
         route = HOME_ROUTE
     ) {
         composable(
-            route = Screen.Home.route,
+            route = Screen.Home.route
         ) {
             injectHome()
             HomeScreen(
-                navController = navController,
-                viewModel = getViewModel()
+                viewModel = getViewModel(),
+                backOrFinish = { activity: Activity? ->
+                    if (!navController.popBackStack()) {
+                        activity?.finish()
+                    }
+                },
+                navigateTo = { route -> navController.navigate(route) }
             )
         }
     }

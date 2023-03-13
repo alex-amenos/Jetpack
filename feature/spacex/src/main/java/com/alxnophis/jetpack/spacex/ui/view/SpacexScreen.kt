@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.spacex.ui.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,13 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
@@ -46,6 +47,8 @@ import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
@@ -58,15 +61,14 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 internal fun SpacexScreen(
-    navController: NavController,
-    viewModel: LaunchesViewModel
+    viewModel: LaunchesViewModel,
+    popBackStack: () -> Unit
 ) {
-    val navigateBack: () -> Unit = { navController.popBackStack() }
-    BackHandler { navigateBack() }
+    BackHandler { popBackStack() }
     SpacexContent(
         state = viewModel.uiState.collectAsState().value,
         handleEvent = viewModel::handleEvent,
-        navigateBack = navigateBack
+        navigateBack = popBackStack
     )
 }
 
@@ -74,7 +76,7 @@ internal fun SpacexScreen(
 internal fun SpacexContent(
     state: LaunchesState,
     handleEvent: LaunchesEvent.() -> Unit,
-    navigateBack: () -> Unit,
+    navigateBack: () -> Unit
 ) {
     AppTheme {
         Column(
@@ -94,7 +96,7 @@ internal fun SpacexContent(
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
-                    errorMessage = stringResource(error.messageId),
+                    errorMessage = error.composableMessage(),
                     dismissError = { handleEvent.invoke(LaunchesEvent.DismissError(error.id)) }
                 )
             }
@@ -118,7 +120,7 @@ private fun PastLaunchesList(
             modifier = modifier
                 .background(MaterialTheme.colors.surface)
                 .drawVerticalScrollbar(listState),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(mediumPadding)
         ) {
             items(
                 items = state.pastLaunches,
@@ -133,18 +135,17 @@ private fun PastLaunchesList(
 
 @Composable
 private fun PastLaunchItem(item: PastLaunchModel) {
-    val localContext = LocalContext.current
     Card(
         elevation = 10.dp,
         modifier = Modifier
-            .padding(vertical = 16.dp)
+            .padding(vertical = mediumPadding)
             .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(16.dp)
+                .padding(mediumPadding)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -156,7 +157,7 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                         text = item.launchSite,
                         color = MaterialTheme.colors.onSurface,
                         fontSize = 13.sp,
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.Light
                     )
                 }
                 if (item.launchDateUtc.isNotEmpty()) {
@@ -165,30 +166,23 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                         text = item.launchDateUtc,
                         color = MaterialTheme.colors.onSurface,
                         fontSize = 13.sp,
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.Light
                     )
                 }
             }
             Row(
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = mediumPadding)
             ) {
-                AsyncImage(
+                MissionImage(
                     modifier = Modifier.size(60.dp),
-                    model = ImageRequest
-                        .Builder(localContext)
-                        .data(item.missionPatchUrl)
-                        .fallback(R.drawable.ic_rocket_launch)
-                        .diskCacheKey(item.missionPatchUrl)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = item.missionName,
-                    contentScale = ContentScale.FillBounds
+                    missionPatchUrl = item.missionPatchUrl,
+                    imageContentDescription = item.missionName
                 )
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .padding(start = 16.dp)
+                        .padding(start = mediumPadding)
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
@@ -199,22 +193,22 @@ private fun PastLaunchItem(item: PastLaunchModel) {
                     )
                     Text(
                         modifier = Modifier
-                            .padding(top = 4.dp)
+                            .padding(top = extraSmallPadding)
                             .wrapContentSize(),
                         text = item.rocket,
                         color = MaterialTheme.colors.onSurface,
                         fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
             if (item.details.isNotEmpty()) {
                 ExpandingText(
                     modifier = Modifier
-                        .padding(top = 16.dp)
+                        .padding(top = mediumPadding)
                         .wrapContentSize()
                         .testTag(TAG_SPACEX_LAUNCH_DETAIL + item.id),
-                    item = item,
+                    item = item
                 )
             }
         }
@@ -222,9 +216,38 @@ private fun PastLaunchItem(item: PastLaunchModel) {
 }
 
 @Composable
+private fun MissionImage(
+    modifier: Modifier,
+    missionPatchUrl: String?,
+    imageContentDescription: String?
+) {
+    if (missionPatchUrl == null) {
+        Image(
+            modifier = modifier,
+            painter = painterResource(R.drawable.ic_rocket_launch),
+            contentDescription = imageContentDescription
+        )
+    } else {
+        val localContext = LocalContext.current
+        AsyncImage(
+            modifier = modifier,
+            model = ImageRequest
+                .Builder(localContext)
+                .data(missionPatchUrl)
+                .fallback(R.drawable.ic_rocket_launch)
+                .diskCacheKey(missionPatchUrl)
+                .crossfade(true)
+                .build(),
+            contentDescription = imageContentDescription,
+            contentScale = ContentScale.FillBounds
+        )
+    }
+}
+
+@Composable
 private fun ExpandingText(
     modifier: Modifier = Modifier,
-    item: PastLaunchModel,
+    item: PastLaunchModel
 ) {
     val showMoreString = stringResource(R.string.spacex_show_more)
     val textLayoutResultState = remember { mutableStateOf<TextLayoutResult?>(null) }
@@ -258,28 +281,26 @@ private fun ExpandingText(
         fontSize = 14.sp,
         fontWeight = FontWeight.Light,
         maxLines = if (isExpanded) Int.MAX_VALUE else MINIMIZED_LINES,
-        onTextLayout = { textLayoutResultState.value = it },
+        onTextLayout = { textLayoutResultState.value = it }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun SpacexContentPreview() {
+    val pastLaunch = PastLaunchModel(
+        id = "1",
+        missionName = "Mission XYZ",
+        details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.".repeat(5),
+        rocket = "Rocket Name (Company)",
+        launchSite = "Launch Site",
+        missionPatchUrl = null,
+        launchDateUtc = "10 May 21 - 11:00"
+    )
     val state = LaunchesState(
         isLoading = false,
-        pastLaunches = listOf(
-            PastLaunchModel(
-                id = "1",
-                missionName = "Mission XYZ",
-                details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                    "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                rocket = "Rocket Name (Company)",
-                launchSite = "Launch Site",
-                missionPatchUrl = null,
-                launchDateUtc = "10 May 21 - 11:00"
-            )
-        ),
-        errorMessages = listOf()
+        pastLaunches = listOf(pastLaunch),
+        errorMessages = emptyList()
     )
     SpacexContent(
         state = state,

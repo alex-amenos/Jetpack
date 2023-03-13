@@ -15,14 +15,12 @@ const val SPACEX_ROUTE = "spacex"
 // Arguments
 private const val ARGUMENT_MARKER_START = "{"
 private const val ARGUMENT_MARKER_END = "}"
-const val AUTHENTICATION_ARGUMENT_EMAIL = "email"
+const val ARGUMENT_EMAIL = "email"
 
 // Screens
 sealed class Screen(val route: String) {
     object Authentication : Screen(route = "authentication_screen")
-    object Authorized : Screen(route = "authorized_screen?email=${AUTHENTICATION_ARGUMENT_EMAIL.addArgumentMarkers()}") {
-        fun routeWithParams(email: String) = route.replaceArgument(AUTHENTICATION_ARGUMENT_EMAIL, email)
-    }
+    object Authorized : Screen(route = "authorized_screen?$ARGUMENT_EMAIL=${ARGUMENT_EMAIL.addArgumentMarkers()}")
 
     object Home : Screen(route = "home_screen")
     object GameBallClicker : Screen(route = "game_ball_clicker_screen")
@@ -35,7 +33,7 @@ sealed class Screen(val route: String) {
 }
 
 @Suppress("unused")
-private fun String.replaceArgument(oldValue: String, newValue: String) = this.replace(
+fun String.replaceArgument(oldValue: String, newValue: String): String = this.replace(
     oldValue = ARGUMENT_MARKER_START + oldValue + ARGUMENT_MARKER_END,
     newValue = newValue
 )

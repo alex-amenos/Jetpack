@@ -6,7 +6,6 @@ import arrow.core.right
 import com.alxnophis.jetpack.core.base.formatter.BaseDateFormatter
 import com.alxnophis.jetpack.core.base.provider.BaseRandomProvider
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModelMother
@@ -21,7 +20,6 @@ import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -32,16 +30,14 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
+private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
     private val dateFormatterMock: BaseDateFormatter = mock()
     private val randomProviderMock: BaseRandomProvider = mock()
     private val launchesRepositoryMock: LaunchesRepository = mock()
     private lateinit var viewModel: LaunchesViewModel
 
-    @BeforeEach
-    override fun beforeEach() {
-        super.beforeEach()
+    override fun beforeEachCompleted() {
         viewModel = viewModelMother()
     }
 
@@ -213,13 +209,12 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
         initialState: LaunchesState = LaunchesState(),
         dateFormatter: BaseDateFormatter = dateFormatterMock,
         randomProvider: BaseRandomProvider = randomProviderMock,
-        dispatcherProvider: DispatcherProvider = testDispatcherProvider,
-        launchesRepository: LaunchesRepository = launchesRepositoryMock,
-    ) = LaunchesViewModel(initialState, dateFormatter, randomProvider, dispatcherProvider, launchesRepository)
+        launchesRepository: LaunchesRepository = launchesRepositoryMock
+    ) = LaunchesViewModel(initialState, dateFormatter, randomProvider, launchesRepository)
 
     companion object {
         private const val RANDOM_UUID_SIGNIFICANT_BITS: Long = 1L
-        private const val STATUS_CODE_SERVER_ERROR = 500
+        private const val STATUS_CODE_SERVER_ERROR: Int = 500
         private val initialLaunchesState = LaunchesState()
 
         @JvmStatic
@@ -233,7 +228,7 @@ internal class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             Arguments.of(LaunchesError.Unknown, R.string.spacex_error_unknown),
             Arguments.of(LaunchesError.Unknown, R.string.spacex_error_unknown),
             Arguments.of(LaunchesError.Unexpected, R.string.spacex_error_unknown),
-            Arguments.of(LaunchesError.Unexpected, R.string.spacex_error_unknown),
+            Arguments.of(LaunchesError.Unexpected, R.string.spacex_error_unknown)
         )
     }
 }

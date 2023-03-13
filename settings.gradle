@@ -16,6 +16,7 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
+
 rootProject.name = "Jetpack"
 
 // App modules

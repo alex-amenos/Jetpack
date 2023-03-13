@@ -18,12 +18,12 @@ fun NavGraphBuilder.settingsNavGraph(
         route = SETTINGS_ROUTE
     ) {
         composable(
-            route = Screen.Settings.route,
+            route = Screen.Settings.route
         ) {
             injectSettings()
             SettingsScreen(
-                navController = navController,
-                viewModel = getViewModel()
+                viewModel = getViewModel(),
+                popBackStack = { navController.popBackStack() }
             )
         }
     }

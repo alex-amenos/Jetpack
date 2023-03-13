@@ -18,12 +18,12 @@ fun NavGraphBuilder.locationTrackerNavGraph(
         route = LOCATION_TRACKER_ROUTE
     ) {
         composable(
-            route = Screen.LocationTracker.route,
+            route = Screen.LocationTracker.route
         ) {
             injectLocationTracker()
             LocationTrackerScreen(
-                navController = navController,
-                viewModel = getViewModel()
+                viewModel = getViewModel(),
+                popBackStack = { navController.popBackStack() }
             )
         }
     }

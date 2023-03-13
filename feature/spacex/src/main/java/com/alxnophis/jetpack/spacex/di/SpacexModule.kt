@@ -2,7 +2,6 @@ package com.alxnophis.jetpack.spacex.di
 
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepositoryImpl
-import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
 import com.alxnophis.jetpack.spacex.ui.viewmodel.LaunchesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
@@ -16,19 +15,12 @@ private val loadSpacexModules by lazy {
 }
 
 private val spacexModule: Module = module {
-    factory<LaunchesRepository> {
-        LaunchesRepositoryImpl(
-            dispatcherProvider = get(),
-            apiDataSource = get()
-        )
-    }
+    factory<LaunchesRepository> { LaunchesRepositoryImpl(apiDataSource = get()) }
     viewModel {
         LaunchesViewModel(
-            initialState = LaunchesState(),
             dateFormatter = get(),
             randomProvider = get(),
-            dispatcherProvider = get(),
-            launchesRepository = get(),
+            launchesRepository = get()
         )
     }
 }

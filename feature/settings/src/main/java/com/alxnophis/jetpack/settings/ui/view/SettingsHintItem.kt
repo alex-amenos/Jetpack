@@ -16,8 +16,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 
@@ -26,7 +26,7 @@ fun SettingsHintItem(
     modifier: Modifier = Modifier,
     title: String,
     checked: Boolean,
-    onShowHintToggled: () -> Unit,
+    onShowHintToggled: () -> Unit
 ) {
     val hintsEnabledState = if (checked) {
         stringResource(id = R.string.settings_cd_hints_enabled)
@@ -45,16 +45,16 @@ fun SettingsHintItem(
                     role = Role.Checkbox
                 )
                 .semantics { stateDescription = hintsEnabledState }
-                .padding(16.dp)
-                .testTag(TAG_CHECK_ITEM),
+                .padding(mediumPadding)
+                .testTag(TAG_CHECK_ITEM)
         ) {
             Text(
                 text = title,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             )
             Checkbox(
                 checked = checked,
-                onCheckedChange = null,
+                onCheckedChange = null
             )
         }
     }

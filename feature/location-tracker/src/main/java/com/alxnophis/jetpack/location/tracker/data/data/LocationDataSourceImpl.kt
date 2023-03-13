@@ -7,14 +7,15 @@ import androidx.core.location.LocationManagerCompat
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.alxnophis.jetpack.kotlin.utils.DispatcherProvider
 import com.alxnophis.jetpack.location.tracker.domain.model.Location
 import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
@@ -29,15 +30,15 @@ import timber.log.Timber
 import android.location.Location as AndroidLocation
 
 internal class LocationDataSourceImpl(
-    dispatcherProvider: DispatcherProvider,
+    ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val fusedLocationProvider: FusedLocationProviderClient,
     private val locationManager: LocationManager,
-    private val mutableLocationSharedFlow: MutableSharedFlow<Location>,
+    private val mutableLocationSharedFlow: MutableSharedFlow<Location>
 ) : LocationDataSource {
 
     override val locationSharedFlow: SharedFlow<Location> = mutableLocationSharedFlow.asSharedFlow()
 
-    private val coroutineScope: CoroutineScope = CoroutineScope(dispatcherProvider.io() + SupervisorJob())
+    private val coroutineScope: CoroutineScope = CoroutineScope(ioDispatcher + SupervisorJob())
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             coroutineScope.launch {
@@ -107,20 +108,21 @@ internal class LocationDataSourceImpl(
 
     @SuppressLint("MissingPermission")
     override suspend fun startLocationProvider(locationParameters: LocationParameters) {
-        if (locationJob == null)
+        if (locationJob == null) {
             locationJob = coroutineScope.launch {
                 Timber.d("LocationDataSource started with $locationParameters")
                 fusedLocationProvider.let {
                     val locationRequest = LocationRequest
                         .Builder(
                             locationParameters.priority,
-                            locationParameters.fastestInterval,
+                            locationParameters.fastestInterval
                         )
                         .setPriority(locationParameters.priority)
                         .build()
                     it.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
                 }
             }
+        }
     }
 
     override suspend fun stopLocationProvider() {

@@ -6,16 +6,17 @@ import arrow.core.right
 import com.alxnophis.jetpack.api.spacex.SpacexApi
 import com.alxnophis.jetpack.api.spacex.model.SpacexApiError
 import com.alxnophis.jetpack.api.spacex.mother.LaunchMother
+import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.spacex.LaunchesQuery
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
 import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
+import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModelMother
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import com.apollographql.apollo3.annotations.ApolloExperimental
 import java.util.stream.Stream
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -24,16 +25,14 @@ import org.mockito.kotlin.whenever
 
 @ApolloExperimental
 @ExperimentalCoroutinesApi
-internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
+private class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
 
     private val apiDataSourceMock: SpacexApi = mock()
     private lateinit var launchesRepository: LaunchesRepository
 
-    @BeforeEach
-    override fun beforeEach() {
-        super.beforeEach()
+    override fun beforeEachCompleted() {
         launchesRepository = LaunchesRepositoryImpl(
-            dispatcherProvider = testDispatcherProvider,
+            ioDispatcher = testDispatcher,
             apiDataSource = apiDataSourceMock
         )
     }
@@ -86,27 +85,25 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
         private const val STATUS_CODE_SERVER_ERROR = 500
         private val EMPTY_PAST_LAUNCHES = LaunchesQuery.Data(launches = emptyList())
         private val LAUNCHES = LaunchesQuery.Data(
-            launches = listOf(
-                LaunchMother(id = "id")
-            )
+            launches = listOf(LaunchMother(id = "id"))
         )
         private val PAST_LAUNCHES = listOf(
-            PastLaunchDataModel(
+            PastLaunchesDataModelMother(
                 id = "id",
-                missionName = "mission_name",
-                details = "details",
-                rocketName = "rocket_name",
-                launchSiteShort = "launch_site_name",
-                launchSite = "launch_site_name_long",
-                missionPatchSmallUrl = "mission_patch",
+                missionName = EMPTY,
+                details = EMPTY,
+                rocketName = EMPTY,
+                launchSiteShort = EMPTY,
+                launchSite = EMPTY,
+                missionPatchSmallUrl = EMPTY,
                 launchDateUtc = null
-            ),
+            )
         )
 
         @JvmStatic
         private fun pastLaunchesSuccessTestProvider(): Stream<Arguments> = Stream.of(
             Arguments.of(true),
-            Arguments.of(false),
+            Arguments.of(false)
         )
 
         @JvmStatic
@@ -114,7 +111,7 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
             Arguments.of(
                 true,
                 SpacexApiError.Parse,
-                LaunchesError.Parse,
+                LaunchesError.Parse
             ),
             Arguments.of(
                 false,
@@ -124,42 +121,42 @@ internal class LaunchesRepositoryImplUnitTest : BaseUnitTest() {
             Arguments.of(
                 true,
                 SpacexApiError.Http(STATUS_CODE_SERVER_ERROR),
-                LaunchesError.Http(STATUS_CODE_SERVER_ERROR),
+                LaunchesError.Http(STATUS_CODE_SERVER_ERROR)
             ),
             Arguments.of(
                 false,
                 SpacexApiError.Http(STATUS_CODE_SERVER_ERROR),
-                LaunchesError.Http(STATUS_CODE_SERVER_ERROR),
+                LaunchesError.Http(STATUS_CODE_SERVER_ERROR)
             ),
             Arguments.of(
                 true,
                 SpacexApiError.Network,
-                LaunchesError.Network,
+                LaunchesError.Network
             ),
             Arguments.of(
                 false,
                 SpacexApiError.Network,
-                LaunchesError.Network,
+                LaunchesError.Network
             ),
             Arguments.of(
                 true,
                 SpacexApiError.Unknown,
-                LaunchesError.Unknown,
+                LaunchesError.Unknown
             ),
             Arguments.of(
                 false,
                 SpacexApiError.Unknown,
-                LaunchesError.Unknown,
+                LaunchesError.Unknown
             ),
             Arguments.of(
                 true,
                 SpacexApiError.Unexpected,
-                LaunchesError.Unexpected,
+                LaunchesError.Unexpected
             ),
             Arguments.of(
                 false,
                 SpacexApiError.Unexpected,
-                LaunchesError.Unexpected,
+                LaunchesError.Unexpected
             )
         )
     }

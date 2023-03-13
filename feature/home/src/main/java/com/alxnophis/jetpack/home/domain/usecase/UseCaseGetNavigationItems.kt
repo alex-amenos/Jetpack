@@ -4,24 +4,32 @@ import arrow.core.Either
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.router.screen.Screen
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class UseCaseGetNavigationItems {
+class UseCaseGetNavigationItems(
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) {
 
-    operator fun invoke(): Either<NavigationError, List<NavigationItem>> = Either.catch(
-        { NavigationError.Unknown },
-        {
-            listOf(
-                myPlayground,
-                authentication,
-                settings,
-                notifications,
-                posts,
-                locationTracker,
-                gameBallClicker,
-                spacex,
+    suspend operator fun invoke(): Either<NavigationError, List<NavigationItem>> =
+        withContext(ioDispatcher) {
+            Either.catch(
+                { NavigationError.Unknown },
+                {
+                    listOf(
+                        myPlayground,
+                        authentication,
+                        settings,
+                        notifications,
+                        posts,
+                        locationTracker,
+                        gameBallClicker,
+                        spacex
+                    )
+                }
             )
         }
-    )
 
     // TODO - Update Home navigation here
     companion object {
@@ -29,25 +37,25 @@ class UseCaseGetNavigationItems {
             name = "Authentication",
             emoji = "🗝",
             description = "Authentication form with SignUp and SignIn",
-            screen = Screen.Authentication,
+            screen = Screen.Authentication
         )
         private val settings = NavigationItem(
             name = "Settings",
             emoji = "⚙️",
             description = "Settings options screen",
-            screen = Screen.Settings,
+            screen = Screen.Settings
         )
         private val posts = NavigationItem(
             name = "Posts",
             emoji = "📄",
             description = "Load posts from JsonPlaceholder API",
-            screen = Screen.Posts,
+            screen = Screen.Posts
         )
         private val locationTracker = NavigationItem(
             name = "Location Tracker",
             emoji = "📍",
             description = "User location tracking",
-            screen = Screen.LocationTracker,
+            screen = Screen.LocationTracker
         )
         private val gameBallClicker = NavigationItem(
             name = "Ball Clicker Game",
