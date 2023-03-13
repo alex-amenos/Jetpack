@@ -53,6 +53,7 @@ obj/
 *.iml
 *.iws
 /out/
+/.run/
 
 # User-specific configurations
 .idea/
