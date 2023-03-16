@@ -5,27 +5,27 @@ android {
 }
 
 dependencies {
-    def composeBom = platform(Dep.ANDROIDX_COMPOSE_BOM)
+    def composeBom = platform(libs.androidx.compose.bom)
 
     implementation(composeBom)
     implementation project(Modules.SHARED_CORE)
     implementation project(Modules.SHARED_KOTLIN)
-    implementation Dep.ANDROIDX_ARCH_CORE_TESTING
-    implementation Dep.ANDROIDX_COMPOSE_UI_TEST_MANIFEST
-    implementation Dep.ANDROIDX_COMPOSE_UI_TEST
-    implementation Dep.ANDROIDX_TEST_JUNIT
-    implementation Dep.ANDROIDX_TEST_RUNNER
-    implementation Dep.ANDROIDX_TEST_RULES
-    implementation Dep.COROUTINES_CORE
-    implementation Dep.COROUTINES_TEST
-    implementation Dep.JUNIT
-    implementation Dep.JUNIT_JUPITER_API
-    implementation Dep.JUNIT_JUPITER_PARAMS
-    implementation Dep.KOIN_TEST
-    implementation Dep.MOCKITO_KOTLIN
-    implementation Dep.MOCKITO_ANDROID
-    implementation Dep.TURBINE
+    implementation libs.androidx.arch.core.testing
+    implementation libs.androidx.compose.ui.test.manifest
+    implementation libs.androidx.compose.ui.test
+    implementation libs.androidx.test.junit
+    implementation libs.androidx.test.runner
+    implementation libs.androidx.test.rules
+    implementation libs.coroutines.core
+    implementation libs.coroutines.test
+    implementation libs.junit
+    implementation libs.junit.jupiter.api
+    implementation libs.junit.jupiter.params
+    implementation libs.koin.test
+    implementation libs.mockito.kotlin
+    implementation libs.mockito.android
+    implementation libs.turbine
 
-    runtimeOnly Dep.JUNIT_VINTAGE_ENGINE
-    runtimeOnly Dep.JUNIT_JUPITER_ENGINE
+    runtimeOnly libs.junit.vintage.engine
+    runtimeOnly libs.junit.jupiter.engine
 }

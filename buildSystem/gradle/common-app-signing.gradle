@@ -36,17 +36,17 @@ dependencies {
     implementation project(Modules.SHARED_ROUTER)
 
     // Others
-    implementation Dep.ANDROIDX_APPCOMPAT
-    implementation Dep.KOIN_ANDROID
+    implementation Libs.androidx.appcompat
+    implementation Libs.koin.android
 
-    testImplementation Dep.JUNIT_JUPITER_API
-    testImplementation Dep.JUNIT_JUPITER_PARAMS
-    testImplementation Dep.KOIN_TEST
+    testImplementation Libs.junit.jupiter.api
+    testImplementation Libs.junit.jupiter.params
+    testImplementation Libs.koin.test
 
-    testRuntimeOnly Dep.JUNIT_JUPITER_ENGINE
+    testRuntimeOnly Libs.junit.jupiter.engine
 
-    androidTestImplementation Dep.ANDROIDX_TEST_JUNIT
-    androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
-    androidTestImplementation Dep.ANDROIDX_TEST_RULES
-    androidTestImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
+    androidTestImplementation Libs.androidx.test.junit
+    androidTestImplementation Libs.androidx.test.runner
+    androidTestImplementation Libs.androidx.test.rules
+    androidTestImplementation Libs.androidx.arch.core.testing
 }
