@@ -1,28 +1,25 @@
 [versions]
+androidx-activity = "1.5.0"
+androidx-arch-core = "2.1.0"
+com-apollographql-apollo3 = "3.6.2"
+com-google-accompanist = "0.25.1"
+com-squareup-moshi = "1.12.0"
+com-squareup-okhttp3 = "4.10.0"
+com-squareup-retrofit2 = "2.9.0"
+io-kotest = "5.5.5"
+org-junit-jupiter = "5.8.2"
+org-mockito = "4.0.0"
 
 [libraries]
-# Android
+androidx_activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx_annotations = "androidx.annotation:annotation:1.4.0"
 androidx_appcompat = "androidx.appcompat:appcompat:1.5.1"
-androidx_activity = "androidx.activity:activity-ktx:1.5.0" # check
-androidx_arch_core_common = "androidx.arch.core:core-common:2.1.0"
-androidx_arch_core_runtime = "androidx.arch.core:core-runtime:2.1.0"
-androidx_arch_core_testing = "androidx.arch.core:core-testing:2.1.0"
-androidx_core_ktx = "androidx.core:core-ktx:1.8.0"
-androidx_lifecycle_common = "androidx.lifecycle:lifecycle-common-java8:2.5.1"
-androidx_lifecycle_compiler = "androidx.lifecycle:lifecycle-compiler:2.5.1"
-androidx_lifecycle_extension = "androidx.lifecycle:lifecycle-extensions:2.2.0"
-androidx_lifecycle_runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
-androidx_lifecycle_viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-androidx_test_junit = "androidx.test.ext:junit-ktx:1.1.3"
-androidx_test_runner = "androidx.test:runner:1.3.0"
-androidx_test_rules = "androidx.test:rules:1.4.0"
-androidx_vector_drawable = "androidx.vectordrawable:vectordrawable:1.0.1"
-androidx_work = "androidx.work:work-runtime-ktx:2.7.1"
-# Compose
-androidx_compose_activity = "androidx.activity:activity-compose:1.5.0"
-androidx_compose_bom = "androidx.compose:compose-bom:2023.01.00"
+androidx_arch_core_common = { module = "androidx.arch.core:core-common", version.ref = "androidx-arch-core" }
+androidx_arch_core_runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-arch-core" }
+androidx_arch_core_testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core" }
+androidx_compose_activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx_compose_animation = { module = "androidx.compose.animation:animation" }
+androidx_compose_bom = "androidx.compose:compose-bom:2023.01.00"
 androidx_compose_constraint_layout = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 androidx_compose_foundation = { module = "androidx.compose.foundation:foundation" }
 androidx_compose_foundation_layout = { module = "androidx.compose.foundation:foundation-layout" }
@@ -32,80 +29,94 @@ androidx_compose_material_icons_extended = { module = "androidx.compose.material
 androidx_compose_navigation = "androidx.navigation:navigation-compose:2.5.2"
 androidx_compose_runtime = { module = "androidx.compose.runtime:runtime" }
 androidx_compose_ui = { module = "androidx.compose.ui:ui" }
-androidx_compose_ui_util = { module = "androidx.compose.ui:ui-util" }
 androidx_compose_ui_test = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx_compose_ui_test_manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx_compose_ui_tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx_compose_ui_tooling_preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx_compose_ui_util = { module = "androidx.compose.ui:ui-util" }
 androidx_compose_viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
-google_accompanits_swiperefresh = "com.google.accompanist:accompanist-swiperefresh:0.25.1"
-google_accompanits_permissions = "com.google.accompanist:accompanist-permissions:0.25.1"
-google_accompanits_placeholder = "com.google.accompanist:accompanist-placeholder-material:0.25.1"
-# Apollo
-apollo_api = "com.apollographql.apollo3:apollo-api:3.6.2"
-apollo_adapters = "com.apollographql.apollo3:apollo-adapters:3.6.2"
-apollo_normalized_cache = "com.apollographql.apollo3:apollo-normalized-cache:3.6.2"
-apollo_normalized_cache_sqlite = "com.apollographql.apollo3:apollo-normalized-cache-sqlite:3.6.2"
-apollo_runtime = "com.apollographql.apollo3:apollo-runtime:3.6.2"
-apollo_testing_support = "com.apollographql.apollo3:apollo-testing-support:3.6.2"
-# Arrow
-arrow_stack = "io.arrow-kt:arrow-stack:1.1.3"
+androidx_core_ktx = "androidx.core:core-ktx:1.8.0"
+androidx_lifecycle_common = "androidx.lifecycle:lifecycle-common-java8:2.5.1"
+androidx_lifecycle_compiler = "androidx.lifecycle:lifecycle-compiler:2.5.1"
+androidx_lifecycle_extension = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+androidx_lifecycle_runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+androidx_lifecycle_viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+androidx_test_junit = "androidx.test.ext:junit-ktx:1.1.3"
+androidx_test_rules = "androidx.test:rules:1.4.0"
+androidx_test_runner = "androidx.test:runner:1.3.0"
+androidx_vector_drawable = "androidx.vectordrawable:vectordrawable:1.0.1"
+androidx_work = "androidx.work:work-runtime-ktx:2.7.1"
+apollo_adapters = { module = "com.apollographql.apollo3:apollo-adapters", version.ref = "com-apollographql-apollo3" }
+apollo_api = { module = "com.apollographql.apollo3:apollo-api", version.ref = "com-apollographql-apollo3" }
+apollo_normalized_cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "com-apollographql-apollo3" }
+apollo_normalized_cache_sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite", version.ref = "com-apollographql-apollo3" }
+apollo_runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "com-apollographql-apollo3" }
+apollo_testing_support = { module = "com.apollographql.apollo3:apollo-testing-support", version.ref = "com-apollographql-apollo3" }
+arror_meta = "io.arrow-kt:arrow-meta:1.6.0"
 arrow_core = { module = "io.arrow-kt:arrow-core" }
 arrow_fx_coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
 arrow_retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
-arror_meta = "io.arrow-kt:arrow-meta:1.6.0"
-# Coroutines
-coroutines_core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+arrow_stack = "io.arrow-kt:arrow-stack:1.1.3"
+coil = "io.coil-kt:coil-compose:2.1.0"
 coroutines_android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+coroutines_core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
 coroutines_test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
-# Google
+google_accompanits_permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "com-google-accompanist" }
+google_accompanits_placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "com-google-accompanist" }
+google_accompanits_swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "com-google-accompanist" }
 google_android_material = "com.google.android.material:material:1.4.0"
 google_play_services_location = "com.google.android.gms:play-services-location:21.0.1"
-# Junit
 junit = "junit:junit:4.13.2"
+junit_jupiter_api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "org-junit-jupiter" }
+junit_jupiter_engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "org-junit-jupiter" }
+junit_jupiter_params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "org-junit-jupiter" }
 junit_vintage_engine = "org.junit.vintage:junit-vintage-engine:5.8.2"
-junit_jupiter_api = "org.junit.jupiter:junit-jupiter-api:5.8.2"
-junit_jupiter_engine = "org.junit.jupiter:junit-jupiter-engine:5.8.2"
-junit_jupiter_params = "org.junit.jupiter:junit-jupiter-params:5.8.2"
-# Kotlin
-kotlinx_serialization_json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
-kotlin_reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
-# Koin
 koin_android = "io.insert-koin:koin-android:3.3.0"
 koin_android_compose = "io.insert-koin:koin-androidx-compose:3.3.0"
 koin_android_work_manager = "io.insert-koin:koin-androidx-workmanager:3.3.0"
 koin_test = "io.insert-koin:koin-test:3.2.2"
-# Kotest
-kotest_assertions = "io.kotest:kotest-assertions-core:5.5.5"
-kotest_property = "io.kotest:kotest-property:5.5.5"
-kotest_runner = "io.kotest:kotest-runner-junit5:5.5.5"
-# Mockito
-mockito = "org.mockito:mockito-junit-jupiter:4.0.0"
-mockito_android = "org.mockito:mockito-android:4.0.0"
-mockito_inline = "org.mockito:mockito-inline:4.0.0"
-mockito_kotlin = "org.mockito.kotlin:mockito-kotlin:4.0.0"
-# Moshi
-moshi = "com.squareup.moshi:moshi-kotlin:1.12.0"
-moshi_adapter = "com.squareup.moshi:moshi-adapters:1.12.0"
-moshi_kotlin_codegen = "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
-# Retrofit
-retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-retrofit_converter_moshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
-okhttp = "com.squareup.okhttp3:okhttp:4.10.0"
-okhttp_logging_interceptor = "com.squareup.okhttp3:logging-interceptor:4.10.0"
-okhttp_profiler = "com.localebro:okhttpprofiler:1.0.8"
-# Others
-coil = "io.coil-kt:coil-compose:2.1.0"
+kotest_assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "io-kotest" }
+kotest_property = { module = "io.kotest:kotest-property", version.ref = "io-kotest" }
+kotest_runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "io-kotest" }
+kotlin_reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+kotlinx_serialization_json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
 leak_canary = "com.squareup.leakcanary:leakcanary-android:2.10"
+mockito = { module = "org.mockito:mockito-junit-jupiter", version.ref = "org-mockito" }
+mockito_android = { module = "org.mockito:mockito-android", version.ref = "org-mockito" }
+mockito_inline = { module = "org.mockito:mockito-inline", version.ref = "org-mockito" }
+mockito_kotlin = "org.mockito.kotlin:mockito-kotlin:4.0.0"
+moshi = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "com-squareup-moshi" }
+moshi_adapter = { module = "com.squareup.moshi:moshi-adapters", version.ref = "com-squareup-moshi" }
+moshi_kotlin_codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "com-squareup-moshi" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "com-squareup-okhttp3" }
+okhttp_logging_interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "com-squareup-okhttp3" }
+okhttp_profiler = "com.localebro:okhttpprofiler:1.0.8"
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "com-squareup-retrofit2" }
+retrofit_converter_moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "com-squareup-retrofit2" }
 timber = "com.jakewharton.timber:timber:5.0.1"
 turbine = "app.cash.turbine:turbine:0.11.0"
 
 [bundles]
+androidx-compose = [
+    "androidx_compose_activity",
+    "androidx_compose_animation",
+    "androidx_compose_constraint_layout",
+    "androidx_compose_foundation",
+    "androidx_compose_foundation_layout",
+    "androidx_compose_material",
+    "androidx_compose_material_icons_core",
+    "androidx_compose_material_icons_extended",
+    "androidx_compose_navigation",
+    "androidx_compose_runtime",
+    "androidx_compose_ui",
+    "androidx_compose_ui_tooling_preview",
+    "androidx_compose_ui_util",
+    "androidx_compose_viewmodel",
+]
 
 [plugins]
-kover = "org.jetbrains.kotlinx.kover:0.6.1"
 android_application = "com.android.application:7.4.0"
-kotlin_android = "org.jetbrains.kotlin.android:1.7.20"
 ben_manes_versions = "com.github.ben-manes.versions:0.46.0"
+kotlin_android = "org.jetbrains.kotlin.android:1.7.20"
+kover = "org.jetbrains.kotlinx.kover:0.6.1"
 version_catalog_update = "nl.littlerobots.version-catalog-update:0.8.0"
-
