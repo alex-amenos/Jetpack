@@ -6,12 +6,7 @@ def isNonStable = { version ->
     return !stableKeyword && !(version ==~ regex)
 }
 
-tasks.named("dependencyUpdates").configure {
-    rejectVersionIf {
-        isNonStable(it.candidate.version)
-    }
-}
-
+// https://github.com/ben-manes/gradle-versions-plugin
 tasks.named("dependencyUpdates").configure {
     resolutionStrategy {
         componentSelection {

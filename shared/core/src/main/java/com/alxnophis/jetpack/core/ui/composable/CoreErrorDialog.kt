@@ -40,7 +40,7 @@ fun CoreErrorDialog(
                     onClick = { dismissError() }
                 ) {
                     Text(
-                        text = stringResource(R.string.core_ok),
+                        text = stringResource(android.R.string.ok),
                         style = MaterialTheme.typography.body1
                     )
                 }

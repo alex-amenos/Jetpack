@@ -17,7 +17,6 @@ open class BaseApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         initKoin()
         initLogger()
         initNotificationChannels()
