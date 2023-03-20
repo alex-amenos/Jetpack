@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="core_feature_not_implemented" translatable="false">Feature pending to be implemented</string>
-    <string name="core_ok" translatable="false">Ok</string>
-    <string name="core_cancel" translatable="false">Cancel</string>
     <string name="core_error_title" translatable="false">Whoops!</string>
     <string name="core_cd_go_back">Go back to the previous screen</string>
 </resources>

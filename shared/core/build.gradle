@@ -7,21 +7,21 @@ android {
 
 dependencies {
     implementation project(Modules.SHARED_API)
-    implementation Dep.ANDROIDX_ANNOTATIONS
-    implementation Dep.ANDROIDX_ACTIVITY
-    implementation Dep.ANDROIDX_APPCOMPAT
-    implementation Dep.ANDROIDX_ARCH_CORE_COMMON
-    implementation Dep.ANDROIDX_ARCH_CORE_RUNTIME
-    implementation Dep.ANDROIDX_CORE_KTX
-    implementation Dep.ANDROIDX_LIFECYCLE_EXTENSION
-    implementation Dep.ANDROIDX_LIFECYCLE_COMMON
-    implementation Dep.ANDROIDX_LIFECYCLE_RUNTIME
-    implementation Dep.ANDROIDX_LIFECYCLE_VIEWMODEL
-    implementation Dep.GOOGLE_ANDROID_MATERIAL
-    implementation Dep.KOIN_ANDROID
-    implementation Dep.TIMBER
+    implementation libs.androidx.annotations
+    implementation libs.androidx.activity
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.arch.core.common
+    implementation libs.androidx.arch.core.runtime
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.lifecycle.extension
+    implementation libs.androidx.lifecycle.common
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.google.android.material
+    implementation libs.koin.android
+    implementation libs.timber
 
-    kapt Dep.ANDROIDX_LIFECYCLE_COMPILER
+    kapt libs.androidx.lifecycle.compiler
 
     testImplementation project(Modules.SHARED_TESTING)
 }
