@@ -18,13 +18,8 @@ dependencies {
     testImplementation libs.junit.jupiter.api
     testImplementation libs.junit.jupiter.params
     testImplementation libs.koin.test
-    testImplementation libs.kotest.assertions
-    testImplementation libs.kotest.property
-    testImplementation libs.kotest.runner
-    testImplementation libs.kotlin.reflect
-    testImplementation libs.mockito
-    testImplementation libs.mockito.inline
-    testImplementation libs.mockito.kotlin
+    testImplementation libs.bundles.kotest
+    testImplementation libs.bundles.mockito
     testImplementation libs.turbine
 
     testRuntimeOnly libs.junit.jupiter.engine

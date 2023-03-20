@@ -35,13 +35,9 @@ dependencies {
     testImplementation libs.androidx.arch.core.testing
     testImplementation libs.coroutines.test
     testImplementation libs.koin.test
-    testImplementation libs.kotest.assertions
-    testImplementation libs.kotest.property
-    testImplementation libs.kotest.runner
+    testImplementation libs.bundles.kotest
     testImplementation libs.kotlin.reflect
-    testImplementation libs.mockito
-    testImplementation libs.mockito.inline
-    testImplementation libs.mockito.kotlin
+    testImplementation libs.bundles.mockito
     testImplementation libs.junit
     testImplementation libs.junit.jupiter.api
     testImplementation libs.junit.jupiter.params
@@ -55,6 +51,6 @@ dependencies {
     androidTestImplementation libs.androidx.test.runner
     androidTestImplementation libs.androidx.test.rules
     androidTestImplementation libs.koin.test
-    androidTestImplementation libs.mockito.kotlin
+    androidTestImplementation libs.bundles.mockito
     androidTestImplementation libs.mockito.android
 }

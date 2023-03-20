@@ -6,17 +6,8 @@ android {
 }
 
 dependencies {
-    implementation libs.apollo.adapters
-    implementation libs.apollo.api
-    implementation libs.apollo.normalized.cache
-    implementation libs.apollo.normalized.cache.sqlite
-    implementation libs.apollo.runtime
-    implementation libs.apollo.testing.support
-    implementation libs.okhttp
-    implementation libs.okhttp.logging.interceptor
-    implementation libs.okhttp.profiler
-    implementation libs.retrofit
-    implementation libs.retrofit.converter.moshi
+    implementation libs.bundles.apollo
+    implementation libs.bundles.retrofit
 }
 
 apollo {

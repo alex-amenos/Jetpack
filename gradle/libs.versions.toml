@@ -98,20 +98,44 @@ turbine = "app.cash.turbine:turbine:0.11.0"
 
 [bundles]
 androidx-compose = [
-    "androidx_compose_activity",
-    "androidx_compose_animation",
-    "androidx_compose_constraint_layout",
-    "androidx_compose_foundation",
-    "androidx_compose_foundation_layout",
-    "androidx_compose_material",
-    "androidx_compose_material_icons_core",
-    "androidx_compose_material_icons_extended",
-    "androidx_compose_navigation",
-    "androidx_compose_runtime",
-    "androidx_compose_ui",
-    "androidx_compose_ui_tooling_preview",
-    "androidx_compose_ui_util",
-    "androidx_compose_viewmodel",
+    "androidx-compose-activity",
+    "androidx-compose-animation",
+    "androidx-compose-constraint-layout",
+    "androidx-compose-foundation",
+    "androidx-compose-foundation-layout",
+    "androidx-compose-material",
+    "androidx-compose-material-icons-core",
+    "androidx-compose-material-icons-extended",
+    "androidx-compose-navigation",
+    "androidx-compose-runtime",
+    "androidx-compose-ui",
+    "androidx-compose-ui-tooling-preview",
+    "androidx-compose-ui-util",
+    "androidx-compose-viewmodel",
+]
+apollo = [
+    "apollo-adapters",
+    "apollo-api",
+    "apollo-normalized-cache",
+    "apollo-normalized-cache-sqlite",
+    "apollo-runtime",
+]
+kotest = [
+    "kotest-assertions",
+    "kotest-property",
+    "kotest-runner",
+]
+mockito = [
+    "mockito",
+    "mockito-inline",
+    "mockito-kotlin",
+]
+retrofit = [
+    "okhttp",
+    "okhttp-logging-interceptor",
+    "okhttp-profiler",
+    "retrofit",
+    "retrofit-converter-moshi",
 ]
 
 [plugins]

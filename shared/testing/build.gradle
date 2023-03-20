@@ -22,8 +22,7 @@ dependencies {
     implementation libs.junit.jupiter.api
     implementation libs.junit.jupiter.params
     implementation libs.koin.test
-    implementation libs.mockito.kotlin
-    implementation libs.mockito.android
+    implementation libs.bundles.mockito
     implementation libs.turbine
 
     runtimeOnly libs.junit.vintage.engine
