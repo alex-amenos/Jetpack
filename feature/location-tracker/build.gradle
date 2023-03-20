@@ -6,8 +6,8 @@ android {
 }
 
 dependencies {
-    implementation Dep.ANDROIDX_WORK
-    implementation Dep.GOOGLE_ACCOMPANITS_PERMISSIONS
-    implementation Dep.GOOGLE_PLAY_SERVICES_LOCATION
-    implementation Dep.KOIN_ANDROID_WORK_MANAGER
+    implementation libs.androidx.work
+    implementation libs.google.accompanits.permissions
+    implementation libs.google.play.services.location
+    implementation libs.koin.android.work.manager
 }
