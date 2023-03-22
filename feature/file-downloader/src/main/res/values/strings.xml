@@ -4,5 +4,5 @@
     <string name="file_downloader_download_file">Download file</string>
     <string name="file_downloader_file_downloading">File is on downloading process</string>
     <string name="file_downloader_file_downloaded">File has been downloaded</string>
-    <string name="file_downloader_generic_error">Unexpected error</string>
+    <string name="file_downloader_generic_error">Please review your connection and the URL</string>
 </resources>
