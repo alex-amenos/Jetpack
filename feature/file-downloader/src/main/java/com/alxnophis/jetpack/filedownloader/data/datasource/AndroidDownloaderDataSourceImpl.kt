@@ -39,6 +39,7 @@ internal class AndroidDownloaderDataSourceImpl(
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setMimeType(mimeType)
             .setTitle(title)
+            .setDescription(fileUlr)
             .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
         return downloadManager.enqueue(request)
     }

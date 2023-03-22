@@ -23,7 +23,7 @@ fun NavGraphBuilder.fileDownloaderNavGraph(
             injectFileDownloader()
             FileDownloaderScreen(
                 viewModel = getViewModel(),
-                popBackStack = { navController.popBackStack() },
+                popBackStack = { navController.popBackStack() }
             )
         }
     }
