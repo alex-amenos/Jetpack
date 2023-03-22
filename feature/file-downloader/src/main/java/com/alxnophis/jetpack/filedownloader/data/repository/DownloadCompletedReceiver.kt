@@ -7,7 +7,7 @@ import android.content.Intent
 import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 
-class DownloadCompletedReceiver : BroadcastReceiver() {
+internal class DownloadCompletedReceiver : BroadcastReceiver() {
 
     private val fileDownloaderRepository: FileDownloaderRepository by inject(FileDownloaderRepository::class.java)
 
