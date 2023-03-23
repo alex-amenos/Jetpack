@@ -6,7 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -221,6 +222,7 @@ private fun FileDownloaderList(list: List<String>) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Suppress("SameParameterValue")
 @Composable
 private fun EllipsizedMiddleText(text: String) {
@@ -233,7 +235,7 @@ private fun EllipsizedMiddleText(text: String) {
     } else {
         val firstHalf = text.substring(ZERO_INT, firstHalfLength)
         val secondHalf = text.substring(text.length - lastHalfLength)
-        Row {
+        FlowRow {
             Text(modifier = modifier, style = style, text = firstHalf)
             Text(modifier = modifier, style = style, text = THREE_DOTS)
             Text(modifier = modifier, style = style, text = secondHalf)
