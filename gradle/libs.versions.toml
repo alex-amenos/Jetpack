@@ -7,7 +7,7 @@ com-google-accompanist = "0.25.1"
 com-squareup-okhttp3 = "4.10.0"
 com-squareup-retrofit2 = "2.9.0"
 io-kotest = "5.5.5"
-org-jetbrains-kotlinx = "1.6.4"
+kotlinx-coroutines = "1.6.4"
 org-junit-jupiter = "5.9.2"
 org-mockito = "5.2.0"
 
@@ -57,9 +57,6 @@ arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
 arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
 arrow-stack = "io.arrow-kt:arrow-stack:1.1.3"
 coil = "io.coil-kt:coil-compose:2.2.2"
-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "org-jetbrains-kotlinx" }
-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "org-jetbrains-kotlinx" }
-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "org-jetbrains-kotlinx" }
 google-accompanits-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "com-google-accompanist" }
 google-accompanits-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "com-google-accompanist" }
 google-accompanits-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "com-google-accompanist" }
@@ -78,6 +75,9 @@ kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref =
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "io-kotest" }
 kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "io-kotest" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 leak-canary = "com.squareup.leakcanary:leakcanary-android:2.10"
 mockito = { module = "org.mockito:mockito-junit-jupiter", version.ref = "org-mockito" }
 mockito-android = { module = "org.mockito:mockito-android", version.ref = "org-mockito" }
