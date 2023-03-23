@@ -136,6 +136,6 @@ retrofit = [
 [plugins]
 android-application = "com.android.application:7.4.0"
 ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
-kotlin-android = "org.jetbrains.kotlin.android:1.7.20"
+kotlin-android = "org.jetbrains.kotlin.android:1.8.10"
 kover = "org.jetbrains.kotlinx.kover:0.6.1"
 version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"
