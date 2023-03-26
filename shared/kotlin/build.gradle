@@ -5,6 +5,6 @@ android {
 }
 
 dependencies {
-    implementation libs.coroutines.core
-    implementation libs.coroutines.android
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.coroutines.android
 }

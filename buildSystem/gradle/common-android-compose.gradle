@@ -5,12 +5,16 @@ android {
         compose true
     }
 
+    // Jetpack Compose to Kotlin Compatibility Map:
+    // https://developer.android.com/jetpack/androidx/releases/compose-kotlin
     composeOptions {
-        kotlinCompilerExtensionVersion "1.3.2"
+        kotlinCompilerExtensionVersion "1.4.4"
     }
 }
 
 dependencies {
+    // BOM to library version mapping
+    // https://developer.android.com/jetpack/compose/bom/bom-mapping
     def composeBom = platform(libs.androidx.compose.bom)
 
     implementation(composeBom)

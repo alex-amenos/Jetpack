@@ -10,7 +10,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.4.2'
         classpath 'com.apollographql.apollo3:apollo-gradle-plugin:3.7.5'
         classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
         classpath 'org.jetbrains.kotlinx:kover:0.6.1'
         classpath 'org.jlleitschuh.gradle:ktlint-gradle:11.3.1'
         classpath 'app.cash.paparazzi:paparazzi-gradle-plugin:1.2.0'

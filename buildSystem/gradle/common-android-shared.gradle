@@ -6,14 +6,14 @@ dependencies {
     implementation libs.arrow.core
     implementation libs.arrow.fx.coroutines
     implementation libs.arrow.retrofit
-    implementation libs.coroutines.android
-    implementation libs.coroutines.core
+    implementation libs.kotlinx.coroutines.android
+    implementation libs.kotlinx.coroutines.core
     implementation libs.koin.android
     implementation libs.timber
 
     debugImplementation libs.leak.canary
 
-    testImplementation libs.coroutines.test
+    testImplementation libs.kotlinx.coroutines.test
     testImplementation libs.junit
     testImplementation libs.junit.jupiter.api
     testImplementation libs.junit.jupiter.params
