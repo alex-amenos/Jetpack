@@ -224,7 +224,7 @@ private fun MissionImage(
     if (missionPatchUrl == null) {
         Image(
             modifier = modifier,
-            painter = painterResource(R.drawable.ic_rocket_launch),
+            painter = painterResource(R.drawable.spacex_ic_rocket_launch),
             contentDescription = imageContentDescription
         )
     } else {
@@ -234,7 +234,7 @@ private fun MissionImage(
             model = ImageRequest
                 .Builder(localContext)
                 .data(missionPatchUrl)
-                .fallback(R.drawable.ic_rocket_launch)
+                .fallback(R.drawable.spacex_ic_rocket_launch)
                 .diskCacheKey(missionPatchUrl)
                 .crossfade(true)
                 .build(),
