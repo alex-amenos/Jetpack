@@ -88,6 +88,7 @@ okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-intercepto
 okhttp-profiler = "com.localebro:okhttpprofiler:1.0.8"
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "com-squareup-retrofit2" }
 retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "com-squareup-retrofit2" }
+slack-lint-compose = "com.slack.lint.compose:compose-lint-checks:1.1.1"
 timber = "com.jakewharton.timber:timber:5.0.1"
 turbine = "app.cash.turbine:turbine:0.12.1"
 
