@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -68,14 +69,14 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 @ExperimentalComposeUiApi
 @Composable
 internal fun AuthenticationForm(
-    modifier: Modifier = Modifier,
     isLoading: Boolean,
     email: String,
     password: String,
     authenticationMode: AuthenticationMode,
     completedPasswordRequirements: List<PasswordRequirements>,
     enableAuthentication: Boolean,
-    handleEvent: AuthenticationEvent.() -> Unit
+    handleEvent: AuthenticationEvent.() -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
@@ -94,7 +95,11 @@ internal fun AuthenticationForm(
 
         AuthenticationTitle(
             authenticationMode = authenticationMode,
-            handleEvent = handleEvent
+            modifier = Modifier.clickable {
+                if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                    handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorization)
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(40.dp))
@@ -110,25 +115,38 @@ internal fun AuthenticationForm(
                 modifier = Modifier.padding(mediumPadding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                EmailInput(
-                    modifier = Modifier.fillMaxWidth(),
-                    email = email,
-                    onEmailChanged = { email -> handleEvent(AuthenticationEvent.EmailChanged(email)) }
-                ) {
-                    passwordFocusRequester.requestFocus()
+                val onEmailChanged: (String) -> Unit = { email ->
+                    handleEvent(AuthenticationEvent.EmailChanged(email))
                 }
+                EmailInput(
+                    email = email,
+                    onEmailChanged = onEmailChanged,
+                    onNextClicked = { passwordFocusRequester.requestFocus() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .autofill(
+                            autofillTypes = listOf(AutofillType.EmailAddress),
+                            onFill = onEmailChanged
+                        )
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                val onPasswordChanged: (String) -> Unit = { password ->
+                    handleEvent(AuthenticationEvent.PasswordChanged(password))
+                }
                 PasswordInput(
+                    password = password,
+                    onPasswordChanged = onPasswordChanged,
+                    onDoneClicked = { handleEvent(AuthenticationEvent.Authenticate) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .focusRequester(passwordFocusRequester),
-                    password = password,
-                    onPasswordChanged = { password -> handleEvent(AuthenticationEvent.PasswordChanged(password)) }
-                ) {
-                    handleEvent(AuthenticationEvent.Authenticate)
-                }
+                        .focusRequester(passwordFocusRequester)
+                        .autofill(
+                            autofillTypes = listOf(AutofillType.Password),
+                            onFill = onPasswordChanged
+                        )
+                )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -165,16 +183,11 @@ internal fun AuthenticationForm(
 
 @Composable
 internal fun AuthenticationTitle(
-    modifier: Modifier = Modifier,
     authenticationMode: AuthenticationMode,
-    handleEvent: AuthenticationEvent.() -> Unit
+    modifier: Modifier = Modifier
 ) {
     Text(
-        modifier = modifier.clickable {
-            if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorization)
-            }
-        },
+        modifier = modifier,
         text = stringResource(
             if (authenticationMode == AuthenticationMode.SIGN_IN) {
                 R.string.authentication_label_sign_in_to_account
@@ -186,20 +199,15 @@ internal fun AuthenticationTitle(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EmailInput(
-    modifier: Modifier = Modifier,
     email: String,
     onEmailChanged: (email: String) -> Unit,
-    onNextClicked: () -> Unit
+    onNextClicked: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
-        modifier = modifier
-            .autofill(
-                autofillTypes = listOf(AutofillType.EmailAddress),
-                onFill = { onEmailChanged(it) }
-            ),
+        modifier = modifier,
         value = email,
         singleLine = true,
         onValueChange = { emailChanged -> onEmailChanged(emailChanged) },
@@ -228,19 +236,15 @@ fun EmailInput(
 @ExperimentalComposeUiApi
 @Composable
 fun PasswordInput(
-    modifier: Modifier = Modifier,
     password: String,
     onPasswordChanged: (email: String) -> Unit,
-    onDoneClicked: () -> Unit
+    onDoneClicked: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var isPasswordHidden by remember { mutableStateOf(true) }
     OutlinedTextField(
-        modifier = modifier
-            .autofill(
-                autofillTypes = listOf(AutofillType.Password),
-                onFill = { onPasswordChanged(it) }
-            ),
+        modifier = modifier,
         value = password,
         singleLine = true,
         onValueChange = { onPasswordChanged(it) },
@@ -294,26 +298,12 @@ fun PasswordInput(
 
 @Composable
 fun Requirement(
-    modifier: Modifier = Modifier,
     message: String,
-    satisfied: Boolean
+    tint: Color,
+    modifier: Modifier = Modifier
 ) {
-    val tint = if (satisfied) {
-        MaterialTheme.colors.primary
-    } else {
-        MaterialTheme.colors.onSurface.copy(alpha = 0.4f)
-    }
-    val requirementStatus = if (satisfied) {
-        stringResource(R.string.authentication_password_requirement_satisfied, message)
-    } else {
-        stringResource(R.string.authentication_password_requirement_not_satisfied, message)
-    }
     Row(
-        modifier = modifier
-            .padding(extraSmallPadding)
-            .semantics(mergeDescendants = true) {
-                text = AnnotatedString(requirementStatus)
-            },
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -334,16 +324,30 @@ fun Requirement(
 
 @Composable
 fun PasswordRequirementsView(
-    modifier: Modifier = Modifier,
-    satisfiedRequirements: List<PasswordRequirements>
+    satisfiedRequirements: List<PasswordRequirements>,
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    Column(modifier = modifier) {
         PasswordRequirements.values().forEach { requirement ->
+            val satisfied = satisfiedRequirements.contains(requirement)
+            val message = stringResource(requirement.label)
+            val requirementStatus = if (satisfied) {
+                stringResource(R.string.authentication_password_requirement_satisfied, message)
+            } else {
+                stringResource(R.string.authentication_password_requirement_not_satisfied, message)
+            }
             Requirement(
-                message = stringResource(requirement.label),
-                satisfied = satisfiedRequirements.contains(requirement)
+                message = requirementStatus,
+                tint = if (satisfied) {
+                    MaterialTheme.colors.primary
+                } else {
+                    MaterialTheme.colors.onSurface.copy(alpha = 0.4f)
+                },
+                modifier = Modifier
+                    .padding(extraSmallPadding)
+                    .semantics(mergeDescendants = true) {
+                        text = AnnotatedString(requirementStatus)
+                    }
             )
         }
     }
@@ -352,10 +356,10 @@ fun PasswordRequirementsView(
 @ExperimentalComposeUiApi
 @Composable
 fun AuthenticationButton(
-    modifier: Modifier = Modifier,
     authenticationMode: AuthenticationMode,
     enableAuthentication: Boolean,
-    onAuthenticate: () -> Unit
+    onAuthenticate: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Button(
@@ -368,9 +372,7 @@ fun AuthenticationButton(
     ) {
         Text(
             text = stringResource(
-                if (authenticationMode ==
-                    AuthenticationMode.SIGN_IN
-                ) {
+                if (authenticationMode == AuthenticationMode.SIGN_IN) {
                     R.string.authentication_action_sign_in
                 } else {
                     R.string.authentication_action_sign_up
@@ -382,9 +384,9 @@ fun AuthenticationButton(
 
 @Composable
 fun ToggleAuthenticationMode(
-    modifier: Modifier = Modifier,
     authenticationMode: AuthenticationMode,
-    toggleAuthentication: () -> Unit
+    toggleAuthentication: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         modifier = modifier,
