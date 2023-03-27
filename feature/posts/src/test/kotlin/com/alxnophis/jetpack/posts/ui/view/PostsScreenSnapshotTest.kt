@@ -28,9 +28,6 @@ internal class PostsScreenSnapshotTest {
         )
     }
 
-    /**
-     * TODO - Not working as expected, needed some delay? Loading not showed.
-     */
     @Test
     fun composable_loading() {
         snapshot(

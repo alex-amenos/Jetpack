@@ -33,6 +33,7 @@ include ':shared:testing'
 // Feature modules
 include ':feature:root'
 include ':feature:authentication'
+include ':feature:file-downloader'
 include ':feature:game:ballclicker'
 include ':feature:home'
 include ':feature:location-tracker'

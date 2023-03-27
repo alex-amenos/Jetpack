@@ -20,8 +20,8 @@ dependencies {
     implementation libs.arrow.fx.coroutines
     implementation libs.arrow.retrofit
     implementation libs.coil
-    implementation libs.coroutines.core
-    implementation libs.coroutines.android
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.coroutines.android
     implementation libs.koin.android
     implementation libs.google.android.material
     implementation libs.timber
@@ -33,7 +33,7 @@ dependencies {
 
     testImplementation project(Modules.SHARED_TESTING)
     testImplementation libs.androidx.arch.core.testing
-    testImplementation libs.coroutines.test
+    testImplementation libs.kotlinx.coroutines.test
     testImplementation libs.koin.test
     testImplementation libs.bundles.kotest
     testImplementation libs.kotlin.reflect

@@ -16,8 +16,8 @@ dependencies {
     implementation libs.androidx.test.junit
     implementation libs.androidx.test.runner
     implementation libs.androidx.test.rules
-    implementation libs.coroutines.core
-    implementation libs.coroutines.test
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.coroutines.test
     implementation libs.junit
     implementation libs.junit.jupiter.api
     implementation libs.junit.jupiter.params

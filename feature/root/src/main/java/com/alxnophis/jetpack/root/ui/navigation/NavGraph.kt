@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.alxnophis.jetpack.authentication.ui.navigation.authenticationNavGraph
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.filedownloader.ui.navigation.fileDownloaderNavGraph
 import com.alxnophis.jetpack.game.ballclicker.ui.navigation.ballClickerNavGraph
 import com.alxnophis.jetpack.home.ui.navigation.homeNavGraph
 import com.alxnophis.jetpack.location.tracker.ui.navigation.locationTrackerNavGraph
@@ -36,6 +37,7 @@ fun SetupNavGraph(
             homeNavGraph(navController)
             authenticationNavGraph(navController)
             ballClickerNavGraph(navController)
+            fileDownloaderNavGraph(navController)
             myPlaygroundNavGraph(navController)
             notificationsNavGraph(navController)
             locationTrackerNavGraph(navController)

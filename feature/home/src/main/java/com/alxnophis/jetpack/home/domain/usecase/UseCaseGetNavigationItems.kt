@@ -19,6 +19,7 @@ class UseCaseGetNavigationItems(
                 {
                     listOf(
                         myPlayground,
+                        fileDownloader,
                         authentication,
                         settings,
                         notifications,
@@ -80,6 +81,12 @@ class UseCaseGetNavigationItems(
             emoji = "⭐️",
             description = "My Jetpack playground module",
             screen = Screen.MyPlayground
+        )
+        private val fileDownloader = NavigationItem(
+            name = "FileDownloader",
+            emoji = "📥",
+            description = "Download a file by URL to download folder",
+            screen = Screen.FileDownloader
         )
     }
 }
