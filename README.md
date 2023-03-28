@@ -11,6 +11,7 @@ It is a personal project to experiment with Android development.
 - [Ktlint rules by Pinterest](https://pinterest.github.io/ktlint/rules/standard/)
 - [BOM to library version mapping](https://developer.android.com/jetpack/compose/bom/bom-mapping)
 - [Jetpack Compose to Kotlin compatibility map](https://developer.android.com/jetpack/androidx/releases/compose-kotlin)
+- [Google app architecture](https://developer.android.com/topic/architecture/intro)
 
 ## Project Status
 
