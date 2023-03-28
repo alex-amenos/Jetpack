@@ -72,7 +72,11 @@ internal fun MyPlaygroundScaffold(
         ) {
             MyPlaygroundContent(
                 state = state,
-                handleEvent = handleEvent
+                handleEvent = handleEvent,
+                modifier = Modifier
+                    .background(MaterialTheme.colors.surface)
+                    .fillMaxSize()
+                    .padding(mediumPadding)
             )
         }
     }
@@ -81,17 +85,15 @@ internal fun MyPlaygroundScaffold(
 @Composable
 internal fun MyPlaygroundContent(
     state: MyPlaygroundState,
-    handleEvent: (MyPlaygroundEvent) -> Unit
+    handleEvent: (MyPlaygroundEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
     Column(
-        modifier = Modifier
-            .background(MaterialTheme.colors.surface)
-            .fillMaxSize()
-            .padding(mediumPadding),
+        modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
