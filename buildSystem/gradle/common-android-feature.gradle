@@ -5,58 +5,53 @@ dependencies {
     implementation project(Modules.SHARED_CORE)
     implementation project(Modules.SHARED_KOTLIN)
     implementation project(Modules.SHARED_ROUTER)
-    implementation Dep.ANDROIDX_ANNOTATIONS
-    implementation Dep.ANDROIDX_ACTIVITY
-    implementation Dep.ANDROIDX_APPCOMPAT
-    implementation Dep.ANDROIDX_ARCH_CORE_COMMON
-    implementation Dep.ANDROIDX_ARCH_CORE_RUNTIME
-    implementation Dep.ANDROIDX_CORE_KTX
-    implementation Dep.ANDROIDX_LIFECYCLE_EXTENSION
-    implementation Dep.ANDROIDX_LIFECYCLE_COMMON
-    implementation Dep.ANDROIDX_LIFECYCLE_RUNTIME
-    implementation Dep.ANDROIDX_LIFECYCLE_VIEWMODEL
-    implementation(platform(Dep.ARROW_STACK))
-    implementation Dep.ARROW_CORE
-    implementation Dep.ARROW_FX_COROUTINES
-    implementation Dep.ARROW_RETROFIT
-    implementation Dep.COIL
-    implementation Dep.COROUTINES_CORE
-    implementation Dep.COROUTINES_ANDROID
-    implementation Dep.KOIN_ANDROID
-    implementation Dep.PERMISSION_DISPATCHER
-    implementation Dep.GOOGLE_ANDROID_MATERIAL
-    implementation Dep.TIMBER
+    implementation libs.androidx.annotations
+    implementation libs.androidx.activity
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.arch.core.common
+    implementation libs.androidx.arch.core.runtime
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.lifecycle.extension
+    implementation libs.androidx.lifecycle.common
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.lifecycle.viewmodel
+    implementation(platform(libs.arrow.stack))
+    implementation libs.arrow.core
+    implementation libs.arrow.fx.coroutines
+    implementation libs.arrow.retrofit
+    implementation libs.coil
+    implementation libs.kotlinx.collections.immutable
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.coroutines.android
+    implementation libs.koin.android
+    implementation libs.google.android.material
+    implementation libs.timber
 
-    debugImplementation Dep.LEAK_CANARY
+    debugImplementation libs.leak.canary
 
-    kapt Dep.ANDROIDX_LIFECYCLE_COMPILER
-    kapt Dep.ARROR_META
-    kapt Dep.PERMISSION_DISPATCHER_PROCESSOR
+    kapt libs.androidx.lifecycle.compiler
+    kapt libs.arror.meta
 
     testImplementation project(Modules.SHARED_TESTING)
-    testImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
-    testImplementation Dep.COROUTINES_TEST
-    testImplementation Dep.KOIN_TEST
-    testImplementation Dep.KOTEST_ASSERTIONS
-    testImplementation Dep.KOTEST_PROPERTY
-    testImplementation Dep.KOTEST_RUNNER
-    testImplementation Dep.KOTLIN_REFLECT
-    testImplementation Dep.MOCKITO
-    testImplementation Dep.MOCKITO_INLINE
-    testImplementation Dep.MOCKITO_KOTLIN
-    testImplementation Dep.JUNIT
-    testImplementation Dep.JUNIT_JUPITER_API
-    testImplementation Dep.JUNIT_JUPITER_PARAMS
-    testImplementation Dep.TURBINE
+    testImplementation libs.androidx.arch.core.testing
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.koin.test
+    testImplementation libs.bundles.kotest
+    testImplementation libs.kotlin.reflect
+    testImplementation libs.bundles.mockito
+    testImplementation libs.junit
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.params
+    testImplementation libs.turbine
 
-    testRuntimeOnly Dep.JUNIT_JUPITER_ENGINE
+    testRuntimeOnly libs.junit.jupiter.engine
 
     androidTestImplementation project(Modules.SHARED_TESTING)
-    androidTestImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
-    androidTestImplementation Dep.ANDROIDX_TEST_JUNIT
-    androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
-    androidTestImplementation Dep.ANDROIDX_TEST_RULES
-    androidTestImplementation Dep.KOIN_TEST
-    androidTestImplementation Dep.MOCKITO_KOTLIN
-    androidTestImplementation Dep.MOCKITO_ANDROID
+    androidTestImplementation libs.androidx.arch.core.testing
+    androidTestImplementation libs.androidx.test.junit
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation libs.koin.test
+    androidTestImplementation libs.mockito.kotlin
+    androidTestImplementation libs.mockito.android
 }

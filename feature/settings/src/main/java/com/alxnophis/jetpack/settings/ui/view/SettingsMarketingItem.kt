@@ -25,8 +25,8 @@ import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
 
 @Composable
 internal fun SettingsMarketingItem(
-    modifier: Modifier = Modifier,
     selectedOption: MarketingOption,
+    modifier: Modifier = Modifier,
     onOptionSelected: (position: MarketingOption) -> Unit
 ) {
     val options = stringArrayResource(R.array.settings_options_marketing_choice)

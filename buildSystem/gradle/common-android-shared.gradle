@@ -2,36 +2,32 @@ apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
 
 dependencies {
     implementation project(Modules.SHARED_KOTLIN)
-    implementation(platform(Dep.ARROW_STACK))
-    implementation Dep.ARROW_CORE
-    implementation Dep.ARROW_FX_COROUTINES
-    implementation Dep.ARROW_RETROFIT
-    implementation Dep.COROUTINES_ANDROID
-    implementation Dep.COROUTINES_CORE
-    implementation Dep.KOIN_ANDROID
-    implementation Dep.TIMBER
+    implementation(platform(libs.arrow.stack))
+    implementation libs.arrow.core
+    implementation libs.arrow.fx.coroutines
+    implementation libs.arrow.retrofit
+    implementation libs.kotlinx.collections.immutable
+    implementation libs.kotlinx.coroutines.android
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.koin.android
+    implementation libs.timber
 
-    debugImplementation Dep.LEAK_CANARY
+    debugImplementation libs.leak.canary
 
-    testImplementation Dep.COROUTINES_TEST
-    testImplementation Dep.JUNIT
-    testImplementation Dep.JUNIT_JUPITER_API
-    testImplementation Dep.JUNIT_JUPITER_PARAMS
-    testImplementation Dep.KOIN_TEST
-    testImplementation Dep.KOTEST_ASSERTIONS
-    testImplementation Dep.KOTEST_PROPERTY
-    testImplementation Dep.KOTEST_RUNNER
-    testImplementation Dep.KOTLIN_REFLECT
-    testImplementation Dep.MOCKITO
-    testImplementation Dep.MOCKITO_INLINE
-    testImplementation Dep.MOCKITO_KOTLIN
-    testImplementation Dep.TURBINE
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.junit
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.params
+    testImplementation libs.koin.test
+    testImplementation libs.bundles.kotest
+    testImplementation libs.bundles.mockito
+    testImplementation libs.turbine
 
-    testRuntimeOnly Dep.JUNIT_JUPITER_ENGINE
-    testRuntimeOnly Dep.JUNIT_VINTAGE_ENGINE
+    testRuntimeOnly libs.junit.jupiter.engine
+    testRuntimeOnly libs.junit.vintage.engine
 
-    androidTestImplementation Dep.ANDROIDX_TEST_JUNIT
-    androidTestImplementation Dep.ANDROIDX_TEST_RUNNER
-    androidTestImplementation Dep.ANDROIDX_TEST_RULES
-    androidTestImplementation Dep.ANDROIDX_ARCH_CORE_TESTING
+    androidTestImplementation libs.androidx.test.junit
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation libs.androidx.arch.core.testing
 }

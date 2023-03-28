@@ -23,9 +23,9 @@ import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_TOGGLE_ITEM
 
 @Composable
 internal fun SettingsNotificationItem(
-    modifier: Modifier = Modifier,
     title: String,
     checked: Boolean,
+    modifier: Modifier = Modifier,
     onToggleNotificationSettings: () -> Unit
 ) {
     val notificationsEnabledState = if (checked) {
@@ -33,9 +33,7 @@ internal fun SettingsNotificationItem(
     } else {
         stringResource(id = R.string.settings_cd_notifications_disabled)
     }
-    SettingsItem(
-        modifier = modifier
-    ) {
+    SettingsItem(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier

@@ -1,0 +1,143 @@
+[versions]
+androidx-activity = "1.7.0"
+androidx-arch-core = "2.1.0"
+androidx-compose-bom = "2023.03.00"
+com-apollographql-apollo3 = "3.7.5"
+com-google-accompanist = "0.25.1"
+com-squareup-okhttp3 = "4.10.0"
+com-squareup-retrofit2 = "2.9.0"
+io-kotest = "5.5.5"
+kotlinx-coroutines = "1.6.4"
+org-junit-jupiter = "5.9.2"
+org-mockito = "5.2.0"
+
+[libraries]
+androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
+androidx-annotations = "androidx.annotation:annotation:1.4.0"
+androidx-appcompat = "androidx.appcompat:appcompat:1.5.1"
+androidx-arch-core-common = { module = "androidx.arch.core:core-common", version.ref = "androidx-arch-core" }
+androidx-arch-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-arch-core" }
+androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core" }
+androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-compose-animation = { module = "androidx.compose.animation:animation" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
+androidx-compose-constraint-layout = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
+androidx-compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
+androidx-compose-material = { module = "androidx.compose.material:material" }
+androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+androidx-compose-navigation = "androidx.navigation:navigation-compose:2.5.2"
+androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-ui-util = { module = "androidx.compose.ui:ui-util" }
+androidx-compose-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+androidx-core-ktx = "androidx.core:core-ktx:1.8.0"
+androidx-lifecycle-common = "androidx.lifecycle:lifecycle-common-java8:2.5.1"
+androidx-lifecycle-compiler = "androidx.lifecycle:lifecycle-compiler:2.5.1"
+androidx-lifecycle-extension = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+androidx-test-junit = "androidx.test.ext:junit-ktx:1.1.5"
+androidx-test-rules = "androidx.test:rules:1.5.0"
+androidx-test-runner = "androidx.test:runner:1.4.0"
+androidx-work = "androidx.work:work-runtime-ktx:2.8.0"
+apollo-adapters = { module = "com.apollographql.apollo3:apollo-adapters", version.ref = "com-apollographql-apollo3" }
+apollo-api = { module = "com.apollographql.apollo3:apollo-api", version.ref = "com-apollographql-apollo3" }
+apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "com-apollographql-apollo3" }
+apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite", version.ref = "com-apollographql-apollo3" }
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "com-apollographql-apollo3" }
+arror-meta = "io.arrow-kt:arrow-meta:1.6.0"
+arrow-core = { module = "io.arrow-kt:arrow-core" }
+arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
+arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
+arrow-stack = "io.arrow-kt:arrow-stack:1.1.3"
+coil = "io.coil-kt:coil-compose:2.2.2"
+google-accompanits-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "com-google-accompanist" }
+google-accompanits-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "com-google-accompanist" }
+google-accompanits-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "com-google-accompanist" }
+google-android-material = "com.google.android.material:material:1.4.0"
+google-play-services-location = "com.google.android.gms:play-services-location:21.0.1"
+junit = "junit:junit:4.13.2"
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "org-junit-jupiter" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "org-junit-jupiter" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "org-junit-jupiter" }
+junit-vintage-engine = "org.junit.vintage:junit-vintage-engine:5.9.2"
+koin-android = "io.insert-koin:koin-android:3.3.3"
+koin-android-compose = "io.insert-koin:koin-androidx-compose:3.4.2"
+koin-android-work-manager = "io.insert-koin:koin-androidx-workmanager:3.3.3"
+koin-test = "io.insert-koin:koin-test:3.3.3"
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "io-kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "io-kotest" }
+kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "io-kotest" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+leak-canary = "com.squareup.leakcanary:leakcanary-android:2.10"
+mockito = { module = "org.mockito:mockito-junit-jupiter", version.ref = "org-mockito" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "org-mockito" }
+mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "org-mockito" }
+mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:4.1.0"
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "com-squareup-okhttp3" }
+okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "com-squareup-okhttp3" }
+okhttp-profiler = "com.localebro:okhttpprofiler:1.0.8"
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "com-squareup-retrofit2" }
+retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "com-squareup-retrofit2" }
+slack-lint-compose = "com.slack.lint.compose:compose-lint-checks:1.1.1"
+timber = "com.jakewharton.timber:timber:5.0.1"
+turbine = "app.cash.turbine:turbine:0.12.1"
+
+[bundles]
+androidx-compose = [
+    "androidx-compose-activity",
+    "androidx-compose-animation",
+    "androidx-compose-constraint-layout",
+    "androidx-compose-foundation",
+    "androidx-compose-foundation-layout",
+    "androidx-compose-material",
+    "androidx-compose-material-icons-core",
+    "androidx-compose-material-icons-extended",
+    "androidx-compose-navigation",
+    "androidx-compose-runtime",
+    "androidx-compose-ui",
+    "androidx-compose-ui-tooling-preview",
+    "androidx-compose-ui-util",
+    "androidx-compose-viewmodel",
+]
+apollo = [
+    "apollo-adapters",
+    "apollo-api",
+    "apollo-normalized-cache",
+    "apollo-normalized-cache-sqlite",
+    "apollo-runtime",
+]
+kotest = [
+    "kotest-assertions",
+    "kotest-property",
+    "kotest-runner",
+]
+mockito = [
+    "mockito",
+    "mockito-inline",
+    "mockito-kotlin",
+]
+retrofit = [
+    "okhttp",
+    "okhttp-logging-interceptor",
+    "okhttp-profiler",
+    "retrofit",
+    "retrofit-converter-moshi",
+]
+
+[plugins]
+android-application = "com.android.application:7.4.0"
+ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
+kotlin-android = "org.jetbrains.kotlin.android:1.8.10"
+kover = "org.jetbrains.kotlinx.kover:0.6.1"
+version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"

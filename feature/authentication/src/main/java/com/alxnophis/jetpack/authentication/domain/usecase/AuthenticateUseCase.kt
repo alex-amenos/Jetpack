@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 
 typealias Authenticated = Unit
 
-class AuthenticateUseCase(
+internal class AuthenticateUseCase(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val delay: Long = DELAY
 ) {

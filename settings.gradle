@@ -3,6 +3,7 @@ pluginManagement {
         google()
         maven { url 'https://maven.google.com' }
         mavenCentral()
+        gradlePluginPortal()
         maven { url 'https://jitpack.io' }
     }
 }
@@ -32,6 +33,7 @@ include ':shared:testing'
 // Feature modules
 include ':feature:root'
 include ':feature:authentication'
+include ':feature:file-downloader'
 include ':feature:game:ballclicker'
 include ':feature:home'
 include ':feature:location-tracker'

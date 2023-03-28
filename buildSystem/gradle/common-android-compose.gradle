@@ -5,34 +5,28 @@ android {
         compose true
     }
 
+    // Jetpack Compose to Kotlin Compatibility Map:
+    // https://developer.android.com/jetpack/androidx/releases/compose-kotlin
     composeOptions {
-        kotlinCompilerExtensionVersion Version.ANDROIDX_COMPOSE_COMPILER
+        kotlinCompilerExtensionVersion "1.4.4"
     }
 }
 
 dependencies {
-    def composeBom = platform(Dep.ANDROIDX_COMPOSE_BOM)
+    // BOM to library version mapping
+    // https://developer.android.com/jetpack/compose/bom/bom-mapping
+    def composeBom = platform(libs.androidx.compose.bom)
 
     implementation(composeBom)
-    implementation Dep.ANDROIDX_COMPOSE_ACTIVITY
-    implementation Dep.ANDROIDX_COMPOSE_CONSTRAINT_LAYOUT
-    implementation Dep.ANDROIDX_COMPOSE_ANIMATION
-    implementation Dep.ANDROIDX_COMPOSE_FOUNDATION
-    implementation Dep.ANDROIDX_COMPOSE_FOUNDATION_LAYOUT
-    implementation Dep.ANDROIDX_COMPOSE_MATERIAL
-    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_CORE
-    implementation Dep.ANDROIDX_COMPOSE_MATERIAL_ICONS_EXTENDED
-    implementation Dep.ANDROIDX_COMPOSE_NAVIGATION
-    implementation Dep.ANDROIDX_COMPOSE_RUNTIME
-    implementation Dep.ANDROIDX_COMPOSE_UI
-    implementation Dep.ANDROIDX_COMPOSE_UI_UTIL
-    implementation Dep.ANDROIDX_COMPOSE_UI_TOOLING_PREVIEW
-    implementation Dep.ANDROIDX_COMPOSE_VIEWMODEL
-    implementation Dep.KOIN_ANDROID_COMPOSE
+    implementation libs.bundles.androidx.compose
+    implementation libs.koin.android.compose
 
-    debugImplementation Dep.ANDROIDX_COMPOSE_UI_TOOLING
+    debugImplementation libs.androidx.compose.ui.tooling
 
     androidTestImplementation(composeBom)
     androidTestImplementation project(Modules.SHARED_TESTING)
-    androidTestImplementation Dep.ANDROIDX_COMPOSE_UI_TEST
+    androidTestImplementation libs.androidx.compose.ui.test
+
+    // https://slackhq.github.io/compose-lints/
+    lintChecks libs.slack.lint.compose
 }

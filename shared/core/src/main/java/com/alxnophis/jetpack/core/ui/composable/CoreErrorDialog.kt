@@ -22,8 +22,8 @@ import com.alxnophis.jetpack.core.ui.theme.smallPadding
 
 @Composable
 fun CoreErrorDialog(
-    modifier: Modifier = Modifier,
     errorMessage: String,
+    modifier: Modifier = Modifier,
     dismissError: () -> Unit
 ) {
     AlertDialog(
@@ -40,7 +40,7 @@ fun CoreErrorDialog(
                     onClick = { dismissError() }
                 ) {
                     Text(
-                        text = stringResource(R.string.core_ok),
+                        text = stringResource(android.R.string.ok),
                         style = MaterialTheme.typography.body1
                     )
                 }

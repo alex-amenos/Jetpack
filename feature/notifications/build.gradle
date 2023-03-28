@@ -6,5 +6,5 @@ android {
 }
 
 dependencies {
-    implementation Dep.GOOGLE_ACCOMPANITS_PERMISSIONS
+    implementation libs.google.accompanits.permissions
 }

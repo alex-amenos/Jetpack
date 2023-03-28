@@ -6,8 +6,6 @@ import arrow.core.right
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
-import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_EMAIL
-import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_PASSWORD
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
@@ -242,8 +240,8 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     ) = AuthenticationViewModel(initialState, authenticateUseCase)
 
     companion object {
-        private const val EMAIL = AUTHORIZED_EMAIL
-        private const val PASSWORD = AUTHORIZED_PASSWORD
+        private const val EMAIL = "my@email.com"
+        private const val PASSWORD = "12345678Aab"
         private val authenticateUseCaseMock: AuthenticateUseCase = mock()
         private val initialAuthenticationState = AuthenticationState()
     }
