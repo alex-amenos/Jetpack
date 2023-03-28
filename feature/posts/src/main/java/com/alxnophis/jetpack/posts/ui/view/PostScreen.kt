@@ -103,10 +103,10 @@ internal fun PostsContent(
                 .nestedScroll(nestedScrollConnection)
         ) {
             PostList(
-                modifier = Modifier.fillMaxSize(),
                 state = state,
                 toolbarHeight = toolbarHeight,
-                handleEvent = handleEvent
+                handleEvent = handleEvent,
+                modifier = Modifier.fillMaxSize()
             )
             CoreTopBar(
                 modifier = Modifier
@@ -127,10 +127,10 @@ internal fun PostsContent(
 
 @Composable
 internal fun PostList(
-    modifier: Modifier,
     state: PostsState,
     toolbarHeight: Dp,
-    handleEvent: PostsEvent.() -> Unit
+    handleEvent: PostsEvent.() -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
@@ -150,7 +150,13 @@ internal fun PostList(
                 items = state.posts,
                 key = { item: Post -> item.id },
                 itemContent = { item: Post ->
-                    CardPostItem(state, item)
+                    CardPostItem(
+                        state = state,
+                        item = item,
+                        modifier = Modifier
+                            .padding(vertical = mediumPadding)
+                            .fillParentMaxWidth()
+                    )
                 }
             )
         }
@@ -160,13 +166,12 @@ internal fun PostList(
 @Composable
 private fun CardPostItem(
     state: PostsState,
-    item: Post
+    item: Post,
+    modifier: Modifier = Modifier
 ) {
     Card(
         elevation = 10.dp,
-        modifier = Modifier
-            .padding(vertical = mediumPadding)
-            .fillMaxWidth()
+        modifier = modifier
     ) {
         Column(
             modifier = Modifier
