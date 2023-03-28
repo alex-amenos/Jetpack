@@ -3,6 +3,7 @@
 package com.alxnophis.jetpack.kotlin.constants
 
 const val BREAK_LINE = "\n"
+const val BLANK = " "
 const val COMA = ","
 const val DOT = "."
 const val THREE_DOTS = "..."

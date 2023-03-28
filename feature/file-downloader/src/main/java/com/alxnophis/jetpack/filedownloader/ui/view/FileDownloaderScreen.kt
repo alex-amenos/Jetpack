@@ -99,11 +99,12 @@ private fun FileDownloaderScaffold(
             }
         ) {
             FileDownloaderContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(mediumPadding),
                 state = state,
-                handleEvent = handleEvent
+                handleEvent = handleEvent,
+                modifier = Modifier
+                    .drawVerticalScrollbar(rememberScrollState())
+                    .fillMaxSize()
+                    .padding(mediumPadding)
             )
             FileDownloaderErrors(
                 state = state,
@@ -113,19 +114,66 @@ private fun FileDownloaderScaffold(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun FileDownloaderContent(
-    modifier: Modifier,
     state: FileDownloaderState,
+    modifier: Modifier = Modifier,
     handleEvent: FileDownloaderEvent.() -> Unit
 ) {
-    Column(
-        modifier = modifier.drawVerticalScrollbar(rememberScrollState())
-    ) {
-        FileDownloaderExecutor(
-            state = state,
-            handleEvent = handleEvent
+    val downloadFileEvent: () -> Unit = {
+        handleEvent.invoke(FileDownloaderEvent.DownloadFile)
+    }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    Column(modifier = modifier) {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = state.url,
+            singleLine = true,
+            onValueChange = { urlValueChanged ->
+                handleEvent.invoke(FileDownloaderEvent.UrlChanged(urlValueChanged))
+            },
+            label = {
+                Text(
+                    text = stringResource(R.string.file_downloader_url),
+                    style = MaterialTheme.typography.body1
+                )
+            },
+            trailingIcon = {
+                IconButton(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(4.dp),
+                    onClick = {
+                        handleEvent.invoke(FileDownloaderEvent.UrlChanged(EMPTY))
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null
+                    )
+                }
+            },
+            keyboardActions = KeyboardActions(
+                onSend = { downloadFileEvent() }
+            ),
+            isError = if (state.url.isNotEmpty()) {
+                !state.url.isValidUrl()
+            } else {
+                false
+            }
         )
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        CoreButtonMajor(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.file_downloader_download_file),
+            isEnabled = state.url.isValidUrl()
+        ) {
+            keyboardController?.hide()
+            downloadFileEvent()
+        }
 
         Spacer(modifier = Modifier.height(25.dp))
 
@@ -134,62 +182,6 @@ private fun FileDownloaderContent(
         Spacer(modifier = Modifier.height(25.dp))
 
         FileDownloaderList(state.fileStatusList)
-    }
-}
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-private fun FileDownloaderExecutor(
-    state: FileDownloaderState,
-    handleEvent: FileDownloaderEvent.() -> Unit
-) {
-    val downloadFileEvent: () -> Unit = {
-        handleEvent.invoke(FileDownloaderEvent.DownloadFile)
-    }
-    val keyboardController = LocalSoftwareKeyboardController.current
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = state.url,
-        singleLine = true,
-        onValueChange = { urlValueChanged ->
-            handleEvent.invoke(FileDownloaderEvent.UrlChanged(urlValueChanged))
-        },
-        label = {
-            Text(
-                text = stringResource(R.string.file_downloader_url),
-                style = MaterialTheme.typography.body1
-            )
-        },
-        trailingIcon = {
-            IconButton(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(4.dp),
-                onClick = {
-                    handleEvent.invoke(FileDownloaderEvent.UrlChanged(EMPTY))
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = null
-                )
-            }
-        },
-        keyboardActions = KeyboardActions(
-            onSend = { downloadFileEvent() }
-        ),
-        isError = !state.url.isValidUrl()
-    )
-
-    Spacer(modifier = Modifier.height(25.dp))
-
-    CoreButtonMajor(
-        modifier = Modifier.fillMaxWidth(),
-        text = stringResource(id = R.string.file_downloader_download_file),
-        isEnabled = state.url.isValidUrl()
-    ) {
-        keyboardController?.hide()
-        downloadFileEvent()
     }
 }
 
@@ -275,8 +267,8 @@ private fun DialogError(
 
 @Composable
 private fun SnackbarError(
-    modifier: Modifier = Modifier,
     error: Int,
+    modifier: Modifier = Modifier,
     onDismiss: () -> Unit
 ) {
     val errorMessage = stringResource(id = error)

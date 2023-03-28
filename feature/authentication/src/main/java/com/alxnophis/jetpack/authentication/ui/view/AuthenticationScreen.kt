@@ -66,9 +66,7 @@ internal fun AuthenticationContent(
         authenticationState.error?.let { error: Int ->
             CoreErrorDialog(
                 errorMessage = stringResource(error),
-                dismissError = {
-                    handleEvent(AuthenticationEvent.ErrorDismissed)
-                }
+                dismissError = { handleEvent(AuthenticationEvent.ErrorDismissed) }
             )
         }
     }

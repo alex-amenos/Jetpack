@@ -28,7 +28,7 @@ fun SetupNavGraph(
     startDestination: String = HOME_ROUTE
 ) {
     AppTheme {
-        setStatusBarColor()
+        SetStatusBarColor()
         NavHost(
             navController = navController,
             startDestination = startDestination,
@@ -49,8 +49,8 @@ fun SetupNavGraph(
 }
 
 @Composable
-internal fun setStatusBarColor() {
+internal fun SetStatusBarColor() {
     val activity = LocalView.current.context as Activity
-    val backgroundArgb = MaterialTheme.colors.primaryVariant.toArgb()
-    activity.window.statusBarColor = backgroundArgb
+    val colorArgb = MaterialTheme.colors.primaryVariant.toArgb()
+    activity.window.statusBarColor = colorArgb
 }

@@ -25,8 +25,8 @@ import com.alxnophis.jetpack.core.ui.theme.smallPadding
 
 @Composable
 fun CoreTopBar(
-    modifier: Modifier,
     title: String,
+    modifier: Modifier = Modifier,
     onBack: () -> Unit
 ) {
     TopAppBar(

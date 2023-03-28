@@ -26,4 +26,7 @@ dependencies {
     androidTestImplementation(composeBom)
     androidTestImplementation project(Modules.SHARED_TESTING)
     androidTestImplementation libs.androidx.compose.ui.test
+
+    // https://slackhq.github.io/compose-lints/
+    lintChecks libs.slack.lint.compose
 }
