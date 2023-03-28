@@ -114,8 +114,8 @@ internal fun SpacexContent(
 @Composable
 private fun PastLaunchesList(
     state: LaunchesState,
-    handleEvent: LaunchesEvent.() -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    handleEvent: LaunchesEvent.() -> Unit
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(

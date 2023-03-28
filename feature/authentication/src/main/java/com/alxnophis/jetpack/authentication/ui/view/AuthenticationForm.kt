@@ -75,8 +75,8 @@ internal fun AuthenticationForm(
     authenticationMode: AuthenticationMode,
     completedPasswordRequirements: List<PasswordRequirements>,
     enableAuthentication: Boolean,
-    handleEvent: AuthenticationEvent.() -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    handleEvent: AuthenticationEvent.() -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -203,8 +203,8 @@ internal fun AuthenticationTitle(
 fun EmailInput(
     email: String,
     onEmailChanged: (email: String) -> Unit,
-    onNextClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNextClicked: () -> Unit
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -358,8 +358,8 @@ fun PasswordRequirementsView(
 fun AuthenticationButton(
     authenticationMode: AuthenticationMode,
     enableAuthentication: Boolean,
-    onAuthenticate: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAuthenticate: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Button(
@@ -385,8 +385,8 @@ fun AuthenticationButton(
 @Composable
 fun ToggleAuthenticationMode(
     authenticationMode: AuthenticationMode,
-    toggleAuthentication: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    toggleAuthentication: () -> Unit
 ) {
     Surface(
         modifier = modifier,

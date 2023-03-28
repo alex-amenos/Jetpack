@@ -116,8 +116,8 @@ internal fun HomeTopBar() {
 @Composable
 internal fun SectionsList(
     state: HomeState,
-    navigateTo: (route: String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateTo: (route: String) -> Unit
 ) {
     LazyColumn(
         state = rememberLazyListState(),

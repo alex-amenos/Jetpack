@@ -85,8 +85,8 @@ internal fun MyPlaygroundScaffold(
 @Composable
 internal fun MyPlaygroundContent(
     state: MyPlaygroundState,
-    handleEvent: (MyPlaygroundEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    handleEvent: (MyPlaygroundEvent) -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
     LaunchedEffect(Unit) {

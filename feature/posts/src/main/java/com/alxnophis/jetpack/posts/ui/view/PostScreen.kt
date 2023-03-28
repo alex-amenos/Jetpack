@@ -129,8 +129,8 @@ internal fun PostsContent(
 internal fun PostList(
     state: PostsState,
     toolbarHeight: Dp,
-    handleEvent: PostsEvent.() -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    handleEvent: PostsEvent.() -> Unit
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(

@@ -25,8 +25,8 @@ import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_TOGGLE_ITEM
 internal fun SettingsNotificationItem(
     title: String,
     checked: Boolean,
-    onToggleNotificationSettings: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onToggleNotificationSettings: () -> Unit
 ) {
     val notificationsEnabledState = if (checked) {
         stringResource(id = R.string.settings_cd_notifications_enabled)

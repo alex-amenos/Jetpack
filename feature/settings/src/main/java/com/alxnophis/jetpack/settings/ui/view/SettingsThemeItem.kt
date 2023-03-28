@@ -29,8 +29,8 @@ import com.alxnophis.jetpack.settings.ui.contract.Theme
 @Composable
 internal fun SettingsThemeItem(
     selectedTheme: Theme,
-    onOptionSelected: (option: Theme) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onOptionSelected: (option: Theme) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     SettingsItem(modifier = modifier) {

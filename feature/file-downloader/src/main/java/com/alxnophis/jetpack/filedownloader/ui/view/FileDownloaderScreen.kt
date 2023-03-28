@@ -118,8 +118,8 @@ private fun FileDownloaderScaffold(
 @Composable
 private fun FileDownloaderContent(
     state: FileDownloaderState,
-    handleEvent: FileDownloaderEvent.() -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    handleEvent: FileDownloaderEvent.() -> Unit
 ) {
     val downloadFileEvent: () -> Unit = {
         handleEvent.invoke(FileDownloaderEvent.DownloadFile)
@@ -268,8 +268,8 @@ private fun DialogError(
 @Composable
 private fun SnackbarError(
     error: Int,
-    onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDismiss: () -> Unit
 ) {
     val errorMessage = stringResource(id = error)
     val snackbarHostState = remember { SnackbarHostState() }

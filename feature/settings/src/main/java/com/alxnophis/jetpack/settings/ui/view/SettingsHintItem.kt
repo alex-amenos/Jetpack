@@ -25,8 +25,8 @@ import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 fun SettingsHintItem(
     title: String,
     checked: Boolean,
-    onShowHintToggled: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onShowHintToggled: () -> Unit
 ) {
     val hintsEnabledState = if (checked) {
         stringResource(id = R.string.settings_cd_hints_enabled)
