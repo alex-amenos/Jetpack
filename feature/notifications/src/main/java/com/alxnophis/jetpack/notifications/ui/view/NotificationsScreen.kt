@@ -1,19 +1,20 @@
 package com.alxnophis.jetpack.notifications.ui.view
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,30 +42,32 @@ internal fun NotificationsScreen(
     NotificationsContent(navigateBack = popBackStack)
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 private fun NotificationsContent(
     navigateBack: () -> Unit
 ) {
     AppTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.surface),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            scaffoldState = rememberScaffoldState(),
+            topBar = {
+                CoreTopBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = stringResource(id = R.string.notifications_title),
+                    onBack = { navigateBack() }
+                )
+            }
         ) {
-            CoreTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.notifications_title),
-                onBack = { navigateBack() }
-            )
-            NotificationPermission()
+            NotificationPermission(modifier = Modifier.fillMaxSize())
         }
     }
 }
 
 @Composable
-private fun NotificationPermission() {
+private fun NotificationPermission(
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
     var hasNotificationPermission by remember {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
@@ -80,9 +83,7 @@ private fun NotificationPermission() {
         onResult = { isGranted -> hasNotificationPermission = isGranted }
     )
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.surface),
+        modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

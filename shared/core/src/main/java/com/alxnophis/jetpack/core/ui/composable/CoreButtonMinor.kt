@@ -27,8 +27,8 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 @SuppressLint("ModifierParameter")
 @Composable
 fun CoreButtonMinor(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     onClick: (() -> Unit)
 ) {

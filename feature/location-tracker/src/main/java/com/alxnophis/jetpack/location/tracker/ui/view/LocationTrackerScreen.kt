@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.location.tracker.ui.view
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -52,6 +55,7 @@ internal fun LocationTrackerScreen(
     )
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 internal fun LocationTrackerContent(
     state: LocationTrackerState,
@@ -59,19 +63,22 @@ internal fun LocationTrackerContent(
     navigateBack: () -> Unit
 ) {
     AppTheme {
-        Column(
+        Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.surface)
+                .background(MaterialTheme.colors.surface),
+            scaffoldState = rememberScaffoldState(),
+            topBar = {
+                CoreTopBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = stringResource(id = R.string.location_tracker_title),
+                    onBack = {
+                        handleEvent(LocationTrackerEvent.EndTracking)
+                        navigateBack()
+                    }
+                )
+            }
         ) {
-            CoreTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.location_tracker_title),
-                onBack = {
-                    handleEvent(LocationTrackerEvent.EndTracking)
-                    navigateBack()
-                }
-            )
             LocationPermission(
                 composableWithPermissionGranted = { UserLocation(state = state) },
                 handleEvent = handleEvent
@@ -134,34 +141,37 @@ private fun LocationPermission(
 
 @Composable
 private fun UserLocation(
-    state: LocationTrackerState
+    state: LocationTrackerState,
+    modifier: Modifier = Modifier
 ) {
-    Text(
-        modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
-        fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colors.primary,
-        fontSize = 16.sp,
-        text = stringResource(id = R.string.location_tracker_last_known_location)
-    )
-    Text(
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(mediumPadding),
-        text = state.lastKnownLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
-    )
-    Text(
-        modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
-        fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colors.primary,
-        fontSize = 16.sp,
-        text = stringResource(id = R.string.location_tracker_current_location)
-    )
-    Text(
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(mediumPadding),
-        text = state.userLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
-    )
+    Column(modifier) {
+        Text(
+            modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colors.primary,
+            fontSize = 16.sp,
+            text = stringResource(id = R.string.location_tracker_last_known_location)
+        )
+        Text(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(mediumPadding),
+            text = state.lastKnownLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
+        )
+        Text(
+            modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colors.primary,
+            fontSize = 16.sp,
+            text = stringResource(id = R.string.location_tracker_current_location)
+        )
+        Text(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(mediumPadding),
+            text = state.userLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
+        )
+    }
 }
 
 @Preview(showBackground = true)

@@ -79,8 +79,12 @@ internal fun HomeContent(
             scaffoldState = rememberScaffoldState(),
             topBar = { HomeTopBar() }
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                SectionsList(state, navigateTo)
+            Column {
+                SectionsList(
+                    state = state,
+                    navigateTo = navigateTo,
+                    modifier = Modifier.background(color = MaterialTheme.colors.surface)
+                )
             }
             state.error?.let { error: Int ->
                 CoreErrorDialog(
@@ -112,14 +116,12 @@ internal fun HomeTopBar() {
 @Composable
 internal fun SectionsList(
     state: HomeState,
+    modifier: Modifier = Modifier,
     navigateTo: (route: String) -> Unit
 ) {
-    val listState = rememberLazyListState()
     LazyColumn(
-        state = listState,
-        modifier = Modifier
-            .background(color = MaterialTheme.colors.surface)
-            .fillMaxSize()
+        state = rememberLazyListState(),
+        modifier = modifier
     ) {
         items(
             items = state.data,

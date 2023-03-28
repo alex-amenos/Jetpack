@@ -20,6 +20,7 @@ dependencies {
     implementation libs.arrow.fx.coroutines
     implementation libs.arrow.retrofit
     implementation libs.coil
+    implementation libs.kotlinx.collections.immutable
     implementation libs.kotlinx.coroutines.core
     implementation libs.kotlinx.coroutines.android
     implementation libs.koin.android
@@ -51,6 +52,6 @@ dependencies {
     androidTestImplementation libs.androidx.test.runner
     androidTestImplementation libs.androidx.test.rules
     androidTestImplementation libs.koin.test
-    androidTestImplementation libs.bundles.mockito
+    androidTestImplementation libs.mockito.kotlin
     androidTestImplementation libs.mockito.android
 }
