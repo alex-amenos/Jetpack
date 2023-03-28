@@ -26,8 +26,8 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 
 @Composable
 fun CoreButtonMajor(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     onClick: (() -> Unit)
 ) {

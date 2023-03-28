@@ -22,8 +22,8 @@ import com.alxnophis.jetpack.core.ui.theme.smallPadding
 
 @Composable
 fun CoreErrorDialog(
-    modifier: Modifier = Modifier,
     errorMessage: String,
+    modifier: Modifier = Modifier,
     dismissError: () -> Unit
 ) {
     AlertDialog(
