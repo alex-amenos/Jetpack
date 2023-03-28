@@ -19,13 +19,11 @@ import com.alxnophis.jetpack.settings.R
 
 @Composable
 internal fun SettingsManageSubscriptionItem(
-    modifier: Modifier = Modifier,
     title: String,
-    onSubscriptionClicked: () -> Unit
+    onSubscriptionClicked: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    SettingsItem(
-        modifier = modifier
-    ) {
+    SettingsItem(modifier = modifier) {
         Row(
             modifier = Modifier
                 .clickable(

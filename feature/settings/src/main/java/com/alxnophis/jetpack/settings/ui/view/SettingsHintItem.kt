@@ -23,19 +23,17 @@ import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 
 @Composable
 fun SettingsHintItem(
-    modifier: Modifier = Modifier,
     title: String,
     checked: Boolean,
-    onShowHintToggled: () -> Unit
+    onShowHintToggled: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val hintsEnabledState = if (checked) {
         stringResource(id = R.string.settings_cd_hints_enabled)
     } else {
         stringResource(id = R.string.settings_cd_hints_disabled)
     }
-    SettingsItem(
-        modifier = modifier
-    ) {
+    SettingsItem(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier

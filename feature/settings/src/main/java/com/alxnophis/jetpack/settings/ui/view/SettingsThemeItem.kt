@@ -28,9 +28,9 @@ import com.alxnophis.jetpack.settings.ui.contract.Theme
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun SettingsThemeItem(
-    modifier: Modifier = Modifier,
     selectedTheme: Theme,
-    onOptionSelected: (option: Theme) -> Unit
+    onOptionSelected: (option: Theme) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
     SettingsItem(modifier = modifier) {
