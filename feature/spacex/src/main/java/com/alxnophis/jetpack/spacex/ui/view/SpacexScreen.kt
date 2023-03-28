@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.spacex.ui.view
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -21,7 +22,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -72,6 +75,7 @@ internal fun SpacexScreen(
     )
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 internal fun SpacexContent(
     state: LaunchesState,
@@ -79,16 +83,19 @@ internal fun SpacexContent(
     navigateBack: () -> Unit
 ) {
     AppTheme {
-        Column(
+        Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.surface)
+                .background(MaterialTheme.colors.surface),
+            scaffoldState = rememberScaffoldState(),
+            topBar = {
+                CoreTopBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = stringResource(id = R.string.spacex_title),
+                    onBack = { navigateBack() }
+                )
+            }
         ) {
-            CoreTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.spacex_title),
-                onBack = { navigateBack() }
-            )
             PastLaunchesList(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
@@ -106,19 +113,21 @@ internal fun SpacexContent(
 
 @Composable
 private fun PastLaunchesList(
-    modifier: Modifier,
     state: LaunchesState,
-    handleEvent: LaunchesEvent.() -> Unit
+    handleEvent: LaunchesEvent.() -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
+        modifier = modifier,
         state = rememberSwipeRefreshState(state.isLoading),
         onRefresh = { handleEvent.invoke(LaunchesEvent.RefreshPastLaunches) }
     ) {
         LazyColumn(
             state = listState,
-            modifier = modifier
+            modifier = Modifier
                 .background(MaterialTheme.colors.surface)
+                .fillMaxWidth()
                 .drawVerticalScrollbar(listState),
             contentPadding = PaddingValues(mediumPadding)
         ) {
@@ -126,7 +135,12 @@ private fun PastLaunchesList(
                 items = state.pastLaunches,
                 key = { item: PastLaunchModel -> item.id + item.missionName },
                 itemContent = { item: PastLaunchModel ->
-                    PastLaunchItem(item)
+                    PastLaunchItem(
+                        item = item,
+                        modifier = Modifier
+                            .padding(vertical = mediumPadding)
+                            .fillMaxWidth()
+                    )
                 }
             )
         }
@@ -134,12 +148,13 @@ private fun PastLaunchesList(
 }
 
 @Composable
-private fun PastLaunchItem(item: PastLaunchModel) {
+private fun PastLaunchItem(
+    item: PastLaunchModel,
+    modifier: Modifier = Modifier
+) {
     Card(
         elevation = 10.dp,
-        modifier = Modifier
-            .padding(vertical = mediumPadding)
-            .fillMaxWidth()
+        modifier = modifier
     ) {
         Column(
             modifier = Modifier
@@ -217,9 +232,9 @@ private fun PastLaunchItem(item: PastLaunchModel) {
 
 @Composable
 private fun MissionImage(
-    modifier: Modifier,
     missionPatchUrl: String?,
-    imageContentDescription: String?
+    imageContentDescription: String?,
+    modifier: Modifier = Modifier
 ) {
     if (missionPatchUrl == null) {
         Image(
@@ -246,8 +261,8 @@ private fun MissionImage(
 
 @Composable
 private fun ExpandingText(
-    modifier: Modifier = Modifier,
-    item: PastLaunchModel
+    item: PastLaunchModel,
+    modifier: Modifier = Modifier
 ) {
     val showMoreString = stringResource(R.string.spacex_show_more)
     val textLayoutResultState = remember { mutableStateOf<TextLayoutResult?>(null) }
