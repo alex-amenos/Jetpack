@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
     initialState: PostsState = PostsState(),
-    private val postsUseCase: PostsUseCase
+    private val postsUseCase: PostsUseCase,
+    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 
     init {
@@ -61,7 +62,7 @@ internal class PostsViewModel(
 
     private fun PostsError.mapTo(): List<ErrorMessage> =
         currentState.errorMessages + ErrorMessage(
-            id = UUID.randomUUID().mostSignificantBits,
+            id = getRandomUUID(),
             messageId = when (this@mapTo) {
                 PostsError.Network -> R.string.posts_error_network
                 PostsError.Server -> R.string.posts_error_server
