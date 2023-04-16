@@ -42,7 +42,7 @@ jobs:
         run: ./gradlew testDebugUnitTest
 
       - name: Assemble Release
-        run: ./gradlew assembleRelease
+        run: ./gradlew app:assembleRelease
 
       - name: Sign Release APK
         uses: ilharp/sign-android-release@v1
