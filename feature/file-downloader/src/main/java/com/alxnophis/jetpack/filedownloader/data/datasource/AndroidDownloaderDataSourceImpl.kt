@@ -32,7 +32,7 @@ internal class AndroidDownloaderDataSourceImpl(
                 append(fileExtensions)
             }
         }
-        val title = context.getString(R.string.app_name)
+        val title = context.getString(R.string.file_downloader_notification_title)
         val request = DownloadManager
             .Request(url.toUri())
             .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
