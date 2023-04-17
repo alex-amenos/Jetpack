@@ -306,7 +306,7 @@ private fun SnackbarError(
 private fun FileDownloaderScaffoldPreview() {
     val state = FileDownloaderState(
         url = EMPTY,
-        error = R.string.core_error_title,
+        error = com.alxnophis.jetpack.core.R.string.core_error_title,
         fileStatusList = listOf(
             "Lorem ipsum dolor sit amet",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
