@@ -102,7 +102,7 @@ private fun NotificationPermission(
                     context.showNotification(
                         title = "Lorem ipsum",
                         content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        icon = com.alxnophis.jetpack.core.R.drawable.ic_push_notification,
+                        icon = R.drawable.ic_push_notification,
                         channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
                         notificationId = 1
                     )

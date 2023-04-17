@@ -218,13 +218,14 @@ private fun PostScreenPreview() {
         id = 1,
         userId = 1,
         title = "Title 1",
-        body = stringResource(id = com.alxnophis.jetpack.core.R.string.core_lorem_ipsum_m)
+        body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
     )
     val post2 = Post(
         id = 2,
         userId = 1,
         title = "Title 2",
-        body = stringResource(id = com.alxnophis.jetpack.core.R.string.core_lorem_ipsum_xl)
+        body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     )
     val state = PostsState(
         isLoading = false,

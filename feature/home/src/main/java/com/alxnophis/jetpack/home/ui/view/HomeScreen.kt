@@ -182,13 +182,13 @@ private fun HomeScreenPreview() {
             NavigationItem(
                 name = "Screen 1",
                 emoji = "🐻",
-                description = stringResource(id = com.alxnophis.jetpack.core.R.string.core_lorem_ipsum_s),
+                description = "Lorem ipsum",
                 screen = Screen.Authentication
             ),
             NavigationItem(
                 name = "Screen 2",
                 emoji = "🦊",
-                description = stringResource(id = com.alxnophis.jetpack.core.R.string.core_lorem_ipsum_m),
+                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 screen = Screen.Settings
             )
         ),
