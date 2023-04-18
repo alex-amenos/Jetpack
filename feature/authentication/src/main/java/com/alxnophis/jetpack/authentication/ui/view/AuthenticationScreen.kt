@@ -3,7 +3,7 @@ package com.alxnophis.jetpack.authentication.ui.view
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,7 +49,7 @@ internal fun AuthenticationContent(
     AppTheme {
         AuthenticationForm(
             modifier = Modifier
-                .background(MaterialTheme.colors.surface)
+                .background(MaterialTheme.colorScheme.surface)
                 .fillMaxSize(),
             authenticationMode = authenticationState.authenticationMode,
             isLoading = authenticationState.isLoading,

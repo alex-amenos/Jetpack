@@ -4,9 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -64,10 +64,9 @@ internal fun SettingsThemeItem(
                         onOptionSelected(theme)
                         expanded = false
                     },
-                    modifier = Modifier.testTag(SettingsTags.TAG_THEME_OPTION + theme)
-                ) {
-                    Text(text = stringResource(theme.label))
-                }
+                    modifier = Modifier.testTag(SettingsTags.TAG_THEME_OPTION + theme),
+                    text = { Text(text = stringResource(theme.label)) }
+                )
             }
         }
     }

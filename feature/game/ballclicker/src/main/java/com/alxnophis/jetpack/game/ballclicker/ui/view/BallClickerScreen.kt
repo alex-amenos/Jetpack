@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -66,7 +66,7 @@ internal fun BallClickerContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = MaterialTheme.colors.surface)
+                .background(color = MaterialTheme.colorScheme.surface)
         ) {
             Row(
                 modifier = Modifier
@@ -117,7 +117,7 @@ internal fun BallClickerContent(
 private fun BallClickerContent(
     radius: Float = 100f,
     enabled: Boolean = false,
-    ballColor: Color = MaterialTheme.colors.secondary,
+    ballColor: Color = MaterialTheme.colorScheme.secondary,
     ballClick: () -> Unit = {}
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {

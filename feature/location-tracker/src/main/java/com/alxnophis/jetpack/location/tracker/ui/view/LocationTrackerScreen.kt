@@ -1,21 +1,21 @@
 package com.alxnophis.jetpack.location.tracker.ui.view
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -55,7 +55,7 @@ internal fun LocationTrackerScreen(
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LocationTrackerContent(
     state: LocationTrackerState,
@@ -66,8 +66,7 @@ internal fun LocationTrackerContent(
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.surface),
-            scaffoldState = rememberScaffoldState(),
+                .background(MaterialTheme.colorScheme.surface),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -78,9 +77,15 @@ internal fun LocationTrackerContent(
                     }
                 )
             }
-        ) {
+        ) { paddingValues ->
             LocationPermission(
-                composableWithPermissionGranted = { UserLocation(state = state) },
+                paddingValues = paddingValues,
+                composableWithPermissionGranted = {
+                    UserLocation(
+                        paddingValues = paddingValues,
+                        state = state
+                    )
+                },
                 handleEvent = handleEvent
             )
         }
@@ -90,6 +95,7 @@ internal fun LocationTrackerContent(
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun LocationPermission(
+    paddingValues: PaddingValues,
     composableWithPermissionGranted: @Composable () -> Unit,
     handleEvent: LocationTrackerEvent.() -> Unit
 ) {
@@ -104,7 +110,10 @@ private fun LocationPermission(
         composableWithPermissionGranted()
     } else {
         Column(
-            modifier = Modifier.wrapContentSize(),
+            modifier = Modifier
+                .padding(paddingValues)
+                .wrapContentSize()
+                .padding(mediumPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -125,9 +134,7 @@ private fun LocationPermission(
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(mediumPadding),
+                modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Justify,
                 text = stringResource(textIdToShow)
             )
@@ -141,14 +148,15 @@ private fun LocationPermission(
 
 @Composable
 private fun UserLocation(
+    paddingValues: PaddingValues,
     state: LocationTrackerState,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier) {
+    Column(modifier.padding(paddingValues)) {
         Text(
             modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
             text = stringResource(id = R.string.location_tracker_last_known_location)
         )
@@ -161,7 +169,7 @@ private fun UserLocation(
         Text(
             modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
             text = stringResource(id = R.string.location_tracker_current_location)
         )
@@ -183,7 +191,10 @@ private fun UserLocationPreview() {
     )
     AppTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-            UserLocation(state)
+            UserLocation(
+                paddingValues = PaddingValues(),
+                state = state
+            )
         }
     }
 }

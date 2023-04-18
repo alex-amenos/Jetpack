@@ -16,9 +16,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -99,21 +99,22 @@ internal fun PostsContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.surface)
+                .background(MaterialTheme.colorScheme.surface)
                 .nestedScroll(nestedScrollConnection)
         ) {
+            CoreTopBar(
+                modifier = Modifier
+                    .height(toolbarHeight)
+                    .fillMaxWidth()
+                    .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
+                title = stringResource(id = R.string.posts_title),
+                onBack = { navigateBack() }
+            )
             PostList(
                 state = state,
                 toolbarHeight = toolbarHeight,
                 handleEvent = handleEvent,
                 modifier = Modifier.fillMaxSize()
-            )
-            CoreTopBar(
-                modifier = Modifier
-                    .height(toolbarHeight)
-                    .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
-                title = stringResource(id = R.string.posts_title),
-                onBack = { navigateBack() }
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
@@ -169,10 +170,7 @@ private fun CardPostItem(
     item: Post,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        elevation = 10.dp,
-        modifier = modifier
-    ) {
+    Card(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -188,7 +186,7 @@ private fun CardPostItem(
                         shape = RoundedCornerShape(4.dp)
                     ),
                 text = item.title.replaceFirstChar { it.uppercase() },
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -203,9 +201,9 @@ private fun CardPostItem(
                     ),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 textAlign = TextAlign.Justify,
-                color = MaterialTheme.colors.onSurface,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Light
+                fontWeight = FontWeight.Normal
             )
         }
     }

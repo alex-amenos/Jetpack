@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.notifications.ui.view
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.BackHandler
@@ -11,10 +10,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,7 +42,7 @@ internal fun NotificationsScreen(
     NotificationsContent(navigateBack = popBackStack)
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NotificationsContent(
     navigateBack: () -> Unit
@@ -50,7 +50,6 @@ private fun NotificationsContent(
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            scaffoldState = rememberScaffoldState(),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -59,7 +58,11 @@ private fun NotificationsContent(
                 )
             }
         ) {
-            NotificationPermission(modifier = Modifier.fillMaxSize())
+            NotificationPermission(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues = it)
+            )
         }
     }
 }

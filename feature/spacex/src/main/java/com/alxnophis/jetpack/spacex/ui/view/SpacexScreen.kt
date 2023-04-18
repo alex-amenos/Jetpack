@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.spacex.ui.view
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -20,11 +19,11 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -75,7 +74,7 @@ internal fun SpacexScreen(
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SpacexContent(
     state: LaunchesState,
@@ -86,8 +85,7 @@ internal fun SpacexContent(
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.surface),
-            scaffoldState = rememberScaffoldState(),
+                .background(MaterialTheme.colorScheme.surface),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -95,9 +93,11 @@ internal fun SpacexContent(
                     onBack = { navigateBack() }
                 )
             }
-        ) {
+        ) { paddingValues ->
             PastLaunchesList(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .padding(paddingValues = paddingValues)
+                    .fillMaxSize(),
                 state = state,
                 handleEvent = handleEvent
             )
@@ -126,7 +126,7 @@ private fun PastLaunchesList(
         LazyColumn(
             state = listState,
             modifier = Modifier
-                .background(MaterialTheme.colors.surface)
+                .background(MaterialTheme.colorScheme.surface)
                 .fillMaxWidth()
                 .drawVerticalScrollbar(listState),
             contentPadding = PaddingValues(mediumPadding)
@@ -152,10 +152,7 @@ private fun PastLaunchItem(
     item: PastLaunchModel,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        elevation = 10.dp,
-        modifier = modifier
-    ) {
+    Card(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -170,7 +167,7 @@ private fun PastLaunchItem(
                     Text(
                         modifier = Modifier.wrapContentWidth(),
                         text = item.launchSite,
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Light
                     )
@@ -179,7 +176,7 @@ private fun PastLaunchItem(
                     Text(
                         modifier = Modifier.wrapContentWidth(),
                         text = item.launchDateUtc,
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Light
                     )
@@ -202,7 +199,7 @@ private fun PastLaunchItem(
                     Text(
                         modifier = Modifier.wrapContentSize(),
                         text = item.missionName,
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -211,7 +208,7 @@ private fun PastLaunchItem(
                             .padding(top = extraSmallPadding)
                             .wrapContentSize(),
                         text = item.rocket,
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -272,11 +269,13 @@ private fun ExpandingText(
     var finalText: String by remember { mutableStateOf(item.details) }
     LaunchedEffect(textLayoutResult) {
         if (textLayoutResult == null) return@LaunchedEffect
+        @Suppress("KotlinConstantConditions")
         when {
             isExpanded -> {
                 isClickable = false
                 finalText = item.details
             }
+
             !isExpanded && textLayoutResult.hasVisualOverflow -> {
                 isClickable = true
                 val lastCharIndex = textLayoutResult.getLineEnd(MINIMIZED_LINES - 1)
