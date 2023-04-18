@@ -1,3 +1,5 @@
 <resources>
     <string name="notifications_title">Notifications</string>
+    <string name="notifications_request_permission">Notifications</string>
+    <string name="notifications_show_notification">Show notification</string>
 </resources>

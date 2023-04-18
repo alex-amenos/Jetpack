@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,14 +22,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
 import com.alxnophis.jetpack.core.extensions.showNotification
+import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
+import com.alxnophis.jetpack.core.ui.composable.CoreButtonMinor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.largePadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.notifications.R
 
 @Composable
@@ -60,8 +66,9 @@ private fun NotificationsContent(
         ) {
             NotificationPermission(
                 modifier = Modifier
-                    .fillMaxSize()
                     .padding(paddingValues = it)
+                    .fillMaxSize()
+                    .padding(mediumPadding)
             )
         }
     }
@@ -91,15 +98,23 @@ private fun NotificationPermission(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Button(
-                onClick = {
-                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                }
-            ) {
-                Text(text = "Request permission")
-            }
+            CoreButtonMinor(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(largePadding),
+                text = stringResource(id = R.string.notifications_request_permission),
+                onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) }
+            )
+            Divider(
+                modifier = Modifier.height(15.dp),
+                color = Color.Transparent
+            )
         }
-        Button(
+        CoreButtonMajor(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(largePadding),
+            text = stringResource(id = R.string.notifications_show_notification),
             onClick = {
                 if (hasNotificationPermission) {
                     context.showNotification(
@@ -111,9 +126,7 @@ private fun NotificationPermission(
                     )
                 }
             }
-        ) {
-            Text(text = "Show notification")
-        }
+        )
     }
 }
 
