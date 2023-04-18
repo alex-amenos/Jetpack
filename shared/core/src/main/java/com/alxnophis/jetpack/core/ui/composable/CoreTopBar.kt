@@ -40,8 +40,9 @@ fun CoreTopBar(
             Text(
                 text = title,
                 color = MaterialTheme.colorScheme.onPrimary,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                letterSpacing = 1.sp
             )
         },
         navigationIcon = {

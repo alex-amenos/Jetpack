@@ -106,9 +106,10 @@ internal fun HomeTopBar() {
         title = {
             Text(
                 text = stringResource(id = R.string.home_title),
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.sp
             )
         }
     )

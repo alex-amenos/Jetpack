@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -26,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -132,16 +132,18 @@ private fun LocationPermission(
                 allPermissionsRevoked -> R.string.location_tracker_request_permissions
                 else -> R.string.location_tracker_allow_fine_location
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(25.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Justify,
                 text = stringResource(textIdToShow)
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { locationPermissionsState.launchMultiplePermissionRequest() }) {
-                Text(text = stringResource(buttonPermissionsId))
-            }
+            Spacer(modifier = Modifier.height(mediumPadding + 25.dp))
+            CoreButtonMajor(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { locationPermissionsState.launchMultiplePermissionRequest() },
+                text = stringResource(buttonPermissionsId)
+            )
         }
     }
 }
