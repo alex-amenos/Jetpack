@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.authentication.ui.view
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,15 +14,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,6 +33,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,12 +46,15 @@ import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -61,8 +69,10 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.constants.EMPTY
+import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.autofill
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.disabledContent
 import com.alxnophis.jetpack.core.ui.theme.extraLargePadding
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.largePadding
@@ -163,6 +173,7 @@ internal fun AuthenticationForm(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 AuthenticationButton(
+                    modifier = Modifier.fillMaxWidth(),
                     enableAuthentication = enableAuthentication,
                     authenticationMode = authenticationMode,
                     onAuthenticate = { handleEvent(AuthenticationEvent.Authenticate) }
@@ -173,9 +184,8 @@ internal fun AuthenticationForm(
         Spacer(modifier = Modifier.weight(1f))
 
         ToggleAuthenticationMode(
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 50.dp),
+            modifier = Modifier.fillMaxWidth(),
+            isEnabled = isLoading.not(),
             authenticationMode = authenticationMode,
             toggleAuthentication = { handleEvent(AuthenticationEvent.ToggleAuthenticationMode) }
         )
@@ -251,6 +261,7 @@ fun PasswordInput(
     OutlinedTextField(
         modifier = modifier,
         value = password,
+        textStyle = TextStyle(fontFamily = FontFamily.Monospace),
         singleLine = true,
         onValueChange = { onPasswordChanged(it) },
         visualTransformation = when {
@@ -304,6 +315,7 @@ fun PasswordInput(
 @Composable
 fun Requirement(
     message: String,
+    icon: ImageVector,
     tint: Color,
     modifier: Modifier = Modifier
 ) {
@@ -313,7 +325,7 @@ fun Requirement(
     ) {
         Icon(
             modifier = Modifier.size(12.dp),
-            imageVector = Icons.Default.Check,
+            imageVector = icon,
             contentDescription = null,
             tint = tint
         )
@@ -343,10 +355,15 @@ fun PasswordRequirementsView(
             }
             Requirement(
                 message = requirementStatus,
+                icon = if (satisfied) {
+                    Icons.Default.Check
+                } else {
+                    Icons.Default.Close
+                },
                 tint = if (satisfied) {
                     MaterialTheme.colorScheme.primary
                 } else {
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                 },
                 modifier = Modifier
                     .padding(extraSmallPadding)
@@ -367,42 +384,46 @@ fun AuthenticationButton(
     onAuthenticate: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    Button(
+    CoreButtonMajor(
         modifier = modifier,
+        text = stringResource(
+            if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                R.string.authentication_action_sign_in
+            } else {
+                R.string.authentication_action_sign_up
+            }
+        ),
+        isEnabled = enableAuthentication,
         onClick = {
             keyboardController?.hide()
             onAuthenticate()
-        },
-        enabled = enableAuthentication
-    ) {
-        Text(
-            text = stringResource(
-                if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                    R.string.authentication_action_sign_in
-                } else {
-                    R.string.authentication_action_sign_up
-                }
-            )
-        )
-    }
+        }
+    )
 }
 
 @Composable
 fun ToggleAuthenticationMode(
     authenticationMode: AuthenticationMode,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier,
     toggleAuthentication: () -> Unit
 ) {
-    Row(modifier = modifier) {
+    TextButton(
+        onClick = { toggleAuthentication() },
+        modifier = modifier,
+        enabled = isEnabled,
+        shape = RoundedCornerShape(0.dp),
+        colors = ButtonDefaults.textButtonColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = disabledContent),
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = disabledContent)
+        )
+    ) {
         Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
-                .clickable { toggleAuthentication() }
-                .padding(largePadding),
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
+            modifier = Modifier.padding(extraSmallPadding),
             text = stringResource(
                 if (authenticationMode == AuthenticationMode.SIGN_IN) {
                     R.string.authentication_action_need_account
