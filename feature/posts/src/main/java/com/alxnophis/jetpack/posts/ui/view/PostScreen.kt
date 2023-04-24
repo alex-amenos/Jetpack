@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -57,6 +56,8 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlin.math.roundToInt
 
+private val TOOLBAR_HEIGHT = 56.dp
+
 @Composable
 internal fun PostsScreen(
     viewModel: PostsViewModel,
@@ -83,8 +84,7 @@ internal fun PostsContent(
     navigateBack: () -> Unit
 ) {
     AppTheme {
-        val toolbarHeight = 56.dp
-        val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
+        val toolbarHeightPx = with(LocalDensity.current) { TOOLBAR_HEIGHT.roundToPx().toFloat() }
         val toolbarOffsetHeightPx = remember { mutableStateOf(ZERO_FLOAT) }
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
@@ -102,19 +102,18 @@ internal fun PostsContent(
                 .background(MaterialTheme.colorScheme.surface)
                 .nestedScroll(nestedScrollConnection)
         ) {
+            PostList(
+                state = state,
+                toolbarHeight = TOOLBAR_HEIGHT,
+                handleEvent = handleEvent,
+                modifier = Modifier.fillMaxSize()
+            )
             CoreTopBar(
                 modifier = Modifier
-                    .height(toolbarHeight)
                     .fillMaxWidth()
                     .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
                 title = stringResource(id = R.string.posts_title),
                 onBack = { navigateBack() }
-            )
-            PostList(
-                state = state,
-                toolbarHeight = toolbarHeight,
-                handleEvent = handleEvent,
-                modifier = Modifier.fillMaxSize()
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
@@ -136,7 +135,7 @@ internal fun PostList(
     val listState = rememberLazyListState()
     SwipeRefresh(
         modifier = modifier,
-        indicatorPadding = PaddingValues(top = toolbarHeight),
+        indicatorPadding = PaddingValues(top = toolbarHeight + 8.dp),
         state = rememberSwipeRefreshState(state.isLoading),
         onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) }
     ) {
