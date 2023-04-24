@@ -26,7 +26,7 @@ Settings options screen
 
 Push Notifications screen
 
-<img alt="Notifications screen" src="./images/notifications.png" width="300" />
+<img alt="Notifications screen" src="./images/notifications_screen.png" width="300" />
 
 ## Posts
 
@@ -44,7 +44,7 @@ User location tracking
 
 Ball clicker game (custom view with compose).
 
-<img alt="Ball clicker game" src="./images/ball_clicker.png" width="300" />
+<img alt="Ball clicker game" src="./images/game_ball_clicker_screen.png" width="300" />
 
 ## SpaceX
 
@@ -56,4 +56,4 @@ This experiment shows past launches of SpaceX using SpaceX GraphQL API with expa
 
 Download files using a [DownloadManager](https://developer.android.com/reference/android/app/DownloadManager)
 
-<img alt="File downloader" src="./images/file_downloader.png" width="300" />
+<img alt="File downloader" src="./images/file_downloader_screen.png" width="300" />

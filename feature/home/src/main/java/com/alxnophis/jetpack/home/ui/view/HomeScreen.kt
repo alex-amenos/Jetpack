@@ -1,30 +1,27 @@
 package com.alxnophis.jetpack.home.ui.view
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -34,13 +31,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
-import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
@@ -66,7 +61,7 @@ internal fun HomeScreen(
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeContent(
     state: HomeState,
@@ -76,14 +71,15 @@ internal fun HomeContent(
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            scaffoldState = rememberScaffoldState(),
             topBar = { HomeTopBar() }
         ) {
-            Column {
+            Column(
+                modifier = Modifier.padding(paddingValues = it)
+            ) {
                 SectionsList(
                     state = state,
                     navigateTo = navigateTo,
-                    modifier = Modifier.background(color = MaterialTheme.colors.surface)
+                    modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)
                 )
             }
             state.error?.let { error: Int ->
@@ -96,21 +92,27 @@ internal fun HomeContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeTopBar() {
     TopAppBar(
-        backgroundColor = MaterialTheme.colors.primaryVariant,
-        contentPadding = PaddingValues(start = smallPadding)
-    ) {
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = stringResource(id = R.string.home_title),
-            color = MaterialTheme.colors.onPrimary,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-    }
+        colors = TopAppBarDefaults.mediumTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+        ),
+        title = {
+            Text(
+                text = stringResource(id = R.string.home_title),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.sp
+            )
+        }
+    )
 }
 
 @Composable
@@ -138,8 +140,8 @@ internal fun SectionsList(
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
-                        style = MaterialTheme.typography.h4,
-                        color = MaterialTheme.colors.onSurface,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
                         text = item.emoji,
                         fontWeight = FontWeight.Medium
                     )
@@ -151,8 +153,8 @@ internal fun SectionsList(
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
-                            style = MaterialTheme.typography.subtitle1,
-                            color = MaterialTheme.colors.onSurface,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
                             text = item.name,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium
@@ -161,8 +163,8 @@ internal fun SectionsList(
                             modifier = Modifier
                                 .wrapContentSize()
                                 .padding(top = extraSmallPadding),
-                            style = MaterialTheme.typography.subtitle1,
-                            color = MaterialTheme.colors.onSurface,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
                             text = item.description,
                             fontWeight = FontWeight.Light
                         )

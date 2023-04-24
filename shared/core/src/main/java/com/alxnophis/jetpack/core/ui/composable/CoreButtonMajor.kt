@@ -9,11 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.disabledContent
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 
@@ -39,20 +39,20 @@ fun CoreButtonMajor(
         border = BorderStroke(
             width = 1.dp,
             color = if (isEnabled) {
-                MaterialTheme.colors.primary
+                MaterialTheme.colorScheme.primary
             } else {
-                MaterialTheme.colors.primary.copy(alpha = 0f)
+                MaterialTheme.colorScheme.primary.copy(alpha = 0f)
             }
         ),
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.primary,
-            disabledBackgroundColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled),
-            disabledContentColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
+        colors = ButtonDefaults.textButtonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = disabledContent),
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = disabledContent)
         )
     ) {
         Text(
-            style = MaterialTheme.typography.button,
-            color = MaterialTheme.colors.onPrimary,
+            style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(extraSmallPadding),
             text = text

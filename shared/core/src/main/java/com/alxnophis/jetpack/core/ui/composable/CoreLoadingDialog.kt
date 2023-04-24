@@ -1,10 +1,11 @@
 package com.alxnophis.jetpack.core.ui.composable
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @Composable
+@SuppressLint("ComposeModifierMissing")
 fun CoreLoadingDialog(isLoading: Boolean) {
     if (isLoading) {
         Dialog(
