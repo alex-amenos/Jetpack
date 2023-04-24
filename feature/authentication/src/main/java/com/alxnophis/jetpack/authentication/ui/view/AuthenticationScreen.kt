@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -63,9 +64,9 @@ internal fun AuthenticationContent(
             },
             handleEvent = handleEvent
         )
-        authenticationState.error?.let { error: Int ->
+        if (authenticationState.error != NO_ERROR) {
             CoreErrorDialog(
-                errorMessage = stringResource(error),
+                errorMessage = stringResource(authenticationState.error),
                 dismissError = { handleEvent(AuthenticationEvent.ErrorDismissed) }
             )
         }

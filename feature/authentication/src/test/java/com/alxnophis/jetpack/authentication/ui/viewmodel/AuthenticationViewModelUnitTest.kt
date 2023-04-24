@@ -9,6 +9,7 @@ import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlin.test.assertEquals
@@ -96,7 +97,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                     awaitItem()
                 )
                 assertEquals(
-                    initialAuthenticationState.copy(error = null),
+                    initialAuthenticationState.copy(error = NO_ERROR),
                     awaitItem()
                 )
                 expectNoEvents()
@@ -207,7 +208,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN Authenticate event with incorrect credentials THEN validate loading and error state sequence`() {
         runTest {
-            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = null)
+            val initialState = AuthenticationState().copy(email = EMAIL, password = PASSWORD, error = NO_ERROR)
             val viewModel = viewModelMother(initialState = initialState)
             whenever(authenticateUseCaseMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
 

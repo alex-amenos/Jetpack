@@ -5,6 +5,7 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.testing.constants.PAPARAZZI_MAX_PERCENT_DIFFERENCE
 import org.junit.Rule
 import org.junit.Test
@@ -28,7 +29,7 @@ internal class AuthenticationContentSnapshotTest {
                 password = PASSWORD,
                 passwordRequirements = listOf(),
                 isLoading = false,
-                error = null
+                error = NO_ERROR
             )
         )
     }

@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.authentication.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
+import arrow.optics.copy
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
@@ -10,7 +11,15 @@ import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.C
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
+import com.alxnophis.jetpack.authentication.ui.contract.authenticationMode
+import com.alxnophis.jetpack.authentication.ui.contract.email
+import com.alxnophis.jetpack.authentication.ui.contract.error
+import com.alxnophis.jetpack.authentication.ui.contract.isLoading
+import com.alxnophis.jetpack.authentication.ui.contract.isUserAuthorized
+import com.alxnophis.jetpack.authentication.ui.contract.password
+import com.alxnophis.jetpack.authentication.ui.contract.passwordRequirements
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import kotlinx.coroutines.launch
@@ -24,36 +33,22 @@ internal class AuthenticationViewModel(
         viewModelScope.launch {
             when (event) {
                 AuthenticationEvent.Authenticate -> authenticate()
-                AuthenticationEvent.ErrorDismissed -> updateState { copy(error = null) }
+                AuthenticationEvent.ErrorDismissed -> dismissError()
                 AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
-                AuthenticationEvent.SetUserNotAuthorized -> updateState { copy(isUserAuthorized = false) }
-                AuthenticationEvent.AutoCompleteAuthorization -> updateState {
-                    copy(email = AUTHORIZED_EMAIL, password = AUTHORIZED_PASSWORD)
-                }
+                AuthenticationEvent.SetUserNotAuthorized -> setUserNotAuthorized()
+                AuthenticationEvent.AutoCompleteAuthorization -> autoCompleteAuthorization()
                 is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
                 is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
             }
         }
     }
 
-    private fun toggleAuthenticationMode() {
-        val newAuthenticationMode = when (currentState.authenticationMode) {
-            AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
-            else -> AuthenticationMode.SIGN_IN
-        }
-        updateState {
-            copy(
-                authenticationMode = newAuthenticationMode,
-                email = EMPTY,
-                password = EMPTY
-            )
-        }
-    }
-
     private fun updateEmail(email: String) {
         viewModelScope.launch {
             updateState {
-                copy(email = email)
+                copy {
+                    AuthenticationState.email set email
+                }
             }
         }
     }
@@ -71,35 +66,84 @@ internal class AuthenticationViewModel(
                 requirements.add(PasswordRequirements.NUMBER)
             }
             updateState {
-                copy(
-                    password = newPassword,
-                    passwordRequirements = requirements.toList()
-                )
+                copy {
+                    AuthenticationState.password set newPassword
+                    AuthenticationState.passwordRequirements set requirements.toList()
+                }
             }
         }
     }
 
     private fun authenticate() {
         viewModelScope.launch {
-            updateState { copy(isLoading = true) }
+            updateState {
+                copy {
+                    AuthenticationState.isLoading set true
+                }
+            }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
                     updateState {
-                        copy(
-                            isLoading = false,
-                            error = R.string.authentication_auth_error
-                        )
+                        copy {
+                            AuthenticationState.isLoading set false
+                            AuthenticationState.error set R.string.authentication_auth_error
+                        }
                     }
                 },
                 {
                     updateState {
-                        copy(
-                            isLoading = false,
-                            isUserAuthorized = true
-                        )
+                        copy {
+                            AuthenticationState.isLoading set false
+                            AuthenticationState.isUserAuthorized set true
+                        }
                     }
                 }
             )
+        }
+    }
+
+    private fun dismissError() {
+        viewModelScope.launch {
+            updateState {
+                copy {
+                    AuthenticationState.error set NO_ERROR
+                }
+            }
+        }
+    }
+
+    private fun toggleAuthenticationMode() {
+        val newAuthenticationMode = when (currentState.authenticationMode) {
+            AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
+            else -> AuthenticationMode.SIGN_IN
+        }
+        updateState {
+            copy {
+                AuthenticationState.authenticationMode set newAuthenticationMode
+                AuthenticationState.email set EMPTY
+                AuthenticationState.password set EMPTY
+            }
+        }
+    }
+
+    private fun setUserNotAuthorized() {
+        viewModelScope.launch {
+            updateState {
+                copy {
+                    AuthenticationState.isUserAuthorized set false
+                }
+            }
+        }
+    }
+
+    private fun autoCompleteAuthorization() {
+        viewModelScope.launch {
+            updateState {
+                copy {
+                    AuthenticationState.email set AUTHORIZED_EMAIL
+                    AuthenticationState.password set AUTHORIZED_PASSWORD
+                }
+            }
         }
     }
 
