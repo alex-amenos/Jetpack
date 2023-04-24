@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.posts.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
+import arrow.optics.copy
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.R
@@ -10,6 +11,9 @@ import com.alxnophis.jetpack.posts.domain.model.PostsError
 import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
+import com.alxnophis.jetpack.posts.ui.contract.errorMessages
+import com.alxnophis.jetpack.posts.ui.contract.isLoading
+import com.alxnophis.jetpack.posts.ui.contract.posts
 import java.util.UUID
 import kotlinx.coroutines.launch
 
@@ -34,24 +38,28 @@ internal class PostsViewModel(
 
     private fun renderPosts() {
         viewModelScope.launch {
-            updateState { copy(isLoading = true) }
+            updateState {
+                copy {
+                    PostsState.isLoading set true
+                }
+            }
             getPosts()
                 .mapLeft { error: PostsError -> error.mapTo() }
                 .fold(
                     { errorMessages: List<ErrorMessage> ->
                         updateState {
-                            copy(
-                                isLoading = false,
-                                errorMessages = errorMessages
-                            )
+                            copy {
+                                PostsState.isLoading set false
+                                PostsState.errorMessages set errorMessages
+                            }
                         }
                     },
-                    { posts ->
+                    { posts: List<Post> ->
                         updateState {
-                            copy(
-                                isLoading = false,
-                                posts = posts
-                            )
+                            copy {
+                                PostsState.isLoading set false
+                                PostsState.posts set posts
+                            }
                         }
                     }
                 )
@@ -74,7 +82,9 @@ internal class PostsViewModel(
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
         updateState {
-            copy(errorMessages = errorMessages)
+            copy {
+                PostsState.errorMessages set errorMessages
+            }
         }
     }
 }
