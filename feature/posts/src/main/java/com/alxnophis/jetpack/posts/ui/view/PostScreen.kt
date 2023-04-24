@@ -31,7 +31,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -43,7 +43,6 @@ import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
-import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
@@ -191,16 +190,17 @@ private fun CardPostItem(
             )
             Text(
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(top = smallPadding, bottom = mediumPadding)
+                    .fillMaxWidth()
+                    .padding(top = mediumPadding, bottom = mediumPadding)
                     .placeholder(
                         visible = state.isLoading,
                         color = Color.Gray,
                         shape = RoundedCornerShape(4.dp)
                     ),
                 text = item.body.replaceFirstChar { it.uppercase() },
-                textAlign = TextAlign.Justify,
                 color = MaterialTheme.colorScheme.onBackground,
+                maxLines = 5,
+                overflow = TextOverflow.Ellipsis,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal
             )
