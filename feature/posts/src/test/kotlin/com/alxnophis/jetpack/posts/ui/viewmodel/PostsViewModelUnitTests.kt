@@ -35,7 +35,10 @@ class PostsViewModelUnitTests : FunSpec({
             "THEN show AND hide loading AND post state should end with a list of posts"
     ) {
         val postUseCaseMock: PostsUseCase = mock()
-        val viewModel = PostsViewModel(postsUseCase = postUseCaseMock)
+        val viewModel = PostsViewModel(
+            initialState = PostsState(),
+            postsUseCase = postUseCaseMock
+        )
 
         whenever(postUseCaseMock.invoke()).thenReturn(postList.right())
 
@@ -61,6 +64,7 @@ class PostsViewModelUnitTests : FunSpec({
             val errorId = 1L
             val postUseCaseMock: PostsUseCase = mock()
             val viewModel = PostsViewModel(
+                initialState = PostsState(),
                 postsUseCase = postUseCaseMock,
                 getRandomUUID = { errorId }
             )
@@ -87,6 +91,7 @@ class PostsViewModelUnitTests : FunSpec({
         val postUseCaseMock: PostsUseCase = mock()
         val errorId = 1L
         val viewModel = PostsViewModel(
+            initialState = PostsState(),
             getRandomUUID = { errorId },
             postsUseCase = postUseCaseMock
         )

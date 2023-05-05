@@ -4,6 +4,7 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeState
+import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.router.screen.Screen
 import com.alxnophis.jetpack.testing.constants.PAPARAZZI_MAX_PERCENT_DIFFERENCE
 import org.junit.Rule
@@ -22,7 +23,7 @@ internal class HomeContentSnapshotTest {
         snapshot(
             state = HomeState(
                 data = listOf(NAVIGATION_ITEM_1, NAVIGATION_ITEM_2),
-                error = null
+                error = NO_ERROR
             )
         )
     }
