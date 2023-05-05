@@ -18,6 +18,7 @@ dependencies {
     def composeBom = platform(libs.androidx.compose.bom)
 
     implementation(composeBom)
+    implementation libs.androidx.lifecycle.runtime.compose
     implementation libs.bundles.androidx.compose
     implementation libs.koin.android.compose
 

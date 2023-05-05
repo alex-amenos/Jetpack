@@ -23,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
@@ -49,7 +49,7 @@ internal fun HomeScreen(
     backOrFinish: (Activity?) -> Unit,
     navigateTo: (String) -> Unit
 ) {
-    val state: HomeState = viewModel.uiState.collectAsState().value
+    val state: HomeState = viewModel.uiState.collectAsStateWithLifecycle().value
     val activity: Activity? = (LocalContext.current as? Activity)
     BackHandler {
         backOrFinish(activity)
