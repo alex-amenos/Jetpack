@@ -4,6 +4,7 @@ import com.alxnophis.jetpack.filedownloader.data.datasource.AndroidDownloaderDat
 import com.alxnophis.jetpack.filedownloader.data.datasource.DownloaderDataSource
 import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepository
 import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepositoryImpl
+import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
 import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -25,5 +26,10 @@ internal val fileDownloaderModule: Module = module {
         )
     }
     single<FileDownloaderRepository> { FileDownloaderRepositoryImpl(androidDownloaderDataSource = get()) }
-    viewModel { FileDownloaderViewModel(fileDownloaderRepository = get()) }
+    viewModel {
+        FileDownloaderViewModel(
+            initialState = FileDownloaderState(),
+            fileDownloaderRepository = get()
+        )
+    }
 }

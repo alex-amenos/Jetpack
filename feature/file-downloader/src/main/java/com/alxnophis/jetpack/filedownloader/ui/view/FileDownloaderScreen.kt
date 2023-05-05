@@ -57,6 +57,7 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
+import com.alxnophis.jetpack.filedownloader.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
@@ -97,6 +98,7 @@ private fun FileDownloaderScaffold(
                 )
             }
         ) { paddingValues ->
+
             FileDownloaderContent(
                 state = state,
                 handleEvent = handleEvent,
@@ -106,6 +108,7 @@ private fun FileDownloaderScaffold(
                     .fillMaxSize()
                     .padding(mediumPadding)
             )
+
             FileDownloaderErrors(
                 state = state,
                 dismissError = { handleEvent(FileDownloaderEvent.ErrorDismissed) }
@@ -125,6 +128,7 @@ private fun FileDownloaderContent(
         handleEvent.invoke(FileDownloaderEvent.DownloadFile)
     }
     val keyboardController = LocalSoftwareKeyboardController.current
+
     Column(modifier = modifier) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -245,13 +249,11 @@ private fun FileDownloaderErrors(
             error = state.error,
             onDismiss = dismissError
         )
-
-        state.error != null -> SnackbarError(
+        state.error != NO_ERROR -> SnackbarError(
             modifier = Modifier.fillMaxSize(),
             error = state.error,
             onDismiss = dismissError
         )
-
         else -> doNothing()
     }
 }
@@ -288,6 +290,7 @@ private fun SnackbarError(
             }
         }
     }
+    
     Box(modifier) {
         SnackbarHost(
             hostState = snackbarHostState,
