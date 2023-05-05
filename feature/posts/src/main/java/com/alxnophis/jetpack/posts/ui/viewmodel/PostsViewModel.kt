@@ -38,7 +38,7 @@ internal class PostsViewModel(
 
     private fun renderPosts() {
         viewModelScope.launch {
-            updateState {
+            updateUiState {
                 copy {
                     PostsState.isLoading set true
                 }
@@ -47,7 +47,7 @@ internal class PostsViewModel(
                 .mapLeft { error: PostsError -> error.mapTo() }
                 .fold(
                     { errorMessages: List<ErrorMessage> ->
-                        updateState {
+                        updateUiState {
                             copy {
                                 PostsState.isLoading set false
                                 PostsState.errorMessages set errorMessages
@@ -55,7 +55,7 @@ internal class PostsViewModel(
                         }
                     },
                     { posts: List<Post> ->
-                        updateState {
+                        updateUiState {
                             copy {
                                 PostsState.isLoading set false
                                 PostsState.posts set posts
@@ -81,7 +81,7 @@ internal class PostsViewModel(
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
-        updateState {
+        updateUiState {
             copy {
                 PostsState.errorMessages set errorMessages
             }

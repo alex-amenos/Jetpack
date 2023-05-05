@@ -13,7 +13,7 @@ internal class MyPlaygroundViewModel(
     override fun handleEvent(event: MyPlaygroundEvent) {
         viewModelScope.launch {
             when (event) {
-                is MyPlaygroundEvent.TextFieldChanged -> updateState { copy(textFieldValue = event.value) }
+                is MyPlaygroundEvent.TextFieldChanged -> updateUiState { copy(textFieldValue = event.value) }
             }
         }
     }

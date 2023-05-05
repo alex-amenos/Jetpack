@@ -47,7 +47,7 @@ internal class FileDownloaderViewModel(
             .combine(fileDownloaderRepository.downloadedFiles) { downloadingFiles, downloadedFiles ->
                 val downloadingList = downloadingFiles.map { it.mapTo(DOWNLOADING_STATUS) }
                 val downloadedList = downloadedFiles.map { it.mapTo(DOWNLOADED_STATUS) }
-                updateState {
+                updateUiState {
                     copy {
                         FileDownloaderState.fileStatusList set (downloadingList + downloadedList)
                     }
@@ -58,7 +58,7 @@ internal class FileDownloaderViewModel(
 
     private fun updateUrl(url: String) {
         viewModelScope.launch {
-            updateState {
+            updateUiState {
                 copy {
                     FileDownloaderState.url set url
                 }
@@ -79,14 +79,14 @@ internal class FileDownloaderViewModel(
                                 FileDownloaderError.FileDownloading -> R.string.file_downloader_file_downloading
                                 FileDownloaderError.Unknown -> R.string.file_downloader_generic_error
                             }
-                            updateState {
+                            updateUiState {
                                 copy {
                                     FileDownloaderState.error set errorResId
                                 }
                             }
                         },
                         {
-                            updateState {
+                            updateUiState {
                                 copy {
                                     FileDownloaderState.url set EMPTY
                                 }
@@ -98,7 +98,7 @@ internal class FileDownloaderViewModel(
     }
 
     private fun dismissError() {
-        updateState {
+        updateUiState {
             copy {
                 FileDownloaderState.error set NO_ERROR
             }

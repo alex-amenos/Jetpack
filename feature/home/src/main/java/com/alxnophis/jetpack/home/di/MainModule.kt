@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.home.di
 
 import com.alxnophis.jetpack.home.domain.usecase.UseCaseGetNavigationItems
+import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
@@ -16,6 +17,9 @@ private val loadHomeModules by lazy {
 private val homeModule: Module = module {
     factory { UseCaseGetNavigationItems() }
     viewModel {
-        HomeViewModel(useCaseGetNavigationItems = get())
+        HomeViewModel(
+            initialState = HomeState(),
+            useCaseGetNavigationItems = get()
+        )
     }
 }

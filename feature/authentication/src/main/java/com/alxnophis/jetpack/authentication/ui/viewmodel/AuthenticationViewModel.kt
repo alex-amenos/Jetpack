@@ -45,7 +45,7 @@ internal class AuthenticationViewModel(
 
     private fun updateEmail(email: String) {
         viewModelScope.launch {
-            updateState {
+            updateUiState {
                 copy {
                     AuthenticationState.email set email
                 }
@@ -65,7 +65,7 @@ internal class AuthenticationViewModel(
             if (newPassword.any { it.isDigit() }) {
                 requirements.add(PasswordRequirements.NUMBER)
             }
-            updateState {
+            updateUiState {
                 copy {
                     AuthenticationState.password set newPassword
                     AuthenticationState.passwordRequirements set requirements.toList()
@@ -76,14 +76,14 @@ internal class AuthenticationViewModel(
 
     private fun authenticate() {
         viewModelScope.launch {
-            updateState {
+            updateUiState {
                 copy {
                     AuthenticationState.isLoading set true
                 }
             }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
-                    updateState {
+                    updateUiState {
                         copy {
                             AuthenticationState.isLoading set false
                             AuthenticationState.error set R.string.authentication_auth_error
@@ -91,7 +91,7 @@ internal class AuthenticationViewModel(
                     }
                 },
                 {
-                    updateState {
+                    updateUiState {
                         copy {
                             AuthenticationState.isLoading set false
                             AuthenticationState.isUserAuthorized set true
@@ -104,7 +104,7 @@ internal class AuthenticationViewModel(
 
     private fun dismissError() {
         viewModelScope.launch {
-            updateState {
+            updateUiState {
                 copy {
                     AuthenticationState.error set NO_ERROR
                 }
@@ -117,7 +117,7 @@ internal class AuthenticationViewModel(
             AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
             else -> AuthenticationMode.SIGN_IN
         }
-        updateState {
+        updateUiState {
             copy {
                 AuthenticationState.authenticationMode set newAuthenticationMode
                 AuthenticationState.email set EMPTY
@@ -128,7 +128,7 @@ internal class AuthenticationViewModel(
 
     private fun setUserNotAuthorized() {
         viewModelScope.launch {
-            updateState {
+            updateUiState {
                 copy {
                     AuthenticationState.isUserAuthorized set false
                 }
@@ -138,7 +138,7 @@ internal class AuthenticationViewModel(
 
     private fun autoCompleteAuthorization() {
         viewModelScope.launch {
-            updateState {
+            updateUiState {
                 copy {
                     AuthenticationState.email set AUTHORIZED_EMAIL
                     AuthenticationState.password set AUTHORIZED_PASSWORD

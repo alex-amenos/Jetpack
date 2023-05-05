@@ -27,7 +27,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     /**
      * Update a new State
      */
-    protected fun updateState(reduce: State.() -> State) {
+    protected fun updateUiState(reduce: State.() -> State) {
         _uiState
             .update { it.reduce() }
             .also { Timber.d("## Set new state: $currentState") }
@@ -36,7 +36,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     /**
      * Update a new State and get prior State
      */
-    protected fun getPriorStateAndUpdate(reduce: State.() -> State): State =
+    protected fun getPriorUiStateAndUpdate(reduce: State.() -> State): State =
         _uiState
             .getAndUpdate { it.reduce() }
             .also { Timber.d("## Set new state: $currentState") }
@@ -44,7 +44,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     /**
      * Update and get a new State
      */
-    protected fun updateAndGetState(reduce: State.() -> State): State =
+    protected fun updateAndGetUiState(reduce: State.() -> State): State =
         _uiState
             .updateAndGet { it.reduce() }
             .also { newState -> Timber.d("## Set new state: $newState") }

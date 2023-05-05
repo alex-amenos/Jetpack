@@ -40,6 +40,7 @@ import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
+import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
 import com.alxnophis.jetpack.router.screen.Screen
 
@@ -82,9 +83,9 @@ internal fun HomeContent(
                     modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)
                 )
             }
-            state.error?.let { error: Int ->
+            if (state.error != NO_ERROR) {
                 CoreErrorDialog(
-                    errorMessage = stringResource(error),
+                    errorMessage = stringResource(state.error),
                     dismissError = { handleEvent.invoke(HomeEvent.ErrorDismissed) }
                 )
             }
@@ -194,7 +195,7 @@ private fun HomeScreenPreview() {
                 screen = Screen.Settings
             )
         ),
-        error = null
+        error = NO_ERROR
     )
     HomeContent(
         state = state,

@@ -43,7 +43,7 @@ internal class BallClickerViewModel(
     }
 
     private fun ballClicked() {
-        updateState {
+        updateUiState {
             copy {
                 BallClickerState.points set (points + 1)
             }
@@ -51,7 +51,7 @@ internal class BallClickerViewModel(
     }
 
     private fun startGame() = viewModelScope.launch {
-        updateState {
+        updateUiState {
             copy {
                 BallClickerState.isTimerRunning set true
                 BallClickerState.points set DEFAULT_POINTS
@@ -59,14 +59,14 @@ internal class BallClickerViewModel(
         }
         tickerFlow()
             .onEach { seconds ->
-                updateState {
+                updateUiState {
                     copy {
                         BallClickerState.currentTimeInSeconds set seconds.toInt()
                     }
                 }
             }
             .onCompletion {
-                updateState {
+                updateUiState {
                     copy {
                         BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
                         BallClickerState.isTimerRunning set false
@@ -80,7 +80,7 @@ internal class BallClickerViewModel(
 
     private fun stopGame() = viewModelScope.launch {
         timerJob?.cancel()
-        updateState {
+        updateUiState {
             copy {
                 BallClickerState.isTimerRunning set false
                 BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS

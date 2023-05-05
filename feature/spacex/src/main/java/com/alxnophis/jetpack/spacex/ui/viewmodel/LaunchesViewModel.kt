@@ -40,7 +40,7 @@ internal class LaunchesViewModel(
 
     private fun renderPastLaunches(hasToFetchDataFromNetworkOnly: Boolean) {
         viewModelScope.launch {
-            updateState { copy(isLoading = true) }
+            updateUiState { copy(isLoading = true) }
             getPastLaunches(hasToFetchDataFromNetworkOnly)
                 .map { pastLaunches ->
                     pastLaunches.mapTo { date: Date? ->
@@ -52,7 +52,7 @@ internal class LaunchesViewModel(
                 .mapLeft { error: LaunchesError -> error.mapTo() }
                 .fold(
                     { errorMessages: List<ErrorMessage> ->
-                        updateState {
+                        updateUiState {
                             copy(
                                 isLoading = false,
                                 errorMessages = errorMessages
@@ -60,7 +60,7 @@ internal class LaunchesViewModel(
                         }
                     },
                     { pastLaunches: List<PastLaunchModel> ->
-                        updateState {
+                        updateUiState {
                             copy(
                                 isLoading = false,
                                 pastLaunches = pastLaunches
@@ -100,7 +100,7 @@ internal class LaunchesViewModel(
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
-        updateState {
+        updateUiState {
             copy(errorMessages = errorMessages)
         }
     }
