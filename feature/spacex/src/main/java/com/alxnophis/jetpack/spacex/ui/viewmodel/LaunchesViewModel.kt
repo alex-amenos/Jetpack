@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.spacex.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
+import arrow.optics.copy
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.base.formatter.BaseDateFormatter
 import com.alxnophis.jetpack.core.base.provider.BaseRandomProvider
@@ -13,12 +14,15 @@ import com.alxnophis.jetpack.spacex.data.model.PastLaunchDataModel
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
+import com.alxnophis.jetpack.spacex.ui.contract.errorMessages
+import com.alxnophis.jetpack.spacex.ui.contract.isLoading
+import com.alxnophis.jetpack.spacex.ui.contract.pastLaunches
 import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
 import java.util.Date
 import kotlinx.coroutines.launch
 
 internal class LaunchesViewModel(
-    initialState: LaunchesState = LaunchesState(),
+    initialState: LaunchesState,
     private val dateFormatter: BaseDateFormatter,
     private val randomProvider: BaseRandomProvider,
     private val launchesRepository: LaunchesRepository
@@ -40,7 +44,11 @@ internal class LaunchesViewModel(
 
     private fun renderPastLaunches(hasToFetchDataFromNetworkOnly: Boolean) {
         viewModelScope.launch {
-            updateUiState { copy(isLoading = true) }
+            updateUiState {
+                copy {
+                    LaunchesState.isLoading set true
+                }
+            }
             getPastLaunches(hasToFetchDataFromNetworkOnly)
                 .map { pastLaunches ->
                     pastLaunches.mapTo { date: Date? ->
@@ -53,18 +61,18 @@ internal class LaunchesViewModel(
                 .fold(
                     { errorMessages: List<ErrorMessage> ->
                         updateUiState {
-                            copy(
-                                isLoading = false,
-                                errorMessages = errorMessages
-                            )
+                            copy {
+                                LaunchesState.isLoading set false
+                                LaunchesState.errorMessages set errorMessages
+                            }
                         }
                     },
                     { pastLaunches: List<PastLaunchModel> ->
                         updateUiState {
-                            copy(
-                                isLoading = false,
-                                pastLaunches = pastLaunches
-                            )
+                            copy {
+                                LaunchesState.isLoading set false
+                                LaunchesState.pastLaunches set pastLaunches
+                            }
                         }
                     }
                 )
@@ -101,7 +109,9 @@ internal class LaunchesViewModel(
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
         updateUiState {
-            copy(errorMessages = errorMessages)
+            copy {
+                LaunchesState.errorMessages set errorMessages
+            }
         }
     }
 }

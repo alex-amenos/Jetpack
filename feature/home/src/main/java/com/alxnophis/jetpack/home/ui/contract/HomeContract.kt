@@ -18,5 +18,5 @@ internal data class HomeState(
     val data: List<NavigationItem> = emptyList(),
     val error: Int = NO_ERROR
 ) : UiState {
-    companion object
+    internal companion object
 }

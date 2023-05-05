@@ -290,7 +290,7 @@ private fun SnackbarError(
             }
         }
     }
-    
+
     Box(modifier) {
         SnackbarHost(
             hostState = snackbarHostState,

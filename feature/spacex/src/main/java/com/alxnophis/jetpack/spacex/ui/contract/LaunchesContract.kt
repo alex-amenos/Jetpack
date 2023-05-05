@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.spacex.ui.contract
 
+import arrow.optics.optics
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
@@ -11,8 +12,11 @@ internal sealed class LaunchesEvent : UiEvent {
     data class DismissError(val errorId: Long) : LaunchesEvent()
 }
 
+@optics
 internal data class LaunchesState(
     val isLoading: Boolean = false,
     val pastLaunches: List<PastLaunchModel> = emptyList(),
     val errorMessages: List<ErrorMessage> = emptyList()
-) : UiState
+) : UiState {
+    internal companion object
+}

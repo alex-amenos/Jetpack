@@ -18,7 +18,7 @@ import java.util.UUID
 import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
-    initialState: PostsState = PostsState(),
+    initialState: PostsState,
     private val postsUseCase: PostsUseCase,
     private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {

@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.settings.ui.contract
 
 import androidx.annotation.StringRes
+import arrow.optics.optics
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
@@ -13,12 +14,15 @@ internal sealed class SettingsEvent : UiEvent {
     data class SetTheme(val theme: Theme) : SettingsEvent()
 }
 
+@optics
 internal data class SettingsState(
     val notificationsEnabled: Boolean = false,
     val hintsEnabled: Boolean = false,
     val marketingOption: MarketingOption = MarketingOption.ALLOWED,
     val themeOption: Theme = Theme.SYSTEM
-) : UiState
+) : UiState {
+    internal companion object
+}
 
 internal enum class MarketingOption(val id: Int) {
     ALLOWED(0),
