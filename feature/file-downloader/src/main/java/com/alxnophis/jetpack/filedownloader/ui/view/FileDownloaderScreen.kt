@@ -35,7 +35,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -46,6 +45,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.extensions.isValidUrl
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
@@ -57,6 +57,7 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
+import com.alxnophis.jetpack.filedownloader.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
@@ -68,7 +69,7 @@ internal fun FileDownloaderScreen(
     viewModel: FileDownloaderViewModel,
     popBackStack: () -> Unit
 ) {
-    val state: FileDownloaderState = viewModel.uiState.collectAsState().value
+    val state: FileDownloaderState = viewModel.uiState.collectAsStateWithLifecycle().value
     BackHandler {
         popBackStack()
     }
@@ -97,6 +98,7 @@ private fun FileDownloaderScaffold(
                 )
             }
         ) { paddingValues ->
+
             FileDownloaderContent(
                 state = state,
                 handleEvent = handleEvent,
@@ -106,6 +108,7 @@ private fun FileDownloaderScaffold(
                     .fillMaxSize()
                     .padding(mediumPadding)
             )
+
             FileDownloaderErrors(
                 state = state,
                 dismissError = { handleEvent(FileDownloaderEvent.ErrorDismissed) }
@@ -125,6 +128,7 @@ private fun FileDownloaderContent(
         handleEvent.invoke(FileDownloaderEvent.DownloadFile)
     }
     val keyboardController = LocalSoftwareKeyboardController.current
+
     Column(modifier = modifier) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -245,13 +249,11 @@ private fun FileDownloaderErrors(
             error = state.error,
             onDismiss = dismissError
         )
-
-        state.error != null -> SnackbarError(
+        state.error != NO_ERROR -> SnackbarError(
             modifier = Modifier.fillMaxSize(),
             error = state.error,
             onDismiss = dismissError
         )
-
         else -> doNothing()
     }
 }
@@ -288,6 +290,7 @@ private fun SnackbarError(
             }
         }
     }
+
     Box(modifier) {
         SnackbarHost(
             hostState = snackbarHostState,

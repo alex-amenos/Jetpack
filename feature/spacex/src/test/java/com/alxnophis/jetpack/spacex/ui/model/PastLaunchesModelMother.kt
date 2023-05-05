@@ -1,9 +1,7 @@
 package com.alxnophis.jetpack.spacex.ui.model
 
 import com.alxnophis.jetpack.core.base.constants.EMPTY
-import org.jetbrains.annotations.TestOnly
 
-@TestOnly
 internal object PastLaunchesModelMother {
 
     operator fun invoke(

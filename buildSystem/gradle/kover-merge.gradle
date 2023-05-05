@@ -1,0 +1,31 @@
+// Helpful example:
+// https://github.com/Kotlin/kotlinx-kover/blob/release/examples/android_groovy/build.gradle
+koverMerged {
+    enable()
+
+    filters {
+        classes {
+            includes.addAll("com.alxnophis.jetpack.*")
+            excludes.addAll(
+                    'com.alxnophis.jetpack.core.base.*',
+                    'com.alxnophis.jetpack.*.di.*',
+                    'com.alxnophis.jetpack.di.*',
+                    'com.alxnophis.jetpack.core.base.*',
+                    'com.alxnophis.jetpack.router.*',
+                    'com.alxnophis.jetpack.*.ui.navigation.*',
+                    "*Activity",
+                    "BuildConfig",
+                    '*Mother',
+                    '*NavGraph\$*',
+            )
+        }
+
+        projects {
+            excludes.addAll(
+                    ":app",
+                    ":shared:api",
+                    ":shared:testing"
+            )
+        }
+    }
+}

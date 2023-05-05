@@ -6,13 +6,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -24,7 +25,7 @@ internal fun AuthenticationScreen(
     popBackStack: () -> Unit,
     navigateTo: (String) -> Unit
 ) {
-    val state = viewModel.uiState.collectAsState().value
+    val state: AuthenticationState = viewModel.uiState.collectAsStateWithLifecycle().value
     LaunchedEffect(state.isUserAuthorized) {
         if (state.isUserAuthorized) {
             navigateTo(state.email)
@@ -63,9 +64,9 @@ internal fun AuthenticationContent(
             },
             handleEvent = handleEvent
         )
-        authenticationState.error?.let { error: Int ->
+        if (authenticationState.error != NO_ERROR) {
             CoreErrorDialog(
-                errorMessage = stringResource(error),
+                errorMessage = stringResource(authenticationState.error),
                 dismissError = { handleEvent(AuthenticationEvent.ErrorDismissed) }
             )
         }

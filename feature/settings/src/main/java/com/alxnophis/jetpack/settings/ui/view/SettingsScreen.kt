@@ -11,12 +11,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -31,7 +31,7 @@ internal fun SettingsScreen(
     popBackStack: () -> Unit,
     appVersion: String = LocalContext.current.getVersion()
 ) {
-    val state = viewModel.uiState.collectAsState().value
+    val state: SettingsState = viewModel.uiState.collectAsStateWithLifecycle().value
     BackHandler { popBackStack() }
     SettingsContent(
         state = state,

@@ -5,6 +5,7 @@ dependencies {
     implementation project(Modules.SHARED_CORE)
     implementation project(Modules.SHARED_KOTLIN)
     implementation project(Modules.SHARED_ROUTER)
+
     implementation libs.androidx.annotations
     implementation libs.androidx.activity
     implementation libs.androidx.appcompat
@@ -18,19 +19,20 @@ dependencies {
     implementation(platform(libs.arrow.stack))
     implementation libs.arrow.core
     implementation libs.arrow.fx.coroutines
+    implementation libs.arrow.optics
     implementation libs.arrow.retrofit
     implementation libs.coil
+    implementation libs.koin.android
     implementation libs.kotlinx.collections.immutable
     implementation libs.kotlinx.coroutines.core
     implementation libs.kotlinx.coroutines.android
-    implementation libs.koin.android
     implementation libs.google.android.material
     implementation libs.timber
 
     debugImplementation libs.leak.canary
 
     kapt libs.androidx.lifecycle.compiler
-    kapt libs.arror.meta
+    ksp libs.arrow.optics.ksp.plugin
 
     testImplementation project(Modules.SHARED_TESTING)
     testImplementation libs.androidx.arch.core.testing

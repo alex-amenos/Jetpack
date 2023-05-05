@@ -41,7 +41,8 @@ androidx-core-ktx = "androidx.core:core-ktx:1.8.0"
 androidx-lifecycle-common = "androidx.lifecycle:lifecycle-common-java8:2.5.1"
 androidx-lifecycle-compiler = "androidx.lifecycle:lifecycle-compiler:2.5.1"
 androidx-lifecycle-extension = "androidx.lifecycle:lifecycle-extensions:2.2.0"
-androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
 androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
 androidx-test-junit = "androidx.test.ext:junit-ktx:1.1.5"
 androidx-test-rules = "androidx.test:rules:1.5.0"
@@ -52,11 +53,12 @@ apollo-api = { module = "com.apollographql.apollo3:apollo-api", version.ref = "c
 apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "com-apollographql-apollo3" }
 apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite", version.ref = "com-apollographql-apollo3" }
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "com-apollographql-apollo3" }
-arror-meta = "io.arrow-kt:arrow-meta:1.6.0"
 arrow-core = { module = "io.arrow-kt:arrow-core" }
 arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
+arrow-optics = { module = "io.arrow-kt:arrow-optics" }
+arrow-optics-ksp-plugin = "io.arrow-kt:arrow-optics-ksp-plugin:1.1.5"
 arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
-arrow-stack = "io.arrow-kt:arrow-stack:1.1.3"
+arrow-stack = "io.arrow-kt:arrow-stack:1.1.5"
 coil = "io.coil-kt:coil-compose:2.2.2"
 google-accompanits-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "com-google-accompanist" }
 google-accompanits-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "com-google-accompanist" }
@@ -142,3 +144,4 @@ ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
 kotlin-android = "org.jetbrains.kotlin.android:1.8.10"
 kover = "org.jetbrains.kotlinx.kover:0.6.1"
 version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"
+google-ksp = "com.google.devtools.ksp:1.8.10-1.0.9"

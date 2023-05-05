@@ -1,10 +1,13 @@
 package com.alxnophis.jetpack.authentication.ui.contract
 
 import androidx.annotation.StringRes
+import arrow.optics.optics
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
+
+internal const val NO_ERROR = 0
 
 internal sealed class AuthenticationEvent : UiEvent {
     object Authenticate : AuthenticationEvent()
@@ -16,6 +19,7 @@ internal sealed class AuthenticationEvent : UiEvent {
     data class PasswordChanged(val password: String) : AuthenticationEvent()
 }
 
+@optics
 internal data class AuthenticationState(
     val isUserAuthorized: Boolean = false,
     val authenticationMode: AuthenticationMode = AuthenticationMode.SIGN_IN,
@@ -23,7 +27,7 @@ internal data class AuthenticationState(
     val password: String = EMPTY,
     val passwordRequirements: List<PasswordRequirements> = emptyList(),
     val isLoading: Boolean = false,
-    val error: Int? = null
+    val error: Int = NO_ERROR
 ) : UiState {
 
     fun isFormValid(): Boolean {
@@ -31,6 +35,8 @@ internal data class AuthenticationState(
             email.isNotEmpty() &&
             (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
     }
+
+    internal companion object
 }
 
 enum class PasswordRequirements(@StringRes val label: Int) {

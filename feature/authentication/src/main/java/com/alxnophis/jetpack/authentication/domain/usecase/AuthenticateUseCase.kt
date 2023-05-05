@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.authentication.domain.usecase
 
 import arrow.core.Either
+import arrow.core.Either.Companion.catch
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -16,17 +17,15 @@ internal class AuthenticateUseCase(
 
     suspend fun invoke(email: String, password: String): Either<AuthenticationError, Authenticated> =
         withContext(ioDispatcher) {
-            Either.catch(
-                { AuthenticationError.WrongAuthentication },
-                {
-                    delay(delay)
-                    if (hasAuthorization(email, password)) {
-                        Authenticated
-                    } else {
-                        throw AuthenticationError.WrongAuthentication
-                    }
+            catch {
+                delay(delay)
+                if (hasAuthorization(email, password)) {
+                    Authenticated
+                } else {
+                    throw AuthenticationError.WrongAuthentication
                 }
-            )
+            }
+                .mapLeft { AuthenticationError.WrongAuthentication }
         }
 
     private fun hasAuthorization(email: String, password: String): Boolean =
