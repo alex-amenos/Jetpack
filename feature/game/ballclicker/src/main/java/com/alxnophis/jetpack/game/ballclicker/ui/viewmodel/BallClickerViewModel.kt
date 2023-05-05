@@ -1,14 +1,17 @@
 package com.alxnophis.jetpack.game.ballclicker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import arrow.optics.copy
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.DEFAULT_POINTS
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.DEFAULT_TIME_IN_SECONDS
+import com.alxnophis.jetpack.game.ballclicker.ui.contract.currentTimeInSeconds
+import com.alxnophis.jetpack.game.ballclicker.ui.contract.isTimerRunning
+import com.alxnophis.jetpack.game.ballclicker.ui.contract.points
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -21,8 +24,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 internal class BallClickerViewModel(
-    initialState: BallClickerState = BallClickerState(),
-    defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+    initialState: BallClickerState,
+    defaultDispatcher: CoroutineDispatcher
 ) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
 
     private val timerScope = CoroutineScope(defaultDispatcher + SupervisorJob())
@@ -41,29 +44,33 @@ internal class BallClickerViewModel(
 
     private fun ballClicked() {
         updateState {
-            copy(points = points + 1)
+            copy {
+                BallClickerState.points set (points + 1)
+            }
         }
     }
 
     private fun startGame() = viewModelScope.launch {
         updateState {
-            copy(
-                isTimerRunning = true,
-                points = DEFAULT_POINTS
-            )
+            copy {
+                BallClickerState.isTimerRunning set true
+                BallClickerState.points set DEFAULT_POINTS
+            }
         }
         tickerFlow()
             .onEach { seconds ->
                 updateState {
-                    copy(currentTimeInSeconds = seconds.toInt())
+                    copy {
+                        BallClickerState.currentTimeInSeconds set seconds.toInt()
+                    }
                 }
             }
             .onCompletion {
                 updateState {
-                    copy(
-                        currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS,
-                        isTimerRunning = false
-                    )
+                    copy {
+                        BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
+                        BallClickerState.isTimerRunning set false
+                    }
                 }
             }
             .cancellable()
@@ -74,10 +81,10 @@ internal class BallClickerViewModel(
     private fun stopGame() = viewModelScope.launch {
         timerJob?.cancel()
         updateState {
-            copy(
-                isTimerRunning = false,
-                currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS
-            )
+            copy {
+                BallClickerState.isTimerRunning set false
+                BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
+            }
         }
     }
 
