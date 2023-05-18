@@ -36,8 +36,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,6 +54,8 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
+import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
@@ -263,6 +268,10 @@ private fun ExpandingText(
     modifier: Modifier = Modifier
 ) {
     val showMoreString = stringResource(R.string.spacex_show_more)
+    val textTermination = buildString {
+        append(THREE_DOTS)
+        append(WHITE_SPACE)
+    }
     val textLayoutResultState = remember { mutableStateOf<TextLayoutResult?>(null) }
     val textLayoutResult = textLayoutResultState.value
     var isClickable by remember { mutableStateOf(false) }
@@ -276,20 +285,28 @@ private fun ExpandingText(
                 isClickable = false
                 finalText = item.details
             }
-
             !isExpanded && textLayoutResult.hasVisualOverflow -> {
                 isClickable = true
                 val lastCharIndex = textLayoutResult.getLineEnd(MINIMIZED_LINES - 1)
                 val adjustedText = item.details
                     .substring(startIndex = ZERO_INT, endIndex = lastCharIndex)
-                    .dropLast(showMoreString.length)
+                    .dropLast(textTermination.length + showMoreString.length)
                     .dropLastWhile { it == ' ' || it == '.' }
-                finalText = "$adjustedText$showMoreString"
+                finalText = "$adjustedText$textTermination"
             }
         }
     }
     Text(
-        text = finalText,
+        text = if (isClickable) {
+            buildAnnotatedString {
+                append(finalText)
+                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                    append(showMoreString)
+                }
+            }
+        } else {
+            buildAnnotatedString { append(finalText) }
+        },
         modifier = modifier
             .clickable(enabled = isClickable) { isExpanded = !isExpanded }
             .animateContentSize(),
