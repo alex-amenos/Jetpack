@@ -52,7 +52,7 @@ class SpacexApolloClientFactory {
     }
 
     companion object {
-        private const val SERVER_URL = "https://api.spacex.land/graphql/"
+        private const val SERVER_URL = "https://main--spacex-l4uc6p.apollographos.net/graphql"
         private const val TIMEOUT_CONNECT = 10L
         private const val TIMEOUT_READ = 10L
         private const val TIMEOUT_WRITE = 10L
