@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.location.tracker.data.data
 
+import android.location.Location as AndroidLocation
 import android.annotation.SuppressLint
 import android.location.LocationManager
 import android.os.Looper
@@ -27,7 +28,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import android.location.Location as AndroidLocation
 
 internal class LocationDataSourceImpl(
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
