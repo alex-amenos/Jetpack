@@ -197,7 +197,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 assertEquals(
-                    LaunchesState.initialState.copy(),
+                    LaunchesState.initialState,
                     awaitItem()
                 )
                 expectNoEvents()

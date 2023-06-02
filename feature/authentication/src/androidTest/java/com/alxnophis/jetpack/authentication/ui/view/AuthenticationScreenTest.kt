@@ -4,11 +4,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import arrow.optics.copy
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
-import com.alxnophis.jetpack.authentication.ui.contract.authenticationMode
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
@@ -37,9 +35,7 @@ class AuthenticationScreenTest : BaseComposeTest() {
     @Test
     fun sign_in_title_displayed() {
         authenticationContent(
-            AuthenticationState.initialState.copy {
-                AuthenticationState.authenticationMode set AuthenticationMode.SIGN_IN
-            }
+            AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_IN)
         )
 
         composeTestRule
@@ -50,9 +46,7 @@ class AuthenticationScreenTest : BaseComposeTest() {
     @Test
     fun sign_up_title_displayed() {
         authenticationContent(
-            AuthenticationState.initialState.copy {
-                AuthenticationState.authenticationMode set AuthenticationMode.SIGN_UP
-            }
+            AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_UP)
         )
 
         composeTestRule
