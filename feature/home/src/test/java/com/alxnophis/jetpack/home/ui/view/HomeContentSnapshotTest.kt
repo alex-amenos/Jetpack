@@ -2,9 +2,12 @@ package com.alxnophis.jetpack.home.ui.view
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
+import arrow.optics.copy
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
+import com.alxnophis.jetpack.home.ui.contract.data
+import com.alxnophis.jetpack.home.ui.contract.error
 import com.alxnophis.jetpack.router.screen.Screen
 import com.alxnophis.jetpack.testing.constants.PAPARAZZI_MAX_PERCENT_DIFFERENCE
 import org.junit.Rule
@@ -21,10 +24,10 @@ internal class HomeContentSnapshotTest {
     @Test
     fun composable() {
         snapshot(
-            state = HomeState(
-                data = listOf(NAVIGATION_ITEM_1, NAVIGATION_ITEM_2),
-                error = NO_ERROR
-            )
+            state = HomeState.initialState.copy {
+                HomeState.data set listOf(NAVIGATION_ITEM_1, NAVIGATION_ITEM_2)
+                HomeState.error set NO_ERROR
+            }
         )
     }
 

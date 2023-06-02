@@ -107,7 +107,7 @@ class SettingsTest : BaseComposeTest() {
     private fun setSettingsContent() {
         composeTestRule.setContent {
             SettingsScreen(
-                viewModel = SettingsViewModel(initialState = SettingsState()),
+                viewModel = SettingsViewModel(initialState = SettingsState.initialState),
                 popBackStack = {},
                 appVersion = APP_VERSION
             )

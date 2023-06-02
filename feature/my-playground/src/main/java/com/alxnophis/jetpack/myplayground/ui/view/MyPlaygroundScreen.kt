@@ -114,7 +114,7 @@ internal fun MyPlaygroundContent(
 @Preview
 @Composable
 private fun MyPlaygroundScaffoldPreview() {
-    val state = MyPlaygroundState()
+    val state = MyPlaygroundState.initialState
     MyPlaygroundScaffold(
         state = state,
         handleEvent = {},

@@ -18,7 +18,7 @@ private val loadMyPlaygroundModules by lazy {
 private val myPlaygroundModule: Module = module {
     viewModel {
         MyPlaygroundViewModel(
-            initialState = MyPlaygroundState()
+            initialState = MyPlaygroundState.initialState
         )
     }
 }

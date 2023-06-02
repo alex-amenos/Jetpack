@@ -21,13 +21,13 @@ internal sealed class AuthenticationEvent : UiEvent {
 
 @optics
 internal data class AuthenticationState(
-    val isUserAuthorized: Boolean = false,
-    val authenticationMode: AuthenticationMode = AuthenticationMode.SIGN_IN,
-    val email: String = EMPTY,
-    val password: String = EMPTY,
-    val passwordRequirements: List<PasswordRequirements> = emptyList(),
-    val isLoading: Boolean = false,
-    val error: Int = NO_ERROR
+    val isUserAuthorized: Boolean,
+    val authenticationMode: AuthenticationMode,
+    val email: String,
+    val password: String,
+    val passwordRequirements: List<PasswordRequirements>,
+    val isLoading: Boolean,
+    val error: Int
 ) : UiState {
 
     fun isFormValid(): Boolean {
@@ -36,7 +36,17 @@ internal data class AuthenticationState(
             (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
     }
 
-    internal companion object
+    internal companion object {
+        val initialState = AuthenticationState(
+            isUserAuthorized = false,
+            authenticationMode = AuthenticationMode.SIGN_IN,
+            email = EMPTY,
+            password = EMPTY,
+            passwordRequirements = emptyList(),
+            isLoading = false,
+            error = NO_ERROR
+        )
+    }
 }
 
 enum class PasswordRequirements(@StringRes val label: Int) {

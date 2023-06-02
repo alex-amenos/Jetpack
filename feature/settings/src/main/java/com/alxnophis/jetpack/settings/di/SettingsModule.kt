@@ -16,7 +16,7 @@ private val loadSettingsModule by lazy {
 private val settingsModule: Module = module {
     viewModel {
         SettingsViewModel(
-            initialState = SettingsState()
+            initialState = SettingsState.initialState
         )
     }
 }

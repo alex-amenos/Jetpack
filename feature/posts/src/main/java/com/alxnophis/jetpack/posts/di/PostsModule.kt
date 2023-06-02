@@ -21,7 +21,7 @@ private val postModule: Module = module {
     factory { PostsUseCase(repository = get()) }
     viewModel {
         PostsViewModel(
-            initialState = PostsState(),
+            initialState = PostsState.initialState,
             postsUseCase = get()
         )
     }

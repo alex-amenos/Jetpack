@@ -78,7 +78,7 @@ internal fun AuthenticationContent(
 @Composable
 private fun AuthenticationFormPreview() {
     AuthenticationContent(
-        authenticationState = AuthenticationState(),
+        authenticationState = AuthenticationState.initialState,
         handleEvent = {}
     )
 }

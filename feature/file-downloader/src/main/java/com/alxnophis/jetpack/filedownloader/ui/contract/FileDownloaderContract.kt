@@ -13,11 +13,17 @@ internal sealed class FileDownloaderEvent : UiEvent {
 
 @optics
 internal data class FileDownloaderState(
-    val url: String = "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4",
-    val error: Int = NO_ERROR,
-    val fileStatusList: List<String> = emptyList()
+    val url: String,
+    val error: Int,
+    val fileStatusList: List<String>
 ) : UiState {
-    internal companion object
+    internal companion object {
+        val initialState = FileDownloaderState(
+            url = "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4",
+            error = NO_ERROR,
+            fileStatusList = emptyList()
+        )
+    }
 }
 
 internal const val NO_ERROR = ZERO_INT

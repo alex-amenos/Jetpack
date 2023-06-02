@@ -14,9 +14,15 @@ internal sealed class HomeEvent : UiEvent {
 
 @optics
 internal data class HomeState(
-    val isLoading: Boolean = false,
-    val data: List<NavigationItem> = emptyList(),
-    val error: Int = NO_ERROR
+    val isLoading: Boolean,
+    val data: List<NavigationItem>,
+    val error: Int
 ) : UiState {
-    internal companion object
+    internal companion object {
+        val initialState = HomeState(
+            isLoading = false,
+            data = emptyList(),
+            error = NO_ERROR
+        )
+    }
 }

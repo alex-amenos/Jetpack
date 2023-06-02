@@ -12,8 +12,13 @@ internal sealed class LocationTrackerEvent : UiEvent {
 
 @optics
 internal data class LocationTrackerState(
-    val userLocation: String = EMPTY,
-    val lastKnownLocation: String = EMPTY
+    val userLocation: String,
+    val lastKnownLocation: String
 ) : UiState {
-    internal companion object
+    internal companion object {
+        val initialState = LocationTrackerState(
+            userLocation = EMPTY,
+            lastKnownLocation = EMPTY
+        )
+    }
 }

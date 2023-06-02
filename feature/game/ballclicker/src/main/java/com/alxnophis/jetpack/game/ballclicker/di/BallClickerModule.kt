@@ -17,7 +17,7 @@ private val loadBallClickerModule by lazy {
 private val ballClickerModule: Module = module {
     viewModel {
         BallClickerViewModel(
-            initialState = BallClickerState(),
+            initialState = BallClickerState.initialState,
             defaultDispatcher = Dispatchers.Default
         )
     }

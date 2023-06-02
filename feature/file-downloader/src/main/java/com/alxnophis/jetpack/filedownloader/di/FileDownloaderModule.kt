@@ -28,7 +28,7 @@ internal val fileDownloaderModule: Module = module {
     single<FileDownloaderRepository> { FileDownloaderRepositoryImpl(androidDownloaderDataSource = get()) }
     viewModel {
         FileDownloaderViewModel(
-            initialState = FileDownloaderState(),
+            initialState = FileDownloaderState.initialState,
             fileDownloaderRepository = get()
         )
     }

@@ -19,7 +19,7 @@ private val spacexModule: Module = module {
     factory<LaunchesRepository> { LaunchesRepositoryImpl(apiDataSource = get()) }
     viewModel {
         LaunchesViewModel(
-            initialState = LaunchesState(),
+            initialState = LaunchesState.initialState,
             dateFormatter = get(),
             randomProvider = get(),
             launchesRepository = get()

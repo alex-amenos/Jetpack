@@ -12,11 +12,17 @@ internal sealed class BallClickerEvent : UiEvent {
 
 @optics
 internal data class BallClickerState(
-    val currentTimeInSeconds: Int = DEFAULT_TIME_IN_SECONDS,
-    val isTimerRunning: Boolean = false,
-    val points: Int = DEFAULT_POINTS
+    val currentTimeInSeconds: Int,
+    val isTimerRunning: Boolean,
+    val points: Int
 ) : UiState {
-    internal companion object
+    internal companion object {
+        val initialState = BallClickerState(
+            currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS,
+            isTimerRunning = false,
+            points = DEFAULT_POINTS
+        )
+    }
 }
 
 internal const val DEFAULT_TIME_IN_SECONDS = 30

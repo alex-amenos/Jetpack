@@ -36,16 +36,16 @@ class PostsViewModelUnitTests : FunSpec({
     ) {
         val postUseCaseMock: PostsUseCase = mock()
         val viewModel = PostsViewModel(
-            initialState = PostsState(),
+            initialState = PostsState.initialState,
             postsUseCase = postUseCaseMock
         )
 
         whenever(postUseCaseMock.invoke()).thenReturn(postList.right())
 
         viewModel.uiState.test {
-            awaitItem() shouldBe PostsState()
-            awaitItem() shouldBe PostsState(isLoading = true)
-            awaitItem() shouldBe PostsState(isLoading = false, posts = postList)
+            awaitItem() shouldBe PostsState.initialState
+            awaitItem() shouldBe PostsState.initialState.copy(isLoading = true)
+            awaitItem() shouldBe PostsState.initialState.copy(isLoading = false, posts = postList)
             expectNoEvents()
         }
     }
@@ -64,7 +64,7 @@ class PostsViewModelUnitTests : FunSpec({
             val errorId = 1L
             val postUseCaseMock: PostsUseCase = mock()
             val viewModel = PostsViewModel(
-                initialState = PostsState(),
+                initialState = PostsState.initialState,
                 postsUseCase = postUseCaseMock,
                 getRandomUUID = { errorId }
             )
@@ -72,9 +72,9 @@ class PostsViewModelUnitTests : FunSpec({
             whenever(postUseCaseMock.invoke()).thenReturn(error.left())
 
             viewModel.uiState.test {
-                awaitItem() shouldBe PostsState()
-                awaitItem() shouldBe PostsState(isLoading = true)
-                awaitItem() shouldBe PostsState(
+                awaitItem() shouldBe PostsState.initialState
+                awaitItem() shouldBe PostsState.initialState.copy(isLoading = true)
+                awaitItem() shouldBe PostsState.initialState.copy(
                     isLoading = false,
                     errorMessages = listOf(ErrorMessage(id = errorId, messageId = errorMessage))
                 )
@@ -91,7 +91,7 @@ class PostsViewModelUnitTests : FunSpec({
         val postUseCaseMock: PostsUseCase = mock()
         val errorId = 1L
         val viewModel = PostsViewModel(
-            initialState = PostsState(),
+            initialState = PostsState.initialState,
             getRandomUUID = { errorId },
             postsUseCase = postUseCaseMock
         )
@@ -100,7 +100,7 @@ class PostsViewModelUnitTests : FunSpec({
         viewModel.handleEvent(PostsEvent.DismissError(errorId))
 
         viewModel.uiState.test {
-            expectMostRecentItem() shouldBe PostsState()
+            expectMostRecentItem() shouldBe PostsState.initialState
             expectNoEvents()
         }
     }
