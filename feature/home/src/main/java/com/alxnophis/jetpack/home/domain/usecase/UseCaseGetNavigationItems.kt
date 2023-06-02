@@ -12,25 +12,23 @@ class UseCaseGetNavigationItems(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    suspend operator fun invoke(): Either<NavigationError, List<NavigationItem>> =
-        withContext(ioDispatcher) {
-            Either.catch(
-                { NavigationError.Unknown },
-                {
-                    listOf(
-                        myPlayground,
-                        fileDownloader,
-                        authentication,
-                        settings,
-                        notifications,
-                        posts,
-                        locationTracker,
-                        gameBallClicker,
-                        spacex
-                    )
-                }
-            )
-        }
+    suspend operator fun invoke(): Either<NavigationError, List<NavigationItem>> = withContext(ioDispatcher) {
+        Either
+            .catch {
+                listOf(
+                    myPlayground,
+                    fileDownloader,
+                    authentication,
+                    settings,
+                    notifications,
+                    posts,
+                    locationTracker,
+                    gameBallClicker,
+                    spacex
+                )
+            }
+            .mapLeft { NavigationError.Unknown }
+    }
 
     // TODO - Update Home navigation here
     companion object {
