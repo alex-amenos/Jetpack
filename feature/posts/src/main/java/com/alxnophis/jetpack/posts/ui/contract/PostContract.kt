@@ -13,9 +13,15 @@ internal sealed class PostsEvent : UiEvent {
 
 @optics
 internal data class PostsState(
-    val isLoading: Boolean = false,
-    val posts: List<Post> = emptyList(),
-    val errorMessages: List<ErrorMessage> = emptyList()
+    val isLoading: Boolean,
+    val posts: List<Post>,
+    val errorMessages: List<ErrorMessage>
 ) : UiState {
-    internal companion object
+    internal companion object {
+        val initialState = PostsState(
+            isLoading = false,
+            posts = emptyList(),
+            errorMessages = emptyList()
+        )
+    }
 }

@@ -122,7 +122,7 @@ internal fun SettingsContent(
 @Composable
 private fun SettingsScreenPreview() {
     SettingsContent(
-        state = SettingsState(),
+        state = SettingsState.initialState,
         appVersion = "1.0.0",
         handleEvent = {},
         navigateBack = {}

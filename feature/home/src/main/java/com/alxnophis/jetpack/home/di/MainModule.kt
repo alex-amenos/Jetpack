@@ -18,7 +18,7 @@ private val homeModule: Module = module {
     factory { UseCaseGetNavigationItems() }
     viewModel {
         HomeViewModel(
-            initialState = HomeState(),
+            initialState = HomeState.initialState,
             useCaseGetNavigationItems = get()
         )
     }

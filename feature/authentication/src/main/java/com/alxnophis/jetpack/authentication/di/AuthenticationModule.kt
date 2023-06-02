@@ -18,7 +18,7 @@ private val authenticationModule: Module = module {
     factory { AuthenticateUseCase() }
     viewModel {
         AuthenticationViewModel(
-            initialState = AuthenticationState(),
+            initialState = AuthenticationState.initialState,
             authenticateUseCase = get()
         )
     }

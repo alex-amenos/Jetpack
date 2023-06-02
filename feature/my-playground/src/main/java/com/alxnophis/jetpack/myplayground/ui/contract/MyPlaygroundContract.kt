@@ -11,7 +11,11 @@ internal sealed class MyPlaygroundEvent : UiEvent {
 
 @optics
 internal data class MyPlaygroundState(
-    val textFieldValue: String = EMPTY
+    val textFieldValue: String
 ) : UiState {
-    internal companion object
+    internal companion object {
+        val initialState = MyPlaygroundState(
+            textFieldValue = EMPTY
+        )
+    }
 }

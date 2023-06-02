@@ -49,7 +49,7 @@ private val locationTrackerModule: Module = module {
     factory { StopLocationProviderUseCase(locationRepository = get()) }
     viewModel {
         LocationTrackerViewModel(
-            initialState = LocationTrackerState(),
+            initialState = LocationTrackerState.initialState,
             startLocationProviderUseCase = get(),
             stopLocationProviderUseCase = get(),
             locationStateUseCase = get(),

@@ -4,9 +4,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import arrow.optics.copy
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
+import com.alxnophis.jetpack.authentication.ui.contract.authenticationMode
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
@@ -15,7 +17,7 @@ class AuthenticationScreenTest : BaseComposeTest() {
 
     @Test
     fun sign_in_title_displayed_by_default() {
-        authenticationContent(AuthenticationState())
+        authenticationContent(AuthenticationState.initialState)
 
         composeTestRule
             .onNodeWithText(context.getString(R.string.authentication_label_sign_in_to_account))
@@ -24,7 +26,7 @@ class AuthenticationScreenTest : BaseComposeTest() {
 
     @Test
     fun need_account_displayed_and_clickable() {
-        authenticationContent(AuthenticationState())
+        authenticationContent(AuthenticationState.initialState)
 
         composeTestRule
             .onNodeWithText(context.getString(R.string.authentication_action_need_account))
@@ -35,7 +37,9 @@ class AuthenticationScreenTest : BaseComposeTest() {
     @Test
     fun sign_in_title_displayed() {
         authenticationContent(
-            AuthenticationState(authenticationMode = AuthenticationMode.SIGN_IN)
+            AuthenticationState.initialState.copy {
+                AuthenticationState.authenticationMode set AuthenticationMode.SIGN_IN
+            }
         )
 
         composeTestRule
@@ -46,7 +50,9 @@ class AuthenticationScreenTest : BaseComposeTest() {
     @Test
     fun sign_up_title_displayed() {
         authenticationContent(
-            AuthenticationState(authenticationMode = AuthenticationMode.SIGN_UP)
+            AuthenticationState.initialState.copy {
+                AuthenticationState.authenticationMode set AuthenticationMode.SIGN_UP
+            }
         )
 
         composeTestRule

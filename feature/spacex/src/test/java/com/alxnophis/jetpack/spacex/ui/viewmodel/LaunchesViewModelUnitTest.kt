@@ -51,15 +51,15 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 assertEquals(
-                    initialLaunchesState,
+                    LaunchesState.initialState,
                     awaitItem()
                 )
                 assertEquals(
-                    initialLaunchesState.copy(isLoading = true),
+                    LaunchesState.initialState.copy(isLoading = true),
                     awaitItem()
                 )
                 assertEquals(
-                    initialLaunchesState.copy(
+                    LaunchesState.initialState.copy(
                         isLoading = false,
                         pastLaunches = pastLaunches
                     ),
@@ -108,15 +108,15 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 assertEquals(
-                    initialLaunchesState,
+                    LaunchesState.initialState,
                     awaitItem()
                 )
                 assertEquals(
-                    initialLaunchesState.copy(isLoading = true),
+                    LaunchesState.initialState.copy(isLoading = true),
                     awaitItem()
                 )
                 assertEquals(
-                    initialLaunchesState.copy(
+                    LaunchesState.initialState.copy(
                         isLoading = false,
                         pastLaunches = pastLaunches
                     ),
@@ -139,15 +139,15 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 assertEquals(
-                    initialLaunchesState,
+                    LaunchesState.initialState,
                     awaitItem()
                 )
                 assertEquals(
-                    initialLaunchesState.copy(isLoading = true),
+                    LaunchesState.initialState.copy(isLoading = true),
                     awaitItem()
                 )
                 assertEquals(
-                    initialLaunchesState.copy(
+                    LaunchesState.initialState.copy(
                         isLoading = false,
                         errorMessages = listOf(
                             ErrorMessage(
@@ -171,15 +171,15 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 assertEquals(
-                    initialLaunchesState,
+                    LaunchesState.initialState,
                     awaitItem()
                 )
                 assertEquals(
-                    initialLaunchesState.copy(isLoading = true),
+                    LaunchesState.initialState.copy(isLoading = true),
                     awaitItem()
                 )
                 assertEquals(
-                    initialLaunchesState.copy(
+                    LaunchesState.initialState.copy(
                         isLoading = false,
                         errorMessages = listOf(
                             ErrorMessage(
@@ -197,7 +197,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 assertEquals(
-                    initialLaunchesState.copy(),
+                    LaunchesState.initialState.copy(),
                     awaitItem()
                 )
                 expectNoEvents()
@@ -206,7 +206,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     private fun viewModelMother(
-        initialState: LaunchesState = LaunchesState(),
+        initialState: LaunchesState = LaunchesState.initialState,
         dateFormatter: BaseDateFormatter = dateFormatterMock,
         randomProvider: BaseRandomProvider = randomProviderMock,
         launchesRepository: LaunchesRepository = launchesRepositoryMock
@@ -215,7 +215,6 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     companion object {
         private const val RANDOM_UUID_SIGNIFICANT_BITS: Long = 1L
         private const val STATUS_CODE_SERVER_ERROR: Int = 500
-        private val initialLaunchesState = LaunchesState()
 
         @JvmStatic
         private fun pastLaunchesTestProviderErrors(): Stream<Arguments> = Stream.of(

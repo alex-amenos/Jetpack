@@ -181,6 +181,7 @@ internal fun SectionsList(
 @Composable
 private fun HomeScreenPreview() {
     val state = HomeState(
+        isLoading = false,
         data = listOf(
             NavigationItem(
                 name = "Screen 1",

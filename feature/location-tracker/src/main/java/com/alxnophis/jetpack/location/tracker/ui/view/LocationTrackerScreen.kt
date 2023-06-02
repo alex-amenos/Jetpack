@@ -166,7 +166,9 @@ private fun UserLocation(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(mediumPadding),
-            text = state.lastKnownLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
+            text = state.lastKnownLocation.ifEmpty {
+                stringResource(id = R.string.location_tracker_location_not_available)
+            }
         )
         Text(
             modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
@@ -179,7 +181,9 @@ private fun UserLocation(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(mediumPadding),
-            text = state.userLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
+            text = state.userLocation.ifEmpty {
+                stringResource(id = R.string.location_tracker_location_not_available)
+            }
         )
     }
 }
