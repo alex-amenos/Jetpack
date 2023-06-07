@@ -16,7 +16,7 @@ kover = "0.6.1"
 ktlint-gradle = "11.3.2"
 org-junit-jupiter = "5.9.2"
 org-mockito = "5.2.0"
-paparazzi-gradle-plugin = "1.2.0"
+paparazzi-gradle-plugin = "1.3.0"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
