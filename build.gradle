@@ -7,7 +7,7 @@ buildscript {
 
     dependencies {
         classpath 'com.adarshr:gradle-test-logger-plugin:3.2.0'
-        classpath 'com.android.tools.build:gradle:8.0.1'
+        classpath 'com.android.tools.build:gradle:8.0.2'
         classpath 'com.apollographql.apollo3:apollo-gradle-plugin:3.7.5'
         classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
