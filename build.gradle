@@ -6,14 +6,14 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.adarshr:gradle-test-logger-plugin:3.2.0'
-        classpath 'com.android.tools.build:gradle:8.0.2'
-        classpath 'com.apollographql.apollo3:apollo-gradle-plugin:3.7.5'
-        classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
-        classpath 'org.jetbrains.kotlinx:kover:0.6.1'
-        classpath 'org.jlleitschuh.gradle:ktlint-gradle:11.3.2'
-        classpath 'app.cash.paparazzi:paparazzi-gradle-plugin:1.2.0'
+        classpath libs.gradle.test.logger.plugin
+        classpath libs.gradle
+        classpath libs.apollo.gradle.plugin
+        classpath libs.android.junit5.plugin
+        classpath libs.kotlin.gradle.plugin
+        classpath libs.kover
+        classpath libs.ktlint.gradle
+        classpath libs.paparazzi.gradle.plugin
     }
 }
 
