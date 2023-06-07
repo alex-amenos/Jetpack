@@ -1,5 +1,4 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
-
+@Suppress("unused")
 object AppVersion {
     private const val MAJOR = 0
     private const val MINOR = 2
