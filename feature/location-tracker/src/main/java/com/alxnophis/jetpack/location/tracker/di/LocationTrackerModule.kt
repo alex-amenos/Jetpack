@@ -12,6 +12,7 @@ import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationFlowUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationProviderUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProviderUseCase
+import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -48,6 +49,7 @@ private val locationTrackerModule: Module = module {
     factory { StopLocationProviderUseCase(locationRepository = get()) }
     viewModel {
         LocationTrackerViewModel(
+            initialState = LocationTrackerState.initialState,
             startLocationProviderUseCase = get(),
             stopLocationProviderUseCase = get(),
             locationStateUseCase = get(),

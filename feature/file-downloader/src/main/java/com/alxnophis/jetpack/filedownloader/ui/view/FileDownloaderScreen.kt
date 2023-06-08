@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.filedownloader.ui.view
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,23 +18,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Snackbar
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.SnackbarResult
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarData
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -46,6 +45,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.extensions.isValidUrl
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
@@ -57,6 +57,7 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
+import com.alxnophis.jetpack.filedownloader.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
@@ -68,7 +69,7 @@ internal fun FileDownloaderScreen(
     viewModel: FileDownloaderViewModel,
     popBackStack: () -> Unit
 ) {
-    val state: FileDownloaderState = viewModel.uiState.collectAsState().value
+    val state: FileDownloaderState = viewModel.uiState.collectAsStateWithLifecycle().value
     BackHandler {
         popBackStack()
     }
@@ -79,7 +80,7 @@ internal fun FileDownloaderScreen(
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FileDownloaderScaffold(
     state: FileDownloaderState,
@@ -89,7 +90,6 @@ private fun FileDownloaderScaffold(
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            scaffoldState = rememberScaffoldState(),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -97,15 +97,18 @@ private fun FileDownloaderScaffold(
                     onBack = { navigateBack() }
                 )
             }
-        ) {
+        ) { paddingValues ->
+
             FileDownloaderContent(
                 state = state,
                 handleEvent = handleEvent,
                 modifier = Modifier
+                    .padding(paddingValues)
                     .drawVerticalScrollbar(rememberScrollState())
                     .fillMaxSize()
                     .padding(mediumPadding)
             )
+
             FileDownloaderErrors(
                 state = state,
                 dismissError = { handleEvent(FileDownloaderEvent.ErrorDismissed) }
@@ -114,7 +117,7 @@ private fun FileDownloaderScaffold(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun FileDownloaderContent(
     state: FileDownloaderState,
@@ -125,6 +128,7 @@ private fun FileDownloaderContent(
         handleEvent.invoke(FileDownloaderEvent.DownloadFile)
     }
     val keyboardController = LocalSoftwareKeyboardController.current
+
     Column(modifier = modifier) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -136,7 +140,7 @@ private fun FileDownloaderContent(
             label = {
                 Text(
                     text = stringResource(R.string.file_downloader_url),
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.bodyMedium
                 )
             },
             trailingIcon = {
@@ -192,7 +196,7 @@ private fun FileDownloaderDivider() {
             .height(1.dp)
             .fillMaxWidth()
             .alpha(0.2f)
-            .background(MaterialTheme.colors.onBackground)
+            .background(MaterialTheme.colorScheme.onBackground)
     )
 }
 
@@ -221,7 +225,7 @@ private fun EllipsizedMiddleText(text: String) {
     val firstHalfLength = 15
     val lastHalfLength = 20
     val modifier = Modifier.padding(vertical = 8.dp)
-    val style = MaterialTheme.typography.body1
+    val style = MaterialTheme.typography.bodyMedium
     if (text.length <= firstHalfLength + lastHalfLength) {
         Text(modifier = modifier, style = style, text = text)
     } else {
@@ -245,7 +249,7 @@ private fun FileDownloaderErrors(
             error = state.error,
             onDismiss = dismissError
         )
-        state.error != null -> SnackbarError(
+        state.error != NO_ERROR -> SnackbarError(
             modifier = Modifier.fillMaxSize(),
             error = state.error,
             onDismiss = dismissError
@@ -286,16 +290,17 @@ private fun SnackbarError(
             }
         }
     }
+
     Box(modifier) {
         SnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier.align(Alignment.BottomCenter)
-        ) { snackbarData ->
+        ) { snackbarData: SnackbarData ->
             Snackbar(
                 modifier = Modifier.padding(10.dp),
                 action = {}
             ) {
-                Text(snackbarData.message)
+                Text(snackbarData.toString())
             }
         }
     }
@@ -306,7 +311,7 @@ private fun SnackbarError(
 private fun FileDownloaderScaffoldPreview() {
     val state = FileDownloaderState(
         url = EMPTY,
-        error = R.string.core_error_title,
+        error = com.alxnophis.jetpack.core.R.string.core_error_title,
         fileStatusList = listOf(
             "Lorem ipsum dolor sit amet",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit"

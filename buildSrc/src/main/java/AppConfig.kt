@@ -1,5 +1,4 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
-
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 object AppConfig {
     const val APPLICATION_ID = "com.alxnophis.jetpack"
     const val APP_PACKAGE_NAME = APPLICATION_ID

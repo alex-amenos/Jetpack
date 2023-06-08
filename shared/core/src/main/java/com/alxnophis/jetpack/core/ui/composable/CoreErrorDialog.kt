@@ -4,17 +4,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
@@ -29,7 +28,23 @@ fun CoreErrorDialog(
     AlertDialog(
         modifier = modifier,
         onDismissRequest = { dismissError() },
-        buttons = {
+        title = {
+            Text(
+                text = stringResource(R.string.core_error_title),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        },
+        text = {
+            Text(
+                text = errorMessage,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Normal,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        },
+        confirmButton = {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -41,20 +56,11 @@ fun CoreErrorDialog(
                 ) {
                     Text(
                         text = stringResource(android.R.string.ok),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
-        },
-        title = {
-            Text(
-                text = stringResource(R.string.core_error_title),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-        },
-        text = {
-            Text(text = errorMessage)
         }
     )
 }

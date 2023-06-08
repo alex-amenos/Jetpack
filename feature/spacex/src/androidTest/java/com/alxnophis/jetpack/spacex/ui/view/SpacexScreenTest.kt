@@ -19,13 +19,13 @@ class SpacexScreenTest : BaseComposeTest() {
 
     @Test
     fun spacex_top_bar_title_is_displayed() {
-        setSpacexContent(state = LaunchesState())
+        setSpacexContent(state = LaunchesState.initialState)
         assertStringResDisplayed(R.string.spacex_title)
     }
 
     @Test
     fun spacex_top_bar_is_displayed_and_clickable() {
-        setSpacexContent(state = LaunchesState())
+        setSpacexContent(state = LaunchesState.initialState)
         composeTestRule
             .onNodeWithTag(CoreTags.TAG_CORE_BACK)
             .assertIsDisplayed()
@@ -36,35 +36,35 @@ class SpacexScreenTest : BaseComposeTest() {
     fun spacex_past_launches_date_is_displayed() {
         val date = "01 aug 2022 15:39"
         val pastLaunch = PastLaunchesModelMother(launchDateUtc = date)
-        setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
+        setSpacexContent(state = LaunchesState.initialState.copy(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(date)
     }
 
     @Test
     fun spacex_past_launches_launch_site_is_displayed() {
         val pastLaunch = PastLaunchesModelMother(launchSiteName = "LaunchSiteName")
-        setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
+        setSpacexContent(state = LaunchesState.initialState.copy(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(pastLaunch.launchSite)
     }
 
     @Test
     fun spacex_past_launches_mission_name_is_displayed() {
         val pastLaunch = PastLaunchesModelMother(missionName = "MissionName")
-        setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
+        setSpacexContent(state = LaunchesState.initialState.copy(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(pastLaunch.missionName)
     }
 
     @Test
     fun spacex_past_launches_rocket_name_is_displayed() {
         val pastLaunch = PastLaunchesModelMother(rocketName = "RocketName")
-        setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
+        setSpacexContent(state = LaunchesState.initialState.copy(pastLaunches = listOf(pastLaunch)))
         assertStringDisplayed(pastLaunch.rocket)
     }
 
     @Test
     fun spacex_past_launches_detail_is_displayed_and_clickable() {
         val pastLaunch = PastLaunchesModelMother(details = LONG_LOREM_IPSUM)
-        setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
+        setSpacexContent(state = LaunchesState.initialState.copy(pastLaunches = listOf(pastLaunch)))
         composeTestRule
             .onNodeWithTag(TAG_SPACEX_LAUNCH_DETAIL + pastLaunch.id)
             .assertIsDisplayed()
@@ -74,7 +74,7 @@ class SpacexScreenTest : BaseComposeTest() {
     @Test
     fun spacex_past_launches_detail_is_displayed_and_performs_click() {
         val pastLaunch = PastLaunchesModelMother(details = LONG_LOREM_IPSUM)
-        setSpacexContent(state = LaunchesState(pastLaunches = listOf(pastLaunch)))
+        setSpacexContent(state = LaunchesState.initialState.copy(pastLaunches = listOf(pastLaunch)))
         composeTestRule
             .onNodeWithTag(TAG_SPACEX_LAUNCH_DETAIL + pastLaunch.id)
             .assertIsDisplayed()

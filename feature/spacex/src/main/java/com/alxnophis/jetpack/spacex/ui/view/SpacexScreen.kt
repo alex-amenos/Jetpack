@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.spacex.ui.view
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -20,14 +19,13 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,11 +36,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
@@ -52,6 +54,8 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
+import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
@@ -67,15 +71,16 @@ internal fun SpacexScreen(
     viewModel: LaunchesViewModel,
     popBackStack: () -> Unit
 ) {
+    val state: LaunchesState = viewModel.uiState.collectAsStateWithLifecycle().value
     BackHandler { popBackStack() }
     SpacexContent(
-        state = viewModel.uiState.collectAsState().value,
+        state = state,
         handleEvent = viewModel::handleEvent,
         navigateBack = popBackStack
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SpacexContent(
     state: LaunchesState,
@@ -86,8 +91,7 @@ internal fun SpacexContent(
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.surface),
-            scaffoldState = rememberScaffoldState(),
+                .background(MaterialTheme.colorScheme.surface),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -95,9 +99,11 @@ internal fun SpacexContent(
                     onBack = { navigateBack() }
                 )
             }
-        ) {
+        ) { paddingValues ->
             PastLaunchesList(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .padding(paddingValues = paddingValues)
+                    .fillMaxSize(),
                 state = state,
                 handleEvent = handleEvent
             )
@@ -126,7 +132,7 @@ private fun PastLaunchesList(
         LazyColumn(
             state = listState,
             modifier = Modifier
-                .background(MaterialTheme.colors.surface)
+                .background(MaterialTheme.colorScheme.surface)
                 .fillMaxWidth()
                 .drawVerticalScrollbar(listState),
             contentPadding = PaddingValues(mediumPadding)
@@ -152,10 +158,7 @@ private fun PastLaunchItem(
     item: PastLaunchModel,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        elevation = 10.dp,
-        modifier = modifier
-    ) {
+    Card(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -170,7 +173,7 @@ private fun PastLaunchItem(
                     Text(
                         modifier = Modifier.wrapContentWidth(),
                         text = item.launchSite,
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Light
                     )
@@ -179,7 +182,7 @@ private fun PastLaunchItem(
                     Text(
                         modifier = Modifier.wrapContentWidth(),
                         text = item.launchDateUtc,
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Light
                     )
@@ -202,7 +205,7 @@ private fun PastLaunchItem(
                     Text(
                         modifier = Modifier.wrapContentSize(),
                         text = item.missionName,
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -211,7 +214,7 @@ private fun PastLaunchItem(
                             .padding(top = extraSmallPadding)
                             .wrapContentSize(),
                         text = item.rocket,
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -265,6 +268,10 @@ private fun ExpandingText(
     modifier: Modifier = Modifier
 ) {
     val showMoreString = stringResource(R.string.spacex_show_more)
+    val textTermination = buildString {
+        append(THREE_DOTS)
+        append(WHITE_SPACE)
+    }
     val textLayoutResultState = remember { mutableStateOf<TextLayoutResult?>(null) }
     val textLayoutResult = textLayoutResultState.value
     var isClickable by remember { mutableStateOf(false) }
@@ -272,6 +279,7 @@ private fun ExpandingText(
     var finalText: String by remember { mutableStateOf(item.details) }
     LaunchedEffect(textLayoutResult) {
         if (textLayoutResult == null) return@LaunchedEffect
+        @Suppress("KotlinConstantConditions")
         when {
             isExpanded -> {
                 isClickable = false
@@ -282,14 +290,23 @@ private fun ExpandingText(
                 val lastCharIndex = textLayoutResult.getLineEnd(MINIMIZED_LINES - 1)
                 val adjustedText = item.details
                     .substring(startIndex = ZERO_INT, endIndex = lastCharIndex)
-                    .dropLast(showMoreString.length)
+                    .dropLast(textTermination.length + showMoreString.length)
                     .dropLastWhile { it == ' ' || it == '.' }
-                finalText = "$adjustedText$showMoreString"
+                finalText = "$adjustedText$textTermination"
             }
         }
     }
     Text(
-        text = finalText,
+        text = if (isClickable) {
+            buildAnnotatedString {
+                append(finalText)
+                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                    append(showMoreString)
+                }
+            }
+        } else {
+            buildAnnotatedString { append(finalText) }
+        },
         modifier = modifier
             .clickable(enabled = isClickable) { isExpanded = !isExpanded }
             .animateContentSize(),

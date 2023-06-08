@@ -1,18 +1,19 @@
 package com.alxnophis.jetpack.location.tracker.data.data
 
+import android.location.Location as AndroidLocation
 import android.annotation.SuppressLint
 import android.location.LocationManager
 import android.os.Looper
 import androidx.core.location.LocationManagerCompat
 import arrow.core.Either
 import arrow.core.left
-import arrow.core.right
 import com.alxnophis.jetpack.location.tracker.domain.model.Location
 import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
+import java.lang.RuntimeException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import android.location.Location as AndroidLocation
 
 internal class LocationDataSourceImpl(
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -96,15 +96,14 @@ internal class LocationDataSourceImpl(
         awaitClose { Timber.d("LocationDataSource - ProvideLastKnownLocationFlow - awaitClose") }
     }
 
-    override fun hasLocationAvailable(): Either<Unit, Unit> = Either.catch(
-        { Unit.left() },
-        {
+    override fun hasLocationAvailable(): Either<Unit, Unit> = Either
+        .catch {
             when (LocationManagerCompat.isLocationEnabled(locationManager)) {
-                true -> Unit.right()
-                false -> Unit.left()
+                true -> Unit
+                false -> throw RuntimeException("Location is not enabled")
             }
         }
-    )
+        .mapLeft { Unit.left() }
 
     @SuppressLint("MissingPermission")
     override suspend fun startLocationProvider(locationParameters: LocationParameters) {

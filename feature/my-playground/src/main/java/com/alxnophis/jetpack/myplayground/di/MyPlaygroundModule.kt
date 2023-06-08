@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.myplayground.di
 
+import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundState
 import com.alxnophis.jetpack.myplayground.ui.viewmodel.MyPlaygroundViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
@@ -15,5 +16,9 @@ private val loadMyPlaygroundModules by lazy {
 }
 
 private val myPlaygroundModule: Module = module {
-    viewModel { MyPlaygroundViewModel() }
+    viewModel {
+        MyPlaygroundViewModel(
+            initialState = MyPlaygroundState.initialState
+        )
+    }
 }

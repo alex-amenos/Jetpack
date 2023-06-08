@@ -1,4 +1,3 @@
-
 package com.alxnophis.jetpack.api.jsonplaceholder
 
 import arrow.core.Either

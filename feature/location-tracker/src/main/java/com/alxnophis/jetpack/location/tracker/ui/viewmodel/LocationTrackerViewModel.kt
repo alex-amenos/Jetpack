@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.location.tracker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import arrow.optics.copy
 import com.alxnophis.jetpack.core.base.constants.BREAK_LINE
 import com.alxnophis.jetpack.core.base.constants.COMA
 import com.alxnophis.jetpack.core.base.constants.PARENTHESES_CLOSED
@@ -14,11 +15,13 @@ import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationProvid
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProviderUseCase
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
+import com.alxnophis.jetpack.location.tracker.ui.contract.lastKnownLocation
+import com.alxnophis.jetpack.location.tracker.ui.contract.userLocation
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 internal class LocationTrackerViewModel(
-    initialState: LocationTrackerState = LocationTrackerState(),
+    initialState: LocationTrackerState,
     private val startLocationProviderUseCase: StartLocationProviderUseCase,
     private val stopLocationProviderUseCase: StopLocationProviderUseCase,
     private val locationStateUseCase: LocationFlowUseCase,
@@ -51,20 +54,22 @@ internal class LocationTrackerViewModel(
 
     private fun subscribeToUserLocation() = viewModelScope.launch {
         locationStateUseCase().collectLatest { locationState ->
-            updateState {
-                currentState.copy(
-                    userLocation = locationState.parseToString()
-                )
+            updateUiState {
+                copy {
+                    LocationTrackerState.userLocation set locationState.parseToString()
+                }
             }
         }
     }
 
     private fun subscribeToLastKnownLocation() = viewModelScope.launch {
         lastKnownLocationUseCase().collectLatest { lastKnownLocation ->
-            updateState {
-                currentState.copy(
-                    lastKnownLocation = lastKnownLocation?.parseToString()
-                )
+            lastKnownLocation?.let { location ->
+                updateUiState {
+                    copy {
+                        LocationTrackerState.lastKnownLocation set location.parseToString()
+                    }
+                }
             }
         }
     }

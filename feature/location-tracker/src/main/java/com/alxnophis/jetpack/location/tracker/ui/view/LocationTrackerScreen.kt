@@ -1,23 +1,21 @@
 package com.alxnophis.jetpack.location.tracker.ui.view
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,6 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -42,7 +42,7 @@ internal fun LocationTrackerScreen(
     viewModel: LocationTrackerViewModel,
     popBackStack: () -> Unit
 ) {
-    val state = viewModel.uiState.collectAsState().value
+    val state: LocationTrackerState = viewModel.uiState.collectAsStateWithLifecycle().value
     BackHandler {
         viewModel
             .handleEvent(LocationTrackerEvent.EndTracking)
@@ -55,7 +55,7 @@ internal fun LocationTrackerScreen(
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LocationTrackerContent(
     state: LocationTrackerState,
@@ -66,8 +66,7 @@ internal fun LocationTrackerContent(
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.surface),
-            scaffoldState = rememberScaffoldState(),
+                .background(MaterialTheme.colorScheme.surface),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -78,9 +77,15 @@ internal fun LocationTrackerContent(
                     }
                 )
             }
-        ) {
+        ) { paddingValues ->
             LocationPermission(
-                composableWithPermissionGranted = { UserLocation(state = state) },
+                paddingValues = paddingValues,
+                composableWithPermissionGranted = {
+                    UserLocation(
+                        paddingValues = paddingValues,
+                        state = state
+                    )
+                },
                 handleEvent = handleEvent
             )
         }
@@ -90,6 +95,7 @@ internal fun LocationTrackerContent(
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun LocationPermission(
+    paddingValues: PaddingValues,
     composableWithPermissionGranted: @Composable () -> Unit,
     handleEvent: LocationTrackerEvent.() -> Unit
 ) {
@@ -104,7 +110,10 @@ private fun LocationPermission(
         composableWithPermissionGranted()
     } else {
         Column(
-            modifier = Modifier.wrapContentSize(),
+            modifier = Modifier
+                .padding(paddingValues)
+                .wrapContentSize()
+                .padding(mediumPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -123,32 +132,33 @@ private fun LocationPermission(
                 allPermissionsRevoked -> R.string.location_tracker_request_permissions
                 else -> R.string.location_tracker_allow_fine_location
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(25.dp))
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(mediumPadding),
+                modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Justify,
                 text = stringResource(textIdToShow)
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { locationPermissionsState.launchMultiplePermissionRequest() }) {
-                Text(text = stringResource(buttonPermissionsId))
-            }
+            Spacer(modifier = Modifier.height(mediumPadding + 25.dp))
+            CoreButtonMajor(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { locationPermissionsState.launchMultiplePermissionRequest() },
+                text = stringResource(buttonPermissionsId)
+            )
         }
     }
 }
 
 @Composable
 private fun UserLocation(
+    paddingValues: PaddingValues,
     state: LocationTrackerState,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier) {
+    Column(modifier.padding(paddingValues)) {
         Text(
             modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
             text = stringResource(id = R.string.location_tracker_last_known_location)
         )
@@ -156,12 +166,14 @@ private fun UserLocation(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(mediumPadding),
-            text = state.lastKnownLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
+            text = state.lastKnownLocation.ifEmpty {
+                stringResource(id = R.string.location_tracker_location_not_available)
+            }
         )
         Text(
             modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
             text = stringResource(id = R.string.location_tracker_current_location)
         )
@@ -169,7 +181,9 @@ private fun UserLocation(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(mediumPadding),
-            text = state.userLocation ?: stringResource(id = R.string.location_tracker_location_not_available)
+            text = state.userLocation.ifEmpty {
+                stringResource(id = R.string.location_tracker_location_not_available)
+            }
         )
     }
 }
@@ -183,7 +197,10 @@ private fun UserLocationPreview() {
     )
     AppTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-            UserLocation(state)
+            UserLocation(
+                paddingValues = PaddingValues(),
+                state = state
+            )
         }
     }
 }

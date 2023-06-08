@@ -10,6 +10,7 @@ dependencies {
     implementation(composeBom)
     implementation project(Modules.SHARED_CORE)
     implementation project(Modules.SHARED_KOTLIN)
+    implementation libs.bundles.kotest
     implementation libs.androidx.arch.core.testing
     implementation libs.androidx.compose.ui.test.manifest
     implementation libs.androidx.compose.ui.test

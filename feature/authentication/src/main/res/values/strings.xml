@@ -4,7 +4,7 @@
     <string name="authentication_requirement_capital">At least 1 upper-case letter</string>
     <string name="authentication_requirement_digit">At least 1 digit</string>
     <string name="authentication_default_error">Ups! Something was wrong</string>
-    <string name="authentication_auth_error">You are not authorization. Review the written user and password.</string>
+    <string name="authentication_auth_error">You are not authorization.\nReview the written user and password.</string>
     <string name="authentication_label_sign_in_to_account">Sign In to your account</string>
     <string name="authentication_label_sign_up_for_account">Sign Up for an account</string>
     <string name="authentication_label_email">Email</string>

@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.root.ui.navigation
 
 import android.app.Activity
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
@@ -51,6 +51,6 @@ fun SetupNavGraph(
 @Composable
 internal fun SetStatusBarColor() {
     val activity = LocalView.current.context as Activity
-    val colorArgb = MaterialTheme.colors.primaryVariant.toArgb()
+    val colorArgb = MaterialTheme.colorScheme.primary.toArgb()
     activity.window.statusBarColor = colorArgb
 }

@@ -1,5 +1,4 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
-
+@Suppress("unused")
 object Modules {
     // App modules
     const val APP = ":app"

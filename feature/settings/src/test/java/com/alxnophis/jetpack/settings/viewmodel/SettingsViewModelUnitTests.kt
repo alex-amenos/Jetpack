@@ -25,7 +25,7 @@ private class SettingsViewModelUnitTests : BaseUnitTest() {
         state: SettingsState
     ) {
         runTest {
-            val viewModel = SettingsViewModel(initialState = SettingsState())
+            val viewModel = SettingsViewModel(initialState = SettingsState.initialState)
 
             viewModel.handleEvent(event)
 
@@ -43,7 +43,7 @@ private class SettingsViewModelUnitTests : BaseUnitTest() {
     }
 
     companion object {
-        private val initialSettingsState = SettingsState()
+        private val initialSettingsState = SettingsState.initialState
 
         @JvmStatic
         private fun testProvider(): Stream<Arguments> = Stream.of(

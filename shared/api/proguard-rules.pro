@@ -41,6 +41,11 @@
 # is used.
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
+-keep class retrofit2.** { *; }
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
+
 ### okhttp3
 
 # JSR 305 annotations are for embedding nullability information.
@@ -62,3 +67,10 @@
 
 # Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
 -dontwarn org.codehaus.mojo.animal_sniffer.*
+
+### Arrow
+-keep class arrow.retrofit.adapter.** { *; }
+-keep class arrow.core.** { *; }
+
+### Module
+-keep class com.alxnophis.jetpack.api.** { *; }

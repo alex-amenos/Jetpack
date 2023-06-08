@@ -1,35 +1,35 @@
 package com.alxnophis.jetpack.authentication.ui.view
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,16 +42,21 @@ import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,8 +65,10 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.constants.EMPTY
+import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.autofill
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.disabledContent
 import com.alxnophis.jetpack.core.ui.theme.extraLargePadding
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -87,7 +94,7 @@ internal fun AuthenticationForm(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp),
-                color = MaterialTheme.colors.secondary
+                color = MaterialTheme.colorScheme.secondary
             )
         }
 
@@ -108,8 +115,7 @@ internal fun AuthenticationForm(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = extraLargePadding),
-            elevation = 4.dp
+                .padding(horizontal = extraLargePadding)
         ) {
             Column(
                 modifier = Modifier.padding(mediumPadding),
@@ -162,6 +168,7 @@ internal fun AuthenticationForm(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 AuthenticationButton(
+                    modifier = Modifier.fillMaxWidth(),
                     enableAuthentication = enableAuthentication,
                     authenticationMode = authenticationMode,
                     onAuthenticate = { handleEvent(AuthenticationEvent.Authenticate) }
@@ -172,9 +179,8 @@ internal fun AuthenticationForm(
         Spacer(modifier = Modifier.weight(1f))
 
         ToggleAuthenticationMode(
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 50.dp),
+            modifier = Modifier.fillMaxWidth(),
+            isEnabled = isLoading.not(),
             authenticationMode = authenticationMode,
             toggleAuthentication = { handleEvent(AuthenticationEvent.ToggleAuthenticationMode) }
         )
@@ -195,10 +201,13 @@ internal fun AuthenticationTitle(
                 R.string.authentication_label_sign_up_for_account
             }
         ),
-        style = MaterialTheme.typography.h6
+        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.Bold
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailInput(
     email: String,
@@ -214,7 +223,7 @@ fun EmailInput(
         label = {
             Text(
                 text = stringResource(R.string.authentication_label_email),
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.bodyMedium
             )
         },
         leadingIcon = {
@@ -233,6 +242,7 @@ fun EmailInput(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalComposeUiApi
 @Composable
 fun PasswordInput(
@@ -246,6 +256,7 @@ fun PasswordInput(
     OutlinedTextField(
         modifier = modifier,
         value = password,
+        textStyle = TextStyle(fontFamily = FontFamily.Monospace),
         singleLine = true,
         onValueChange = { onPasswordChanged(it) },
         visualTransformation = when {
@@ -280,7 +291,7 @@ fun PasswordInput(
         label = {
             Text(
                 text = stringResource(id = R.string.authentication_label_password),
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.bodyMedium
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -299,6 +310,7 @@ fun PasswordInput(
 @Composable
 fun Requirement(
     message: String,
+    icon: ImageVector,
     tint: Color,
     modifier: Modifier = Modifier
 ) {
@@ -308,7 +320,7 @@ fun Requirement(
     ) {
         Icon(
             modifier = Modifier.size(12.dp),
-            imageVector = Icons.Default.Check,
+            imageVector = icon,
             contentDescription = null,
             tint = tint
         )
@@ -338,10 +350,15 @@ fun PasswordRequirementsView(
             }
             Requirement(
                 message = requirementStatus,
-                tint = if (satisfied) {
-                    MaterialTheme.colors.primary
+                icon = if (satisfied) {
+                    Icons.Default.Check
                 } else {
-                    MaterialTheme.colors.onSurface.copy(alpha = 0.4f)
+                    Icons.Default.Close
+                },
+                tint = if (satisfied) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                 },
                 modifier = Modifier
                     .padding(extraSmallPadding)
@@ -362,54 +379,54 @@ fun AuthenticationButton(
     onAuthenticate: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    Button(
+    CoreButtonMajor(
         modifier = modifier,
+        text = stringResource(
+            if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                R.string.authentication_action_sign_in
+            } else {
+                R.string.authentication_action_sign_up
+            }
+        ),
+        isEnabled = enableAuthentication,
         onClick = {
             keyboardController?.hide()
             onAuthenticate()
-        },
-        enabled = enableAuthentication
-    ) {
-        Text(
-            text = stringResource(
-                if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                    R.string.authentication_action_sign_in
-                } else {
-                    R.string.authentication_action_sign_up
-                }
-            )
-        )
-    }
+        }
+    )
 }
 
 @Composable
 fun ToggleAuthenticationMode(
     authenticationMode: AuthenticationMode,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier,
     toggleAuthentication: () -> Unit
 ) {
-    Surface(
+    TextButton(
+        onClick = { toggleAuthentication() },
         modifier = modifier,
-        elevation = 8.dp
+        enabled = isEnabled,
+        shape = RoundedCornerShape(0.dp),
+        colors = ButtonDefaults.textButtonColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = disabledContent),
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = disabledContent)
+        )
     ) {
-        TextButton(
-            modifier = Modifier.background(MaterialTheme.colors.surface),
-            onClick = {
-                toggleAuthentication()
-            }
-        ) {
-            Text(
-                style = MaterialTheme.typography.button,
-                color = MaterialTheme.colors.onSurface,
-                text = stringResource(
-                    if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                        R.string.authentication_action_need_account
-                    } else {
-                        R.string.authentication_action_already_have_account
-                    }
-                )
+        Text(
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(extraSmallPadding),
+            text = stringResource(
+                if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                    R.string.authentication_action_need_account
+                } else {
+                    R.string.authentication_action_already_have_account
+                }
             )
-        }
+        )
     }
 }
 

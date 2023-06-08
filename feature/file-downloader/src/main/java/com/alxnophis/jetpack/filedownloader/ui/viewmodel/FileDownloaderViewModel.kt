@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.filedownloader.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import arrow.optics.copy
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.extensions.isValidUrl
 import com.alxnophis.jetpack.filedownloader.R
@@ -9,6 +10,10 @@ import com.alxnophis.jetpack.filedownloader.data.model.FileDownloaderError
 import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepository
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
+import com.alxnophis.jetpack.filedownloader.ui.contract.NO_ERROR
+import com.alxnophis.jetpack.filedownloader.ui.contract.error
+import com.alxnophis.jetpack.filedownloader.ui.contract.fileStatusList
+import com.alxnophis.jetpack.filedownloader.ui.contract.url
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
 import kotlinx.coroutines.flow.collect
@@ -17,7 +22,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 internal class FileDownloaderViewModel(
-    initialState: FileDownloaderState = FileDownloaderState(),
+    initialState: FileDownloaderState,
     private val fileDownloaderRepository: FileDownloaderRepository
 ) : BaseViewModel<FileDownloaderEvent, FileDownloaderState>(initialState) {
 
@@ -31,7 +36,7 @@ internal class FileDownloaderViewModel(
             when (event) {
                 is FileDownloaderEvent.UrlChanged -> updateUrl(event.url)
                 is FileDownloaderEvent.DownloadFile -> downloadFile()
-                is FileDownloaderEvent.ErrorDismissed -> updateState { copy(error = null) }
+                is FileDownloaderEvent.ErrorDismissed -> dismissError()
             }
         }
     }
@@ -42,8 +47,10 @@ internal class FileDownloaderViewModel(
             .combine(fileDownloaderRepository.downloadedFiles) { downloadingFiles, downloadedFiles ->
                 val downloadingList = downloadingFiles.map { it.mapTo(DOWNLOADING_STATUS) }
                 val downloadedList = downloadedFiles.map { it.mapTo(DOWNLOADED_STATUS) }
-                updateState {
-                    copy(fileStatusList = downloadingList + downloadedList)
+                updateUiState {
+                    copy {
+                        FileDownloaderState.fileStatusList set (downloadingList + downloadedList)
+                    }
                 }
             }
             .collect()
@@ -51,8 +58,10 @@ internal class FileDownloaderViewModel(
 
     private fun updateUrl(url: String) {
         viewModelScope.launch {
-            updateState {
-                currentState.copy(url = url)
+            updateUiState {
+                copy {
+                    FileDownloaderState.url set url
+                }
             }
         }
     }
@@ -70,16 +79,28 @@ internal class FileDownloaderViewModel(
                                 FileDownloaderError.FileDownloading -> R.string.file_downloader_file_downloading
                                 FileDownloaderError.Unknown -> R.string.file_downloader_generic_error
                             }
-                            updateState {
-                                currentState.copy(error = errorResId)
+                            updateUiState {
+                                copy {
+                                    FileDownloaderState.error set errorResId
+                                }
                             }
                         },
                         {
-                            updateState {
-                                currentState.copy(url = EMPTY)
+                            updateUiState {
+                                copy {
+                                    FileDownloaderState.url set EMPTY
+                                }
                             }
                         }
                     )
+            }
+        }
+    }
+
+    private fun dismissError() {
+        updateUiState {
+            copy {
+                FileDownloaderState.error set NO_ERROR
             }
         }
     }

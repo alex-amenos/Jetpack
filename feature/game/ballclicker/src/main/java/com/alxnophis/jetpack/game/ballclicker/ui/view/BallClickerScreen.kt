@@ -11,11 +11,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.game.ballclicker.R
@@ -46,13 +46,14 @@ internal fun BallClickerScreen(
     viewModel: BallClickerViewModel,
     popBackStack: () -> Unit
 ) {
+    val state: BallClickerState = viewModel.uiState.collectAsStateWithLifecycle().value
     BackHandler {
         viewModel
             .handleEvent(BallClickerEvent.Stop)
             .also { popBackStack() }
     }
     BallClickerContent(
-        viewModel.uiState.collectAsState().value,
+        state,
         viewModel::handleEvent
     )
 }
@@ -66,7 +67,7 @@ internal fun BallClickerContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = MaterialTheme.colors.surface)
+                .background(color = MaterialTheme.colorScheme.surface)
         ) {
             Row(
                 modifier = Modifier
@@ -117,7 +118,7 @@ internal fun BallClickerContent(
 private fun BallClickerContent(
     radius: Float = 100f,
     enabled: Boolean = false,
-    ballColor: Color = MaterialTheme.colors.secondary,
+    ballColor: Color = MaterialTheme.colorScheme.secondary,
     ballClick: () -> Unit = {}
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {

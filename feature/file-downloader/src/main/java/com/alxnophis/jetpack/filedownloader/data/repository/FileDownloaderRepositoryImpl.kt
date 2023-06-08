@@ -26,33 +26,31 @@ internal class FileDownloaderRepositoryImpl(
     private val _downloadingFiles: MutableStateFlow<List<DownloaderFile>> = MutableStateFlow(emptyList())
     private val _downloadedFiles: MutableStateFlow<List<DownloaderFile>> = MutableStateFlow(emptyList())
 
-    override suspend fun downloadFile(fileUrl: String): Either<FileDownloaderError, Long> =
-        withContext(ioDispatcher) {
-            Either.catch(
-                { exception ->
-                    when (exception) {
-                        is FileDownloadedException -> FileDownloaderError.FileDownloaded
-                        is FileDownloadingException -> FileDownloaderError.FileDownloading
-                        else -> FileDownloaderError.Unknown
-                    }
-                },
-                {
-                    when {
-                        isFileDownloading(fileUrl) -> throw FileDownloadingException()
-                        isFileDownloaded(fileUrl) -> throw FileDownloadedException()
-                        else -> {
-                            androidDownloaderDataSource
-                                .downloadFile(fileUrl)
-                                .also { downloadId ->
-                                    _downloadingFiles.update {
-                                        it.plus(DownloaderFile(id = downloadId, url = fileUrl))
-                                    }
+    override suspend fun downloadFile(fileUrl: String): Either<FileDownloaderError, Long> = withContext(ioDispatcher) {
+        Either
+            .catch {
+                when {
+                    isFileDownloading(fileUrl) -> throw FileDownloadingException()
+                    isFileDownloaded(fileUrl) -> throw FileDownloadedException()
+                    else -> {
+                        androidDownloaderDataSource
+                            .downloadFile(fileUrl)
+                            .also { downloadId ->
+                                _downloadingFiles.update {
+                                    it.plus(DownloaderFile(id = downloadId, url = fileUrl))
                                 }
-                        }
+                            }
                     }
                 }
-            )
-        }
+            }
+            .mapLeft { exception ->
+                when (exception) {
+                    is FileDownloadedException -> FileDownloaderError.FileDownloaded
+                    is FileDownloadingException -> FileDownloaderError.FileDownloading
+                    else -> FileDownloaderError.Unknown
+                }
+            }
+    }
 
     override fun fileDownloaded(downloadId: Long) {
         val downloadedFile = _downloadingFiles.value.filter { it.id == downloadId }

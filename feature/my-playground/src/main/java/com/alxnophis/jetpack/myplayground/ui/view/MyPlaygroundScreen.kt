@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.myplayground.ui.view
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,14 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -40,7 +39,7 @@ internal fun MyPlaygroundScreen(
     popBackStack: () -> Unit,
     viewModel: MyPlaygroundViewModel
 ) {
-    val state: MyPlaygroundState = viewModel.uiState.collectAsState().value
+    val state: MyPlaygroundState = viewModel.uiState.collectAsStateWithLifecycle().value
     BackHandler {
         popBackStack()
     }
@@ -51,7 +50,7 @@ internal fun MyPlaygroundScreen(
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MyPlaygroundScaffold(
     state: MyPlaygroundState,
@@ -61,7 +60,6 @@ internal fun MyPlaygroundScaffold(
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            scaffoldState = rememberScaffoldState(),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -69,12 +67,13 @@ internal fun MyPlaygroundScaffold(
                     onBack = { navigateBack() }
                 )
             }
-        ) {
+        ) { paddingValues ->
             MyPlaygroundContent(
                 state = state,
                 handleEvent = handleEvent,
                 modifier = Modifier
-                    .background(MaterialTheme.colors.surface)
+                    .padding(paddingValues)
+                    .background(MaterialTheme.colorScheme.surface)
                     .fillMaxSize()
                     .padding(mediumPadding)
             )
@@ -82,6 +81,7 @@ internal fun MyPlaygroundScaffold(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MyPlaygroundContent(
     state: MyPlaygroundState,
@@ -114,7 +114,7 @@ internal fun MyPlaygroundContent(
 @Preview
 @Composable
 private fun MyPlaygroundScaffoldPreview() {
-    val state = MyPlaygroundState()
+    val state = MyPlaygroundState.initialState
     MyPlaygroundScaffold(
         state = state,
         handleEvent = {},
