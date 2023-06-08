@@ -8,7 +8,7 @@ android {
     // Jetpack Compose to Kotlin Compatibility Map:
     // https://developer.android.com/jetpack/androidx/releases/compose-kotlin
     composeOptions {
-        kotlinCompilerExtensionVersion "1.4.7"
+        kotlinCompilerExtensionVersion libs.versions.androidx.compose.compiler.get()
     }
 }
 
