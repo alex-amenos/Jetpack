@@ -9,7 +9,7 @@ import com.alxnophis.jetpack.myplayground.ui.contract.textFieldValue
 import kotlinx.coroutines.launch
 
 internal class MyPlaygroundViewModel(
-    initialState: MyPlaygroundState
+    initialState: MyPlaygroundState = MyPlaygroundState.initialState
 ) : BaseViewModel<MyPlaygroundEvent, MyPlaygroundState>(initialState) {
 
     override fun handleEvent(event: MyPlaygroundEvent) {

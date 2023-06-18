@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.spacex.ui.viewmodel
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import arrow.optics.copy
 import com.alxnophis.jetpack.core.base.formatter.BaseDateFormatter
 import com.alxnophis.jetpack.core.base.provider.BaseRandomProvider
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
@@ -12,6 +13,7 @@ import com.alxnophis.jetpack.spacex.data.model.PastLaunchesDataModelMother
 import com.alxnophis.jetpack.spacex.data.repository.LaunchesRepository
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
+import com.alxnophis.jetpack.spacex.ui.contract.errorMessages
 import com.alxnophis.jetpack.spacex.ui.model.PastLaunchesModelMother
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import java.util.Date
@@ -37,17 +39,15 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     private val launchesRepositoryMock: LaunchesRepository = mock()
     private lateinit var viewModel: LaunchesViewModel
 
-    override fun beforeEachCompleted() {
-        viewModel = viewModelMother()
-    }
-
     @Test
-    fun `WHEN init THEN validate initial state`() {
+    fun `WHEN init THEN validate initial state with past launches`() {
         runTest {
             val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
             val pastLaunches = listOf(PastLaunchesModelMother.invoke(launchDateUtc = "DATE"))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
+
+            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialize)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -77,6 +77,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
+            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialize)
             runCurrent()
 
             verify(launchesRepositoryMock).getPastLaunches(false)
@@ -89,11 +90,11 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(any())).thenReturn(pastLaunchesDataModel.right())
+            viewModel = viewModelMother()
 
             viewModel.handleEvent(LaunchesEvent.RefreshPastLaunches)
             runCurrent()
 
-            verify(launchesRepositoryMock).getPastLaunches(false)
             verify(launchesRepositoryMock).getPastLaunches(true)
         }
     }
@@ -105,6 +106,8 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             val pastLaunches = listOf(PastLaunchesModelMother.invoke(launchDateUtc = "DATE"))
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
+
+            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialize)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -137,6 +140,8 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             whenever(randomProviderMock.mostSignificantBitsRandomUUID()).thenReturn(RANDOM_UUID_SIGNIFICANT_BITS)
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(launchesError.left())
 
+            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialize)
+
             viewModel.uiState.test {
                 assertEquals(
                     LaunchesState.initialState,
@@ -168,29 +173,16 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
         runTest {
             whenever(randomProviderMock.mostSignificantBitsRandomUUID()).thenReturn(RANDOM_UUID_SIGNIFICANT_BITS)
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(LaunchesError.Unknown.left())
-
-            viewModel.uiState.test {
-                assertEquals(
-                    LaunchesState.initialState,
-                    awaitItem()
-                )
-                assertEquals(
-                    LaunchesState.initialState.copy(isLoading = true),
-                    awaitItem()
-                )
-                assertEquals(
-                    LaunchesState.initialState.copy(
-                        isLoading = false,
-                        errorMessages = listOf(
-                            ErrorMessage(
-                                id = RANDOM_UUID_SIGNIFICANT_BITS,
-                                messageId = R.string.spacex_error_unknown
-                            )
+            viewModel = viewModelMother(
+                initialState = LaunchesState.initialState.copy {
+                    LaunchesState.errorMessages set listOf(
+                        ErrorMessage(
+                            id = RANDOM_UUID_SIGNIFICANT_BITS,
+                            messageId = R.string.spacex_error_unknown
                         )
-                    ),
-                    awaitItem()
-                )
-            }
+                    )
+                }
+            )
 
             viewModel.handleEvent(LaunchesEvent.DismissError(RANDOM_UUID_SIGNIFICANT_BITS))
             runCurrent()
@@ -207,10 +199,17 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
     private fun viewModelMother(
         initialState: LaunchesState = LaunchesState.initialState,
+        initialEvent: LaunchesEvent? = null,
         dateFormatter: BaseDateFormatter = dateFormatterMock,
         randomProvider: BaseRandomProvider = randomProviderMock,
         launchesRepository: LaunchesRepository = launchesRepositoryMock
-    ) = LaunchesViewModel(initialState, dateFormatter, randomProvider, launchesRepository)
+    ) = LaunchesViewModel(
+        initialState,
+        initialEvent,
+        dateFormatter,
+        randomProvider,
+        launchesRepository
+    )
 
     companion object {
         private const val RANDOM_UUID_SIGNIFICANT_BITS: Long = 1L

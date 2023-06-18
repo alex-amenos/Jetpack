@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 internal class BallClickerViewModel(
-    initialState: BallClickerState,
+    initialState: BallClickerState = BallClickerState.initialState,
     defaultDispatcher: CoroutineDispatcher
 ) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
 

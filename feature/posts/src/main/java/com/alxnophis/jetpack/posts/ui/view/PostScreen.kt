@@ -137,7 +137,7 @@ internal fun PostList(
         modifier = modifier,
         indicatorPadding = PaddingValues(top = toolbarHeight + 8.dp),
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) }
+        onRefresh = { handleEvent.invoke(PostsEvent.Initialize) }
     ) {
         LazyColumn(
             state = listState,

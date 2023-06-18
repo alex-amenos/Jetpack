@@ -31,16 +31,15 @@ class PostsViewModelUnitTests : FunSpec({
 
     test(
         "GIVEN a PostsViewModel with default initial state " +
-            "WHEN get post succeed " +
+            "WHEN initialize " +
             "THEN show AND hide loading AND post state should end with a list of posts"
     ) {
         val postUseCaseMock: PostsUseCase = mock()
         val viewModel = PostsViewModel(
-            initialState = PostsState.initialState,
             postsUseCase = postUseCaseMock
         )
 
-        whenever(postUseCaseMock.invoke()).thenReturn(postList.right())
+        whenever(postUseCaseMock()).thenReturn(postList.right())
 
         viewModel.uiState.test {
             awaitItem() shouldBe PostsState.initialState
@@ -69,7 +68,7 @@ class PostsViewModelUnitTests : FunSpec({
                 getRandomUUID = { errorId }
             )
 
-            whenever(postUseCaseMock.invoke()).thenReturn(error.left())
+            whenever(postUseCaseMock()).thenReturn(error.left())
 
             viewModel.uiState.test {
                 awaitItem() shouldBe PostsState.initialState
@@ -95,7 +94,7 @@ class PostsViewModelUnitTests : FunSpec({
             getRandomUUID = { errorId },
             postsUseCase = postUseCaseMock
         )
-        whenever(postUseCaseMock.invoke()).thenReturn(PostsError.Network.left())
+        whenever(postUseCaseMock()).thenReturn(PostsError.Network.left())
 
         viewModel.handleEvent(PostsEvent.DismissError(errorId))
 

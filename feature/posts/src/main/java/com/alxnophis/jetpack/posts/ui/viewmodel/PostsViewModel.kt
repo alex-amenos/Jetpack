@@ -18,25 +18,26 @@ import java.util.UUID
 import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
-    initialState: PostsState,
+    initialState: PostsState = PostsState.initialState,
+    initialEvent: PostsEvent? = PostsEvent.Initialize,
     private val postsUseCase: PostsUseCase,
     private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 
     init {
-        handleEvent(PostsEvent.GetPosts)
+        initialEvent?.let(::handleEvent)
     }
 
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
             when (event) {
-                PostsEvent.GetPosts -> renderPosts()
+                PostsEvent.Initialize -> updatePosts()
                 is PostsEvent.DismissError -> dismissError(event.errorId)
             }
         }
     }
 
-    private fun renderPosts() {
+    private fun updatePosts() {
         viewModelScope.launch {
             updateUiState {
                 copy {
@@ -66,7 +67,7 @@ internal class PostsViewModel(
         }
     }
 
-    private suspend fun getPosts(): Either<PostsError, List<Post>> = postsUseCase.invoke()
+    private suspend fun getPosts(): Either<PostsError, List<Post>> = postsUseCase()
 
     private fun PostsError.mapTo(): List<ErrorMessage> =
         currentState.errorMessages + ErrorMessage(
