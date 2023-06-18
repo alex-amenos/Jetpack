@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.settings.di
 
-import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
@@ -15,8 +14,6 @@ private val loadSettingsModule by lazy {
 
 private val settingsModule: Module = module {
     viewModel {
-        SettingsViewModel(
-            initialState = SettingsState.initialState
-        )
+        SettingsViewModel()
     }
 }

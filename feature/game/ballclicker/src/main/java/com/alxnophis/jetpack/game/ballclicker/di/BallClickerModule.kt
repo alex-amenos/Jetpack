@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.game.ballclicker.di
 
-import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
 import com.alxnophis.jetpack.game.ballclicker.ui.viewmodel.BallClickerViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -17,7 +16,6 @@ private val loadBallClickerModule by lazy {
 private val ballClickerModule: Module = module {
     viewModel {
         BallClickerViewModel(
-            initialState = BallClickerState.initialState,
             defaultDispatcher = Dispatchers.Default
         )
     }
