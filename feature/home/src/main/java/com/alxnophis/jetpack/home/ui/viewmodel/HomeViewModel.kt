@@ -7,7 +7,7 @@ import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
-import com.alxnophis.jetpack.home.domain.usecase.UseCaseGetNavigationItems
+import com.alxnophis.jetpack.home.domain.usecase.GetNavigationItemsUseCase
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
@@ -17,7 +17,7 @@ import com.alxnophis.jetpack.home.ui.contract.isLoading
 import kotlinx.coroutines.launch
 
 internal class HomeViewModel(
-    private val useCaseGetNavigationItems: UseCaseGetNavigationItems,
+    private val getNavigationItemsUseCase: GetNavigationItemsUseCase,
     initialState: HomeState = HomeState.initialState,
     initialEvent: HomeEvent? = HomeEvent.Initialized
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
@@ -60,7 +60,7 @@ internal class HomeViewModel(
         }
     }
 
-    private suspend fun getNavigationItems(): Either<NavigationError, List<NavigationItem>> = useCaseGetNavigationItems.invoke()
+    private suspend fun getNavigationItems(): Either<NavigationError, List<NavigationItem>> = getNavigationItemsUseCase.invoke()
 
     private fun dismissError() {
         viewModelScope.launch {
