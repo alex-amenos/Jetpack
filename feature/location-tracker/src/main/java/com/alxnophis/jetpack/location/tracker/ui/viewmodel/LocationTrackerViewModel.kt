@@ -37,7 +37,7 @@ internal class LocationTrackerViewModel(
                     subscribeToUserLocation()
                     subscribeToLastKnownLocation()
                 }
-                LocationTrackerEvent.EndTracking -> {
+                LocationTrackerEvent.StopTrackingRequested -> {
                     stopTrackUserLocation()
                 }
             }

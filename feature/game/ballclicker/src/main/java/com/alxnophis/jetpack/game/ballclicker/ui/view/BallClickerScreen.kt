@@ -49,7 +49,7 @@ internal fun BallClickerScreen(
     val state: BallClickerState = viewModel.uiState.collectAsStateWithLifecycle().value
     BackHandler {
         viewModel
-            .handleEvent(BallClickerEvent.Stop)
+            .handleEvent(BallClickerEvent.StopRequested)
             .also { popBackStack() }
     }
     BallClickerContent(
@@ -93,9 +93,9 @@ internal fun BallClickerContent(
                 Button(
                     onClick = {
                         if (state.isTimerRunning) {
-                            handleEvent(BallClickerEvent.Stop)
+                            handleEvent(BallClickerEvent.StopRequested)
                         } else {
-                            handleEvent(BallClickerEvent.Start)
+                            handleEvent(BallClickerEvent.StartRequested)
                         }
                     }
                 ) {

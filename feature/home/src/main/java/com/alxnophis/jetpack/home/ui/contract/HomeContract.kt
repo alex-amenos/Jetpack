@@ -9,7 +9,7 @@ internal const val NO_ERROR = 0
 
 internal sealed class HomeEvent : UiEvent {
     object Initialized : HomeEvent()
-    object ErrorDismissedRequested : HomeEvent()
+    object ErrorDismissRequested : HomeEvent()
 }
 
 @optics

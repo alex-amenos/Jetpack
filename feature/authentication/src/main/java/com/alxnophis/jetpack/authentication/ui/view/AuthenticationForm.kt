@@ -104,7 +104,7 @@ internal fun AuthenticationForm(
             authenticationMode = authenticationMode,
             modifier = Modifier.clickable {
                 if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                    handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorization)
+                    handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorizationRequested)
                 }
             }
         )
@@ -144,7 +144,7 @@ internal fun AuthenticationForm(
                 PasswordInput(
                     password = password,
                     onPasswordChanged = onPasswordChanged,
-                    onDoneClicked = { handleEvent(AuthenticationEvent.Authenticate) },
+                    onDoneClicked = { handleEvent(AuthenticationEvent.Authenticated) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(passwordFocusRequester)
@@ -171,7 +171,7 @@ internal fun AuthenticationForm(
                     modifier = Modifier.fillMaxWidth(),
                     enableAuthentication = enableAuthentication,
                     authenticationMode = authenticationMode,
-                    onAuthenticate = { handleEvent(AuthenticationEvent.Authenticate) }
+                    onAuthenticate = { handleEvent(AuthenticationEvent.Authenticated) }
                 )
             }
         }
@@ -182,7 +182,7 @@ internal fun AuthenticationForm(
             modifier = Modifier.fillMaxWidth(),
             isEnabled = isLoading.not(),
             authenticationMode = authenticationMode,
-            toggleAuthentication = { handleEvent(AuthenticationEvent.ToggleAuthenticationMode) }
+            toggleAuthentication = { handleEvent(AuthenticationEvent.ToggleAuthenticationModeRequested) }
         )
     }
 }

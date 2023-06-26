@@ -7,7 +7,7 @@ import com.alxnophis.jetpack.kotlin.constants.EMPTY
 
 internal sealed class LocationTrackerEvent : UiEvent {
     object FineLocationPermissionGranted : LocationTrackerEvent()
-    object EndTracking : LocationTrackerEvent()
+    object StopTrackingRequested : LocationTrackerEvent()
 }
 
 @optics

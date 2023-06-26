@@ -86,7 +86,7 @@ internal fun HomeContent(
             if (state.error != NO_ERROR) {
                 CoreErrorDialog(
                     errorMessage = stringResource(state.error),
-                    dismissError = { handleEvent.invoke(HomeEvent.ErrorDismissedRequested) }
+                    dismissError = { handleEvent.invoke(HomeEvent.ErrorDismissRequested) }
                 )
             }
         }

@@ -30,7 +30,7 @@ internal class HomeViewModel(
         viewModelScope.launch {
             when (event) {
                 HomeEvent.Initialized -> loadNavigationItems()
-                HomeEvent.ErrorDismissedRequested -> dismissError()
+                HomeEvent.ErrorDismissRequested -> dismissError()
             }
         }
     }

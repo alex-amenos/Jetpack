@@ -32,11 +32,11 @@ internal class AuthenticationViewModel(
     override fun handleEvent(event: AuthenticationEvent) {
         viewModelScope.launch {
             when (event) {
-                AuthenticationEvent.Authenticate -> authenticate()
-                AuthenticationEvent.ErrorDismissed -> dismissError()
-                AuthenticationEvent.ToggleAuthenticationMode -> toggleAuthenticationMode()
+                AuthenticationEvent.Authenticated -> authenticate()
+                AuthenticationEvent.ErrorDismissRequested -> dismissError()
+                AuthenticationEvent.ToggleAuthenticationModeRequested -> toggleAuthenticationMode()
                 AuthenticationEvent.SetUserNotAuthorized -> setUserNotAuthorized()
-                AuthenticationEvent.AutoCompleteAuthorization -> autoCompleteAuthorization()
+                AuthenticationEvent.AutoCompleteAuthorizationRequested -> autoCompleteAuthorization()
                 is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
                 is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
             }

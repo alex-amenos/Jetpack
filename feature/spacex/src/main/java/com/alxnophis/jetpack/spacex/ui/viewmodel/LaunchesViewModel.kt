@@ -26,7 +26,7 @@ internal class LaunchesViewModel(
     private val randomProvider: BaseRandomProvider,
     private val launchesRepository: LaunchesRepository,
     initialState: LaunchesState = LaunchesState.initialState,
-    initialEvent: LaunchesEvent? = LaunchesEvent.Initialize
+    initialEvent: LaunchesEvent? = LaunchesEvent.Initialized
 ) : BaseViewModel<LaunchesEvent, LaunchesState>(initialState) {
 
     init {
@@ -36,9 +36,9 @@ internal class LaunchesViewModel(
     override fun handleEvent(event: LaunchesEvent) {
         viewModelScope.launch {
             when (event) {
-                LaunchesEvent.Initialize -> updatePastLaunches(hasToFetchDataFromNetworkOnly = false)
-                LaunchesEvent.RefreshPastLaunches -> updatePastLaunches(hasToFetchDataFromNetworkOnly = true)
-                is LaunchesEvent.DismissError -> dismissError(event.errorId)
+                LaunchesEvent.Initialized -> updatePastLaunches(hasToFetchDataFromNetworkOnly = false)
+                LaunchesEvent.RefreshPastLaunchesRequested -> updatePastLaunches(hasToFetchDataFromNetworkOnly = true)
+                is LaunchesEvent.DismissErrorRequested -> dismissError(event.errorId)
             }
         }
     }

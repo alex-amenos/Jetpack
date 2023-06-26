@@ -47,7 +47,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
-            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialize)
+            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialized)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -77,7 +77,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
-            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialize)
+            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialized)
             runCurrent()
 
             verify(launchesRepositoryMock).getPastLaunches(false)
@@ -92,7 +92,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             whenever(launchesRepositoryMock.getPastLaunches(any())).thenReturn(pastLaunchesDataModel.right())
             viewModel = viewModelMother()
 
-            viewModel.handleEvent(LaunchesEvent.RefreshPastLaunches)
+            viewModel.handleEvent(LaunchesEvent.RefreshPastLaunchesRequested)
             runCurrent()
 
             verify(launchesRepositoryMock).getPastLaunches(true)
@@ -107,7 +107,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
-            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialize)
+            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialized)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -140,7 +140,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
             whenever(randomProviderMock.mostSignificantBitsRandomUUID()).thenReturn(RANDOM_UUID_SIGNIFICANT_BITS)
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(launchesError.left())
 
-            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialize)
+            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialized)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -184,7 +184,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
                 }
             )
 
-            viewModel.handleEvent(LaunchesEvent.DismissError(RANDOM_UUID_SIGNIFICANT_BITS))
+            viewModel.handleEvent(LaunchesEvent.DismissErrorRequested(RANDOM_UUID_SIGNIFICANT_BITS))
             runCurrent()
 
             viewModel.uiState.test {

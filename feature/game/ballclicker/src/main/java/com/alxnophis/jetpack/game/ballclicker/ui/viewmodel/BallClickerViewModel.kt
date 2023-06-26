@@ -37,8 +37,8 @@ internal class BallClickerViewModel(
         viewModelScope.launch {
             when (event) {
                 BallClickerEvent.BallClicked -> ballClicked()
-                BallClickerEvent.Start -> startGame()
-                BallClickerEvent.Stop -> stopGame()
+                BallClickerEvent.StartRequested -> startGame()
+                BallClickerEvent.StopRequested -> stopGame()
             }
         }
     }
