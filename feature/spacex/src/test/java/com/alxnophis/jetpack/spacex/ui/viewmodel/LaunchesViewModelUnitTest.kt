@@ -204,11 +204,11 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
         randomProvider: BaseRandomProvider = randomProviderMock,
         launchesRepository: LaunchesRepository = launchesRepositoryMock
     ) = LaunchesViewModel(
-        initialState,
-        initialEvent,
         dateFormatter,
         randomProvider,
-        launchesRepository
+        launchesRepository,
+        initialState,
+        initialEvent
     )
 
     companion object {

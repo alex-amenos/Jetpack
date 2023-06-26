@@ -118,7 +118,7 @@ internal fun PostsContent(
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
                     errorMessage = error.composableMessage(),
-                    dismissError = { handleEvent.invoke(PostsEvent.DismissError(error.id)) }
+                    dismissError = { handleEvent.invoke(PostsEvent.DismissErrorRequested(error.id)) }
                 )
             }
         }
@@ -137,7 +137,7 @@ internal fun PostList(
         modifier = modifier,
         indicatorPadding = PaddingValues(top = toolbarHeight + 8.dp),
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(PostsEvent.Initialize) }
+        onRefresh = { handleEvent.invoke(PostsEvent.Initialized) }
     ) {
         LazyColumn(
             state = listState,

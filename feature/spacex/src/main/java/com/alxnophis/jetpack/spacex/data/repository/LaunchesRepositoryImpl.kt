@@ -12,8 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 internal class LaunchesRepositoryImpl(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val apiDataSource: SpacexApi
+    private val apiDataSource: SpacexApi,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : LaunchesRepository {
 
     override suspend fun getPastLaunches(hasToFetchDataFromNetworkOnly: Boolean): Either<LaunchesError, List<PastLaunchDataModel>> =

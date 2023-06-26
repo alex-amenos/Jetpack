@@ -96,7 +96,7 @@ class PostsViewModelUnitTests : FunSpec({
         )
         whenever(postUseCaseMock()).thenReturn(PostsError.Network.left())
 
-        viewModel.handleEvent(PostsEvent.DismissError(errorId))
+        viewModel.handleEvent(PostsEvent.DismissErrorRequested(errorId))
 
         viewModel.uiState.test {
             expectMostRecentItem() shouldBe PostsState.initialState

@@ -6,8 +6,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class ProvideLastKnownLocationUseCase(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
     suspend operator fun invoke() = withContext(ioDispatcher) {
         locationRepository.provideLastKnownLocationFlow()

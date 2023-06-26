@@ -111,7 +111,7 @@ private fun FileDownloaderScaffold(
 
             FileDownloaderErrors(
                 state = state,
-                dismissError = { handleEvent(FileDownloaderEvent.ErrorDismissed) }
+                dismissError = { handleEvent(FileDownloaderEvent.ErrorDismissRequested) }
             )
         }
     }
@@ -125,7 +125,7 @@ private fun FileDownloaderContent(
     handleEvent: FileDownloaderEvent.() -> Unit
 ) {
     val downloadFileEvent: () -> Unit = {
-        handleEvent.invoke(FileDownloaderEvent.DownloadFile)
+        handleEvent.invoke(FileDownloaderEvent.DownloadFileRequested)
     }
     val keyboardController = LocalSoftwareKeyboardController.current
 

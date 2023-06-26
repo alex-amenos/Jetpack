@@ -22,11 +22,11 @@ import java.util.Date
 import kotlinx.coroutines.launch
 
 internal class LaunchesViewModel(
-    initialState: LaunchesState = LaunchesState.initialState,
-    initialEvent: LaunchesEvent? = LaunchesEvent.Initialize,
     private val dateFormatter: BaseDateFormatter,
     private val randomProvider: BaseRandomProvider,
-    private val launchesRepository: LaunchesRepository
+    private val launchesRepository: LaunchesRepository,
+    initialState: LaunchesState = LaunchesState.initialState,
+    initialEvent: LaunchesEvent? = LaunchesEvent.Initialize
 ) : BaseViewModel<LaunchesEvent, LaunchesState>(initialState) {
 
     init {

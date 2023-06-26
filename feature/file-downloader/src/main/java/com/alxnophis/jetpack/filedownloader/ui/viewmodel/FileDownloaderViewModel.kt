@@ -22,9 +22,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 internal class FileDownloaderViewModel(
+    private val fileDownloaderRepository: FileDownloaderRepository,
     initialState: FileDownloaderState = FileDownloaderState.initialState,
-    initialEvent: FileDownloaderEvent? = FileDownloaderEvent.Initialize,
-    private val fileDownloaderRepository: FileDownloaderRepository
+    initialEvent: FileDownloaderEvent? = FileDownloaderEvent.Initialized
 ) : BaseViewModel<FileDownloaderEvent, FileDownloaderState>(initialState) {
 
     init {
@@ -35,10 +35,10 @@ internal class FileDownloaderViewModel(
         Timber.d("## FileDownloaderViewModel handle event: $event")
         viewModelScope.launch {
             when (event) {
-                FileDownloaderEvent.Initialize -> subscribeToDownloaderFilesStatus()
+                FileDownloaderEvent.Initialized -> subscribeToDownloaderFilesStatus()
                 is FileDownloaderEvent.UrlChanged -> updateUrl(event.url)
-                is FileDownloaderEvent.DownloadFile -> downloadFile()
-                is FileDownloaderEvent.ErrorDismissed -> dismissError()
+                is FileDownloaderEvent.DownloadFileRequested -> downloadFile()
+                is FileDownloaderEvent.ErrorDismissRequested -> dismissError()
             }
         }
     }

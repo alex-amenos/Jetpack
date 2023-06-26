@@ -12,6 +12,7 @@ import com.alxnophis.jetpack.game.ballclicker.ui.contract.isTimerRunning
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.points
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -25,7 +26,7 @@ import kotlinx.coroutines.launch
 
 internal class BallClickerViewModel(
     initialState: BallClickerState = BallClickerState.initialState,
-    defaultDispatcher: CoroutineDispatcher
+    defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
 
     private val timerScope = CoroutineScope(defaultDispatcher + SupervisorJob())

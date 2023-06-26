@@ -238,7 +238,10 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     private fun viewModelMother(
         initialState: AuthenticationState = AuthenticationState.initialState,
         authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock
-    ) = AuthenticationViewModel(initialState, authenticateUseCase)
+    ) = AuthenticationViewModel(
+        authenticateUseCase,
+        initialState
+    )
 
     companion object {
         private const val EMAIL = "my@email.com"

@@ -15,9 +15,5 @@ private val loadHomeModules by lazy {
 
 private val homeModule: Module = module {
     factory { UseCaseGetNavigationItems() }
-    viewModel {
-        HomeViewModel(
-            useCaseGetNavigationItems = get()
-        )
-    }
+    viewModel { HomeViewModel(get()) }
 }

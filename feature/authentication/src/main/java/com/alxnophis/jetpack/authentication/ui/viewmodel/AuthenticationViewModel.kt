@@ -25,8 +25,8 @@ import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import kotlinx.coroutines.launch
 
 internal class AuthenticationViewModel(
-    initialState: AuthenticationState = AuthenticationState.initialState,
-    private val authenticateUseCase: AuthenticateUseCase
+    private val authenticateUseCase: AuthenticateUseCase,
+    initialState: AuthenticationState = AuthenticationState.initialState
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
 
     override fun handleEvent(event: AuthenticationEvent) {

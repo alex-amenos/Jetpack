@@ -17,9 +17,9 @@ import com.alxnophis.jetpack.home.ui.contract.isLoading
 import kotlinx.coroutines.launch
 
 internal class HomeViewModel(
+    private val useCaseGetNavigationItems: UseCaseGetNavigationItems,
     initialState: HomeState = HomeState.initialState,
-    initialEvent: HomeEvent? = HomeEvent.Initialize,
-    private val useCaseGetNavigationItems: UseCaseGetNavigationItems
+    initialEvent: HomeEvent? = HomeEvent.Initialized
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
 
     init {
@@ -29,8 +29,8 @@ internal class HomeViewModel(
     override fun handleEvent(event: HomeEvent) {
         viewModelScope.launch {
             when (event) {
-                HomeEvent.Initialize -> loadNavigationItems()
-                HomeEvent.ErrorDismissed -> dismissError()
+                HomeEvent.Initialized -> loadNavigationItems()
+                HomeEvent.ErrorDismissedRequested -> dismissError()
             }
         }
     }

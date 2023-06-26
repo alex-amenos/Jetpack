@@ -18,10 +18,10 @@ import java.util.UUID
 import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
-    initialState: PostsState = PostsState.initialState,
-    initialEvent: PostsEvent? = PostsEvent.Initialize,
     private val postsUseCase: PostsUseCase,
-    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
+    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits },
+    initialState: PostsState = PostsState.initialState,
+    initialEvent: PostsEvent? = PostsEvent.Initialized
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 
     init {
@@ -31,8 +31,8 @@ internal class PostsViewModel(
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
             when (event) {
-                PostsEvent.Initialize -> updatePosts()
-                is PostsEvent.DismissError -> dismissError(event.errorId)
+                PostsEvent.Initialized -> updatePosts()
+                is PostsEvent.DismissErrorRequested -> dismissError(event.errorId)
             }
         }
     }
