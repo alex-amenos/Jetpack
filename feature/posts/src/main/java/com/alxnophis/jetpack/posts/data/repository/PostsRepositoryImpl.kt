@@ -16,8 +16,8 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class PostsRepositoryImpl(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val apiDataSource: JsonPlaceholderRetrofitService
+    private val apiDataSource: JsonPlaceholderRetrofitService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : PostsRepository {
 
     override suspend fun getPosts(): Either<PostsError, List<Post>> =

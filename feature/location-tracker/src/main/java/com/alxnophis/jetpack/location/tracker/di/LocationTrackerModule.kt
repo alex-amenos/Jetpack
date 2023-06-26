@@ -14,7 +14,6 @@ import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationProvid
 import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProviderUseCase
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
@@ -33,25 +32,18 @@ private val loadLocationTrackerModules by lazy {
 
 private val locationTrackerModule: Module = module {
     single<LocationDataSource> {
+        val context = androidContext()
         LocationDataSourceImpl(
-            fusedLocationProvider = LocationServices.getFusedLocationProviderClient(androidContext()),
-            locationManager = androidContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager,
-            mutableLocationSharedFlow = MutableSharedFlow()
+            fusedLocationProvider = LocationServices.getFusedLocationProviderClient(context),
+            locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         )
     }
-    factory<LocationRepository> { LocationRepositoryImpl(locationDataSource = get()) }
-    factory { LocationAvailableUseCase(locationRepository = get()) }
-    factory { LocationFlowUseCase(locationRepository = get()) }
-    factory { LastKnownLocationFlowUseCase(locationRepository = get()) }
-    factory { ProvideLastKnownLocationUseCase(locationRepository = get()) }
-    factory { StartLocationProviderUseCase(locationRepository = get()) }
-    factory { StopLocationProviderUseCase(locationRepository = get()) }
-    viewModel {
-        LocationTrackerViewModel(
-            startLocationProviderUseCase = get(),
-            stopLocationProviderUseCase = get(),
-            locationStateUseCase = get(),
-            lastKnownLocationUseCase = get()
-        )
-    }
+    factory<LocationRepository> { LocationRepositoryImpl(get()) }
+    factory { LocationAvailableUseCase(get()) }
+    factory { LocationFlowUseCase(get()) }
+    factory { LastKnownLocationFlowUseCase(get()) }
+    factory { ProvideLastKnownLocationUseCase(get()) }
+    factory { StartLocationProviderUseCase(get()) }
+    factory { StopLocationProviderUseCase(get()) }
+    viewModel { LocationTrackerViewModel(get(), get(), get(), get()) }
 }

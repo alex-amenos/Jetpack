@@ -18,16 +18,7 @@ private val loadFileDownloaderModules by lazy {
 }
 
 internal val fileDownloaderModule: Module = module {
-    factory<DownloaderDataSource> {
-        AndroidDownloaderDataSourceImpl(
-            context = androidContext(),
-            dateFormatter = get()
-        )
-    }
-    single<FileDownloaderRepository> { FileDownloaderRepositoryImpl(androidDownloaderDataSource = get()) }
-    viewModel {
-        FileDownloaderViewModel(
-            fileDownloaderRepository = get()
-        )
-    }
+    factory<DownloaderDataSource> { AndroidDownloaderDataSourceImpl(androidContext(), get()) }
+    single<FileDownloaderRepository> { FileDownloaderRepositoryImpl(get()) }
+    viewModel { FileDownloaderViewModel(get()) }
 }

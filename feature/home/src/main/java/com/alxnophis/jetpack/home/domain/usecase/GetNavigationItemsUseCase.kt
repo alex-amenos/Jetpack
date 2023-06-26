@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class UseCaseGetNavigationItems(
+class GetNavigationItemsUseCase(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 

@@ -110,7 +110,7 @@ internal fun SpacexContent(
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
                     errorMessage = error.composableMessage(),
-                    dismissError = { handleEvent.invoke(LaunchesEvent.DismissError(error.id)) }
+                    dismissError = { handleEvent.invoke(LaunchesEvent.DismissErrorRequested(error.id)) }
                 )
             }
         }
@@ -127,7 +127,7 @@ private fun PastLaunchesList(
     SwipeRefresh(
         modifier = modifier,
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(LaunchesEvent.RefreshPastLaunches) }
+        onRefresh = { handleEvent.invoke(LaunchesEvent.RefreshPastLaunchesRequested) }
     ) {
         LazyColumn(
             state = listState,

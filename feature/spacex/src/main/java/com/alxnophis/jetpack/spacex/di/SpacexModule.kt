@@ -15,12 +15,6 @@ private val loadSpacexModules by lazy {
 }
 
 private val spacexModule: Module = module {
-    factory<LaunchesRepository> { LaunchesRepositoryImpl(apiDataSource = get()) }
-    viewModel {
-        LaunchesViewModel(
-            dateFormatter = get(),
-            randomProvider = get(),
-            launchesRepository = get()
-        )
-    }
+    factory<LaunchesRepository> { LaunchesRepositoryImpl(get()) }
+    viewModel { LaunchesViewModel(get(), get(), get()) }
 }

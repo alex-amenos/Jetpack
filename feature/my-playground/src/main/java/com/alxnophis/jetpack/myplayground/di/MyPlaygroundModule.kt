@@ -15,7 +15,5 @@ private val loadMyPlaygroundModules by lazy {
 }
 
 private val myPlaygroundModule: Module = module {
-    viewModel {
-        MyPlaygroundViewModel()
-    }
+    viewModel { MyPlaygroundViewModel() }
 }

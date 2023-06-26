@@ -8,8 +8,8 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 internal const val NO_ERROR = 0
 
 internal sealed class HomeEvent : UiEvent {
-    object Initialize : HomeEvent()
-    object ErrorDismissed : HomeEvent()
+    object Initialized : HomeEvent()
+    object ErrorDismissRequested : HomeEvent()
 }
 
 @optics

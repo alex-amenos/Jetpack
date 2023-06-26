@@ -21,11 +21,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 internal class LocationTrackerViewModel(
-    initialState: LocationTrackerState = LocationTrackerState.initialState,
     private val startLocationProviderUseCase: StartLocationProviderUseCase,
     private val stopLocationProviderUseCase: StopLocationProviderUseCase,
     private val locationStateUseCase: LocationFlowUseCase,
-    private val lastKnownLocationUseCase: ProvideLastKnownLocationUseCase
+    private val lastKnownLocationUseCase: ProvideLastKnownLocationUseCase,
+    initialState: LocationTrackerState = LocationTrackerState.initialState
 ) : BaseViewModel<LocationTrackerEvent, LocationTrackerState>(initialState) {
 
     override fun handleEvent(event: LocationTrackerEvent) {
@@ -37,7 +37,7 @@ internal class LocationTrackerViewModel(
                     subscribeToUserLocation()
                     subscribeToLastKnownLocation()
                 }
-                LocationTrackerEvent.EndTracking -> {
+                LocationTrackerEvent.StopTrackingRequested -> {
                     stopTrackUserLocation()
                 }
             }

@@ -10,7 +10,7 @@ You can read about the Jetpack playgrounds [here](./docs/jetpack_playgrounds.md)
 
 ### Main
 
-![Jetpack - Main status](https://github.com/alex-amenos/Caelum/actions/workflows/android_ci.yml/badge.svg?branch=main)
+![Jetpack - Main status](https://github.com/alex-amenos/Jetpack/actions/workflows/android_ci.yml/badge.svg?branch=main)
 
 ### Develop
 

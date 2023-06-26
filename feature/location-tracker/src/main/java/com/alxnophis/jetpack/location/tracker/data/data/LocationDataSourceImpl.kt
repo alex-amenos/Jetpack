@@ -13,7 +13,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
-import java.lang.RuntimeException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,10 +29,10 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 internal class LocationDataSourceImpl(
-    ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val fusedLocationProvider: FusedLocationProviderClient,
     private val locationManager: LocationManager,
-    private val mutableLocationSharedFlow: MutableSharedFlow<Location>
+    private val mutableLocationSharedFlow: MutableSharedFlow<Location> = MutableSharedFlow(),
+    ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : LocationDataSource {
 
     override val locationSharedFlow: SharedFlow<Location> = mutableLocationSharedFlow.asSharedFlow()

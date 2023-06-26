@@ -45,7 +45,7 @@ internal fun LocationTrackerScreen(
     val state: LocationTrackerState = viewModel.uiState.collectAsStateWithLifecycle().value
     BackHandler {
         viewModel
-            .handleEvent(LocationTrackerEvent.EndTracking)
+            .handleEvent(LocationTrackerEvent.StopTrackingRequested)
             .also { popBackStack() }
     }
     LocationTrackerContent(
@@ -72,7 +72,7 @@ internal fun LocationTrackerContent(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.location_tracker_title),
                     onBack = {
-                        handleEvent(LocationTrackerEvent.EndTracking)
+                        handleEvent(LocationTrackerEvent.StopTrackingRequested)
                         navigateBack()
                     }
                 )

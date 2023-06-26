@@ -67,7 +67,7 @@ internal fun AuthenticationContent(
         if (authenticationState.error != NO_ERROR) {
             CoreErrorDialog(
                 errorMessage = stringResource(authenticationState.error),
-                dismissError = { handleEvent(AuthenticationEvent.ErrorDismissed) }
+                dismissError = { handleEvent(AuthenticationEvent.ErrorDismissRequested) }
             )
         }
     }
