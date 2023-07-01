@@ -32,6 +32,7 @@ internal class PostsViewModel(
         viewModelScope.launch {
             when (event) {
                 PostsEvent.Initialized -> updatePosts()
+                PostsEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
                 is PostsEvent.DismissErrorRequested -> dismissError(event.errorId)
             }
         }

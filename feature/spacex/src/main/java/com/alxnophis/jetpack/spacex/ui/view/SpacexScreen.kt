@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -44,7 +43,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
@@ -62,31 +60,15 @@ import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
 import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
 import com.alxnophis.jetpack.spacex.ui.view.SpacexTags.TAG_SPACEX_LAUNCH_DETAIL
-import com.alxnophis.jetpack.spacex.ui.viewmodel.LaunchesViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 internal fun SpacexScreen(
-    viewModel: LaunchesViewModel,
-    popBackStack: () -> Unit
-) {
-    val state: LaunchesState = viewModel.uiState.collectAsStateWithLifecycle().value
-    BackHandler { popBackStack() }
-    SpacexContent(
-        state = state,
-        handleEvent = viewModel::handleEvent,
-        navigateBack = popBackStack
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun SpacexContent(
     state: LaunchesState,
-    handleEvent: LaunchesEvent.() -> Unit,
-    navigateBack: () -> Unit
+    onEvent: (LaunchesEvent) -> Unit = {}
 ) {
+    BackHandler { onEvent(LaunchesEvent.GoBackRequested) }
     AppTheme {
         Scaffold(
             modifier = Modifier
@@ -96,7 +78,7 @@ internal fun SpacexContent(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.spacex_title),
-                    onBack = { navigateBack() }
+                    onBack = { onEvent(LaunchesEvent.GoBackRequested) }
                 )
             }
         ) { paddingValues ->
@@ -105,12 +87,12 @@ internal fun SpacexContent(
                     .padding(paddingValues = paddingValues)
                     .fillMaxSize(),
                 state = state,
-                handleEvent = handleEvent
+                onEvent = onEvent
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
                     errorMessage = error.composableMessage(),
-                    dismissError = { handleEvent.invoke(LaunchesEvent.DismissErrorRequested(error.id)) }
+                    dismissError = { onEvent(LaunchesEvent.DismissErrorRequested(error.id)) }
                 )
             }
         }
@@ -121,13 +103,13 @@ internal fun SpacexContent(
 private fun PastLaunchesList(
     state: LaunchesState,
     modifier: Modifier = Modifier,
-    handleEvent: LaunchesEvent.() -> Unit
+    onEvent: LaunchesEvent.() -> Unit
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
         modifier = modifier,
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(LaunchesEvent.RefreshPastLaunchesRequested) }
+        onRefresh = { onEvent.invoke(LaunchesEvent.RefreshPastLaunchesRequested) }
     ) {
         LazyColumn(
             state = listState,
@@ -334,11 +316,7 @@ private fun SpacexContentPreview() {
         pastLaunches = listOf(pastLaunch),
         errorMessages = emptyList()
     )
-    SpacexContent(
-        state = state,
-        handleEvent = {},
-        navigateBack = {}
-    )
+    SpacexScreen(state)
 }
 
 private const val MINIMIZED_LINES = 3

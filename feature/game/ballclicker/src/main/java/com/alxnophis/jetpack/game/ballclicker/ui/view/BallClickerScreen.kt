@@ -28,13 +28,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.game.ballclicker.R
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
-import com.alxnophis.jetpack.game.ballclicker.ui.viewmodel.BallClickerViewModel
 import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -43,26 +41,13 @@ import kotlin.random.Random
 
 @Composable
 internal fun BallClickerScreen(
-    viewModel: BallClickerViewModel,
-    popBackStack: () -> Unit
-) {
-    val state: BallClickerState = viewModel.uiState.collectAsStateWithLifecycle().value
-    BackHandler {
-        viewModel
-            .handleEvent(BallClickerEvent.StopRequested)
-            .also { popBackStack() }
-    }
-    BallClickerContent(
-        state,
-        viewModel::handleEvent
-    )
-}
-
-@Composable
-internal fun BallClickerContent(
     state: BallClickerState,
-    handleEvent: BallClickerEvent.() -> Unit
+    onEvent: (BallClickerEvent) -> Unit
 ) {
+    BackHandler {
+        onEvent(BallClickerEvent.StopRequested)
+        onEvent(BallClickerEvent.GoBackRequested)
+    }
     AppTheme {
         Column(
             modifier = Modifier
@@ -93,9 +78,9 @@ internal fun BallClickerContent(
                 Button(
                     onClick = {
                         if (state.isTimerRunning) {
-                            handleEvent(BallClickerEvent.StopRequested)
+                            onEvent(BallClickerEvent.StopRequested)
                         } else {
-                            handleEvent(BallClickerEvent.StartRequested)
+                            onEvent(BallClickerEvent.StartRequested)
                         }
                     }
                 ) {
@@ -108,7 +93,7 @@ internal fun BallClickerContent(
                 }
             }
             BallClickerContent(enabled = state.isTimerRunning) {
-                handleEvent(BallClickerEvent.BallClicked)
+                onEvent(BallClickerEvent.BallClicked)
             }
         }
     }

@@ -10,6 +10,7 @@ internal sealed class SettingsEvent : UiEvent {
     object ManageSubscription : SettingsEvent()
     object SetNotifications : SettingsEvent()
     object SetHint : SettingsEvent()
+    object GoBackRequested : SettingsEvent()
     data class SetMarketingOption(val marketingOption: MarketingOption) : SettingsEvent()
     data class SetTheme(val theme: Theme) : SettingsEvent()
 }

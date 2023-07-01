@@ -38,7 +38,7 @@ internal class AuthenticationContentSnapshotTest {
         paparazzi.snapshot {
             AuthenticationContent(
                 authenticationState = state,
-                handleEvent = {}
+                onEvent = {}
             )
         }
     }

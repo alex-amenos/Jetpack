@@ -37,8 +37,10 @@ internal class AuthenticationViewModel(
                 AuthenticationEvent.ToggleAuthenticationModeRequested -> toggleAuthenticationMode()
                 AuthenticationEvent.SetUserNotAuthorized -> setUserNotAuthorized()
                 AuthenticationEvent.AutoCompleteAuthorizationRequested -> autoCompleteAuthorization()
+                AuthenticationEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
                 is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
                 is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
+                is AuthenticationEvent.NavigateToAuthScreenRequested -> throw IllegalStateException("Navigate to auth screen not implemented")
             }
         }
     }

@@ -8,6 +8,7 @@ import com.alxnophis.jetpack.posts.domain.model.Post
 
 internal sealed class PostsEvent : UiEvent {
     object Initialized : PostsEvent()
+    object GoBackRequested : PostsEvent()
     data class DismissErrorRequested(val errorId: Long) : PostsEvent()
 }
 

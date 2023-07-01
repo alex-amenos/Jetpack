@@ -11,6 +11,7 @@ import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.testing.listener.MainCoroutineListener
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -101,6 +102,25 @@ class PostsViewModelUnitTests : FunSpec({
         viewModel.uiState.test {
             expectMostRecentItem() shouldBe PostsState.initialState
             expectNoEvents()
+        }
+    }
+
+    // TODO - Review this test
+    xtest(
+        "GIVEN a PostViewModel initialized " +
+            "WHEN go back event " +
+            "THEN throw IllegalStateException"
+    ) {
+        val postUseCaseMock: PostsUseCase = mock()
+        val errorId = 1L
+        val viewModel = PostsViewModel(
+            initialState = PostsState.initialState,
+            getRandomUUID = { errorId },
+            postsUseCase = postUseCaseMock
+        )
+
+        shouldThrow<IllegalStateException> {
+            viewModel.handleEvent(PostsEvent.GoBackRequested)
         }
     }
 })

@@ -40,6 +40,7 @@ internal class LocationTrackerViewModel(
                 LocationTrackerEvent.StopTrackingRequested -> {
                     stopTrackUserLocation()
                 }
+                LocationTrackerEvent.GoBackRequested -> throw IllegalStateException("GoBackRequested not implemented")
             }
         }
     }

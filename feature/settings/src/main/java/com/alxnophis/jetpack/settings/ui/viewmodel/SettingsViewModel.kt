@@ -21,9 +21,10 @@ internal class SettingsViewModel(
     override fun handleEvent(event: SettingsEvent) {
         viewModelScope.launch {
             when (event) {
-                is SettingsEvent.ManageSubscription -> manageSubscription()
-                is SettingsEvent.SetNotifications -> toggleNotifications()
-                is SettingsEvent.SetHint -> toggleHint()
+                SettingsEvent.ManageSubscription -> manageSubscription()
+                SettingsEvent.SetNotifications -> toggleNotifications()
+                SettingsEvent.SetHint -> toggleHint()
+                SettingsEvent.GoBackRequested -> throw IllegalStateException("Go back is not implemented")
                 is SettingsEvent.SetMarketingOption -> setMarketing(event.marketingOption)
                 is SettingsEvent.SetTheme -> setTheme(event.theme)
             }

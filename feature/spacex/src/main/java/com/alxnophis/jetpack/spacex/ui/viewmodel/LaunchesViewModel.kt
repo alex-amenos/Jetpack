@@ -38,6 +38,7 @@ internal class LaunchesViewModel(
             when (event) {
                 LaunchesEvent.Initialized -> updatePastLaunches(hasToFetchDataFromNetworkOnly = false)
                 LaunchesEvent.RefreshPastLaunchesRequested -> updatePastLaunches(hasToFetchDataFromNetworkOnly = true)
+                LaunchesEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
                 is LaunchesEvent.DismissErrorRequested -> dismissError(event.errorId)
             }
         }

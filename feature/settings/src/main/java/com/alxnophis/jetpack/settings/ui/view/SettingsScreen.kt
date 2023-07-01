@@ -16,38 +16,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
-import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 
 @Composable
 internal fun SettingsScreen(
-    viewModel: SettingsViewModel,
-    popBackStack: () -> Unit,
+    state: SettingsState,
+    onEvent: (SettingsEvent) -> Unit = {},
     appVersion: String = LocalContext.current.getVersion()
 ) {
-    val state: SettingsState = viewModel.uiState.collectAsStateWithLifecycle().value
-    BackHandler { popBackStack() }
-    SettingsContent(
-        state = state,
-        appVersion = appVersion,
-        handleEvent = viewModel::handleEvent,
-        navigateBack = popBackStack
-    )
-}
-
-@Composable
-internal fun SettingsContent(
-    state: SettingsState,
-    appVersion: String,
-    handleEvent: SettingsEvent.() -> Unit,
-    navigateBack: () -> Unit
-) {
+    BackHandler { onEvent(SettingsEvent.GoBackRequested) }
     AppTheme {
         val context = LocalContext.current
         Column(
@@ -59,21 +41,21 @@ internal fun SettingsContent(
             CoreTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_title),
-                onBack = { navigateBack() }
+                onBack = { onEvent(SettingsEvent.GoBackRequested) }
             )
             Divider()
             SettingsNotificationItem(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_option_notifications),
                 checked = state.notificationsEnabled,
-                onToggleNotificationSettings = { handleEvent(SettingsEvent.SetNotifications) }
+                onToggleNotificationSettings = { onEvent(SettingsEvent.SetNotifications) }
             )
             Divider()
             SettingsHintItem(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_option_hints),
                 checked = state.hintsEnabled,
-                onShowHintToggled = { handleEvent(SettingsEvent.SetHint) }
+                onShowHintToggled = { onEvent(SettingsEvent.SetHint) }
             )
             Divider()
             SettingsManageSubscriptionItem(
@@ -83,7 +65,7 @@ internal fun SettingsContent(
                     Toast
                         .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
                         .show()
-                    handleEvent(SettingsEvent.ManageSubscription)
+                    onEvent(SettingsEvent.ManageSubscription)
                 }
             )
             Divider()
@@ -94,7 +76,7 @@ internal fun SettingsContent(
                 modifier = Modifier.fillMaxWidth(),
                 selectedOption = state.marketingOption,
                 onOptionSelected = { marketingOption ->
-                    handleEvent(SettingsEvent.SetMarketingOption(marketingOption))
+                    onEvent(SettingsEvent.SetMarketingOption(marketingOption))
                 }
             )
             Divider()
@@ -102,7 +84,7 @@ internal fun SettingsContent(
                 modifier = Modifier.fillMaxWidth(),
                 selectedTheme = state.themeOption,
                 onOptionSelected = { theme ->
-                    handleEvent(SettingsEvent.SetTheme(theme))
+                    onEvent(SettingsEvent.SetTheme(theme))
                 }
             )
             SettingsSectionSpacer(
@@ -121,10 +103,8 @@ internal fun SettingsContent(
 @ExperimentalComposeUiApi
 @Composable
 private fun SettingsScreenPreview() {
-    SettingsContent(
+    SettingsScreen(
         state = SettingsState.initialState,
-        appVersion = "1.0.0",
-        handleEvent = {},
-        navigateBack = {}
+        appVersion = "1.0.0"
     )
 }

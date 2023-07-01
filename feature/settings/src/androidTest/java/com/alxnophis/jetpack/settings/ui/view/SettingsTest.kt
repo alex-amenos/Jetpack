@@ -14,7 +14,6 @@ import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_TOGGLE_ITEM
-import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
@@ -107,8 +106,7 @@ class SettingsTest : BaseComposeTest() {
     private fun setSettingsContent() {
         composeTestRule.setContent {
             SettingsScreen(
-                viewModel = SettingsViewModel(initialState = SettingsState.initialState),
-                popBackStack = {},
+                state = SettingsState.initialState,
                 appVersion = APP_VERSION
             )
         }

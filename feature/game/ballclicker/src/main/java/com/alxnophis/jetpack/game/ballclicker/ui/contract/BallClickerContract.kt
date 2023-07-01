@@ -8,6 +8,7 @@ internal sealed class BallClickerEvent : UiEvent {
     object BallClicked : BallClickerEvent()
     object StartRequested : BallClickerEvent()
     object StopRequested : BallClickerEvent()
+    object GoBackRequested : BallClickerEvent()
 }
 
 @optics
