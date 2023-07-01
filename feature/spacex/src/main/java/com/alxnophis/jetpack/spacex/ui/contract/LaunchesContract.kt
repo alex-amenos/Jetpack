@@ -9,6 +9,7 @@ import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
 internal sealed class LaunchesEvent : UiEvent {
     object Initialized : LaunchesEvent()
     object RefreshPastLaunchesRequested : LaunchesEvent()
+    object GoBackRequested : LaunchesEvent()
     data class DismissErrorRequested(val errorId: Long) : LaunchesEvent()
 }
 

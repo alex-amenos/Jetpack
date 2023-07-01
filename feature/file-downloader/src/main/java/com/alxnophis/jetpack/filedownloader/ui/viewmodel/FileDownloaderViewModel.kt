@@ -36,6 +36,7 @@ internal class FileDownloaderViewModel(
         viewModelScope.launch {
             when (event) {
                 FileDownloaderEvent.Initialized -> subscribeToDownloaderFilesStatus()
+                FileDownloaderEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
                 is FileDownloaderEvent.UrlChanged -> updateUrl(event.url)
                 is FileDownloaderEvent.DownloadFileRequested -> downloadFile()
                 is FileDownloaderEvent.ErrorDismissRequested -> dismissError()

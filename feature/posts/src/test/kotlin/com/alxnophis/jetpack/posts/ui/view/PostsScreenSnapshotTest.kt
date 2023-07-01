@@ -52,11 +52,7 @@ internal class PostsScreenSnapshotTest {
 
     private fun snapshot(state: PostsState) {
         paparazzi.snapshot {
-            PostsContent(
-                state = state,
-                handleEvent = {},
-                navigateBack = {}
-            )
+            PostsScreen(state)
         }
     }
 

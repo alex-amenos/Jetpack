@@ -23,6 +23,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -193,6 +194,16 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
                     awaitItem()
                 )
                 expectNoEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `WHEN navigate back event THEN throw IllegalStateException`() {
+        assertThrows<IllegalStateException> {
+            runTest {
+                viewModelMother().handleEvent(LaunchesEvent.GoBackRequested)
+                runCurrent()
             }
         }
     }

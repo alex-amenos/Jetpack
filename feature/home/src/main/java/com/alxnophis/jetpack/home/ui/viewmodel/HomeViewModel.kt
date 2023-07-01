@@ -31,6 +31,8 @@ internal class HomeViewModel(
             when (event) {
                 HomeEvent.Initialized -> loadNavigationItems()
                 HomeEvent.ErrorDismissRequested -> dismissError()
+                HomeEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
+                is HomeEvent.NavigationRequested -> throw IllegalStateException("Navigation not implemented")
             }
         }
     }

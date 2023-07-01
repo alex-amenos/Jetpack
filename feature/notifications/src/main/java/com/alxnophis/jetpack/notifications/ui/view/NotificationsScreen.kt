@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,19 +39,11 @@ import com.alxnophis.jetpack.notifications.R
 
 @Composable
 internal fun NotificationsScreen(
-    popBackStack: () -> Unit
+    navigateBack: () -> Unit = {}
 ) {
     BackHandler {
-        popBackStack()
+        navigateBack()
     }
-    NotificationsContent(navigateBack = popBackStack)
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun NotificationsContent(
-    navigateBack: () -> Unit
-) {
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -133,7 +124,5 @@ private fun NotificationPermission(
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsContentPreview() {
-    NotificationsContent(
-        navigateBack = {}
-    )
+    NotificationsScreen()
 }

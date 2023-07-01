@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.authentication.ui.navigation
 
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -7,8 +8,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.alxnophis.jetpack.authentication.di.injectAuthentication
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.view.AuthenticationScreen
 import com.alxnophis.jetpack.authentication.ui.view.AuthorizedScreen
+import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.router.screen.ARGUMENT_EMAIL
 import com.alxnophis.jetpack.router.screen.AUTHENTICATION_ROUTE
 import com.alxnophis.jetpack.router.screen.Screen
@@ -26,17 +29,23 @@ fun NavGraphBuilder.authenticationNavGraph(
             route = Screen.Authentication.route
         ) {
             injectAuthentication()
+            val viewModel = getViewModel<AuthenticationViewModel>()
             AuthenticationScreen(
-                viewModel = getViewModel(),
-                popBackStack = { navController.popBackStack() },
-                navigateTo = { userEmail: String ->
-                    navController.navigate(
-                        route = Screen.Authorized.route.replaceArgument(ARGUMENT_EMAIL, userEmail)
-                    ) {
-                        // Remove Authentication screen form back stack
-                        popUpTo(Screen.Authentication.route) {
-                            inclusive = true
+                state = viewModel.uiState.collectAsStateWithLifecycle().value,
+                onEvent = { event ->
+                    when (event) {
+                        AuthenticationEvent.GoBackRequested -> navController.popBackStack()
+                        is AuthenticationEvent.NavigateToAuthScreenRequested -> {
+                            navController.navigate(
+                                route = Screen.Authorized.route.replaceArgument(ARGUMENT_EMAIL, event.email)
+                            ) {
+                                // Remove Authentication screen form back stack
+                                popUpTo(Screen.Authentication.route) {
+                                    inclusive = true
+                                }
+                            }
                         }
+                        else -> viewModel.handleEvent(event)
                     }
                 }
             )
@@ -51,7 +60,7 @@ fun NavGraphBuilder.authenticationNavGraph(
             requireNotNull(email) { "Email can not be null, is required to login" }
             AuthorizedScreen(
                 userEmail = email,
-                popBackStack = { navController.popBackStack() }
+                navigateBack = { navController.popBackStack() }
             )
         }
     }

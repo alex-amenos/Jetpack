@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -24,26 +25,27 @@ import com.alxnophis.jetpack.spacex.ui.navigation.spacexNavGraph
 
 @Composable
 fun SetupNavGraph(
-    navController: NavHostController = rememberNavController(),
+    navHostController: NavHostController = rememberNavController(),
     startDestination: String = HOME_ROUTE
 ) {
+    val finish = { ActivityCompat.finishAffinity(navHostController.context as Activity) }
     AppTheme {
         SetStatusBarColor()
         NavHost(
-            navController = navController,
+            navController = navHostController,
             startDestination = startDestination,
             route = ROOT_ROUTE
         ) {
-            homeNavGraph(navController)
-            authenticationNavGraph(navController)
-            ballClickerNavGraph(navController)
-            fileDownloaderNavGraph(navController)
-            myPlaygroundNavGraph(navController)
-            notificationsNavGraph(navController)
-            locationTrackerNavGraph(navController)
-            postsNavGraph(navController)
-            settingsNavGraph(navController)
-            spacexNavGraph(navController)
+            homeNavGraph(navHostController, finish)
+            authenticationNavGraph(navHostController)
+            ballClickerNavGraph(navHostController)
+            fileDownloaderNavGraph(navHostController)
+            myPlaygroundNavGraph(navHostController)
+            notificationsNavGraph(navHostController)
+            locationTrackerNavGraph(navHostController)
+            postsNavGraph(navHostController)
+            settingsNavGraph(navHostController)
+            spacexNavGraph(navHostController)
         }
     }
 }

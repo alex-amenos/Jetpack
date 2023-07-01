@@ -15,8 +15,10 @@ internal sealed class AuthenticationEvent : UiEvent {
     object ErrorDismissRequested : AuthenticationEvent()
     object ToggleAuthenticationModeRequested : AuthenticationEvent()
     object SetUserNotAuthorized : AuthenticationEvent()
+    object GoBackRequested : AuthenticationEvent()
     data class EmailChanged(val email: String) : AuthenticationEvent()
     data class PasswordChanged(val password: String) : AuthenticationEvent()
+    data class NavigateToAuthScreenRequested(val email: String) : AuthenticationEvent()
 }
 
 @optics

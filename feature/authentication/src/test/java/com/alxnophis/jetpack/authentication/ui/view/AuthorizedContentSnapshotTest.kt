@@ -17,9 +17,7 @@ internal class AuthorizedContentSnapshotTest {
     @Test
     fun composable() {
         paparazzi.snapshot {
-            AuthorizedContent(
-                userEmail = EMAIL
-            )
+            AuthorizedScreen(userEmail = EMAIL)
         }
     }
 

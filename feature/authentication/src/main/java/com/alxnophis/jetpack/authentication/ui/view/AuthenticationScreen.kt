@@ -10,42 +10,33 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
-import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun AuthenticationScreen(
-    viewModel: AuthenticationViewModel,
-    popBackStack: () -> Unit,
-    navigateTo: (String) -> Unit
+    state: AuthenticationState,
+    onEvent: (AuthenticationEvent) -> Unit = {}
 ) {
-    val state: AuthenticationState = viewModel.uiState.collectAsStateWithLifecycle().value
     LaunchedEffect(state.isUserAuthorized) {
         if (state.isUserAuthorized) {
-            navigateTo(state.email)
-            viewModel.handleEvent(AuthenticationEvent.SetUserNotAuthorized)
+            onEvent(AuthenticationEvent.NavigateToAuthScreenRequested(state.email))
+            onEvent(AuthenticationEvent.SetUserNotAuthorized)
         }
     }
-    BackHandler {
-        popBackStack()
-    }
-    AuthenticationContent(
-        state,
-        viewModel::handleEvent
-    )
+    BackHandler { onEvent(AuthenticationEvent.GoBackRequested) }
+    AuthenticationContent(state, onEvent)
 }
 
 @ExperimentalComposeUiApi
 @Composable
 internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
-    handleEvent: AuthenticationEvent.() -> Unit
+    onEvent: AuthenticationEvent.() -> Unit = {}
 ) {
     AppTheme {
         AuthenticationForm(
@@ -62,12 +53,12 @@ internal fun AuthenticationContent(
             } else {
                 false
             },
-            handleEvent = handleEvent
+            handleEvent = onEvent
         )
         if (authenticationState.error != NO_ERROR) {
             CoreErrorDialog(
                 errorMessage = stringResource(authenticationState.error),
-                dismissError = { handleEvent(AuthenticationEvent.ErrorDismissRequested) }
+                dismissError = { onEvent(AuthenticationEvent.ErrorDismissRequested) }
             )
         }
     }
@@ -77,8 +68,5 @@ internal fun AuthenticationContent(
 @ExperimentalComposeUiApi
 @Composable
 private fun AuthenticationFormPreview() {
-    AuthenticationContent(
-        authenticationState = AuthenticationState.initialState,
-        handleEvent = {}
-    )
+    AuthenticationContent(AuthenticationState.initialState)
 }
