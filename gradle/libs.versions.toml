@@ -1,7 +1,7 @@
 [versions]
 androidx-activity = "1.7.2"
 androidx-arch-core = "2.2.0"
-androidx-compose-bom = "2023.06.00"
+androidx-compose-bom = "2023.06.01"
 androidx-compose-compiler = "1.4.7"
 apollo-gradle-plugin = "3.7.5"
 com-apollographql-apollo3 = "3.7.5"
@@ -12,7 +12,7 @@ gradle = "8.1.0"
 gradle-test-logger-plugin = "3.2.0"
 io-kotest = "5.6.2"
 kotlin-gradle-plugin = "1.8.20"
-kotlinx-coroutines = "1.7.1"
+kotlinx-coroutines = "1.7.2"
 kover = "0.6.1"
 ktlint-gradle = "11.3.2"
 org-junit-jupiter = "5.9.2"
@@ -67,7 +67,7 @@ arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
 arrow-optics = { module = "io.arrow-kt:arrow-optics" }
 arrow-optics-ksp-plugin = "io.arrow-kt:arrow-optics-ksp-plugin:1.1.5"
 arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
-arrow-stack = "io.arrow-kt:arrow-stack:1.1.5"
+arrow-stack = "io.arrow-kt:arrow-stack:1.2.0"
 coil = "io.coil-kt:coil-compose:2.2.2"
 google-accompanits-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "com-google-accompanist" }
 google-accompanits-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "com-google-accompanist" }
