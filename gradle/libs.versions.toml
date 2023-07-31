@@ -67,7 +67,7 @@ arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
 arrow-optics = { module = "io.arrow-kt:arrow-optics" }
 arrow-optics-ksp-plugin = "io.arrow-kt:arrow-optics-ksp-plugin:1.1.5"
 arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
-arrow-stack = "io.arrow-kt:arrow-stack:1.1.5"
+arrow-stack = "io.arrow-kt:arrow-stack:1.2.0"
 coil = "io.coil-kt:coil-compose:2.2.2"
 google-accompanits-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "com-google-accompanist" }
 google-accompanits-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "com-google-accompanist" }
