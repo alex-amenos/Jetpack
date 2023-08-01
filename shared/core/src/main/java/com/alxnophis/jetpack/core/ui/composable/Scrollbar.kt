@@ -198,7 +198,7 @@ private fun Modifier.drawScrollbar(
         scrolled.collectLatest {
             alpha.snapTo(1f)
             delay(ViewConfiguration.getScrollDefaultDelay().toLong())
-            alpha.animateTo(0f, animationSpec = FadeOutAnimationSpec)
+            alpha.animateTo(0f, animationSpec = fadeOutAnimationSpec)
         }
     }
 
@@ -211,7 +211,7 @@ private fun Modifier.drawScrollbar(
     val atEnd = if (orientation == Orientation.Vertical) isLtr else true
 
     // Calculate thickness here to workaround https://issuetracker.google.com/issues/206972664
-    val thickness = with(LocalDensity.current) { Thickness.toPx() }
+    val thickness = with(LocalDensity.current) { thickness.toPx() }
     val color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
     Modifier
         .nestedScroll(nestedScrollConnection)
@@ -220,9 +220,8 @@ private fun Modifier.drawScrollbar(
         }
 }
 
-private val Thickness = 4.dp
-private val FadeOutAnimationSpec =
-    tween<Float>(durationMillis = ViewConfiguration.getScrollBarFadeDuration())
+private val thickness = 4.dp
+private val fadeOutAnimationSpec = tween<Float>(durationMillis = ViewConfiguration.getScrollBarFadeDuration())
 
 @Preview(widthDp = 400, heightDp = 400, showBackground = true)
 @Composable

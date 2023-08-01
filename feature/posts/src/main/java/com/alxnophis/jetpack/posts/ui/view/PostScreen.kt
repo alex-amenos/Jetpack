@@ -53,7 +53,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlin.math.roundToInt
 
-private val TOOLBAR_HEIGHT = 56.dp
+private val toolbarHeight = 56.dp
 
 /**
  * Nestedscroll
@@ -66,7 +66,7 @@ internal fun PostsScreen(
 ) {
     BackHandler { onEvent(PostsEvent.GoBackRequested) }
     AppTheme {
-        val toolbarHeightPx = with(LocalDensity.current) { TOOLBAR_HEIGHT.roundToPx().toFloat() }
+        val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
         val toolbarOffsetHeightPx = remember { mutableStateOf(ZERO_FLOAT) }
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
@@ -86,7 +86,7 @@ internal fun PostsScreen(
         ) {
             PostList(
                 state = state,
-                toolbarHeight = TOOLBAR_HEIGHT,
+                toolbarHeight = toolbarHeight,
                 handleEvent = onEvent,
                 modifier = Modifier.fillMaxSize()
             )
