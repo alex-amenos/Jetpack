@@ -100,7 +100,7 @@ internal fun FileDownloaderScreen(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun FileDownloaderContent(
     state: FileDownloaderState,

@@ -261,7 +261,6 @@ private fun ExpandingText(
     var finalText: String by remember { mutableStateOf(item.details) }
     LaunchedEffect(textLayoutResult) {
         if (textLayoutResult == null) return@LaunchedEffect
-        @Suppress("KotlinConstantConditions")
         when {
             isExpanded -> {
                 isClickable = false

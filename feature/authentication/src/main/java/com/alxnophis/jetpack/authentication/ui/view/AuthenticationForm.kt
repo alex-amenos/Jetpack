@@ -207,7 +207,6 @@ internal fun AuthenticationTitle(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailInput(
     email: String,
@@ -242,7 +241,6 @@ fun EmailInput(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalComposeUiApi
 @Composable
 fun PasswordInput(
