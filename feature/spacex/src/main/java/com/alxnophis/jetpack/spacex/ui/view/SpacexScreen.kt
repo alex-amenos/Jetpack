@@ -43,8 +43,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.alxnophis.jetpack.core.ui.composable.ComposableLifecycle
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
@@ -69,6 +71,11 @@ internal fun SpacexScreen(
     onEvent: (LaunchesEvent) -> Unit = {}
 ) {
     BackHandler { onEvent(LaunchesEvent.GoBackRequested) }
+    ComposableLifecycle { _, event ->
+        if (event == Lifecycle.Event.ON_CREATE) {
+            onEvent(LaunchesEvent.Initialized)
+        }
+    }
     AppTheme {
         Scaffold(
             modifier = Modifier
