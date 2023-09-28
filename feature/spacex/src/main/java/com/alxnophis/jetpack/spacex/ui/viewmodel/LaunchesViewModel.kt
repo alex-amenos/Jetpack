@@ -25,13 +25,8 @@ internal class LaunchesViewModel(
     private val dateFormatter: BaseDateFormatter,
     private val randomProvider: BaseRandomProvider,
     private val launchesRepository: LaunchesRepository,
-    initialState: LaunchesState = LaunchesState.initialState,
-    initialEvent: LaunchesEvent? = LaunchesEvent.Initialized
+    initialState: LaunchesState = LaunchesState.initialState
 ) : BaseViewModel<LaunchesEvent, LaunchesState>(initialState) {
-
-    init {
-        initialEvent?.let(::handleEvent)
-    }
 
     override fun handleEvent(event: LaunchesEvent) {
         viewModelScope.launch {

@@ -38,17 +38,17 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     private val dateFormatterMock: BaseDateFormatter = mock()
     private val randomProviderMock: BaseRandomProvider = mock()
     private val launchesRepositoryMock: LaunchesRepository = mock()
-    private lateinit var viewModel: LaunchesViewModel
 
     @Test
     fun `WHEN init THEN validate initial state with past launches`() {
         runTest {
             val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
             val pastLaunches = listOf(PastLaunchesModelMother.invoke(launchDateUtc = "DATE"))
+            val viewModel = viewModelMother()
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
-            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialized)
+            viewModel.handleEvent(LaunchesEvent.Initialized)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -75,10 +75,11 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     fun `WHEN init THEN validate get past launches not fetched from network only`() {
         runTest {
             val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
+            val viewModel = viewModelMother()
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
-            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialized)
+            viewModel.handleEvent(LaunchesEvent.Initialized)
             runCurrent()
 
             verify(launchesRepositoryMock).getPastLaunches(false)
@@ -89,9 +90,9 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     fun `WHEN refresh launches THEN validate get past launches fetched from network only after the init`() {
         runTest {
             val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
+            val viewModel = viewModelMother()
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(any())).thenReturn(pastLaunchesDataModel.right())
-            viewModel = viewModelMother()
 
             viewModel.handleEvent(LaunchesEvent.RefreshPastLaunchesRequested)
             runCurrent()
@@ -105,10 +106,11 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
         runTest {
             val pastLaunchesDataModel = listOf(PastLaunchesDataModelMother(launchDateUtc = Date()))
             val pastLaunches = listOf(PastLaunchesModelMother.invoke(launchDateUtc = "DATE"))
+            val viewModel = viewModelMother()
             whenever(dateFormatterMock.formatToReadableDateTime(any())).thenReturn("DATE")
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(pastLaunchesDataModel.right())
 
-            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialized)
+            viewModel.handleEvent(LaunchesEvent.Initialized)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -138,10 +140,11 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
         errorResId: Int
     ) {
         runTest {
+            val viewModel = viewModelMother()
             whenever(randomProviderMock.mostSignificantBitsRandomUUID()).thenReturn(RANDOM_UUID_SIGNIFICANT_BITS)
             whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(launchesError.left())
 
-            viewModel = viewModelMother(initialEvent = LaunchesEvent.Initialized)
+            viewModel.handleEvent(LaunchesEvent.Initialized)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -172,9 +175,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN dismiss error THEN remove error from ui state`() {
         runTest {
-            whenever(randomProviderMock.mostSignificantBitsRandomUUID()).thenReturn(RANDOM_UUID_SIGNIFICANT_BITS)
-            whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(LaunchesError.Unknown.left())
-            viewModel = viewModelMother(
+            val viewModel = viewModelMother(
                 initialState = LaunchesState.initialState.copy {
                     LaunchesState.errorMessages set listOf(
                         ErrorMessage(
@@ -184,6 +185,8 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
                     )
                 }
             )
+            whenever(randomProviderMock.mostSignificantBitsRandomUUID()).thenReturn(RANDOM_UUID_SIGNIFICANT_BITS)
+            whenever(launchesRepositoryMock.getPastLaunches(false)).thenReturn(LaunchesError.Unknown.left())
 
             viewModel.handleEvent(LaunchesEvent.DismissErrorRequested(RANDOM_UUID_SIGNIFICANT_BITS))
             runCurrent()
@@ -210,7 +213,6 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
 
     private fun viewModelMother(
         initialState: LaunchesState = LaunchesState.initialState,
-        initialEvent: LaunchesEvent? = null,
         dateFormatter: BaseDateFormatter = dateFormatterMock,
         randomProvider: BaseRandomProvider = randomProviderMock,
         launchesRepository: LaunchesRepository = launchesRepositoryMock
@@ -218,8 +220,7 @@ private class LaunchesViewModelUnitTest : BaseViewModelUnitTest() {
         dateFormatter,
         randomProvider,
         launchesRepository,
-        initialState,
-        initialEvent
+        initialState
     )
 
     companion object {
