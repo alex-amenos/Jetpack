@@ -23,13 +23,8 @@ import timber.log.Timber
 
 internal class FileDownloaderViewModel(
     private val fileDownloaderRepository: FileDownloaderRepository,
-    initialState: FileDownloaderState = FileDownloaderState.initialState,
-    initialEvent: FileDownloaderEvent? = FileDownloaderEvent.Initialized
+    initialState: FileDownloaderState = FileDownloaderState.initialState
 ) : BaseViewModel<FileDownloaderEvent, FileDownloaderState>(initialState) {
-
-    init {
-        initialEvent?.let(::handleEvent)
-    }
 
     override fun handleEvent(event: FileDownloaderEvent) {
         Timber.d("## FileDownloaderViewModel handle event: $event")
