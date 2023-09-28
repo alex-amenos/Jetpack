@@ -18,30 +18,25 @@ import java.util.UUID
 import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
-    initialState: PostsState,
     private val postsUseCase: PostsUseCase,
-    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
+    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits },
+    initialState: PostsState = PostsState.initialState
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
-
-    init {
-        handleEvent(PostsEvent.GetPosts)
-    }
 
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
             when (event) {
-                PostsEvent.GetPosts -> renderPosts()
-                is PostsEvent.DismissError -> dismissError(event.errorId)
+                PostsEvent.Initialized -> updatePosts()
+                PostsEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
+                is PostsEvent.DismissErrorRequested -> dismissError(event.errorId)
             }
         }
     }
 
-    private fun renderPosts() {
+    private fun updatePosts() {
         viewModelScope.launch {
             updateUiState {
-                copy {
-                    PostsState.isLoading set true
-                }
+                copy { PostsState.isLoading set true }
             }
             getPosts()
                 .mapLeft { error: PostsError -> error.mapTo() }
@@ -66,7 +61,7 @@ internal class PostsViewModel(
         }
     }
 
-    private suspend fun getPosts(): Either<PostsError, List<Post>> = postsUseCase.invoke()
+    private suspend fun getPosts(): Either<PostsError, List<Post>> = postsUseCase()
 
     private fun PostsError.mapTo(): List<ErrorMessage> =
         currentState.errorMessages + ErrorMessage(
@@ -82,9 +77,7 @@ internal class PostsViewModel(
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
         updateUiState {
-            copy {
-                PostsState.errorMessages set errorMessages
-            }
+            copy { PostsState.errorMessages set errorMessages }
         }
     }
 }

@@ -33,11 +33,7 @@ internal class HomeContentSnapshotTest {
 
     private fun snapshot(state: HomeState) {
         paparazzi.snapshot {
-            HomeContent(
-                state = state,
-                handleEvent = {},
-                navigateTo = {}
-            )
+            HomeScreen(state)
         }
     }
 

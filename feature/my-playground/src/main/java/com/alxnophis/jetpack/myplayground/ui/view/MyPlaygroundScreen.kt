@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,38 +24,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.myplayground.R
 import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundEvent
 import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundState
-import com.alxnophis.jetpack.myplayground.ui.viewmodel.MyPlaygroundViewModel
 
 @Composable
 internal fun MyPlaygroundScreen(
-    popBackStack: () -> Unit,
-    viewModel: MyPlaygroundViewModel
-) {
-    val state: MyPlaygroundState = viewModel.uiState.collectAsStateWithLifecycle().value
-    BackHandler {
-        popBackStack()
-    }
-    MyPlaygroundScaffold(
-        state = state,
-        navigateBack = popBackStack,
-        handleEvent = { event: MyPlaygroundEvent -> viewModel.handleEvent(event) }
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun MyPlaygroundScaffold(
     state: MyPlaygroundState,
-    navigateBack: () -> Unit,
-    handleEvent: (MyPlaygroundEvent) -> Unit
+    onEvent: (MyPlaygroundEvent) -> Unit = {}
 ) {
+    BackHandler { onEvent(MyPlaygroundEvent.GoBackRequested) }
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -64,13 +44,13 @@ internal fun MyPlaygroundScaffold(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.myplayground_title),
-                    onBack = { navigateBack() }
+                    onBack = { onEvent(MyPlaygroundEvent.GoBackRequested) }
                 )
             }
         ) { paddingValues ->
             MyPlaygroundContent(
                 state = state,
-                handleEvent = handleEvent,
+                handleEvent = onEvent,
                 modifier = Modifier
                     .padding(paddingValues)
                     .background(MaterialTheme.colorScheme.surface)
@@ -81,7 +61,6 @@ internal fun MyPlaygroundScaffold(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MyPlaygroundContent(
     state: MyPlaygroundState,
@@ -115,9 +94,7 @@ internal fun MyPlaygroundContent(
 @Composable
 private fun MyPlaygroundScaffoldPreview() {
     val state = MyPlaygroundState.initialState
-    MyPlaygroundScaffold(
-        state = state,
-        handleEvent = {},
-        navigateBack = {}
+    MyPlaygroundScreen(
+        state = state
     )
 }

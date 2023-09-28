@@ -6,8 +6,10 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 
 internal sealed class FileDownloaderEvent : UiEvent {
-    object DownloadFile : FileDownloaderEvent()
-    object ErrorDismissed : FileDownloaderEvent()
+    object Initialized : FileDownloaderEvent()
+    object GoBackRequested : FileDownloaderEvent()
+    object DownloadFileRequested : FileDownloaderEvent()
+    object ErrorDismissRequested : FileDownloaderEvent()
     data class UrlChanged(val url: String) : FileDownloaderEvent()
 }
 

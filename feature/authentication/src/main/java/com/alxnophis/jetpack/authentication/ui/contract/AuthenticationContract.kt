@@ -10,13 +10,15 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiState
 internal const val NO_ERROR = 0
 
 internal sealed class AuthenticationEvent : UiEvent {
-    object Authenticate : AuthenticationEvent()
-    object AutoCompleteAuthorization : AuthenticationEvent()
-    object ErrorDismissed : AuthenticationEvent()
-    object ToggleAuthenticationMode : AuthenticationEvent()
+    object Authenticated : AuthenticationEvent()
+    object AutoCompleteAuthorizationRequested : AuthenticationEvent()
+    object ErrorDismissRequested : AuthenticationEvent()
+    object ToggleAuthenticationModeRequested : AuthenticationEvent()
     object SetUserNotAuthorized : AuthenticationEvent()
+    object GoBackRequested : AuthenticationEvent()
     data class EmailChanged(val email: String) : AuthenticationEvent()
     data class PasswordChanged(val password: String) : AuthenticationEvent()
+    data class NavigateToAuthScreenRequested(val email: String) : AuthenticationEvent()
 }
 
 @optics

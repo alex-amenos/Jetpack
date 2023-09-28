@@ -95,10 +95,9 @@ class SpacexScreenTest : BaseComposeTest() {
 
     private fun setSpacexContent(state: LaunchesState) {
         composeTestRule.setContent {
-            SpacexContent(
+            SpacexScreen(
                 state = state,
-                handleEvent = {},
-                navigateBack = {}
+                onEvent = {}
             )
         }
     }

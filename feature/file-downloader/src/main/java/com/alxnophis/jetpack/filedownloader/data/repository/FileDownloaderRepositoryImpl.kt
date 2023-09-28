@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 
 internal class FileDownloaderRepositoryImpl(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val androidDownloaderDataSource: DownloaderDataSource
+    private val androidDownloaderDataSource: DownloaderDataSource,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : FileDownloaderRepository {
 
     override val downloadingFiles: StateFlow<List<DownloaderFile>>

@@ -21,7 +21,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -45,9 +44,10 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.Lifecycle
 import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.extensions.isValidUrl
+import com.alxnophis.jetpack.core.ui.composable.ComposableLifecycle
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
@@ -58,7 +58,6 @@ import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
 import com.alxnophis.jetpack.filedownloader.ui.contract.NO_ERROR
-import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
@@ -66,27 +65,17 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun FileDownloaderScreen(
-    viewModel: FileDownloaderViewModel,
-    popBackStack: () -> Unit
-) {
-    val state: FileDownloaderState = viewModel.uiState.collectAsStateWithLifecycle().value
-    BackHandler {
-        popBackStack()
-    }
-    FileDownloaderScaffold(
-        state = state,
-        handleEvent = viewModel::handleEvent,
-        navigateBack = popBackStack
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun FileDownloaderScaffold(
     state: FileDownloaderState,
-    handleEvent: FileDownloaderEvent.() -> Unit,
-    navigateBack: () -> Unit
+    onEvent: (FileDownloaderEvent) -> Unit
 ) {
+    BackHandler {
+        onEvent(FileDownloaderEvent.GoBackRequested)
+    }
+    ComposableLifecycle { _, event ->
+        if (event == Lifecycle.Event.ON_CREATE) {
+            onEvent(FileDownloaderEvent.Initialized)
+        }
+    }
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -94,14 +83,14 @@ private fun FileDownloaderScaffold(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.file_downloader_title),
-                    onBack = { navigateBack() }
+                    onBack = { onEvent(FileDownloaderEvent.GoBackRequested) }
                 )
             }
         ) { paddingValues ->
 
             FileDownloaderContent(
                 state = state,
-                handleEvent = handleEvent,
+                handleEvent = onEvent,
                 modifier = Modifier
                     .padding(paddingValues)
                     .drawVerticalScrollbar(rememberScrollState())
@@ -111,13 +100,13 @@ private fun FileDownloaderScaffold(
 
             FileDownloaderErrors(
                 state = state,
-                dismissError = { handleEvent(FileDownloaderEvent.ErrorDismissed) }
+                dismissError = { onEvent(FileDownloaderEvent.ErrorDismissRequested) }
             )
         }
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun FileDownloaderContent(
     state: FileDownloaderState,
@@ -125,7 +114,7 @@ private fun FileDownloaderContent(
     handleEvent: FileDownloaderEvent.() -> Unit
 ) {
     val downloadFileEvent: () -> Unit = {
-        handleEvent.invoke(FileDownloaderEvent.DownloadFile)
+        handleEvent.invoke(FileDownloaderEvent.DownloadFileRequested)
     }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -317,9 +306,8 @@ private fun FileDownloaderScaffoldPreview() {
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
         )
     )
-    FileDownloaderScaffold(
+    FileDownloaderScreen(
         state = state,
-        navigateBack = {},
-        handleEvent = {}
+        onEvent = {}
     )
 }

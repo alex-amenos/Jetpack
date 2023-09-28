@@ -1,18 +1,22 @@
 package com.alxnophis.jetpack.home.ui.navigation
 
-import android.app.Activity
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.alxnophis.jetpack.home.di.injectHome
+import com.alxnophis.jetpack.home.ui.contract.HomeEvent
+import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.view.HomeScreen
+import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
 import com.alxnophis.jetpack.router.screen.HOME_ROUTE
 import com.alxnophis.jetpack.router.screen.Screen
 import org.koin.androidx.compose.getViewModel
 
 fun NavGraphBuilder.homeNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    finish: () -> Unit
 ) {
     navigation(
         startDestination = Screen.Home.route,
@@ -22,14 +26,20 @@ fun NavGraphBuilder.homeNavGraph(
             route = Screen.Home.route
         ) {
             injectHome()
+            val viewModel = getViewModel<HomeViewModel>()
+            val state: HomeState = viewModel.uiState.collectAsStateWithLifecycle().value
             HomeScreen(
-                viewModel = getViewModel(),
-                backOrFinish = { activity: Activity? ->
-                    if (!navController.popBackStack()) {
-                        activity?.finish()
+                state = state,
+                onEvent = { event ->
+                    when (event) {
+                        HomeEvent.GoBackRequested -> {
+                            navController.popBackStack()
+                            finish()
+                        }
+                        is HomeEvent.NavigationRequested -> navController.navigate(event.route)
+                        else -> viewModel.handleEvent(event)
                     }
-                },
-                navigateTo = { route -> navController.navigate(route) }
+                }
             )
         }
     }

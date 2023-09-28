@@ -12,7 +12,7 @@ internal class DownloadCompletedReceiver : BroadcastReceiver() {
     private val fileDownloaderRepository: FileDownloaderRepository by inject(FileDownloaderRepository::class.java)
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent?.action == ACTION) {
+        if (intent?.action == DOWNLOAD_COMPLETE_ACTION) {
             val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, DEFAULT_ID)
             if (id != DEFAULT_ID) {
                 fileDownloaderRepository.fileDownloaded(id)
@@ -22,7 +22,7 @@ internal class DownloadCompletedReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        private const val ACTION = "android.intent.action.DOWNLOAD_COMPLETE"
+        private const val DOWNLOAD_COMPLETE_ACTION = "android.intent.action.DOWNLOAD_COMPLETE"
         private const val DEFAULT_ID = -1L
     }
 }

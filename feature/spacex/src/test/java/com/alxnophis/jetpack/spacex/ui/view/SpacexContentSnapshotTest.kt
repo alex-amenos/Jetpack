@@ -52,11 +52,7 @@ internal class SpacexContentSnapshotTest {
 
     private fun snapshot(state: LaunchesState) {
         paparazzi.snapshot {
-            SpacexContent(
-                state = state,
-                handleEvent = {},
-                navigateBack = {}
-            )
+            SpacexScreen(state)
         }
     }
 

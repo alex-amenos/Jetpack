@@ -7,8 +7,9 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.domain.model.Post
 
 internal sealed class PostsEvent : UiEvent {
-    object GetPosts : PostsEvent()
-    data class DismissError(val errorId: Long) : PostsEvent()
+    object Initialized : PostsEvent()
+    object GoBackRequested : PostsEvent()
+    data class DismissErrorRequested(val errorId: Long) : PostsEvent()
 }
 
 @optics

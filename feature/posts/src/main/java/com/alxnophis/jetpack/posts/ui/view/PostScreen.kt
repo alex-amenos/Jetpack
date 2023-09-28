@@ -36,7 +36,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.Lifecycle
+import com.alxnophis.jetpack.core.ui.composable.ComposableLifecycle
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
@@ -49,42 +50,30 @@ import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.domain.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
-import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlin.math.roundToInt
 
-private val TOOLBAR_HEIGHT = 56.dp
-
-@Composable
-internal fun PostsScreen(
-    viewModel: PostsViewModel,
-    popBackStack: () -> Unit
-) {
-    val state: PostsState = viewModel.uiState.collectAsStateWithLifecycle().value
-    BackHandler {
-        popBackStack()
-    }
-    PostsContent(
-        state = state,
-        handleEvent = viewModel::handleEvent,
-        navigateBack = popBackStack
-    )
-}
+private val toolbarHeight = 56.dp
 
 /**
  * Nestedscroll
  * Link: https://developer.android.com/reference/kotlin/androidx/compose/ui/input/nestedscroll/package-summary
  */
 @Composable
-internal fun PostsContent(
+internal fun PostsScreen(
     state: PostsState,
-    handleEvent: PostsEvent.() -> Unit,
-    navigateBack: () -> Unit
+    onEvent: (PostsEvent) -> Unit = {}
 ) {
+    BackHandler { onEvent(PostsEvent.GoBackRequested) }
+    ComposableLifecycle { _, event ->
+        if (event == Lifecycle.Event.ON_CREATE) {
+            onEvent(PostsEvent.Initialized)
+        }
+    }
     AppTheme {
-        val toolbarHeightPx = with(LocalDensity.current) { TOOLBAR_HEIGHT.roundToPx().toFloat() }
+        val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
         val toolbarOffsetHeightPx = remember { mutableStateOf(ZERO_FLOAT) }
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
@@ -104,8 +93,8 @@ internal fun PostsContent(
         ) {
             PostList(
                 state = state,
-                toolbarHeight = TOOLBAR_HEIGHT,
-                handleEvent = handleEvent,
+                toolbarHeight = toolbarHeight,
+                handleEvent = onEvent,
                 modifier = Modifier.fillMaxSize()
             )
             CoreTopBar(
@@ -113,12 +102,12 @@ internal fun PostsContent(
                     .fillMaxWidth()
                     .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
                 title = stringResource(id = R.string.posts_title),
-                onBack = { navigateBack() }
+                onBack = { onEvent(PostsEvent.GoBackRequested) }
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
                     errorMessage = error.composableMessage(),
-                    dismissError = { handleEvent.invoke(PostsEvent.DismissError(error.id)) }
+                    dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested(error.id)) }
                 )
             }
         }
@@ -137,7 +126,7 @@ internal fun PostList(
         modifier = modifier,
         indicatorPadding = PaddingValues(top = toolbarHeight + 8.dp),
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(PostsEvent.GetPosts) }
+        onRefresh = { handleEvent.invoke(PostsEvent.Initialized) }
     ) {
         LazyColumn(
             state = listState,
@@ -230,9 +219,5 @@ private fun PostScreenPreview() {
         posts = listOf(post1, post2),
         errorMessages = emptyList()
     )
-    PostsContent(
-        state = state,
-        handleEvent = {},
-        navigateBack = {}
-    )
+    PostsScreen(state)
 }

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,7 +23,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -33,35 +31,18 @@ import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.location.tracker.R
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
-import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @Composable
 internal fun LocationTrackerScreen(
-    viewModel: LocationTrackerViewModel,
-    popBackStack: () -> Unit
-) {
-    val state: LocationTrackerState = viewModel.uiState.collectAsStateWithLifecycle().value
-    BackHandler {
-        viewModel
-            .handleEvent(LocationTrackerEvent.EndTracking)
-            .also { popBackStack() }
-    }
-    LocationTrackerContent(
-        state = state,
-        handleEvent = viewModel::handleEvent,
-        navigateBack = popBackStack
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun LocationTrackerContent(
     state: LocationTrackerState,
-    handleEvent: LocationTrackerEvent.() -> Unit,
-    navigateBack: () -> Unit
+    onEvent: (LocationTrackerEvent) -> Unit
 ) {
+    BackHandler {
+        onEvent(LocationTrackerEvent.StopTrackingRequested)
+        onEvent(LocationTrackerEvent.GoBackRequested)
+    }
     AppTheme {
         Scaffold(
             modifier = Modifier
@@ -72,8 +53,8 @@ internal fun LocationTrackerContent(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.location_tracker_title),
                     onBack = {
-                        handleEvent(LocationTrackerEvent.EndTracking)
-                        navigateBack()
+                        onEvent(LocationTrackerEvent.StopTrackingRequested)
+                        onEvent(LocationTrackerEvent.GoBackRequested)
                     }
                 )
             }
@@ -86,7 +67,7 @@ internal fun LocationTrackerContent(
                         state = state
                     )
                 },
-                handleEvent = handleEvent
+                handleEvent = onEvent
             )
         }
     }

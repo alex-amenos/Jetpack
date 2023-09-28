@@ -22,27 +22,24 @@ import java.util.Date
 import kotlinx.coroutines.launch
 
 internal class LaunchesViewModel(
-    initialState: LaunchesState,
     private val dateFormatter: BaseDateFormatter,
     private val randomProvider: BaseRandomProvider,
-    private val launchesRepository: LaunchesRepository
+    private val launchesRepository: LaunchesRepository,
+    initialState: LaunchesState = LaunchesState.initialState
 ) : BaseViewModel<LaunchesEvent, LaunchesState>(initialState) {
-
-    init {
-        handleEvent(LaunchesEvent.GetPastLaunches)
-    }
 
     override fun handleEvent(event: LaunchesEvent) {
         viewModelScope.launch {
             when (event) {
-                LaunchesEvent.GetPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = false)
-                LaunchesEvent.RefreshPastLaunches -> renderPastLaunches(hasToFetchDataFromNetworkOnly = true)
-                is LaunchesEvent.DismissError -> dismissError(event.errorId)
+                LaunchesEvent.Initialized -> updatePastLaunches(hasToFetchDataFromNetworkOnly = false)
+                LaunchesEvent.RefreshPastLaunchesRequested -> updatePastLaunches(hasToFetchDataFromNetworkOnly = true)
+                LaunchesEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
+                is LaunchesEvent.DismissErrorRequested -> dismissError(event.errorId)
             }
         }
     }
 
-    private fun renderPastLaunches(hasToFetchDataFromNetworkOnly: Boolean) {
+    private fun updatePastLaunches(hasToFetchDataFromNetworkOnly: Boolean) {
         viewModelScope.launch {
             updateUiState {
                 copy {

@@ -4,7 +4,6 @@ import com.alxnophis.jetpack.filedownloader.data.datasource.AndroidDownloaderDat
 import com.alxnophis.jetpack.filedownloader.data.datasource.DownloaderDataSource
 import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepository
 import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepositoryImpl
-import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
 import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -19,17 +18,7 @@ private val loadFileDownloaderModules by lazy {
 }
 
 internal val fileDownloaderModule: Module = module {
-    factory<DownloaderDataSource> {
-        AndroidDownloaderDataSourceImpl(
-            context = androidContext(),
-            dateFormatter = get()
-        )
-    }
-    single<FileDownloaderRepository> { FileDownloaderRepositoryImpl(androidDownloaderDataSource = get()) }
-    viewModel {
-        FileDownloaderViewModel(
-            initialState = FileDownloaderState.initialState,
-            fileDownloaderRepository = get()
-        )
-    }
+    factory<DownloaderDataSource> { AndroidDownloaderDataSourceImpl(androidContext(), get()) }
+    single<FileDownloaderRepository> { FileDownloaderRepositoryImpl(get()) }
+    viewModel { FileDownloaderViewModel(get()) }
 }

@@ -1,27 +1,27 @@
 [versions]
 androidx-activity = "1.7.2"
 androidx-arch-core = "2.2.0"
-androidx-compose-bom = "2023.06.00"
+androidx-compose-bom = "2023.06.01"
 androidx-compose-compiler = "1.4.7"
 apollo-gradle-plugin = "3.7.5"
 com-apollographql-apollo3 = "3.7.5"
 com-google-accompanist = "0.25.1"
 com-squareup-okhttp3 = "4.10.0"
 com-squareup-retrofit2 = "2.9.0"
-gradle = "8.0.2"
+gradle = "8.1.2"
 gradle-test-logger-plugin = "3.2.0"
 io-kotest = "5.6.2"
 kotlin-gradle-plugin = "1.8.20"
-kotlinx-coroutines = "1.7.1"
+kotlinx-coroutines = "1.7.2"
 kover = "0.6.1"
 ktlint-gradle = "11.3.2"
 org-junit-jupiter = "5.9.2"
 org-mockito = "5.2.0"
-paparazzi-gradle-plugin = "1.3.0"
+paparazzi-gradle-plugin = "1.3.1"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
-androidx-annotations = "androidx.annotation:annotation:1.6.0"
+androidx-annotations = "androidx.annotation:annotation:1.7.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 androidx-arch-core-common = { module = "androidx.arch.core:core-common", version.ref = "androidx-arch-core" }
 androidx-arch-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-arch-core" }
@@ -44,14 +44,14 @@ androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-mani
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-compose-ui-util = { module = "androidx.compose.ui:ui-util" }
-androidx-compose-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
+androidx-compose-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2"
 androidx-core-ktx = "androidx.core:core-ktx:1.10.1"
-androidx-lifecycle-common = "androidx.lifecycle:lifecycle-common-java8:2.6.1"
-androidx-lifecycle-compiler = "androidx.lifecycle:lifecycle-compiler:2.6.1"
+androidx-lifecycle-common = "androidx.lifecycle:lifecycle-common-java8:2.6.2"
+androidx-lifecycle-compiler = "androidx.lifecycle:lifecycle-compiler:2.6.2"
 androidx-lifecycle-extension = "androidx.lifecycle:lifecycle-extensions:2.2.0"
-androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
-androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
+androidx-lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.6.2"
+androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
 androidx-test-junit = "androidx.test.ext:junit-ktx:1.1.5"
 androidx-test-rules = "androidx.test:rules:1.5.0"
 androidx-test-runner = "androidx.test:runner:1.4.0"
@@ -67,7 +67,7 @@ arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
 arrow-optics = { module = "io.arrow-kt:arrow-optics" }
 arrow-optics-ksp-plugin = "io.arrow-kt:arrow-optics-ksp-plugin:1.1.5"
 arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
-arrow-stack = "io.arrow-kt:arrow-stack:1.1.5"
+arrow-stack = "io.arrow-kt:arrow-stack:1.2.0"
 coil = "io.coil-kt:coil-compose:2.2.2"
 google-accompanits-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "com-google-accompanist" }
 google-accompanits-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "com-google-accompanist" }
@@ -110,7 +110,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "com-squa
 retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "com-squareup-retrofit2" }
 slack-lint-compose = "com.slack.lint.compose:compose-lint-checks:1.1.1"
 timber = "com.jakewharton.timber:timber:5.0.1"
-turbine = "app.cash.turbine:turbine:0.12.1"
+turbine = "app.cash.turbine:turbine:0.12.3"
 
 [bundles]
 androidx-compose = [

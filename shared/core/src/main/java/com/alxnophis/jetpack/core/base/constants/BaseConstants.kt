@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.alxnophis.jetpack.core.base.constants
 
 const val BREAK_LINE = "\n"

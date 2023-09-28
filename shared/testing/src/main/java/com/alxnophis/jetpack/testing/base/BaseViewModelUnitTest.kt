@@ -21,7 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 open class BaseViewModelUnitTest {
 
     val testScheduler = TestCoroutineScheduler()
-    val testDispatcher = StandardTestDispatcher(testScheduler)
+    open val testDispatcher = StandardTestDispatcher(testScheduler)
     val testScope = TestScope(testDispatcher)
 
     @BeforeEach

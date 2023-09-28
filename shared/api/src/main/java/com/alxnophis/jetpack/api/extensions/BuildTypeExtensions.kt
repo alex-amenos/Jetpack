@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "KotlinConstantConditions")
 
 package com.alxnophis.jetpack.api.extensions
 

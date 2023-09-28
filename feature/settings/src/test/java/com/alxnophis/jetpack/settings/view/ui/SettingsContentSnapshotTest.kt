@@ -5,7 +5,7 @@ import app.cash.paparazzi.Paparazzi
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 import com.alxnophis.jetpack.settings.ui.contract.Theme
-import com.alxnophis.jetpack.settings.ui.view.SettingsContent
+import com.alxnophis.jetpack.settings.ui.view.SettingsScreen
 import com.alxnophis.jetpack.testing.constants.PAPARAZZI_MAX_PERCENT_DIFFERENCE
 import org.junit.Rule
 import org.junit.Test
@@ -47,12 +47,7 @@ internal class SettingsContentSnapshotTest {
         appVersion: String = APP_VERSION
     ) {
         paparazzi.snapshot {
-            SettingsContent(
-                state = state,
-                appVersion = appVersion,
-                handleEvent = {},
-                navigateBack = {}
-            )
+            SettingsScreen(state = state, appVersion = appVersion)
         }
     }
 

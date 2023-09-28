@@ -43,9 +43,9 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN signIn state and ToggleAuthenticationMode event THEN validate state is signUp`() {
+    fun `GIVEN a not authorized user with signIn mode WHEN change the authentication mode THEN validate state is signUp`() {
         runTest {
-            viewModel.handleEvent(AuthenticationEvent.ToggleAuthenticationMode)
+            viewModel.handleEvent(AuthenticationEvent.ToggleAuthenticationModeRequested)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -62,12 +62,12 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN signUp state and ToggleAuthenticationMode event THEN validate state is signIn`() {
+    fun `GIVEN a not authorized user with signUp mode WHEN change the authentication mode THEN validate state is signIn`() {
         runTest {
             val initialState = AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_UP)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.handleEvent(AuthenticationEvent.ToggleAuthenticationMode)
+            viewModel.handleEvent(AuthenticationEvent.ToggleAuthenticationModeRequested)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -84,12 +84,12 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN error state and ErrorDismissed event THEN validate dismissed error`() {
+    fun `GIVEN a error state WHEN request dismiss error THEN validate dismissed error`() {
         runTest {
             val initialState = AuthenticationState.initialState.copy(error = 1)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.handleEvent(AuthenticationEvent.ErrorDismissed)
+            viewModel.handleEvent(AuthenticationEvent.ErrorDismissRequested)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -97,7 +97,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                     awaitItem()
                 )
                 assertEquals(
-                    AuthenticationState.initialState.copy(error = NO_ERROR),
+                    initialState.copy(error = NO_ERROR),
                     awaitItem()
                 )
                 expectNoEvents()
@@ -106,7 +106,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN updated email and EmailChanged event THEN validate state change`() {
+    fun `WHEN email changes THEN validate state change`() {
         runTest {
             viewModel.handleEvent(AuthenticationEvent.EmailChanged(EMAIL))
 
@@ -125,7 +125,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN updated password and PasswordChanged event THEN validate state change`() {
+    fun `WHEN password changes THEN validate state change`() {
         runTest {
             viewModel.handleEvent(AuthenticationEvent.PasswordChanged(PASSWORD))
 
@@ -151,13 +151,13 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN Authenticate event with correct credentials THEN update state accordingly`() {
+    fun `WHEN user is authenticated with correct credentials THEN update state accordingly`() {
         runTest {
             whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState.initialState.copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.handleEvent(AuthenticationEvent.Authenticate)
+            viewModel.handleEvent(AuthenticationEvent.Authenticated)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -181,7 +181,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN userAuthorizedEvent consumed THEN update state accordingly`() {
+    fun `GIVEN an authorized user WHEN remove user authorization THEN update state accordingly`() {
         runTest {
             whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState.initialState.copy(email = EMAIL, password = PASSWORD, isLoading = false, isUserAuthorized = true)
@@ -195,9 +195,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                     awaitItem()
                 )
                 assertEquals(
-                    initialState.copy(
-                        isUserAuthorized = false
-                    ),
+                    initialState.copy(isUserAuthorized = false),
                     awaitItem()
                 )
                 expectNoEvents()
@@ -206,13 +204,13 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `WHEN Authenticate event with incorrect credentials THEN validate loading and error state sequence`() {
+    fun `GIVEN a not authorized user WHEN authenticated an user with incorrect credentials THEN validate loading and error state sequence`() {
         runTest {
             val initialState = AuthenticationState.initialState.copy(email = EMAIL, password = PASSWORD, error = NO_ERROR)
             val viewModel = viewModelMother(initialState = initialState)
             whenever(authenticateUseCaseMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
 
-            viewModel.handleEvent(AuthenticationEvent.Authenticate)
+            viewModel.handleEvent(AuthenticationEvent.Authenticated)
 
             viewModel.uiState.test {
                 assertEquals(
@@ -238,7 +236,10 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     private fun viewModelMother(
         initialState: AuthenticationState = AuthenticationState.initialState,
         authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock
-    ) = AuthenticationViewModel(initialState, authenticateUseCase)
+    ) = AuthenticationViewModel(
+        authenticateUseCase,
+        initialState
+    )
 
     companion object {
         private const val EMAIL = "my@email.com"

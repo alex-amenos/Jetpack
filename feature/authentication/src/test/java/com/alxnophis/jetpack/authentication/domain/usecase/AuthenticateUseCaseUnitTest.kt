@@ -6,9 +6,9 @@ import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_EMAIL
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_PASSWORD
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
@@ -23,7 +23,7 @@ private class AuthenticateUseCaseUnitTest : BaseUnitTest() {
         runTest {
             val result = useCase.invoke(VALID_EMAIL, VALID_PASSWORD)
 
-            assertEquals(Unit.right(), result)
+            result shouldBe Unit.right()
         }
     }
 
@@ -32,7 +32,7 @@ private class AuthenticateUseCaseUnitTest : BaseUnitTest() {
         runTest {
             val result = useCase.invoke(INVALID_EMAIL, INVALID_PASSWORD)
 
-            assertEquals(AuthenticationError.WrongAuthentication.left(), result)
+            result shouldBe AuthenticationError.WrongAuthentication.left()
         }
     }
 

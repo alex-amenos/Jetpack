@@ -11,6 +11,7 @@ import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.testing.listener.MainCoroutineListener
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,16 +32,16 @@ class PostsViewModelUnitTests : FunSpec({
 
     test(
         "GIVEN a PostsViewModel with default initial state " +
-            "WHEN get post succeed " +
+            "WHEN initialize " +
             "THEN show AND hide loading AND post state should end with a list of posts"
     ) {
         val postUseCaseMock: PostsUseCase = mock()
         val viewModel = PostsViewModel(
-            initialState = PostsState.initialState,
             postsUseCase = postUseCaseMock
         )
+        whenever(postUseCaseMock()).thenReturn(postList.right())
 
-        whenever(postUseCaseMock.invoke()).thenReturn(postList.right())
+        viewModel.handleEvent(PostsEvent.Initialized)
 
         viewModel.uiState.test {
             awaitItem() shouldBe PostsState.initialState
@@ -68,8 +69,9 @@ class PostsViewModelUnitTests : FunSpec({
                 postsUseCase = postUseCaseMock,
                 getRandomUUID = { errorId }
             )
+            whenever(postUseCaseMock()).thenReturn(error.left())
 
-            whenever(postUseCaseMock.invoke()).thenReturn(error.left())
+            viewModel.handleEvent(PostsEvent.Initialized)
 
             viewModel.uiState.test {
                 awaitItem() shouldBe PostsState.initialState
@@ -95,13 +97,32 @@ class PostsViewModelUnitTests : FunSpec({
             getRandomUUID = { errorId },
             postsUseCase = postUseCaseMock
         )
-        whenever(postUseCaseMock.invoke()).thenReturn(PostsError.Network.left())
+        whenever(postUseCaseMock()).thenReturn(PostsError.Network.left())
 
-        viewModel.handleEvent(PostsEvent.DismissError(errorId))
+        viewModel.handleEvent(PostsEvent.DismissErrorRequested(errorId))
 
         viewModel.uiState.test {
             expectMostRecentItem() shouldBe PostsState.initialState
             expectNoEvents()
+        }
+    }
+
+    // TODO - Review this test
+    xtest(
+        "GIVEN a PostViewModel initialized " +
+            "WHEN go back event " +
+            "THEN throw IllegalStateException"
+    ) {
+        val postUseCaseMock: PostsUseCase = mock()
+        val errorId = 1L
+        val viewModel = PostsViewModel(
+            initialState = PostsState.initialState,
+            getRandomUUID = { errorId },
+            postsUseCase = postUseCaseMock
+        )
+
+        shouldThrow<IllegalStateException> {
+            viewModel.handleEvent(PostsEvent.GoBackRequested)
         }
     }
 })

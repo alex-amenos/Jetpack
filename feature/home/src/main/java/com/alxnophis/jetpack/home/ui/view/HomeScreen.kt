@@ -1,11 +1,11 @@
 package com.alxnophis.jetpack.home.ui.view
 
-import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,12 +26,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.Lifecycle
+import com.alxnophis.jetpack.core.ui.composable.ComposableLifecycle
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
@@ -41,52 +41,35 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
-import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
 import com.alxnophis.jetpack.router.screen.Screen
 
 @Composable
 internal fun HomeScreen(
-    viewModel: HomeViewModel,
-    backOrFinish: (Activity?) -> Unit,
-    navigateTo: (String) -> Unit
-) {
-    val state: HomeState = viewModel.uiState.collectAsStateWithLifecycle().value
-    val activity: Activity? = (LocalContext.current as? Activity)
-    BackHandler {
-        backOrFinish(activity)
-    }
-    HomeContent(
-        state = state,
-        handleEvent = viewModel::handleEvent,
-        navigateTo = { route -> navigateTo(route) }
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun HomeContent(
     state: HomeState,
-    handleEvent: HomeEvent.() -> Unit,
-    navigateTo: (route: String) -> Unit
+    onEvent: (HomeEvent) -> Unit = {}
 ) {
+    BackHandler {
+        onEvent(HomeEvent.GoBackRequested)
+    }
+    ComposableLifecycle { _, event ->
+        if (event == Lifecycle.Event.ON_CREATE) {
+            onEvent(HomeEvent.Initialized)
+        }
+    }
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = { HomeTopBar() }
-        ) {
-            Column(
-                modifier = Modifier.padding(paddingValues = it)
-            ) {
-                SectionsList(
-                    state = state,
-                    navigateTo = navigateTo,
-                    modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)
-                )
-            }
+        ) { padding ->
+            SectionsList(
+                paddingValues = padding,
+                state = state,
+                navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) }
+            )
             if (state.error != NO_ERROR) {
                 CoreErrorDialog(
                     errorMessage = stringResource(state.error),
-                    dismissError = { handleEvent.invoke(HomeEvent.ErrorDismissed) }
+                    dismissError = { onEvent(HomeEvent.ErrorDismissRequested) }
                 )
             }
         }
@@ -118,13 +101,15 @@ internal fun HomeTopBar() {
 
 @Composable
 internal fun SectionsList(
+    paddingValues: PaddingValues,
     state: HomeState,
-    modifier: Modifier = Modifier,
     navigateTo: (route: String) -> Unit
 ) {
     LazyColumn(
         state = rememberLazyListState(),
-        modifier = modifier
+        modifier = Modifier
+            .background(color = MaterialTheme.colorScheme.surface)
+            .padding(paddingValues)
     ) {
         items(
             items = state.data,
@@ -198,9 +183,5 @@ private fun HomeScreenPreview() {
         ),
         error = NO_ERROR
     )
-    HomeContent(
-        state = state,
-        handleEvent = {},
-        navigateTo = {}
-    )
+    HomeScreen(state)
 }
