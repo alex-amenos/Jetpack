@@ -20,13 +20,8 @@ import kotlinx.coroutines.launch
 internal class PostsViewModel(
     private val postsUseCase: PostsUseCase,
     private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits },
-    initialState: PostsState = PostsState.initialState,
-    initialEvent: PostsEvent? = PostsEvent.Initialized
+    initialState: PostsState = PostsState.initialState
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
-
-    init {
-        initialEvent?.let(::handleEvent)
-    }
 
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
@@ -41,9 +36,7 @@ internal class PostsViewModel(
     private fun updatePosts() {
         viewModelScope.launch {
             updateUiState {
-                copy {
-                    PostsState.isLoading set true
-                }
+                copy { PostsState.isLoading set true }
             }
             getPosts()
                 .mapLeft { error: PostsError -> error.mapTo() }
@@ -84,9 +77,7 @@ internal class PostsViewModel(
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
         updateUiState {
-            copy {
-                PostsState.errorMessages set errorMessages
-            }
+            copy { PostsState.errorMessages set errorMessages }
         }
     }
 }
