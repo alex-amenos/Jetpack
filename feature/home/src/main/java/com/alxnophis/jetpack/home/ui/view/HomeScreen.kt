@@ -60,9 +60,9 @@ internal fun HomeScreen(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = { HomeTopBar() }
-        ) { padding ->
+        ) { paddingValues ->
             SectionsList(
-                paddingValues = padding,
+                paddingValues = paddingValues,
                 state = state,
                 navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) }
             )

@@ -72,6 +72,14 @@ internal fun PostsScreen(
             onEvent(PostsEvent.Initialized)
         }
     }
+    PostContent(state, onEvent)
+}
+
+@Composable
+private fun PostContent(
+    state: PostsState,
+    onEvent: (PostsEvent) -> Unit = {}
+) {
     AppTheme {
         val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
         val toolbarOffsetHeightPx = remember { mutableStateOf(ZERO_FLOAT) }
