@@ -6,7 +6,8 @@ import arrow.retrofit.adapter.either.networkhandling.HttpError
 import arrow.retrofit.adapter.either.networkhandling.IOError
 import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
-import com.alxnophis.jetpack.posts.data.mapper.map
+import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
+import com.alxnophis.jetpack.posts.data.mapper.mapToPost
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,8 +24,8 @@ class PostsRepositoryImpl(
         withContext(ioDispatcher) {
             apiDataSource
                 .getPosts()
-                .map { postList ->
-                    postList.map { it.map() }
+                .map { posts: List<PostApiModel> ->
+                    posts.map { it.mapToPost() }
                 }
                 .mapLeft { error: CallError ->
                     Timber.d("GET posts error: $error")
