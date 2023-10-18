@@ -91,8 +91,8 @@ internal fun SpacexScreen(
         ) { paddingValues ->
             PastLaunchesList(
                 modifier = Modifier
-                    .padding(paddingValues = paddingValues)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(paddingValues = paddingValues),
                 state = state,
                 onEvent = onEvent
             )

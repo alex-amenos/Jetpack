@@ -5,9 +5,9 @@ import arrow.core.left
 import arrow.core.right
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.R
-import com.alxnophis.jetpack.posts.domain.model.PostMother
-import com.alxnophis.jetpack.posts.domain.model.PostsError
-import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
+import com.alxnophis.jetpack.posts.data.model.PostMother
+import com.alxnophis.jetpack.posts.data.model.PostsError
+import com.alxnophis.jetpack.posts.data.repository.PostsRepository
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.testing.listener.MainCoroutineListener
@@ -25,6 +25,7 @@ class PostsViewModelUnitTests : FunSpec({
     val post1 = PostMother(id = 1, userId = 1, title = "title1", body = "body1")
     val post2 = PostMother(id = 2, userId = 2, title = "title2", body = "body2")
     val postList = listOf(post1, post2)
+    val postRepositoryMock: PostsRepository = mock()
 
     register(MainCoroutineListener(StandardTestDispatcher()))
 
@@ -35,11 +36,8 @@ class PostsViewModelUnitTests : FunSpec({
             "WHEN initialize " +
             "THEN show AND hide loading AND post state should end with a list of posts"
     ) {
-        val postUseCaseMock: PostsUseCase = mock()
-        val viewModel = PostsViewModel(
-            postsUseCase = postUseCaseMock
-        )
-        whenever(postUseCaseMock()).thenReturn(postList.right())
+        val viewModel = PostsViewModel(postsRepository = postRepositoryMock)
+        whenever(postRepositoryMock.getPosts()).thenReturn(postList.right())
 
         viewModel.handleEvent(PostsEvent.Initialized)
 
@@ -63,13 +61,11 @@ class PostsViewModelUnitTests : FunSpec({
                 "THEN show AND hide loading AND post state result should be an error with messageId $errorMessage"
         ) {
             val errorId = 1L
-            val postUseCaseMock: PostsUseCase = mock()
             val viewModel = PostsViewModel(
-                initialState = PostsState.initialState,
-                postsUseCase = postUseCaseMock,
+                postsRepository = postRepositoryMock,
                 getRandomUUID = { errorId }
             )
-            whenever(postUseCaseMock()).thenReturn(error.left())
+            whenever(postRepositoryMock.getPosts()).thenReturn(error.left())
 
             viewModel.handleEvent(PostsEvent.Initialized)
 
@@ -90,14 +86,12 @@ class PostsViewModelUnitTests : FunSpec({
             "WHEN DismissError event " +
             "THEN post state result should be without errors"
     ) {
-        val postUseCaseMock: PostsUseCase = mock()
         val errorId = 1L
         val viewModel = PostsViewModel(
-            initialState = PostsState.initialState,
-            getRandomUUID = { errorId },
-            postsUseCase = postUseCaseMock
+            postsRepository = postRepositoryMock,
+            getRandomUUID = { errorId }
         )
-        whenever(postUseCaseMock()).thenReturn(PostsError.Network.left())
+        whenever(postRepositoryMock.getPosts()).thenReturn(PostsError.Network.left())
 
         viewModel.handleEvent(PostsEvent.DismissErrorRequested(errorId))
 
@@ -113,12 +107,10 @@ class PostsViewModelUnitTests : FunSpec({
             "WHEN go back event " +
             "THEN throw IllegalStateException"
     ) {
-        val postUseCaseMock: PostsUseCase = mock()
         val errorId = 1L
         val viewModel = PostsViewModel(
-            initialState = PostsState.initialState,
-            getRandomUUID = { errorId },
-            postsUseCase = postUseCaseMock
+            postsRepository = postRepositoryMock,
+            getRandomUUID = { errorId }
         )
 
         shouldThrow<IllegalStateException> {

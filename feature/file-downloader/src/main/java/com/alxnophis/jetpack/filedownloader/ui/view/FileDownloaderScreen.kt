@@ -92,9 +92,9 @@ internal fun FileDownloaderScreen(
                 state = state,
                 handleEvent = onEvent,
                 modifier = Modifier
-                    .padding(paddingValues)
                     .drawVerticalScrollbar(rememberScrollState())
                     .fillMaxSize()
+                    .padding(paddingValues)
                     .padding(mediumPadding)
             )
 
