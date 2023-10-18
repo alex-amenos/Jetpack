@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.posts.domain.model
+package com.alxnophis.jetpack.posts.data.model
 
 sealed class PostsError {
     object Network : PostsError()

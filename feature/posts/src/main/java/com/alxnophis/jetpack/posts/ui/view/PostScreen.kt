@@ -47,7 +47,7 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
-import com.alxnophis.jetpack.posts.domain.model.Post
+import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.google.accompanist.placeholder.material.placeholder

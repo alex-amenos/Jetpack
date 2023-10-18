@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.posts.domain.model
+package com.alxnophis.jetpack.posts.data.model
 
 data class Post(
     val id: Int,

@@ -1,13 +1,11 @@
 package com.alxnophis.jetpack.posts.data.mapper
 
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
-import com.alxnophis.jetpack.posts.domain.model.Post
+import com.alxnophis.jetpack.posts.data.model.Post
 
-internal fun List<PostApiModel>.mapToPostList(): List<Post> = map {
-    Post(
-        id = it.id,
-        userId = it.userId,
-        title = it.title,
-        body = it.body
-    )
-}
+internal fun PostApiModel.map() = Post(
+    id = id,
+    userId = userId,
+    title = title,
+    body = body
+)

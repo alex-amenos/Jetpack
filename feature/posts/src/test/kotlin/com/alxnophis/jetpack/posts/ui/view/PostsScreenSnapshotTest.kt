@@ -3,7 +3,7 @@ package com.alxnophis.jetpack.posts.ui.view
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
-import com.alxnophis.jetpack.posts.domain.model.Post
+import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.testing.constants.PAPARAZZI_MAX_PERCENT_DIFFERENCE
 import org.junit.Rule
