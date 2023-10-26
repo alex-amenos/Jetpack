@@ -7,10 +7,10 @@ import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.data.model.Post
 
-internal sealed class PostsEvent : UiEvent {
-    object Initialized : PostsEvent()
-    object GoBackRequested : PostsEvent()
-    data class DismissErrorRequested(val errorId: Long) : PostsEvent()
+internal sealed interface PostsEvent : UiEvent {
+    object Initialized : PostsEvent
+    object GoBackRequested : PostsEvent
+    data class DismissErrorRequested(val errorId: Long) : PostsEvent
 }
 
 @Immutable
