@@ -1,20 +1,37 @@
 package com.alxnophis.jetpack.root.ui
 
+import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.alxnophis.jetpack.root.ui.navigation.SetupNavGraph
 
-class RootActivity : ComponentActivity() {
+class RootActivity : AppCompatActivity() {
+
+    private lateinit var navigationController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        renderContent()
+        val restoredState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            savedInstanceState?.getParcelable(NAVIGATION_STATE, Bundle::class.java)
+        } else {
+            savedInstanceState?.getParcelable(NAVIGATION_STATE)
+        }
+        setContent {
+            navigationController = rememberNavController()
+            navigationController.restoreState(restoredState)
+            SetupNavGraph(navHostController = navigationController)
+        }
     }
 
-    private fun renderContent() {
-        setContent {
-            SetupNavGraph()
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(NAVIGATION_STATE, navigationController.saveState())
+    }
+
+    companion object {
+        private const val NAVIGATION_STATE = "nav_state"
     }
 }
