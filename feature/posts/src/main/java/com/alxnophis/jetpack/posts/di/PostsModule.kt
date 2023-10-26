@@ -16,5 +16,5 @@ private val loadPostsModules by lazy {
 
 private val postModule: Module = module {
     factory<PostsRepository> { PostsRepositoryImpl(get()) }
-    viewModel { PostsViewModel(get(), get()) }
+    viewModel { PostsViewModel(get()) }
 }
