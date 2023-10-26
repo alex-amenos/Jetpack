@@ -1,9 +1,10 @@
 package com.alxnophis.jetpack.posts.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.base.viewmodel.BaseSavableViewModel
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.data.model.Post
@@ -19,9 +20,10 @@ import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
     private val postsRepository: PostsRepository,
-    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits },
-    initialState: PostsState = PostsState.initialState
-) : BaseViewModel<PostsEvent, PostsState>(initialState) {
+    savedStateHandle: SavedStateHandle,
+    initialState: PostsState = PostsState.initialState,
+    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
+) : BaseSavableViewModel<PostsEvent, PostsState>(savedStateHandle, SAVED_STATE_KEY, initialState) {
 
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
@@ -79,5 +81,9 @@ internal class PostsViewModel(
         updateUiState {
             copy { PostsState.errorMessages set errorMessages }
         }
+    }
+
+    companion object {
+        private const val SAVED_STATE_KEY = "PostKey"
     }
 }

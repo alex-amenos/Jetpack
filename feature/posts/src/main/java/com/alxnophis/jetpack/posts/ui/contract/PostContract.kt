@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.posts.ui.contract
 
+import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
@@ -12,6 +13,7 @@ internal sealed class PostsEvent : UiEvent {
     data class DismissErrorRequested(val errorId: Long) : PostsEvent()
 }
 
+@Immutable
 @optics
 internal data class PostsState(
     val isLoading: Boolean,
