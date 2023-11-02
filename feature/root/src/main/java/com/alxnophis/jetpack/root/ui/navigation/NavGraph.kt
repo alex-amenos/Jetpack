@@ -5,10 +5,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
-import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import com.alxnophis.jetpack.authentication.ui.navigation.authenticationNavGraph
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.filedownloader.ui.navigation.fileDownloaderNavGraph
@@ -25,10 +23,9 @@ import com.alxnophis.jetpack.spacex.ui.navigation.spacexNavGraph
 
 @Composable
 fun SetupNavGraph(
-    navHostController: NavHostController = rememberNavController(),
+    navHostController: NavHostController,
     startDestination: String = HOME_ROUTE
 ) {
-    val finish = { ActivityCompat.finishAffinity(navHostController.context as Activity) }
     AppTheme {
         SetStatusBarColor()
         NavHost(
@@ -36,7 +33,7 @@ fun SetupNavGraph(
             startDestination = startDestination,
             route = ROOT_ROUTE
         ) {
-            homeNavGraph(navHostController, finish)
+            homeNavGraph(navHostController)
             authenticationNavGraph(navHostController)
             ballClickerNavGraph(navHostController)
             fileDownloaderNavGraph(navHostController)

@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.spacex.ui.contract
 
+import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
@@ -13,6 +14,7 @@ internal sealed class LaunchesEvent : UiEvent {
     data class DismissErrorRequested(val errorId: Long) : LaunchesEvent()
 }
 
+@Immutable
 @optics
 internal data class LaunchesState(
     val isLoading: Boolean,

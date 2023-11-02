@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.posts.domain.model
+package com.alxnophis.jetpack.posts.data.model
 
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT

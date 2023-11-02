@@ -6,9 +6,9 @@ import arrow.optics.copy
 import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.R
-import com.alxnophis.jetpack.posts.domain.model.Post
-import com.alxnophis.jetpack.posts.domain.model.PostsError
-import com.alxnophis.jetpack.posts.domain.usecase.PostsUseCase
+import com.alxnophis.jetpack.posts.data.model.Post
+import com.alxnophis.jetpack.posts.data.model.PostsError
+import com.alxnophis.jetpack.posts.data.repository.PostsRepository
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.posts.ui.contract.errorMessages
@@ -18,9 +18,9 @@ import java.util.UUID
 import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
-    private val postsUseCase: PostsUseCase,
-    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits },
-    initialState: PostsState = PostsState.initialState
+    private val postsRepository: PostsRepository,
+    initialState: PostsState = PostsState.initialState,
+    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 
     override fun handleEvent(event: PostsEvent) {
@@ -61,7 +61,7 @@ internal class PostsViewModel(
         }
     }
 
-    private suspend fun getPosts(): Either<PostsError, List<Post>> = postsUseCase()
+    private suspend fun getPosts(): Either<PostsError, List<Post>> = postsRepository.getPosts()
 
     private fun PostsError.mapTo(): List<ErrorMessage> =
         currentState.errorMessages + ErrorMessage(
@@ -79,5 +79,9 @@ internal class PostsViewModel(
         updateUiState {
             copy { PostsState.errorMessages set errorMessages }
         }
+    }
+
+    companion object {
+        private const val SAVED_STATE_KEY = "PostKey"
     }
 }

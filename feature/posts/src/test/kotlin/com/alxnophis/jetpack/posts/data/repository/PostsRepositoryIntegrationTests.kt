@@ -1,14 +1,12 @@
-package com.alxnophis.jetpack.posts.domain.usecase
+package com.alxnophis.jetpack.posts.data.repository
 
 import arrow.core.left
 import arrow.core.right
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
 import com.alxnophis.jetpack.api.jsonplaceholder.model.CallErrorMother
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModelMother
-import com.alxnophis.jetpack.posts.data.repository.PostsRepository
-import com.alxnophis.jetpack.posts.data.repository.PostsRepositoryImpl
-import com.alxnophis.jetpack.posts.domain.model.PostMother
-import com.alxnophis.jetpack.posts.domain.model.PostsError
+import com.alxnophis.jetpack.posts.data.model.PostMother
+import com.alxnophis.jetpack.posts.data.model.PostsError
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,7 +14,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
-internal class PostsUseCaseIntegrationTests : BehaviorSpec({
+internal class PostsRepositoryIntegrationTests : BehaviorSpec({
 
     val postApi1 = PostApiModelMother(id = 1, userId = 1, title = "title1", body = "body1")
     val postApi2 = PostApiModelMother(id = 2, userId = 2, title = "title2", body = "body2")
@@ -29,12 +27,11 @@ internal class PostsUseCaseIntegrationTests : BehaviorSpec({
 
     Given("a PostsUseCase") {
         val apiDataSourceMock: JsonPlaceholderRetrofitService = mock()
-        val postRepository: PostsRepository = PostsRepositoryImpl(apiDataSource = apiDataSourceMock)
-        val useCase = PostsUseCase(repository = postRepository)
+        val repository: PostsRepository = PostsRepositoryImpl(apiDataSource = apiDataSourceMock)
 
         When("Get posts from use case succeed") {
             whenever(apiDataSourceMock.getPosts()).thenReturn(postApiList.right())
-            val result = useCase.invoke()
+            val result = repository.getPosts()
 
             Then("the result should be a list of posts") {
                 result shouldBe postList.right()
@@ -50,7 +47,7 @@ internal class PostsUseCaseIntegrationTests : BehaviorSpec({
         ).forEach { (apiError, expectedError) ->
             When("get post from API fails with $apiError") {
                 whenever(apiDataSourceMock.getPosts()).thenReturn(apiError.left())
-                val result = useCase.invoke()
+                val result = repository.getPosts()
 
                 Then("the result should be $expectedError") {
                     result shouldBe expectedError.left()
