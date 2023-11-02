@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
@@ -131,7 +130,7 @@ private fun PastLaunchesList(
 }
 
 @Composable
-private fun LazyItemScope.PastLaunchItem(
+private fun PastLaunchItem(
     item: PastLaunchModel,
     modifier: Modifier = Modifier
 ) {
