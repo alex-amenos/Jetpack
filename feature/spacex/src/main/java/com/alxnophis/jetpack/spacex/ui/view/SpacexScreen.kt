@@ -1,10 +1,8 @@
 package com.alxnophis.jetpack.spacex.ui.view
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,22 +22,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,9 +44,6 @@ import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
-import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
-import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
-import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesEvent
 import com.alxnophis.jetpack.spacex.ui.contract.LaunchesState
@@ -210,12 +197,16 @@ private fun PastLaunchItem(
                 }
             }
             if (item.details.isNotEmpty()) {
-                ExpandingText(
+                Text(
+                    text = item.details,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 3,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Light,
                     modifier = Modifier
                         .padding(top = mediumPadding)
                         .wrapContentSize()
-                        .testTag(TAG_SPACEX_LAUNCH_DETAIL + item.id),
-                    item = item
+                        .testTag(TAG_SPACEX_LAUNCH_DETAIL + item.id)
                 )
             }
         }
@@ -251,60 +242,6 @@ private fun MissionImage(
     }
 }
 
-@Composable
-private fun ExpandingText(
-    item: PastLaunchModel,
-    modifier: Modifier = Modifier
-) {
-    val showMoreString = stringResource(R.string.spacex_show_more)
-    val textTermination = buildString {
-        append(THREE_DOTS)
-        append(WHITE_SPACE)
-    }
-    val textLayoutResultState = remember { mutableStateOf<TextLayoutResult?>(null) }
-    val textLayoutResult = textLayoutResultState.value
-    var isClickable by remember { mutableStateOf(false) }
-    var isExpanded by remember { mutableStateOf(false) }
-    var finalText: String by remember { mutableStateOf(item.details) }
-    LaunchedEffect(textLayoutResult) {
-        if (textLayoutResult == null) return@LaunchedEffect
-        when {
-            isExpanded -> {
-                isClickable = false
-                finalText = item.details
-            }
-            !isExpanded && textLayoutResult.hasVisualOverflow -> {
-                isClickable = true
-                val lastCharIndex = textLayoutResult.getLineEnd(MINIMIZED_LINES - 1)
-                val adjustedText = item.details
-                    .substring(startIndex = ZERO_INT, endIndex = lastCharIndex)
-                    .dropLast(textTermination.length + showMoreString.length)
-                    .dropLastWhile { it == ' ' || it == '.' }
-                finalText = "$adjustedText$textTermination"
-            }
-        }
-    }
-    Text(
-        text = if (isClickable) {
-            buildAnnotatedString {
-                append(finalText)
-                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                    append(showMoreString)
-                }
-            }
-        } else {
-            buildAnnotatedString { append(finalText) }
-        },
-        modifier = modifier
-            .clickable(enabled = isClickable) { isExpanded = !isExpanded }
-            .animateContentSize(),
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Light,
-        maxLines = if (isExpanded) Int.MAX_VALUE else MINIMIZED_LINES,
-        onTextLayout = { textLayoutResultState.value = it }
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun SpacexContentPreview() {
@@ -324,5 +261,3 @@ private fun SpacexContentPreview() {
     )
     SpacexScreen(state)
 }
-
-private const val MINIMIZED_LINES = 3

@@ -1,5 +1,7 @@
 package com.alxnophis.jetpack.home.ui.navigation
 
+import android.app.Activity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -15,8 +17,7 @@ import com.alxnophis.jetpack.router.screen.Screen
 import org.koin.androidx.compose.getViewModel
 
 fun NavGraphBuilder.homeNavGraph(
-    navController: NavHostController,
-    finish: () -> Unit
+    navController: NavHostController
 ) {
     navigation(
         startDestination = Screen.Home.route,
@@ -26,6 +27,7 @@ fun NavGraphBuilder.homeNavGraph(
             route = Screen.Home.route
         ) {
             injectHome()
+            val finish = { ActivityCompat.finishAffinity(navController.context as Activity) }
             val viewModel = getViewModel<HomeViewModel>()
             val state: HomeState = viewModel.uiState.collectAsStateWithLifecycle().value
             HomeScreen(

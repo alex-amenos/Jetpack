@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
     private val postsRepository: PostsRepository,
-    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits },
-    initialState: PostsState = PostsState.initialState
+    initialState: PostsState = PostsState.initialState,
+    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
 
     override fun handleEvent(event: PostsEvent) {
@@ -79,5 +79,9 @@ internal class PostsViewModel(
         updateUiState {
             copy { PostsState.errorMessages set errorMessages }
         }
+    }
+
+    companion object {
+        private const val SAVED_STATE_KEY = "PostKey"
     }
 }
