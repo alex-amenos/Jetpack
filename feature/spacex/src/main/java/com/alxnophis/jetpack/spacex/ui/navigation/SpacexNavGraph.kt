@@ -22,7 +22,7 @@ fun NavGraphBuilder.spacexNavGraph(navController: NavController) {
                     LaunchesEvent.GoBackRequested -> navController.popBackStack()
                     else -> viewModel.handleEvent(event)
                 }
-            },
+            }
         )
     }
 }

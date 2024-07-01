@@ -24,7 +24,7 @@ fun NavGraphBuilder.authenticationNavGraph(navController: NavHostController) {
                     AuthenticationEvent.GoBackRequested -> navController.popBackStack()
                     is AuthenticationEvent.NavigateToAuthScreenRequested -> {
                         navController.navigate(
-                            route = Route.Authorized(event.email),
+                            route = Route.Authorized(event.email)
                         ) {
                             popUpTo(Route.Authentication) {
                                 inclusive = true
@@ -33,7 +33,7 @@ fun NavGraphBuilder.authenticationNavGraph(navController: NavHostController) {
                     }
                     else -> viewModel.handleEvent(event)
                 }
-            },
+            }
         )
     }
     composable<Route.Authorized> {
@@ -41,7 +41,7 @@ fun NavGraphBuilder.authenticationNavGraph(navController: NavHostController) {
         requireNotNull(args.email) { "Email can not be null, is required to login" }
         AuthorizedScreen(
             userEmail = args.email,
-            navigateBack = { navController.popBackStack() },
+            navigateBack = { navController.popBackStack() }
         )
     }
 }

@@ -22,7 +22,7 @@ fun NavGraphBuilder.ballClickerNavGraph(navController: NavController) {
                     BallClickerEvent.GoBackRequested -> navController.popBackStack()
                     else -> viewModel.handleEvent(event)
                 }
-            },
+            }
         )
     }
 }

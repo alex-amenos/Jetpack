@@ -18,7 +18,7 @@ internal class HomeContentSnapshotTest {
     val paparazzi =
         Paparazzi(
             deviceConfig = DeviceConfig.PIXEL_6,
-            maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE,
+            maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE
         )
 
     @Test
@@ -28,7 +28,7 @@ internal class HomeContentSnapshotTest {
             HomeState.initialState.copy {
                 HomeState.data set listOf(NAVIGATION_ITEM_1, NAVIGATION_ITEM_2)
                 HomeState.error set NO_ERROR
-            },
+            }
         )
     }
 
@@ -44,14 +44,14 @@ internal class HomeContentSnapshotTest {
                 name = "Screen 1",
                 emoji = "🐻",
                 description = "Detail 1",
-                route = Route.Authentication,
+                route = Route.Authentication
             )
         private val NAVIGATION_ITEM_2 =
             NavigationItem(
                 name = "Screen 2",
                 emoji = "🦊",
                 description = "Detail 2",
-                route = Route.Settings,
+                route = Route.Settings
             )
     }
 }

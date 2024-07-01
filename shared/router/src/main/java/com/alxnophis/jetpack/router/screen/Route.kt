@@ -2,7 +2,6 @@ package com.alxnophis.jetpack.router.screen
 
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 sealed class Route {
     @Serializable

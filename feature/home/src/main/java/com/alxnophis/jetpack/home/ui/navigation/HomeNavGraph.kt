@@ -31,7 +31,7 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
                     is HomeEvent.NavigationRequested -> navController.navigate(event.route)
                     else -> viewModel.handleEvent(event)
                 }
-            },
+            }
         )
     }
 }

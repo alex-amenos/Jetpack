@@ -22,7 +22,7 @@ fun NavGraphBuilder.locationTrackerNavGraph(navController: NavHostController) {
                     is LocationTrackerEvent.GoBackRequested -> navController.popBackStack()
                     else -> viewModel.handleEvent(event)
                 }
-            },
+            }
         )
     }
 }

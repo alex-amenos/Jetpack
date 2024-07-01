@@ -22,7 +22,7 @@ fun NavGraphBuilder.fileDownloaderNavGraph(navController: NavController) {
                     FileDownloaderEvent.GoBackRequested -> navController.popBackStack()
                     else -> viewModel.handleEvent(event)
                 }
-            },
+            }
         )
     }
 }

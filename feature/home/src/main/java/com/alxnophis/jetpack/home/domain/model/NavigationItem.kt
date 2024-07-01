@@ -8,5 +8,5 @@ data class NavigationItem(
     val emoji: String,
     val name: String,
     val description: String,
-    val route: Route,
+    val route: Route
 )
