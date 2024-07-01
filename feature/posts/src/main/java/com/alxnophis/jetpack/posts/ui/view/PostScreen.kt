@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -82,13 +83,13 @@ private fun PostContent(
 ) {
     AppTheme {
         val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
-        val toolbarOffsetHeightPx = remember { mutableStateOf(ZERO_FLOAT) }
+        val toolbarOffsetHeightPx = remember { mutableFloatStateOf(ZERO_FLOAT) }
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
                 override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                     val delta = available.y
-                    val newOffset = toolbarOffsetHeightPx.value + delta
-                    toolbarOffsetHeightPx.value = newOffset.coerceIn(-toolbarHeightPx, ZERO_FLOAT)
+                    val newOffset = toolbarOffsetHeightPx.floatValue + delta
+                    toolbarOffsetHeightPx.floatValue = newOffset.coerceIn(-toolbarHeightPx, ZERO_FLOAT)
                     return Offset.Zero
                 }
             }

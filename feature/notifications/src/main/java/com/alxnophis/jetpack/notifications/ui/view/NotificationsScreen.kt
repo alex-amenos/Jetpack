@@ -38,9 +38,7 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.notifications.R
 
 @Composable
-internal fun NotificationsScreen(
-    navigateBack: () -> Unit = {}
-) {
+internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
     BackHandler {
         navigateBack()
     }
@@ -51,72 +49,74 @@ internal fun NotificationsScreen(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.notifications_title),
-                    onBack = { navigateBack() }
+                    onBack = { navigateBack() },
                 )
-            }
+            },
         ) {
             NotificationPermission(
-                modifier = Modifier
-                    .padding(paddingValues = it)
-                    .fillMaxSize()
-                    .padding(mediumPadding)
+                modifier =
+                    Modifier
+                        .padding(paddingValues = it)
+                        .fillMaxSize()
+                        .padding(mediumPadding),
             )
         }
     }
 }
 
 @Composable
-private fun NotificationPermission(
-    modifier: Modifier = Modifier
-) {
+private fun NotificationPermission(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var hasNotificationPermission by remember {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
             mutableStateOf(
-                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED,
             )
         } else {
             mutableStateOf(true)
         }
     }
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted -> hasNotificationPermission = isGranted }
-    )
+    val permissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { isGranted -> hasNotificationPermission = isGranted },
+        )
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CoreButtonMinor(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(largePadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(largePadding),
                 text = stringResource(id = R.string.notifications_request_permission),
-                onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) }
+                onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
             )
             Divider(
                 modifier = Modifier.height(15.dp),
-                color = Color.Transparent
+                color = Color.Transparent,
             )
         }
         CoreButtonMajor(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(largePadding),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(largePadding),
             text = stringResource(id = R.string.notifications_show_notification),
             onClick = {
                 if (hasNotificationPermission) {
                     context.showNotification(
                         title = "Lorem ipsum",
                         content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        icon = R.drawable.ic_push_notification,
+                        icon = R.drawable.notifications_ic_push,
                         channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
-                        notificationId = 1
+                        notificationId = 1,
                     )
                 }
-            }
+            },
         )
     }
 }
