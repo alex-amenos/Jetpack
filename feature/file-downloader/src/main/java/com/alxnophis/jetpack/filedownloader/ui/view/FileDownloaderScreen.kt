@@ -20,7 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -182,7 +182,7 @@ private fun FileDownloaderContent(
 
 @Composable
 private fun FileDownloaderDivider() {
-    Divider(
+    HorizontalDivider(
         modifier =
             Modifier
                 .height(1.dp)

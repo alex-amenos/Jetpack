@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -95,7 +95,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
                 text = stringResource(id = R.string.notifications_request_permission),
                 onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.height(15.dp),
                 color = Color.Transparent,
             )

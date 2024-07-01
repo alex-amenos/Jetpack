@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,25 +20,25 @@ import com.alxnophis.jetpack.settings.R
 internal fun SettingsManageSubscriptionItem(
     title: String,
     modifier: Modifier = Modifier,
-    onSubscriptionClicked: () -> Unit
+    onSubscriptionClicked: () -> Unit,
 ) {
     SettingsItem(modifier = modifier) {
         Row(
-            modifier = Modifier
-                .clickable(
-                    onClickLabel = stringResource(id = R.string.settings_cd_open_subscription)
-                ) {
-                    onSubscriptionClicked()
-                }
-                .padding(mediumPadding)
+            modifier =
+                Modifier
+                    .clickable(
+                        onClickLabel = stringResource(id = R.string.settings_cd_open_subscription),
+                    ) {
+                        onSubscriptionClicked()
+                    }.padding(mediumPadding),
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = title
+                text = title,
             )
             Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = null
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
             )
         }
     }
@@ -53,7 +52,7 @@ private fun SettingsManageSubscriptionItemPreview() {
         SettingsManageSubscriptionItem(
             modifier = Modifier.fillMaxWidth(),
             title = "Lorem ipsum dolor sit amet",
-            onSubscriptionClicked = {}
+            onSubscriptionClicked = {},
         )
     }
 }
