@@ -42,8 +42,8 @@ subprojects {
     apply from: "$rootDir/buildSystem/gradle/dependency-updates.gradle"
 }
 
-task clean(type: Delete) {
-    delete buildDir
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
 }
 
 task installGitHook(type: Copy) {
