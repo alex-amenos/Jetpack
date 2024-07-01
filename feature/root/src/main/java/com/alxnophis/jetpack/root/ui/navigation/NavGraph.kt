@@ -16,22 +16,17 @@ import com.alxnophis.jetpack.location.tracker.ui.navigation.locationTrackerNavGr
 import com.alxnophis.jetpack.myplayground.navigation.myPlaygroundNavGraph
 import com.alxnophis.jetpack.notifications.navigation.notificationsNavGraph
 import com.alxnophis.jetpack.posts.ui.navigation.postsNavGraph
-import com.alxnophis.jetpack.router.screen.HOME_ROUTE
-import com.alxnophis.jetpack.router.screen.ROOT_ROUTE
+import com.alxnophis.jetpack.router.screen.Route
 import com.alxnophis.jetpack.settings.ui.navigation.settingsNavGraph
 import com.alxnophis.jetpack.spacex.ui.navigation.spacexNavGraph
 
 @Composable
-fun SetupNavGraph(
-    navHostController: NavHostController,
-    startDestination: String = HOME_ROUTE
-) {
+fun SetupNavGraph(navHostController: NavHostController) {
     AppTheme {
         SetStatusBarColor()
         NavHost(
             navController = navHostController,
-            startDestination = startDestination,
-            route = ROOT_ROUTE
+            startDestination = Route.Home
         ) {
             homeNavGraph(navHostController)
             authenticationNavGraph(navHostController)

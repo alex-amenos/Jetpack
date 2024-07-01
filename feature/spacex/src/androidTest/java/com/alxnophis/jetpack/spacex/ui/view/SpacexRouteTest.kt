@@ -15,8 +15,7 @@ import com.alxnophis.jetpack.spacex.ui.view.SpacexTags.TAG_SPACEX_LAUNCH_DETAIL
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
-class SpacexScreenTest : BaseComposeTest() {
-
+class SpacexRouteTest : BaseComposeTest() {
     @Test
     fun spacex_top_bar_title_is_displayed() {
         setSpacexContent(state = LaunchesState.initialState)
@@ -89,7 +88,9 @@ class SpacexScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 
-    private fun assertStringResDisplayed(@StringRes stringResource: Int) {
+    private fun assertStringResDisplayed(
+        @StringRes stringResource: Int,
+    ) {
         assertStringDisplayed(targetContext.getString(stringResource))
     }
 
@@ -97,7 +98,7 @@ class SpacexScreenTest : BaseComposeTest() {
         composeTestRule.setContent {
             SpacexScreen(
                 state = state,
-                onEvent = {}
+                onEvent = {},
             )
         }
     }
@@ -105,8 +106,8 @@ class SpacexScreenTest : BaseComposeTest() {
     companion object {
         private const val LONG_LOREM_IPSUM =
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
-                "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-                "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. " +
-                "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. " +
+                    "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     }
 }

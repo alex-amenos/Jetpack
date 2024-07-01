@@ -41,12 +41,12 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
-import com.alxnophis.jetpack.router.screen.Screen
+import com.alxnophis.jetpack.router.screen.Route
 
 @Composable
 internal fun HomeScreen(
     state: HomeState,
-    onEvent: (HomeEvent) -> Unit = {}
+    onEvent: (HomeEvent) -> Unit = {},
 ) {
     BackHandler {
         onEvent(HomeEvent.GoBackRequested)
@@ -57,17 +57,17 @@ internal fun HomeScreen(
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            topBar = { HomeTopBar() }
+            topBar = { HomeTopBar() },
         ) { paddingValues ->
             SectionsList(
                 paddingValues = paddingValues,
                 state = state,
-                navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) }
+                navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) },
             )
             if (state.error != NO_ERROR) {
                 CoreErrorDialog(
                     errorMessage = stringResource(state.error),
-                    dismissError = { onEvent(HomeEvent.ErrorDismissRequested) }
+                    dismissError = { onEvent(HomeEvent.ErrorDismissRequested) },
                 )
             }
         }
@@ -84,7 +84,7 @@ internal fun HomeTopBar() {
             scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
             navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
         ),
         title = {
             Text(
@@ -92,9 +92,9 @@ internal fun HomeTopBar() {
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp
+                letterSpacing = 1.sp,
             )
-        }
+        },
     )
 }
 
@@ -102,14 +102,14 @@ internal fun HomeTopBar() {
 internal fun SectionsList(
     paddingValues: PaddingValues,
     state: HomeState,
-    navigateTo: (route: String) -> Unit
+    navigateTo: (route: Route) -> Unit,
 ) {
     LazyColumn(
         state = rememberLazyListState(),
         modifier =
         Modifier
             .background(color = MaterialTheme.colorScheme.surface)
-            .padding(paddingValues)
+            .padding(paddingValues),
     ) {
         items(
             items = state.data,
@@ -120,24 +120,24 @@ internal fun SectionsList(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier =
                     Modifier
-                        .clickable { navigateTo(item.screen.route) }
+                        .clickable { navigateTo(item.route) }
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .padding(mediumPadding)
+                        .padding(mediumPadding),
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         text = item.emoji,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
                     )
                     Column(
                         modifier =
                         Modifier
                             .weight(0.9f)
                             .fillMaxWidth()
-                            .padding(start = mediumPadding)
+                            .padding(start = mediumPadding),
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -145,7 +145,7 @@ internal fun SectionsList(
                             color = MaterialTheme.colorScheme.onSurface,
                             text = item.name,
                             fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
                         )
                         Text(
                             modifier =
@@ -155,12 +155,12 @@ internal fun SectionsList(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             text = item.description,
-                            fontWeight = FontWeight.Light
+                            fontWeight = FontWeight.Light,
                         )
                     }
                 }
                 HorizontalDivider(color = Color.LightGray)
-            }
+            },
         )
     }
 }
@@ -177,16 +177,16 @@ private fun HomeScreenPreview() {
                     name = "Screen 1",
                     emoji = "🐻",
                     description = "Lorem ipsum",
-                    screen = Screen.Authentication
+                    route = Route.Authentication,
                 ),
                 NavigationItem(
                     name = "Screen 2",
                     emoji = "🦊",
                     description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                    screen = Screen.Settings
-                )
+                    route = Route.Settings,
+                ),
             ),
-            error = NO_ERROR
+            error = NO_ERROR,
         )
     HomeScreen(state)
 }

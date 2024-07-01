@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,14 +31,15 @@ internal fun SettingsManageSubscriptionItem(
                     onClickLabel = stringResource(id = R.string.settings_cd_open_subscription)
                 ) {
                     onSubscriptionClicked()
-                }.padding(mediumPadding)
+                }
+                .padding(mediumPadding)
         ) {
             Text(
                 modifier = Modifier.weight(1f),
                 text = title
             )
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.ArrowRight,
                 contentDescription = null
             )
         }
