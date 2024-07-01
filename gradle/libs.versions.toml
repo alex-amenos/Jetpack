@@ -8,7 +8,7 @@ com-apollographql-apollo3 = "3.7.5"
 com-google-accompanist = "0.25.1"
 com-squareup-okhttp3 = "4.10.0"
 com-squareup-retrofit2 = "2.9.0"
-gradle = "8.1.2"
+android-gradle-plugin = "8.4.0"
 gradle-test-logger-plugin = "3.2.0"
 io-kotest = "5.7.2"
 kotlin-gradle-plugin = "1.8.20"
@@ -20,6 +20,7 @@ org-mockito = "5.2.0"
 paparazzi-gradle-plugin = "1.3.1"
 
 [libraries]
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotations = "androidx.annotation:annotation:1.7.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
@@ -74,7 +75,6 @@ google-accompanits-placeholder = { module = "com.google.accompanist:accompanist-
 google-accompanits-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "com-google-accompanist" }
 google-android-material = "com.google.android.material:material:1.10.0"
 google-play-services-location = "com.google.android.gms:play-services-location:21.0.1"
-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 gradle-test-logger-plugin = { module = "com.adarshr:gradle-test-logger-plugin", version.ref = "gradle-test-logger-plugin" }
 junit = "junit:junit:4.13.2"
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "org-junit-jupiter" }
