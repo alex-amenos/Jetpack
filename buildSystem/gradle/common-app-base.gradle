@@ -23,13 +23,13 @@ android {
         debug {
             applicationIdSuffix ".debug"
             debuggable true
-            testCoverageEnabled false
+            enableAndroidTestCoverage false
             minifyEnabled false
             ext.enableCrashlytics = false
         }
         release {
             debuggable false
-            testCoverageEnabled false
+            enableAndroidTestCoverage false
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
