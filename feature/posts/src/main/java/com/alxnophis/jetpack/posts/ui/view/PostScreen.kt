@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
-import com.alxnophis.jetpack.core.ui.composable.ComposableLifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
@@ -64,13 +64,11 @@ private val toolbarHeight = 56.dp
 @Composable
 internal fun PostsScreen(
     state: PostsState,
-    onEvent: (PostsEvent) -> Unit = {},
+    onEvent: (PostsEvent) -> Unit = {}
 ) {
     BackHandler { onEvent(PostsEvent.GoBackRequested) }
-    ComposableLifecycle { _, event ->
-        if (event == Lifecycle.Event.ON_CREATE) {
-            onEvent(PostsEvent.Initialized)
-        }
+    LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
+        onEvent(PostsEvent.Initialized)
     }
     PostContent(state, onEvent)
 }
@@ -78,7 +76,7 @@ internal fun PostsScreen(
 @Composable
 private fun PostContent(
     state: PostsState,
-    onEvent: (PostsEvent) -> Unit = {},
+    onEvent: (PostsEvent) -> Unit = {}
 ) {
     AppTheme {
         val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
@@ -88,7 +86,7 @@ private fun PostContent(
                 object : NestedScrollConnection {
                     override fun onPreScroll(
                         available: Offset,
-                        source: NestedScrollSource,
+                        source: NestedScrollSource
                     ): Offset {
                         val delta = available.y
                         val newOffset = toolbarOffsetHeightPx.floatValue + delta
@@ -99,29 +97,29 @@ private fun PostContent(
             }
         Box(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
-                    .nestedScroll(nestedScrollConnection),
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
+                .nestedScroll(nestedScrollConnection)
         ) {
             PostList(
                 state = state,
                 toolbarHeight = toolbarHeight,
                 handleEvent = onEvent,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
             )
             CoreTopBar(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
+                Modifier
+                    .fillMaxWidth()
+                    .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
                 title = stringResource(id = R.string.posts_title),
-                onBack = { onEvent(PostsEvent.GoBackRequested) },
+                onBack = { onEvent(PostsEvent.GoBackRequested) }
             )
             state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
                 CoreErrorDialog(
                     errorMessage = error.composableMessage(),
-                    dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested(error.id)) },
+                    dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested(error.id)) }
                 )
             }
         }
@@ -133,22 +131,22 @@ internal fun PostList(
     state: PostsState,
     toolbarHeight: Dp,
     modifier: Modifier = Modifier,
-    handleEvent: PostsEvent.() -> Unit,
+    handleEvent: PostsEvent.() -> Unit
 ) {
     val listState = rememberLazyListState()
     SwipeRefresh(
         modifier = modifier,
         indicatorPadding = PaddingValues(top = toolbarHeight + 8.dp),
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(PostsEvent.Initialized) },
+        onRefresh = { handleEvent.invoke(PostsEvent.Initialized) }
     ) {
         LazyColumn(
             state = listState,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .drawVerticalScrollbar(listState),
-            contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding),
+            Modifier
+                .fillMaxWidth()
+                .drawVerticalScrollbar(listState),
+            contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding)
         ) {
             items(
                 items = state.posts,
@@ -158,11 +156,11 @@ internal fun PostList(
                         state = state,
                         item = item,
                         modifier =
-                            Modifier
-                                .padding(vertical = mediumPadding)
-                                .fillParentMaxWidth(),
+                        Modifier
+                            .padding(vertical = mediumPadding)
+                            .fillParentMaxWidth()
                     )
-                },
+                }
             )
         }
     }
@@ -172,46 +170,46 @@ internal fun PostList(
 private fun CardPostItem(
     state: PostsState,
     item: Post,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(mediumPadding),
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(mediumPadding)
         ) {
             Text(
                 modifier =
-                    Modifier
-                        .wrapContentSize()
-                        .placeholder(
-                            visible = state.isLoading,
-                            color = Color.Gray,
-                            shape = RoundedCornerShape(4.dp),
-                        ),
+                Modifier
+                    .wrapContentSize()
+                    .placeholder(
+                        visible = state.isLoading,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(4.dp)
+                    ),
                 text = item.title.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.SemiBold
             )
             Text(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = mediumPadding, bottom = mediumPadding)
-                        .placeholder(
-                            visible = state.isLoading,
-                            color = Color.Gray,
-                            shape = RoundedCornerShape(4.dp),
-                        ),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = mediumPadding, bottom = mediumPadding)
+                    .placeholder(
+                        visible = state.isLoading,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(4.dp)
+                    ),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight.Normal
             )
         }
     }
@@ -225,7 +223,7 @@ private fun PostScreenPreview() {
             id = 1,
             userId = 1,
             title = "Title 1",
-            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
         )
     val post2 =
         Post(
@@ -233,14 +231,14 @@ private fun PostScreenPreview() {
             userId = 1,
             title = "Title 2",
             body =
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                    "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         )
     val state =
         PostsState(
             isLoading = false,
             posts = listOf(post1, post2),
-            errorMessages = emptyList(),
+            errorMessages = emptyList()
         )
     PostsScreen(state)
 }

@@ -6,18 +6,18 @@ import android.app.NotificationManager
 import android.content.Context
 
 class NotificationChannelProvider(
-    private val application: Application,
+    private val application: Application
 ) {
     fun createNotificationChannel(
         channelId: String,
         channelName: String,
-        notificationImportance: Int = NotificationManager.IMPORTANCE_DEFAULT,
+        notificationImportance: Int = NotificationManager.IMPORTANCE_DEFAULT
     ) {
         val channel =
             NotificationChannel(
                 channelId,
                 channelName,
-                notificationImportance,
+                notificationImportance
             )
         val notificationManager = application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)

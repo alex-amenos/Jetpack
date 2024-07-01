@@ -35,7 +35,7 @@ fun Context.showNotification(
     content: String,
     @DrawableRes icon: Int,
     channelId: String,
-    notificationId: Int,
+    notificationId: Int
 ) {
     val notificationManage = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val notification =

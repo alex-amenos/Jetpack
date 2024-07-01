@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 
 internal class LocationRepositoryImpl(
-    private val locationDataSource: LocationDataSource,
+    private val locationDataSource: LocationDataSource
 ) : LocationRepository {
     override val locationSharedFlow: SharedFlow<Location> =
         locationDataSource.locationSharedFlow

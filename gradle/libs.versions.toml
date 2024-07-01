@@ -12,10 +12,11 @@ androidx-compose-navigation = "2.8.0-beta04"
 androidx-compose-viewmodel = "2.8.3"
 androidx-core-ktx = "1.13.1"
 androidx-lifecycle = "2.8.3"
-androidx-test-junit = "1.1.5"
-androidx-test-rules = "1.5.0"
-androidx-test-runner = "1.4.0"
-androidx-work = "2.8.1"
+androidx-lifecycle-extension = "2.2.0"
+androidx-test-junit = "1.2.1"
+androidx-test-rules = "1.6.1"
+androidx-test-runner = "1.6.1"
+androidx-work = "2.9.0"
 apollo-gradle-plugin = "3.7.5"
 arrow-optics-ksp-plugin = "1.2.4"
 arrow-stack = "1.2.0"
@@ -80,7 +81,7 @@ androidx-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-extension = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+androidx-lifecycle-extension = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "androidx-lifecycle-extension" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
