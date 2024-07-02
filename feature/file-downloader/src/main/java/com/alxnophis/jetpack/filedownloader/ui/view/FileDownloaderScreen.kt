@@ -20,7 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,7 +37,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -45,9 +44,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.extensions.isValidUrl
-import com.alxnophis.jetpack.core.ui.composable.ComposableLifecycle
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
@@ -71,10 +70,8 @@ internal fun FileDownloaderScreen(
     BackHandler {
         onEvent(FileDownloaderEvent.GoBackRequested)
     }
-    ComposableLifecycle { _, event ->
-        if (event == Lifecycle.Event.ON_CREATE) {
-            onEvent(FileDownloaderEvent.Initialized)
-        }
+    LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
+        onEvent(FileDownloaderEvent.Initialized)
     }
     AppTheme {
         Scaffold(
@@ -91,7 +88,8 @@ internal fun FileDownloaderScreen(
             FileDownloaderContent(
                 state = state,
                 handleEvent = onEvent,
-                modifier = Modifier
+                modifier =
+                Modifier
                     .drawVerticalScrollbar(rememberScrollState())
                     .fillMaxSize()
                     .padding(paddingValues)
@@ -106,7 +104,6 @@ internal fun FileDownloaderScreen(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun FileDownloaderContent(
     state: FileDownloaderState,
@@ -134,7 +131,8 @@ private fun FileDownloaderContent(
             },
             trailingIcon = {
                 IconButton(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .wrapContentSize()
                         .padding(4.dp),
                     onClick = {
@@ -147,10 +145,12 @@ private fun FileDownloaderContent(
                     )
                 }
             },
-            keyboardActions = KeyboardActions(
+            keyboardActions =
+            KeyboardActions(
                 onSend = { downloadFileEvent() }
             ),
-            isError = if (state.url.isNotEmpty()) {
+            isError =
+            if (state.url.isNotEmpty()) {
                 !state.url.isValidUrl()
             } else {
                 false
@@ -180,8 +180,9 @@ private fun FileDownloaderContent(
 
 @Composable
 private fun FileDownloaderDivider() {
-    Divider(
-        modifier = Modifier
+    HorizontalDivider(
+        modifier =
+        Modifier
             .height(1.dp)
             .fillMaxWidth()
             .alpha(0.2f)
@@ -234,15 +235,17 @@ private fun FileDownloaderErrors(
     dismissError: () -> Unit
 ) {
     when {
-        state.error == R.string.file_downloader_generic_error -> DialogError(
-            error = state.error,
-            onDismiss = dismissError
-        )
-        state.error != NO_ERROR -> SnackbarError(
-            modifier = Modifier.fillMaxSize(),
-            error = state.error,
-            onDismiss = dismissError
-        )
+        state.error == R.string.file_downloader_generic_error ->
+            DialogError(
+                error = state.error,
+                onDismiss = dismissError
+            )
+        state.error != NO_ERROR ->
+            SnackbarError(
+                modifier = Modifier.fillMaxSize(),
+                error = state.error,
+                onDismiss = dismissError
+            )
         else -> doNothing()
     }
 }
@@ -269,10 +272,11 @@ private fun SnackbarError(
     val scope = rememberCoroutineScope()
     LaunchedEffect(error) {
         scope.launch {
-            val result = snackbarHostState.showSnackbar(
-                message = errorMessage,
-                actionLabel = null
-            )
+            val result =
+                snackbarHostState.showSnackbar(
+                    message = errorMessage,
+                    actionLabel = null
+                )
             when (result) {
                 SnackbarResult.Dismissed -> onDismiss()
                 SnackbarResult.ActionPerformed -> doNothing()
@@ -298,14 +302,16 @@ private fun SnackbarError(
 @Preview(showBackground = true)
 @Composable
 private fun FileDownloaderScaffoldPreview() {
-    val state = FileDownloaderState(
-        url = EMPTY,
-        error = com.alxnophis.jetpack.core.R.string.core_error_title,
-        fileStatusList = listOf(
-            "Lorem ipsum dolor sit amet",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+    val state =
+        FileDownloaderState(
+            url = EMPTY,
+            error = com.alxnophis.jetpack.core.R.string.core_error_title,
+            fileStatusList =
+            listOf(
+                "Lorem ipsum dolor sit amet",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+            )
         )
-    )
     FileDownloaderScreen(
         state = state,
         onEvent = {}

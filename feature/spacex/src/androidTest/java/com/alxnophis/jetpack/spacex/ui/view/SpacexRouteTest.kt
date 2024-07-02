@@ -15,8 +15,7 @@ import com.alxnophis.jetpack.spacex.ui.view.SpacexTags.TAG_SPACEX_LAUNCH_DETAIL
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
-class SpacexScreenTest : BaseComposeTest() {
-
+class SpacexRouteTest : BaseComposeTest() {
     @Test
     fun spacex_top_bar_title_is_displayed() {
         setSpacexContent(state = LaunchesState.initialState)
@@ -89,7 +88,9 @@ class SpacexScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 
-    private fun assertStringResDisplayed(@StringRes stringResource: Int) {
+    private fun assertStringResDisplayed(
+        @StringRes stringResource: Int
+    ) {
         assertStringDisplayed(targetContext.getString(stringResource))
     }
 

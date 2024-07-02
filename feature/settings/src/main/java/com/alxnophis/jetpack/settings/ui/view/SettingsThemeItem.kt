@@ -25,7 +25,6 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.Theme
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun SettingsThemeItem(
     selectedTheme: Theme,

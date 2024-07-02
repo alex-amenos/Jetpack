@@ -2,7 +2,7 @@ package com.alxnophis.jetpack.core.ui.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,7 +29,8 @@ fun CoreTopBar(
 ) {
     TopAppBar(
         modifier = modifier,
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
+        colors =
+        TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
             scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
             navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
@@ -51,7 +52,7 @@ fun CoreTopBar(
                 onClick = onBack
             ) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(id = R.string.core_cd_go_back),
                     tint = MaterialTheme.colorScheme.onPrimary
                 )

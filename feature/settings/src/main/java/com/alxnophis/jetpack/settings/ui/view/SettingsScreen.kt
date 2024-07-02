@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -33,7 +33,8 @@ internal fun SettingsScreen(
     AppTheme {
         val context = LocalContext.current
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
                 .verticalScroll(rememberScrollState())
@@ -43,21 +44,21 @@ internal fun SettingsScreen(
                 title = stringResource(id = R.string.settings_title),
                 onBack = { onEvent(SettingsEvent.GoBackRequested) }
             )
-            Divider()
+            HorizontalDivider()
             SettingsNotificationItem(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_option_notifications),
                 checked = state.notificationsEnabled,
                 onToggleNotificationSettings = { onEvent(SettingsEvent.SetNotifications) }
             )
-            Divider()
+            HorizontalDivider()
             SettingsHintItem(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_option_hints),
                 checked = state.hintsEnabled,
                 onShowHintToggled = { onEvent(SettingsEvent.SetHint) }
             )
-            Divider()
+            HorizontalDivider()
             SettingsManageSubscriptionItem(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_option_manage_subscription),
@@ -68,7 +69,7 @@ internal fun SettingsScreen(
                     onEvent(SettingsEvent.ManageSubscription)
                 }
             )
-            Divider()
+            HorizontalDivider()
             SettingsSectionSpacer(
                 modifier = Modifier.fillMaxWidth()
             )
@@ -79,7 +80,7 @@ internal fun SettingsScreen(
                     onEvent(SettingsEvent.SetMarketingOption(marketingOption))
                 }
             )
-            Divider()
+            HorizontalDivider()
             SettingsThemeItem(
                 modifier = Modifier.fillMaxWidth(),
                 selectedTheme = state.themeOption,
@@ -94,7 +95,7 @@ internal fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 appVersion = appVersion
             )
-            Divider()
+            HorizontalDivider()
         }
     }
 }

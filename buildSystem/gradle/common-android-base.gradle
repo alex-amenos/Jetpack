@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.adarshr.test-logger'
 apply plugin: 'de.mannodermaus.android-junit5'
@@ -32,9 +33,13 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
             buildConfigField 'String', 'APP_PACKAGE_NAME', '"' + AppConfig.APP_PACKAGE_NAME + '"'
         }
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     compileOptions {
@@ -43,6 +48,7 @@ android {
     }
 
     kotlinOptions {
+        freeCompilerArgs = ['-Xstring-concat=inline']
         jvmTarget = JavaVersion.VERSION_17
     }
 

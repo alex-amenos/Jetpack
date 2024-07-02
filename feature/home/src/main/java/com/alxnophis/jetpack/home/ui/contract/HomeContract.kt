@@ -4,6 +4,7 @@ import arrow.optics.optics
 import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.base.viewmodel.UiState
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
+import com.alxnophis.jetpack.router.screen.Route
 
 internal const val NO_ERROR = 0
 
@@ -11,7 +12,7 @@ internal sealed class HomeEvent : UiEvent {
     object Initialized : HomeEvent()
     object ErrorDismissRequested : HomeEvent()
     object GoBackRequested : HomeEvent()
-    data class NavigationRequested(val route: String) : HomeEvent()
+    data class NavigationRequested(val route: Route) : HomeEvent()
 }
 
 @optics

@@ -4,7 +4,6 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 
 class NotificationChannelProvider(
     private val application: Application
@@ -14,15 +13,14 @@ class NotificationChannelProvider(
         channelName: String,
         notificationImportance: Int = NotificationManager.IMPORTANCE_DEFAULT
     ) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
+        val channel =
+            NotificationChannel(
                 channelId,
                 channelName,
                 notificationImportance
             )
-            val notificationManager = application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+        val notificationManager = application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     companion object {

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.BeforeEach
 @VisibleForTesting
 abstract class BaseUnitTest {
     val testScheduler = TestCoroutineScheduler()
-    open val testDispatcher = StandardTestDispatcher(testScheduler)
+    val testDispatcher = StandardTestDispatcher(testScheduler)
     open val testScope = TestScope(testDispatcher)
 
     @BeforeEach

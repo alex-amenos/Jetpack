@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,9 +38,7 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.notifications.R
 
 @Composable
-internal fun NotificationsScreen(
-    navigateBack: () -> Unit = {}
-) {
+internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
     BackHandler {
         navigateBack()
     }
@@ -56,7 +54,8 @@ internal fun NotificationsScreen(
             }
         ) {
             NotificationPermission(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(paddingValues = it)
                     .fillMaxSize()
                     .padding(mediumPadding)
@@ -66,9 +65,7 @@ internal fun NotificationsScreen(
 }
 
 @Composable
-private fun NotificationPermission(
-    modifier: Modifier = Modifier
-) {
+private fun NotificationPermission(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var hasNotificationPermission by remember {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
@@ -79,10 +76,11 @@ private fun NotificationPermission(
             mutableStateOf(true)
         }
     }
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted -> hasNotificationPermission = isGranted }
-    )
+    val permissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { isGranted -> hasNotificationPermission = isGranted }
+        )
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -90,19 +88,21 @@ private fun NotificationPermission(
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CoreButtonMinor(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(largePadding),
                 text = stringResource(id = R.string.notifications_request_permission),
                 onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) }
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.height(15.dp),
                 color = Color.Transparent
             )
         }
         CoreButtonMajor(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(largePadding),
             text = stringResource(id = R.string.notifications_show_notification),
@@ -111,7 +111,7 @@ private fun NotificationPermission(
                     context.showNotification(
                         title = "Lorem ipsum",
                         content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        icon = R.drawable.ic_push_notification,
+                        icon = R.drawable.notifications_ic_push,
                         channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
                         notificationId = 1
                     )

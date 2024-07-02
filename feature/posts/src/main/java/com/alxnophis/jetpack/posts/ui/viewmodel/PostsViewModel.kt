@@ -14,15 +14,14 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.posts.ui.contract.errorMessages
 import com.alxnophis.jetpack.posts.ui.contract.isLoading
 import com.alxnophis.jetpack.posts.ui.contract.posts
-import java.util.UUID
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 internal class PostsViewModel(
     private val postsRepository: PostsRepository,
     initialState: PostsState = PostsState.initialState,
     private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
-
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
             when (event) {
@@ -64,24 +63,22 @@ internal class PostsViewModel(
     private suspend fun getPosts(): Either<PostsError, List<Post>> = postsRepository.getPosts()
 
     private fun PostsError.mapTo(): List<ErrorMessage> =
-        currentState.errorMessages + ErrorMessage(
-            id = getRandomUUID(),
-            messageId = when (this@mapTo) {
-                PostsError.Network -> R.string.posts_error_network
-                PostsError.Server -> R.string.posts_error_server
-                PostsError.Unknown -> R.string.posts_error_unknown
-                PostsError.Unexpected -> R.string.posts_error_unexpected
-            }
-        )
+        currentState.errorMessages +
+            ErrorMessage(
+                id = getRandomUUID(),
+                messageId =
+                when (this@mapTo) {
+                    PostsError.Network -> R.string.posts_error_network
+                    PostsError.Server -> R.string.posts_error_server
+                    PostsError.Unknown -> R.string.posts_error_unknown
+                    PostsError.Unexpected -> R.string.posts_error_unexpected
+                }
+            )
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
         updateUiState {
             copy { PostsState.errorMessages set errorMessages }
         }
-    }
-
-    companion object {
-        private const val SAVED_STATE_KEY = "PostKey"
     }
 }

@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
-import com.alxnophis.jetpack.core.ui.composable.ComposableLifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
@@ -41,7 +41,7 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
-import com.alxnophis.jetpack.router.screen.Screen
+import com.alxnophis.jetpack.router.screen.Route
 
 @Composable
 internal fun HomeScreen(
@@ -51,10 +51,8 @@ internal fun HomeScreen(
     BackHandler {
         onEvent(HomeEvent.GoBackRequested)
     }
-    ComposableLifecycle { _, event ->
-        if (event == Lifecycle.Event.ON_CREATE) {
-            onEvent(HomeEvent.Initialized)
-        }
+    LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
+        onEvent(HomeEvent.Initialized)
     }
     AppTheme {
         Scaffold(
@@ -80,7 +78,8 @@ internal fun HomeScreen(
 @Composable
 internal fun HomeTopBar() {
     TopAppBar(
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
+        colors =
+        TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
             scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
             navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
@@ -103,11 +102,12 @@ internal fun HomeTopBar() {
 internal fun SectionsList(
     paddingValues: PaddingValues,
     state: HomeState,
-    navigateTo: (route: String) -> Unit
+    navigateTo: (route: Route) -> Unit
 ) {
     LazyColumn(
         state = rememberLazyListState(),
-        modifier = Modifier
+        modifier =
+        Modifier
             .background(color = MaterialTheme.colorScheme.surface)
             .padding(paddingValues)
     ) {
@@ -118,8 +118,9 @@ internal fun SectionsList(
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .clickable { navigateTo(item.screen.route) }
+                    modifier =
+                    Modifier
+                        .clickable { navigateTo(item.route) }
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(mediumPadding)
@@ -132,7 +133,8 @@ internal fun SectionsList(
                         fontWeight = FontWeight.Medium
                     )
                     Column(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .weight(0.9f)
                             .fillMaxWidth()
                             .padding(start = mediumPadding)
@@ -146,7 +148,8 @@ internal fun SectionsList(
                             fontWeight = FontWeight.Medium
                         )
                         Text(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .wrapContentSize()
                                 .padding(top = extraSmallPadding),
                             style = MaterialTheme.typography.bodyMedium,
@@ -156,7 +159,7 @@ internal fun SectionsList(
                         )
                     }
                 }
-                Divider(color = Color.LightGray)
+                HorizontalDivider(color = Color.LightGray)
             }
         )
     }
@@ -165,23 +168,25 @@ internal fun SectionsList(
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    val state = HomeState(
-        isLoading = false,
-        data = listOf(
-            NavigationItem(
-                name = "Screen 1",
-                emoji = "🐻",
-                description = "Lorem ipsum",
-                screen = Screen.Authentication
+    val state =
+        HomeState(
+            isLoading = false,
+            data =
+            listOf(
+                NavigationItem(
+                    name = "Screen 1",
+                    emoji = "🐻",
+                    description = "Lorem ipsum",
+                    route = Route.Authentication
+                ),
+                NavigationItem(
+                    name = "Screen 2",
+                    emoji = "🦊",
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                    route = Route.Settings
+                )
             ),
-            NavigationItem(
-                name = "Screen 2",
-                emoji = "🦊",
-                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                screen = Screen.Settings
-            )
-        ),
-        error = NO_ERROR
-    )
+            error = NO_ERROR
+        )
     HomeScreen(state)
 }

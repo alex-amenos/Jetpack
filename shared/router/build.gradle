@@ -3,3 +3,7 @@ apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
 android {
     namespace 'com.alxnophis.jetpack.router'
 }
+
+dependencies {
+    implementation libs.kotlinx.serialization.json
+}

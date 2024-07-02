@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +25,8 @@ internal fun SettingsManageSubscriptionItem(
 ) {
     SettingsItem(modifier = modifier) {
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .clickable(
                     onClickLabel = stringResource(id = R.string.settings_cd_open_subscription)
                 ) {
@@ -38,7 +39,7 @@ internal fun SettingsManageSubscriptionItem(
                 text = title
             )
             Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.ArrowRight,
                 contentDescription = null
             )
         }

@@ -19,7 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
-import com.alxnophis.jetpack.core.ui.composable.ComposableLifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
@@ -67,10 +67,8 @@ internal fun PostsScreen(
     onEvent: (PostsEvent) -> Unit = {}
 ) {
     BackHandler { onEvent(PostsEvent.GoBackRequested) }
-    ComposableLifecycle { _, event ->
-        if (event == Lifecycle.Event.ON_CREATE) {
-            onEvent(PostsEvent.Initialized)
-        }
+    LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
+        onEvent(PostsEvent.Initialized)
     }
     PostContent(state, onEvent)
 }
@@ -82,19 +80,24 @@ private fun PostContent(
 ) {
     AppTheme {
         val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
-        val toolbarOffsetHeightPx = remember { mutableStateOf(ZERO_FLOAT) }
-        val nestedScrollConnection = remember {
-            object : NestedScrollConnection {
-                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                    val delta = available.y
-                    val newOffset = toolbarOffsetHeightPx.value + delta
-                    toolbarOffsetHeightPx.value = newOffset.coerceIn(-toolbarHeightPx, ZERO_FLOAT)
-                    return Offset.Zero
+        val toolbarOffsetHeightPx = remember { mutableFloatStateOf(ZERO_FLOAT) }
+        val nestedScrollConnection =
+            remember {
+                object : NestedScrollConnection {
+                    override fun onPreScroll(
+                        available: Offset,
+                        source: NestedScrollSource
+                    ): Offset {
+                        val delta = available.y
+                        val newOffset = toolbarOffsetHeightPx.floatValue + delta
+                        toolbarOffsetHeightPx.floatValue = newOffset.coerceIn(-toolbarHeightPx, ZERO_FLOAT)
+                        return Offset.Zero
+                    }
                 }
             }
-        }
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
                 .nestedScroll(nestedScrollConnection)
@@ -106,7 +109,8 @@ private fun PostContent(
                 modifier = Modifier.fillMaxSize()
             )
             CoreTopBar(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
                 title = stringResource(id = R.string.posts_title),
@@ -138,7 +142,8 @@ internal fun PostList(
     ) {
         LazyColumn(
             state = listState,
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .drawVerticalScrollbar(listState),
             contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding)
@@ -150,7 +155,8 @@ internal fun PostList(
                     CardPostItem(
                         state = state,
                         item = item,
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .padding(vertical = mediumPadding)
                             .fillParentMaxWidth()
                     )
@@ -168,13 +174,15 @@ private fun CardPostItem(
 ) {
     Card(modifier = modifier) {
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(mediumPadding)
         ) {
             Text(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .wrapContentSize()
                     .placeholder(
                         visible = state.isLoading,
@@ -187,7 +195,8 @@ private fun CardPostItem(
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(top = mediumPadding, bottom = mediumPadding)
                     .placeholder(
@@ -209,23 +218,27 @@ private fun CardPostItem(
 @Preview(showBackground = true)
 @Composable
 private fun PostScreenPreview() {
-    val post1 = Post(
-        id = 1,
-        userId = 1,
-        title = "Title 1",
-        body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-    )
-    val post2 = Post(
-        id = 2,
-        userId = 1,
-        title = "Title 2",
-        body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    )
-    val state = PostsState(
-        isLoading = false,
-        posts = listOf(post1, post2),
-        errorMessages = emptyList()
-    )
+    val post1 =
+        Post(
+            id = 1,
+            userId = 1,
+            title = "Title 1",
+            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+        )
+    val post2 =
+        Post(
+            id = 2,
+            userId = 1,
+            title = "Title 2",
+            body =
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        )
+    val state =
+        PostsState(
+            isLoading = false,
+            posts = listOf(post1, post2),
+            errorMessages = emptyList()
+        )
     PostsScreen(state)
 }

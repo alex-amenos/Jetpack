@@ -11,8 +11,7 @@ import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
 @ExperimentalComposeUiApi
-class AuthenticationScreenTest : BaseComposeTest() {
-
+class AuthenticationRouteTest : BaseComposeTest() {
     @Test
     fun sign_in_title_displayed_by_default() {
         authenticationContent(AuthenticationState.initialState)
