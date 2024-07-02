@@ -33,7 +33,7 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
             buildConfigField 'String', 'APP_PACKAGE_NAME', '"' + AppConfig.APP_PACKAGE_NAME + '"'
         }
     }
@@ -48,6 +48,7 @@ android {
     }
 
     kotlinOptions {
+        freeCompilerArgs = ['-Xstring-concat=inline']
         jvmTarget = JavaVersion.VERSION_17
     }
 
