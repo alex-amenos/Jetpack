@@ -17,6 +17,7 @@ class RootActivity : AppCompatActivity() {
         val restoredState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             savedInstanceState?.getParcelable(NAVIGATION_STATE, Bundle::class.java)
         } else {
+            @Suppress("DEPRECATION")
             savedInstanceState?.getParcelable(NAVIGATION_STATE)
         }
         setContent {
