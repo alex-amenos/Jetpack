@@ -64,16 +64,16 @@ internal class PostsViewModel(
 
     private fun PostsError.mapTo(): List<ErrorMessage> =
         currentState.errorMessages +
-                ErrorMessage(
-                    id = getRandomUUID(),
-                    messageId =
-                    when (this@mapTo) {
-                        PostsError.Network -> R.string.posts_error_network
-                        PostsError.Server -> R.string.posts_error_server
-                        PostsError.Unknown -> R.string.posts_error_unknown
-                        PostsError.Unexpected -> R.string.posts_error_unexpected
-                    }
-                )
+            ErrorMessage(
+                id = getRandomUUID(),
+                messageId =
+                when (this@mapTo) {
+                    PostsError.Network -> R.string.posts_error_network
+                    PostsError.Server -> R.string.posts_error_server
+                    PostsError.Unknown -> R.string.posts_error_unknown
+                    PostsError.Unexpected -> R.string.posts_error_unexpected
+                }
+            )
 
     private fun dismissError(errorId: Long) {
         val errorMessages = currentState.errorMessages.filterNot { it.id == errorId }
