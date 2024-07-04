@@ -4,8 +4,8 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.base.formatter.BaseDateFormatter
 import com.alxnophis.jetpack.core.base.provider.BaseRandomProvider
+import com.alxnophis.jetpack.core.ui.formatter.BaseDateFormatter
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError
