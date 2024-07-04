@@ -2,8 +2,8 @@ package com.alxnophis.jetpack.settings.ui.contract
 
 import androidx.annotation.StringRes
 import arrow.optics.optics
-import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
-import com.alxnophis.jetpack.core.base.viewmodel.UiState
+import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
+import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
 
 internal sealed class SettingsEvent : UiEvent {

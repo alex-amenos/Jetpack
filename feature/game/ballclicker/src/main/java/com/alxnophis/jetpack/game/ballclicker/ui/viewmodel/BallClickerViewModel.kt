@@ -2,7 +2,7 @@ package com.alxnophis.jetpack.game.ballclicker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.DEFAULT_POINTS

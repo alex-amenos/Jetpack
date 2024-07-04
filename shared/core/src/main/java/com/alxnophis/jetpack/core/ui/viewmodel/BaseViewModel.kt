@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.core.base.viewmodel
+package com.alxnophis.jetpack.core.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

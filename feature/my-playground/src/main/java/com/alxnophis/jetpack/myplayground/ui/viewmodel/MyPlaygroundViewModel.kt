@@ -2,7 +2,7 @@ package com.alxnophis.jetpack.myplayground.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundEvent
 import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundState
 import com.alxnophis.jetpack.myplayground.ui.contract.textFieldValue

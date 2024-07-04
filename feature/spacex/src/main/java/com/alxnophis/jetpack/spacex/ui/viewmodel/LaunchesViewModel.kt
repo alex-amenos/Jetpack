@@ -6,7 +6,7 @@ import arrow.optics.copy
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.base.formatter.BaseDateFormatter
 import com.alxnophis.jetpack.core.base.provider.BaseRandomProvider
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.spacex.R
 import com.alxnophis.jetpack.spacex.data.model.LaunchesError

@@ -2,8 +2,8 @@ package com.alxnophis.jetpack.posts.ui.contract
 
 import androidx.compose.runtime.Immutable
 import arrow.optics.optics
-import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
-import com.alxnophis.jetpack.core.base.viewmodel.UiState
+import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
+import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.data.model.Post
 

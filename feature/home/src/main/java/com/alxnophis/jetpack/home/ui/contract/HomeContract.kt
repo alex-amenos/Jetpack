@@ -1,8 +1,8 @@
 package com.alxnophis.jetpack.home.ui.contract
 
 import arrow.optics.optics
-import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
-import com.alxnophis.jetpack.core.base.viewmodel.UiState
+import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
+import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.router.screen.Route
 
