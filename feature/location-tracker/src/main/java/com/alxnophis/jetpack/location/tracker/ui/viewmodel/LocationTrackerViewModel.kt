@@ -7,7 +7,7 @@ import com.alxnophis.jetpack.core.base.constants.COMA
 import com.alxnophis.jetpack.core.base.constants.PARENTHESES_CLOSED
 import com.alxnophis.jetpack.core.base.constants.PARENTHESES_OPENED
 import com.alxnophis.jetpack.core.base.constants.WHITE_SPACE
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.location.tracker.domain.model.Location
 import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationFlowUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase

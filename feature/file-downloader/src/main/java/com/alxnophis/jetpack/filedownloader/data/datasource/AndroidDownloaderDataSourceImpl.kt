@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Environment
 import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
-import com.alxnophis.jetpack.core.base.formatter.BaseDateFormatter
+import com.alxnophis.jetpack.core.ui.formatter.BaseDateFormatter
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.kotlin.constants.DOT
 import java.net.URL

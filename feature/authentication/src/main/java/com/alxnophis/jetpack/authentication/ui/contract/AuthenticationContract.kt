@@ -4,8 +4,8 @@ import androidx.annotation.StringRes
 import arrow.optics.optics
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.base.constants.EMPTY
-import com.alxnophis.jetpack.core.base.viewmodel.UiEvent
-import com.alxnophis.jetpack.core.base.viewmodel.UiState
+import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
+import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 
 internal const val NO_ERROR = 0
 

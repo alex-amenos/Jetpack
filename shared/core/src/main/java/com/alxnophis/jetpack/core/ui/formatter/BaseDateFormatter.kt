@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.core.base.formatter
+package com.alxnophis.jetpack.core.ui.formatter
 
 import java.text.SimpleDateFormat
 import java.util.Date

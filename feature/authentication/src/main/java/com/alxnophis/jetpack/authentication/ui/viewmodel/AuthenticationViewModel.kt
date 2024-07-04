@@ -20,7 +20,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.isLoading
 import com.alxnophis.jetpack.authentication.ui.contract.isUserAuthorized
 import com.alxnophis.jetpack.authentication.ui.contract.password
 import com.alxnophis.jetpack.authentication.ui.contract.passwordRequirements
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import kotlinx.coroutines.launch
 

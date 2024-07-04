@@ -3,7 +3,7 @@ package com.alxnophis.jetpack.posts.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.data.model.Post

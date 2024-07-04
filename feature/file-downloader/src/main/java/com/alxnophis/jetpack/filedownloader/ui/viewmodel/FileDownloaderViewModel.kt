@@ -2,7 +2,7 @@ package com.alxnophis.jetpack.filedownloader.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.extensions.isValidUrl
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.data.model.DownloaderFile
