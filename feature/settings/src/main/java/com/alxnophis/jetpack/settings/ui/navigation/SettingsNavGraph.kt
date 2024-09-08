@@ -22,7 +22,7 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
                     SettingsEvent.GoBackRequested -> navController.popBackStack()
                     else -> viewModel.handleEvent(event)
                 }
-            }
+            },
         )
     }
 }

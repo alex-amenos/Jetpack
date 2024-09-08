@@ -13,10 +13,12 @@ typealias Authenticated = Unit
 
 internal class AuthenticateUseCase(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val delay: Long = DELAY
+    private val delay: Long = DELAY,
 ) {
-
-    suspend fun invoke(email: String, password: String): Either<AuthenticationError, Authenticated> =
+    suspend fun invoke(
+        email: String,
+        password: String,
+    ): Either<AuthenticationError, Authenticated> =
         withContext(ioDispatcher) {
             either {
                 delay(delay)
@@ -25,8 +27,10 @@ internal class AuthenticateUseCase(
             }
         }
 
-    private fun hasAuthorization(email: String, password: String): Boolean =
-        email == AUTHORIZED_EMAIL && password == AUTHORIZED_PASSWORD
+    private fun hasAuthorization(
+        email: String,
+        password: String,
+    ): Boolean = email == AUTHORIZED_EMAIL && password == AUTHORIZED_PASSWORD
 
     companion object {
         const val AUTHORIZED_EMAIL = "my@email.com"

@@ -27,43 +27,45 @@ import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
 internal fun SettingsMarketingItem(
     selectedOption: MarketingOption,
     modifier: Modifier = Modifier,
-    onOptionSelected: (position: MarketingOption) -> Unit
+    onOptionSelected: (position: MarketingOption) -> Unit,
 ) {
     val options = stringArrayResource(R.array.settings_options_marketing_choice)
     SettingsItem(modifier = modifier) {
         Column(
-            horizontalAlignment = Alignment.Start
+            horizontalAlignment = Alignment.Start,
         ) {
             Text(
                 modifier = Modifier.padding(mediumPadding),
-                text = stringResource(R.string.settings_option_marketing)
+                text = stringResource(R.string.settings_option_marketing),
             )
             options.forEachIndexed { index, option ->
                 Row(
-                    modifier = Modifier
-                        .selectable(
-                            selected = selectedOption.id == index,
-                            onClick = {
-                                val marketingOption = if (index == MarketingOption.ALLOWED.id) {
-                                    MarketingOption.ALLOWED
-                                } else {
-                                    MarketingOption.NOT_ALLOWED
-                                }
-                                onOptionSelected(marketingOption)
-                            },
-                            role = Role.RadioButton
-                        )
-                        .fillMaxWidth()
-                        .padding(start = largePadding, end = mediumPadding, top = mediumPadding, bottom = mediumPadding)
-                        .testTag(TAG_MARKETING_OPTION + index)
+                    modifier =
+                        Modifier
+                            .selectable(
+                                selected = selectedOption.id == index,
+                                onClick = {
+                                    val marketingOption =
+                                        if (index == MarketingOption.ALLOWED.id) {
+                                            MarketingOption.ALLOWED
+                                        } else {
+                                            MarketingOption.NOT_ALLOWED
+                                        }
+                                    onOptionSelected(marketingOption)
+                                },
+                                role = Role.RadioButton,
+                            )
+                            .fillMaxWidth()
+                            .padding(start = largePadding, end = mediumPadding, top = mediumPadding, bottom = mediumPadding)
+                            .testTag(TAG_MARKETING_OPTION + index),
                 ) {
                     RadioButton(
                         selected = selectedOption.id == index,
-                        onClick = null
+                        onClick = null,
                     )
                     Text(
                         text = option,
-                        modifier = Modifier.padding(start = mediumPadding)
+                        modifier = Modifier.padding(start = mediumPadding),
                     )
                 }
             }
@@ -79,7 +81,7 @@ private fun SettingsMarketingItemPreview() {
         SettingsMarketingItem(
             modifier = Modifier.fillMaxWidth(),
             selectedOption = MarketingOption.NOT_ALLOWED,
-            onOptionSelected = {}
+            onOptionSelected = {},
         )
     }
 }

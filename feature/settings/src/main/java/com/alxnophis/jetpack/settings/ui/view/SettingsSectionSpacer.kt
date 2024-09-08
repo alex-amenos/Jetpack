@@ -9,14 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun SettingsSectionSpacer(
-    modifier: Modifier = Modifier
-) {
+internal fun SettingsSectionSpacer(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .height(48.dp)
-            .background(
-                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-            )
+        modifier =
+            modifier
+                .height(48.dp)
+                .background(
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                ),
     )
 }

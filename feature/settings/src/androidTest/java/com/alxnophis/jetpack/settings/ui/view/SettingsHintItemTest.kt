@@ -8,7 +8,6 @@ import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
 class SettingsHintItemTest : BaseComposeTest() {
-
     @Test
     fun title_displayed() {
         val title = "Show Hints"
@@ -16,7 +15,7 @@ class SettingsHintItemTest : BaseComposeTest() {
             SettingsHintItem(
                 title = title,
                 checked = true,
-                onShowHintToggled = {}
+                onShowHintToggled = {},
             )
         }
         composeTestRule
@@ -30,7 +29,7 @@ class SettingsHintItemTest : BaseComposeTest() {
             SettingsHintItem(
                 title = "Show Hints",
                 checked = true,
-                onShowHintToggled = {}
+                onShowHintToggled = {},
             )
         }
         composeTestRule

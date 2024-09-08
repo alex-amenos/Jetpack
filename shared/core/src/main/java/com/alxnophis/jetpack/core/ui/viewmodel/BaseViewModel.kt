@@ -10,9 +10,8 @@ import timber.log.Timber
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 abstract class BaseViewModel<Event : UiEvent, State : UiState>(
-    initialState: State
+    initialState: State,
 ) : ViewModel() {
-
     val currentState: State
         get() = uiState.value
 

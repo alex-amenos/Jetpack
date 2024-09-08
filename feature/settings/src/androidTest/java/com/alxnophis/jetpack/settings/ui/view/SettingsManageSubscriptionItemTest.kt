@@ -9,14 +9,13 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
 class SettingsManageSubscriptionItemTest : BaseComposeTest() {
-
     @Test
     fun title_displayed() {
         val title = "Manage Subscription"
         composeTestRule.setContent {
             SettingsManageSubscriptionItem(
                 title = title,
-                onSubscriptionClicked = {}
+                onSubscriptionClicked = {},
             )
         }
         composeTestRule
@@ -31,7 +30,7 @@ class SettingsManageSubscriptionItemTest : BaseComposeTest() {
         composeTestRule.setContent {
             SettingsManageSubscriptionItem(
                 title = title,
-                onSubscriptionClicked = onSettingClicked
+                onSubscriptionClicked = onSettingClicked,
             )
         }
         composeTestRule

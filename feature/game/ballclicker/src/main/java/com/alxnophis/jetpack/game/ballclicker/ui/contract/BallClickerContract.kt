@@ -6,8 +6,11 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 
 internal sealed class BallClickerEvent : UiEvent {
     data object BallClicked : BallClickerEvent()
+
     data object StartRequested : BallClickerEvent()
+
     data object StopRequested : BallClickerEvent()
+
     data object GoBackRequested : BallClickerEvent()
 }
 
@@ -15,14 +18,15 @@ internal sealed class BallClickerEvent : UiEvent {
 internal data class BallClickerState(
     val currentTimeInSeconds: Int,
     val isTimerRunning: Boolean,
-    val points: Int
+    val points: Int,
 ) : UiState {
     internal companion object {
-        val initialState = BallClickerState(
-            currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS,
-            isTimerRunning = false,
-            points = DEFAULT_POINTS
-        )
+        val initialState =
+            BallClickerState(
+                currentTimeInSeconds = DEFAULT_TIME_IN_SECONDS,
+                isTimerRunning = false,
+                points = DEFAULT_POINTS,
+            )
     }
 }
 

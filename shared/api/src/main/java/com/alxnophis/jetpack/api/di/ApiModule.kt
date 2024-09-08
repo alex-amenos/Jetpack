@@ -5,10 +5,11 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-val apiModule: Module = module {
-    loadKoinModules(
-        listOf(
-            jsonPlaceholderApiModule,
+val apiModule: Module =
+    module {
+        loadKoinModules(
+            listOf(
+                jsonPlaceholderApiModule,
+            ),
         )
-    )
-}
+    }

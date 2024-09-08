@@ -6,9 +6,8 @@ import java.util.Locale
 
 @Suppress("unused")
 class BaseDateFormatter(
-    private val locale: Locale = Locale.getDefault()
+    private val locale: Locale = Locale.getDefault(),
 ) {
-
     fun formatToReadableDateTime(date: Date): String = date.formatDateWith(PATTERN_READABLE_DATE_TIME)
 
     fun formatToDayMonthYearTime(date: Date): String = date.formatDateWith(PATTERN_DAY_MONTH_YEAR_TIME)

@@ -8,7 +8,7 @@ fun injectNotifications() = loadNotificationsModules
 
 private val loadNotificationsModules by lazy {
     loadKoinModules(
-        listOf(notificationsModule)
+        listOf(notificationsModule),
     )
 }
 

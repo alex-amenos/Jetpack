@@ -11,14 +11,13 @@ import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
 class SettingsThemeItemTest : BaseComposeTest() {
-
     @Test
     fun selected_theme_displayed() {
         val option = Theme.DARK
         composeTestRule.setContent {
             SettingsThemeItem(
                 selectedTheme = option,
-                onOptionSelected = {}
+                onOptionSelected = {},
             )
         }
         composeTestRule
@@ -31,7 +30,7 @@ class SettingsThemeItemTest : BaseComposeTest() {
         composeTestRule.setContent {
             SettingsThemeItem(
                 selectedTheme = Theme.DARK,
-                onOptionSelected = { }
+                onOptionSelected = { },
             )
         }
         composeTestRule

@@ -6,7 +6,6 @@ import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
 class SettingsAppVersionTest : BaseComposeTest() {
-
     @Test
     fun app_version_displayed() {
         composeTestRule.setContent {

@@ -27,36 +27,36 @@ import com.alxnophis.jetpack.settings.ui.contract.SettingsState
 internal fun SettingsScreen(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit = {},
-    appVersion: String = LocalContext.current.getVersion()
+    appVersion: String = LocalContext.current.getVersion(),
 ) {
     BackHandler { onEvent(SettingsEvent.GoBackRequested) }
     AppTheme {
         val context = LocalContext.current
         Column(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-                .verticalScroll(rememberScrollState())
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .verticalScroll(rememberScrollState()),
         ) {
             CoreTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_title),
-                onBack = { onEvent(SettingsEvent.GoBackRequested) }
+                onBack = { onEvent(SettingsEvent.GoBackRequested) },
             )
             HorizontalDivider()
             SettingsNotificationItem(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_option_notifications),
                 checked = state.notificationsEnabled,
-                onToggleNotificationSettings = { onEvent(SettingsEvent.SetNotifications) }
+                onToggleNotificationSettings = { onEvent(SettingsEvent.SetNotifications) },
             )
             HorizontalDivider()
             SettingsHintItem(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.settings_option_hints),
                 checked = state.hintsEnabled,
-                onShowHintToggled = { onEvent(SettingsEvent.SetHint) }
+                onShowHintToggled = { onEvent(SettingsEvent.SetHint) },
             )
             HorizontalDivider()
             SettingsManageSubscriptionItem(
@@ -67,18 +67,18 @@ internal fun SettingsScreen(
                         .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
                         .show()
                     onEvent(SettingsEvent.ManageSubscription)
-                }
+                },
             )
             HorizontalDivider()
             SettingsSectionSpacer(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             SettingsMarketingItem(
                 modifier = Modifier.fillMaxWidth(),
                 selectedOption = state.marketingOption,
                 onOptionSelected = { marketingOption ->
                     onEvent(SettingsEvent.SetMarketingOption(marketingOption))
-                }
+                },
             )
             HorizontalDivider()
             SettingsThemeItem(
@@ -86,14 +86,14 @@ internal fun SettingsScreen(
                 selectedTheme = state.themeOption,
                 onOptionSelected = { theme ->
                     onEvent(SettingsEvent.SetTheme(theme))
-                }
+                },
             )
             SettingsSectionSpacer(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             SettingsAppVersion(
                 modifier = Modifier.fillMaxWidth(),
-                appVersion = appVersion
+                appVersion = appVersion,
             )
             HorizontalDivider()
         }
@@ -106,6 +106,6 @@ internal fun SettingsScreen(
 private fun SettingsScreenPreview() {
     SettingsScreen(
         state = SettingsState.initialState,
-        appVersion = "1.0.0"
+        appVersion = "1.0.0",
     )
 }

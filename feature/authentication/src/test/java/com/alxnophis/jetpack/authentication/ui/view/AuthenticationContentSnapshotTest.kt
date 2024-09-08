@@ -12,25 +12,26 @@ import org.junit.Test
 
 @ExperimentalComposeUiApi
 internal class AuthenticationContentSnapshotTest {
-
     @get:Rule
-    val paparazzi = Paparazzi(
-        deviceConfig = DeviceConfig.PIXEL_6,
-        maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE
-    )
+    val paparazzi =
+        Paparazzi(
+            deviceConfig = DeviceConfig.PIXEL_6,
+            maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE,
+        )
 
     @Test
     fun composable_sign_in() {
         snapshot(
-            state = AuthenticationState(
-                isUserAuthorized = false,
-                authenticationMode = AuthenticationMode.SIGN_IN,
-                email = EMAIL,
-                password = PASSWORD,
-                passwordRequirements = listOf(),
-                isLoading = false,
-                error = NO_ERROR
-            )
+            state =
+                AuthenticationState(
+                    isUserAuthorized = false,
+                    authenticationMode = AuthenticationMode.SIGN_IN,
+                    email = EMAIL,
+                    password = PASSWORD,
+                    passwordRequirements = listOf(),
+                    isLoading = false,
+                    error = NO_ERROR,
+                ),
         )
     }
 
@@ -38,7 +39,7 @@ internal class AuthenticationContentSnapshotTest {
         paparazzi.snapshot {
             AuthenticationContent(
                 authenticationState = state,
-                onEvent = {}
+                onEvent = {},
             )
         }
     }

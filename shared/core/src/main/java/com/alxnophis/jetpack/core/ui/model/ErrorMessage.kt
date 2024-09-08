@@ -8,7 +8,7 @@ import com.alxnophis.jetpack.kotlin.constants.EMPTY
 data class ErrorMessage(
     val id: Long,
     @StringRes val messageId: Int? = null,
-    val message: String? = null
+    val message: String? = null,
 ) {
     @Composable
     fun composableMessage(): String =

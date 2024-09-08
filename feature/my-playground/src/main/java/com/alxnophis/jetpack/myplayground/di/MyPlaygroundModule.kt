@@ -10,10 +10,11 @@ fun injectMyPlayground() = loadMyPlaygroundModules
 
 private val loadMyPlaygroundModules by lazy {
     loadKoinModules(
-        listOf(myPlaygroundModule)
+        listOf(myPlaygroundModule),
     )
 }
 
-private val myPlaygroundModule: Module = module {
-    viewModel { MyPlaygroundViewModel() }
-}
+private val myPlaygroundModule: Module =
+    module {
+        viewModel { MyPlaygroundViewModel() }
+    }

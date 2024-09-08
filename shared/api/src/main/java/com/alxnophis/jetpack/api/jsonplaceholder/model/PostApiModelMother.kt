@@ -6,16 +6,15 @@ import org.jetbrains.annotations.TestOnly
 
 @TestOnly
 object PostApiModelMother {
-
     operator fun invoke(
         id: Int = ZERO_INT,
         userId: Int = ZERO_INT,
         title: String = EMPTY,
-        body: String = EMPTY
+        body: String = EMPTY,
     ) = PostApiModel(
         id = id,
         userId = userId,
         title = title,
-        body = body
+        body = body,
     )
 }

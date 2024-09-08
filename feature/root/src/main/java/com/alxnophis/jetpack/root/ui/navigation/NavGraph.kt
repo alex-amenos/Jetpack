@@ -25,7 +25,7 @@ fun SetupNavGraph(navHostController: NavHostController) {
         SetStatusBarColor()
         NavHost(
             navController = navHostController,
-            startDestination = Route.Home
+            startDestination = Route.Home,
         ) {
             homeNavGraph(navHostController)
             authenticationNavGraph(navHostController)

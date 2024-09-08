@@ -22,7 +22,6 @@ import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
 class SettingsTest : BaseComposeTest() {
-
     @Test
     fun settings_enable_notifications_is_displayed() {
         setSettingsContent()
@@ -62,9 +61,10 @@ class SettingsTest : BaseComposeTest() {
     @Test
     fun enabled_notifications_toggles_state() {
         setSettingsContent(
-            state = SettingsState.initialState.copy {
-                SettingsState.notificationsEnabled set true
-            }
+            state =
+                SettingsState.initialState.copy {
+                    SettingsState.notificationsEnabled set true
+                },
         )
         composeTestRule
             .onNodeWithTag(TAG_TOGGLE_ITEM)
@@ -88,9 +88,10 @@ class SettingsTest : BaseComposeTest() {
     @Test
     fun show_hints_enabled() {
         setSettingsContent(
-            state = SettingsState.initialState.copy {
-                SettingsState.hintsEnabled set true
-            }
+            state =
+                SettingsState.initialState.copy {
+                    SettingsState.hintsEnabled set true
+                },
         )
         composeTestRule
             .onNodeWithTag(TAG_CHECK_ITEM)
@@ -125,9 +126,10 @@ class SettingsTest : BaseComposeTest() {
     @Test
     fun marketing_options_not_allowed() {
         setSettingsContent(
-            state = SettingsState.initialState.copy {
-                SettingsState.marketingOption set MarketingOption.NOT_ALLOWED
-            }
+            state =
+                SettingsState.initialState.copy {
+                    SettingsState.marketingOption set MarketingOption.NOT_ALLOWED
+                },
         )
         composeTestRule
             .onNodeWithTag(TAG_MARKETING_OPTION + MarketingOption.NOT_ALLOWED.id)
@@ -137,19 +139,19 @@ class SettingsTest : BaseComposeTest() {
             .performClick()
     }
 
-    private fun assertStringResDisplayed(@StringRes stringResource: Int) {
+    private fun assertStringResDisplayed(
+        @StringRes stringResource: Int,
+    ) {
         composeTestRule
             .onNodeWithText(targetContext.getString(stringResource))
             .assertIsDisplayed()
     }
 
-    private fun setSettingsContent(
-        state: SettingsState = SettingsState.initialState
-    ) {
+    private fun setSettingsContent(state: SettingsState = SettingsState.initialState) {
         composeTestRule.setContent {
             SettingsScreen(
                 state = state,
-                appVersion = APP_VERSION
+                appVersion = APP_VERSION,
             )
         }
     }

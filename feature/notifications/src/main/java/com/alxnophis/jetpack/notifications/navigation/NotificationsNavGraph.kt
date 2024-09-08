@@ -11,7 +11,7 @@ fun NavGraphBuilder.notificationsNavGraph(navController: NavController) {
     composable<Route.Notifications> {
         injectNotifications()
         NotificationsScreen(
-            navigateBack = { navController.popBackStack() }
+            navigateBack = { navController.popBackStack() },
         )
     }
 }

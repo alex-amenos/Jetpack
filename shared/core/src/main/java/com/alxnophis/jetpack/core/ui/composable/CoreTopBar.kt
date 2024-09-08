@@ -25,39 +25,39 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 fun CoreTopBar(
     title: String,
     modifier: Modifier = Modifier,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     TopAppBar(
         modifier = modifier,
         colors =
-        TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-        ),
+            TopAppBarDefaults.mediumTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
+                navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+            ),
         title = {
             Text(
                 text = title,
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                letterSpacing = 1.sp
+                letterSpacing = 1.sp,
             )
         },
         navigationIcon = {
             IconButton(
                 modifier = Modifier.testTag(CoreTags.TAG_CORE_BACK),
-                onClick = onBack
+                onClick = onBack,
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(id = R.string.core_cd_go_back),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = MaterialTheme.colorScheme.onPrimary,
                 )
             }
-        }
+        },
     )
 }
 
@@ -68,7 +68,7 @@ private fun CoreTopBarPreview() {
         CoreTopBar(
             modifier = Modifier.fillMaxWidth(),
             title = "Lorem ipsum",
-            onBack = {}
+            onBack = {},
         )
     }
 }

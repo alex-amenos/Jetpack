@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class GetNavigationItemsUseCase(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     suspend operator fun invoke(): Either<NavigationError, List<NavigationItem>> =
         withContext(ioDispatcher) {
@@ -35,56 +35,56 @@ class GetNavigationItemsUseCase(
                 name = "Authentication",
                 emoji = "🗝",
                 description = "Authentication form with SignUp and SignIn",
-                route = Route.Authentication
+                route = Route.Authentication,
             )
         private val settings =
             NavigationItem(
                 name = "Settings",
                 emoji = "⚙️",
                 description = "Settings options screen",
-                route = Route.Settings
+                route = Route.Settings,
             )
         private val posts =
             NavigationItem(
                 name = "Posts",
                 emoji = "📄",
                 description = "Load posts from JsonPlaceholder API",
-                route = Route.Posts
+                route = Route.Posts,
             )
         private val locationTracker =
             NavigationItem(
                 name = "Location Tracker",
                 emoji = "📍",
                 description = "User location tracking",
-                route = Route.LocationTracker
+                route = Route.LocationTracker,
             )
         private val gameBallClicker =
             NavigationItem(
                 name = "Ball Clicker Game",
                 emoji = "🔴",
                 description = "Be the fastest ball clicker!",
-                route = Route.GameBallClicker
+                route = Route.GameBallClicker,
             )
         private val notifications =
             NavigationItem(
                 name = "Notifications",
                 emoji = "🔔",
                 description = "Push notifications",
-                route = Route.Notifications
+                route = Route.Notifications,
             )
         private val myPlayground =
             NavigationItem(
                 name = "️MyPlayground",
                 emoji = "⭐️",
                 description = "My Jetpack playground module",
-                route = Route.MyPlayground
+                route = Route.MyPlayground,
             )
         private val fileDownloader =
             NavigationItem(
                 name = "FileDownloader",
                 emoji = "📥",
                 description = "Download a file by URL to download folder",
-                route = Route.FileDownloader
+                route = Route.FileDownloader,
             )
     }
 }

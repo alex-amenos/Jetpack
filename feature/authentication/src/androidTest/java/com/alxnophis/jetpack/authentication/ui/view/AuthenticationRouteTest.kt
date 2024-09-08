@@ -34,7 +34,7 @@ class AuthenticationRouteTest : BaseComposeTest() {
     @Test
     fun sign_in_title_displayed() {
         authenticationContent(
-            AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_IN)
+            AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_IN),
         )
 
         composeTestRule
@@ -45,7 +45,7 @@ class AuthenticationRouteTest : BaseComposeTest() {
     @Test
     fun sign_up_title_displayed() {
         authenticationContent(
-            AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_UP)
+            AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_UP),
         )
 
         composeTestRule
@@ -57,7 +57,7 @@ class AuthenticationRouteTest : BaseComposeTest() {
         composeTestRule.setContent {
             AuthenticationContent(
                 authenticationState = state,
-                onEvent = {}
+                onEvent = {},
             )
         }
     }

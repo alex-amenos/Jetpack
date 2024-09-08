@@ -7,16 +7,18 @@ import com.alxnophis.jetpack.kotlin.constants.EMPTY
 
 internal sealed class MyPlaygroundEvent : UiEvent {
     data object GoBackRequested : MyPlaygroundEvent()
+
     data class TextFieldChanged(val value: String) : MyPlaygroundEvent()
 }
 
 @optics
 internal data class MyPlaygroundState(
-    val textFieldValue: String
+    val textFieldValue: String,
 ) : UiState {
     internal companion object {
-        val initialState = MyPlaygroundState(
-            textFieldValue = EMPTY
-        )
+        val initialState =
+            MyPlaygroundState(
+                textFieldValue = EMPTY,
+            )
     }
 }

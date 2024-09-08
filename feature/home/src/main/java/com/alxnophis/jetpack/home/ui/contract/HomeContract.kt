@@ -10,8 +10,11 @@ internal const val NO_ERROR = 0
 
 internal sealed class HomeEvent : UiEvent {
     data object Initialized : HomeEvent()
+
     data object ErrorDismissRequested : HomeEvent()
+
     data object GoBackRequested : HomeEvent()
+
     data class NavigationRequested(val route: Route) : HomeEvent()
 }
 
@@ -19,13 +22,14 @@ internal sealed class HomeEvent : UiEvent {
 internal data class HomeState(
     val isLoading: Boolean,
     val data: List<NavigationItem>,
-    val error: Int
+    val error: Int,
 ) : UiState {
     internal companion object {
-        val initialState = HomeState(
-            isLoading = false,
-            data = emptyList(),
-            error = NO_ERROR
-        )
+        val initialState =
+            HomeState(
+                isLoading = false,
+                data = emptyList(),
+                error = NO_ERROR,
+            )
     }
 }

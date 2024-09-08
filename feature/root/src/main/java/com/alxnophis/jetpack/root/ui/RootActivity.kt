@@ -9,17 +9,17 @@ import androidx.navigation.compose.rememberNavController
 import com.alxnophis.jetpack.root.ui.navigation.SetupNavGraph
 
 class RootActivity : AppCompatActivity() {
-
     private lateinit var navigationController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val restoredState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            savedInstanceState?.getParcelable(NAVIGATION_STATE, Bundle::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            savedInstanceState?.getParcelable(NAVIGATION_STATE)
-        }
+        val restoredState =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                savedInstanceState?.getParcelable(NAVIGATION_STATE, Bundle::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                savedInstanceState?.getParcelable(NAVIGATION_STATE)
+            }
         setContent {
             navigationController = rememberNavController()
             navigationController.restoreState(restoredState)

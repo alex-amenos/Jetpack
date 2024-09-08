@@ -13,7 +13,8 @@ private val loadAuthenticationModules by lazy {
     loadKoinModules(authenticationModule)
 }
 
-private val authenticationModule: Module = module {
-    factory { AuthenticateUseCase() }
-    viewModel { AuthenticationViewModel(get()) }
-}
+private val authenticationModule: Module =
+    module {
+        factory { AuthenticateUseCase() }
+        viewModel { AuthenticationViewModel(get()) }
+    }

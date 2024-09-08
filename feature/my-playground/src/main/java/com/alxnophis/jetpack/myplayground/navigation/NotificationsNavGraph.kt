@@ -22,7 +22,7 @@ fun NavGraphBuilder.myPlaygroundNavGraph(navController: NavController) {
                     MyPlaygroundEvent.GoBackRequested -> navController.popBackStack()
                     else -> viewModel.handleEvent(event)
                 }
-            }
+            },
         )
     }
 }

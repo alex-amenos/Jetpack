@@ -49,16 +49,16 @@ internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.notifications_title),
-                    onBack = { navigateBack() }
+                    onBack = { navigateBack() },
                 )
-            }
+            },
         ) {
             NotificationPermission(
                 modifier =
-                Modifier
-                    .padding(paddingValues = it)
-                    .fillMaxSize()
-                    .padding(mediumPadding)
+                    Modifier
+                        .padding(paddingValues = it)
+                        .fillMaxSize()
+                        .padding(mediumPadding),
             )
         }
     }
@@ -70,7 +70,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
     var hasNotificationPermission by remember {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
             mutableStateOf(
-                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED,
             )
         } else {
             mutableStateOf(true)
@@ -79,32 +79,32 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
     val permissionLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestPermission(),
-            onResult = { isGranted -> hasNotificationPermission = isGranted }
+            onResult = { isGranted -> hasNotificationPermission = isGranted },
         )
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CoreButtonMinor(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(largePadding),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(largePadding),
                 text = stringResource(id = R.string.notifications_request_permission),
-                onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) }
+                onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
             )
             HorizontalDivider(
                 modifier = Modifier.height(15.dp),
-                color = Color.Transparent
+                color = Color.Transparent,
             )
         }
         CoreButtonMajor(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(largePadding),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(largePadding),
             text = stringResource(id = R.string.notifications_show_notification),
             onClick = {
                 if (hasNotificationPermission) {
@@ -113,10 +113,10 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
                         content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                         icon = R.drawable.notifications_ic_push,
                         channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
-                        notificationId = 1
+                        notificationId = 1,
                     )
                 }
-            }
+            },
         )
     }
 }

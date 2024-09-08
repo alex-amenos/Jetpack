@@ -26,9 +26,8 @@ import kotlinx.coroutines.launch
 
 internal class BallClickerViewModel(
     initialState: BallClickerState = BallClickerState.initialState,
-    defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+    defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
-
     private val timerScope = CoroutineScope(defaultDispatcher + SupervisorJob())
 
     private var timerJob: Job? = null
@@ -52,45 +51,50 @@ internal class BallClickerViewModel(
         }
     }
 
-    private fun startGame() = viewModelScope.launch {
-        updateUiState {
-            copy {
-                BallClickerState.isTimerRunning set true
-                BallClickerState.points set DEFAULT_POINTS
-            }
-        }
-        tickerFlow()
-            .onEach { seconds ->
-                updateUiState {
-                    copy {
-                        BallClickerState.currentTimeInSeconds set seconds.toInt()
-                    }
+    private fun startGame() =
+        viewModelScope.launch {
+            updateUiState {
+                copy {
+                    BallClickerState.isTimerRunning set true
+                    BallClickerState.points set DEFAULT_POINTS
                 }
             }
-            .onCompletion {
-                updateUiState {
-                    copy {
-                        BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
-                        BallClickerState.isTimerRunning set false
+            tickerFlow()
+                .onEach { seconds ->
+                    updateUiState {
+                        copy {
+                            BallClickerState.currentTimeInSeconds set seconds.toInt()
+                        }
                     }
                 }
-            }
-            .cancellable()
-            .launchIn(timerScope)
-            .also { job -> timerJob = job }
-    }
+                .onCompletion {
+                    updateUiState {
+                        copy {
+                            BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
+                            BallClickerState.isTimerRunning set false
+                        }
+                    }
+                }
+                .cancellable()
+                .launchIn(timerScope)
+                .also { job -> timerJob = job }
+        }
 
-    private fun stopGame() = viewModelScope.launch {
-        timerJob?.cancel()
-        updateUiState {
-            copy {
-                BallClickerState.isTimerRunning set false
-                BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
+    private fun stopGame() =
+        viewModelScope.launch {
+            timerJob?.cancel()
+            updateUiState {
+                copy {
+                    BallClickerState.isTimerRunning set false
+                    BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
+                }
             }
         }
-    }
 
-    private fun tickerFlow(start: Long = DEFAULT_TIME_IN_SECONDS.toLong(), end: Long = 0L): Flow<Long> =
+    private fun tickerFlow(
+        start: Long = DEFAULT_TIME_IN_SECONDS.toLong(),
+        end: Long = 0L,
+    ): Flow<Long> =
         flow {
             for (i in start downTo end) {
                 emit(i)

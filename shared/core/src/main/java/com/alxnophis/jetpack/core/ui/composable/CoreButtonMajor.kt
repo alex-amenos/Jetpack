@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.disabledContent
+import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 
@@ -29,33 +29,36 @@ fun CoreButtonMajor(
     text: String,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    onClick: (() -> Unit)
+    onClick: (() -> Unit),
 ) {
     TextButton(
         onClick = { onClick() },
         modifier = modifier,
         enabled = isEnabled,
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = if (isEnabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.primary.copy(alpha = 0f)
-            }
-        ),
-        colors = ButtonDefaults.textButtonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = disabledContent),
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = disabledContent)
-        )
+        border =
+            BorderStroke(
+                width = 1.dp,
+                color =
+                    if (isEnabled) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0f)
+                    },
+            ),
+        colors =
+            ButtonDefaults.textButtonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT),
+                disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = DISABLED_CONTENT),
+            ),
     ) {
         Text(
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(extraSmallPadding),
-            text = text
+            text = text,
         )
     }
 }
@@ -69,14 +72,15 @@ private fun CoreButtonMajorPreview() {
     }
     AppTheme {
         Column(
-            modifier = Modifier
-                .wrapContentHeight()
-                .padding(mediumPadding)
+            modifier =
+                Modifier
+                    .wrapContentHeight()
+                    .padding(mediumPadding),
         ) {
             CoreButtonMajor(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Button",
-                onClick = clicked
+                onClick = clicked,
             )
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -85,7 +89,7 @@ private fun CoreButtonMajorPreview() {
                 modifier = Modifier.fillMaxWidth(),
                 text = "Button disabled",
                 isEnabled = false,
-                onClick = clicked
+                onClick = clicked,
             )
         }
     }

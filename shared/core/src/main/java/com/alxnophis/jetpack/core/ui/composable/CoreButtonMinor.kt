@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.disabledContent
+import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 
@@ -30,32 +30,35 @@ fun CoreButtonMinor(
     text: String,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    onClick: (() -> Unit)
+    onClick: (() -> Unit),
 ) {
     OutlinedButton(
         modifier = modifier,
         enabled = isEnabled,
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = if (isEnabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.primary.copy(alpha = disabledContent)
-            }
-        ),
-        onClick = { onClick() }
+        border =
+            BorderStroke(
+                width = 1.dp,
+                color =
+                    if (isEnabled) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT)
+                    },
+            ),
+        onClick = { onClick() },
     ) {
         Text(
             style = MaterialTheme.typography.titleMedium,
-            color = if (isEnabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.primary.copy(alpha = disabledContent)
-            },
+            color =
+                if (isEnabled) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT)
+                },
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(extraSmallPadding),
-            text = text
+            text = text,
         )
     }
 }
@@ -69,14 +72,15 @@ private fun CoreButtonMinorPreview() {
     }
     AppTheme {
         Column(
-            modifier = Modifier
-                .wrapContentHeight()
-                .padding(mediumPadding)
+            modifier =
+                Modifier
+                    .wrapContentHeight()
+                    .padding(mediumPadding),
         ) {
             CoreButtonMinor(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Button",
-                onClick = clicked
+                onClick = clicked,
             )
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -85,7 +89,7 @@ private fun CoreButtonMinorPreview() {
                 modifier = Modifier.fillMaxWidth(),
                 text = "Button disabled",
                 isEnabled = false,
-                onClick = clicked
+                onClick = clicked,
             )
         }
     }

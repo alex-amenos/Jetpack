@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class BaseComposeTest {
-
     @get:Rule
     val composeTestRule: ComposeContentTestRule = createComposeRule()
 

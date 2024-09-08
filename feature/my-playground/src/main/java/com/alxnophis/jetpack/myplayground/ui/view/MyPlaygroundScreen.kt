@@ -34,7 +34,7 @@ import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundState
 @Composable
 internal fun MyPlaygroundScreen(
     state: MyPlaygroundState,
-    onEvent: (MyPlaygroundEvent) -> Unit = {}
+    onEvent: (MyPlaygroundEvent) -> Unit = {},
 ) {
     BackHandler { onEvent(MyPlaygroundEvent.GoBackRequested) }
     AppTheme {
@@ -44,18 +44,19 @@ internal fun MyPlaygroundScreen(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.myplayground_title),
-                    onBack = { onEvent(MyPlaygroundEvent.GoBackRequested) }
+                    onBack = { onEvent(MyPlaygroundEvent.GoBackRequested) },
                 )
-            }
+            },
         ) { paddingValues ->
             MyPlaygroundContent(
                 state = state,
                 handleEvent = onEvent,
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surface)
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(mediumPadding)
+                modifier =
+                    Modifier
+                        .background(MaterialTheme.colorScheme.surface)
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(mediumPadding),
             )
         }
     }
@@ -65,7 +66,7 @@ internal fun MyPlaygroundScreen(
 internal fun MyPlaygroundContent(
     state: MyPlaygroundState,
     modifier: Modifier = Modifier,
-    handleEvent: (MyPlaygroundEvent) -> Unit
+    handleEvent: (MyPlaygroundEvent) -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     LaunchedEffect(Unit) {
@@ -74,7 +75,7 @@ internal fun MyPlaygroundContent(
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextField(
             modifier = Modifier.focusRequester(focusRequester),
@@ -85,7 +86,7 @@ internal fun MyPlaygroundContent(
                 Text(text = stringResource(R.string.myplayground_quote))
             },
             value = state.textFieldValue,
-            onValueChange = { handleEvent(MyPlaygroundEvent.TextFieldChanged(it)) }
+            onValueChange = { handleEvent(MyPlaygroundEvent.TextFieldChanged(it)) },
         )
     }
 }
@@ -95,6 +96,6 @@ internal fun MyPlaygroundContent(
 private fun MyPlaygroundScaffoldPreview() {
     val state = MyPlaygroundState.initialState
     MyPlaygroundScreen(
-        state = state
+        state = state,
     )
 }

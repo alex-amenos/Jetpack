@@ -18,18 +18,19 @@ import com.alxnophis.jetpack.settings.R
 @Composable
 internal fun SettingsAppVersion(
     appVersion: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     SettingsItem(modifier = modifier) {
         Row(
-            modifier = Modifier
-                .padding(horizontal = mediumPadding)
-                .semantics(mergeDescendants = true) {},
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .padding(horizontal = mediumPadding)
+                    .semantics(mergeDescendants = true) {},
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = stringResource(R.string.settings_app_version)
+                text = stringResource(R.string.settings_app_version),
             )
             Text(text = appVersion)
         }
@@ -43,7 +44,7 @@ private fun SettingsAppVersionPreview() {
     AppTheme {
         SettingsAppVersion(
             modifier = Modifier.fillMaxWidth(),
-            appVersion = "1.0.1"
+            appVersion = "1.0.1",
         )
     }
 }
