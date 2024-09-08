@@ -2,8 +2,8 @@ package com.alxnophis.jetpack.filedownloader.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.extensions.isValidUrl
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.data.model.DownloaderFile
 import com.alxnophis.jetpack.filedownloader.data.model.FileDownloaderError
@@ -23,9 +23,8 @@ import timber.log.Timber
 
 internal class FileDownloaderViewModel(
     private val fileDownloaderRepository: FileDownloaderRepository,
-    initialState: FileDownloaderState = FileDownloaderState.initialState
+    initialState: FileDownloaderState = FileDownloaderState.initialState,
 ) : BaseViewModel<FileDownloaderEvent, FileDownloaderState>(initialState) {
-
     override fun handleEvent(event: FileDownloaderEvent) {
         Timber.d("## FileDownloaderViewModel handle event: $event")
         viewModelScope.launch {
@@ -39,20 +38,21 @@ internal class FileDownloaderViewModel(
         }
     }
 
-    private fun subscribeToDownloaderFilesStatus() = viewModelScope.launch {
-        fileDownloaderRepository
-            .downloadingFiles
-            .combine(fileDownloaderRepository.downloadedFiles) { downloadingFiles, downloadedFiles ->
-                val downloadingList = downloadingFiles.map { it.mapTo(DOWNLOADING_STATUS) }
-                val downloadedList = downloadedFiles.map { it.mapTo(DOWNLOADED_STATUS) }
-                updateUiState {
-                    copy {
-                        FileDownloaderState.fileStatusList set (downloadingList + downloadedList)
+    private fun subscribeToDownloaderFilesStatus() =
+        viewModelScope.launch {
+            fileDownloaderRepository
+                .downloadingFiles
+                .combine(fileDownloaderRepository.downloadedFiles) { downloadingFiles, downloadedFiles ->
+                    val downloadingList = downloadingFiles.map { it.mapTo(DOWNLOADING_STATUS) }
+                    val downloadedList = downloadedFiles.map { it.mapTo(DOWNLOADED_STATUS) }
+                    updateUiState {
+                        copy {
+                            FileDownloaderState.fileStatusList set (downloadingList + downloadedList)
+                        }
                     }
                 }
-            }
-            .collect()
-    }
+                .collect()
+        }
 
     private fun updateUrl(url: String) {
         viewModelScope.launch {
@@ -72,11 +72,12 @@ internal class FileDownloaderViewModel(
                     .downloadFile(urlFile)
                     .fold(
                         { error ->
-                            val errorResId = when (error) {
-                                FileDownloaderError.FileDownloaded -> R.string.file_downloader_file_downloaded
-                                FileDownloaderError.FileDownloading -> R.string.file_downloader_file_downloading
-                                FileDownloaderError.Unknown -> R.string.file_downloader_generic_error
-                            }
+                            val errorResId =
+                                when (error) {
+                                    FileDownloaderError.FileDownloaded -> R.string.file_downloader_file_downloaded
+                                    FileDownloaderError.FileDownloading -> R.string.file_downloader_file_downloading
+                                    FileDownloaderError.Unknown -> R.string.file_downloader_generic_error
+                                }
                             updateUiState {
                                 copy {
                                     FileDownloaderState.error set errorResId
@@ -89,7 +90,7 @@ internal class FileDownloaderViewModel(
                                     FileDownloaderState.url set EMPTY
                                 }
                             }
-                        }
+                        },
                     )
             }
         }
@@ -103,11 +104,12 @@ internal class FileDownloaderViewModel(
         }
     }
 
-    private fun DownloaderFile.mapTo(status: String) = buildString {
-        append(status)
-        append(WHITE_SPACE)
-        append(url)
-    }
+    private fun DownloaderFile.mapTo(status: String) =
+        buildString {
+            append(status)
+            append(WHITE_SPACE)
+            append(url)
+        }
 
     companion object {
         private const val DOWNLOADING_STATUS = "⏳"

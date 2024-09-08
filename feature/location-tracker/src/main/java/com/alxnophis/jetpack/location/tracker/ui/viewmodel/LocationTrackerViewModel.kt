@@ -25,9 +25,8 @@ internal class LocationTrackerViewModel(
     private val stopLocationProviderUseCase: StopLocationProviderUseCase,
     private val locationStateUseCase: LocationFlowUseCase,
     private val lastKnownLocationUseCase: ProvideLastKnownLocationUseCase,
-    initialState: LocationTrackerState = LocationTrackerState.initialState
+    initialState: LocationTrackerState = LocationTrackerState.initialState,
 ) : BaseViewModel<LocationTrackerEvent, LocationTrackerState>(initialState) {
-
     override fun handleEvent(event: LocationTrackerEvent) {
         viewModelScope.launch {
             when (event) {
@@ -45,41 +44,46 @@ internal class LocationTrackerViewModel(
         }
     }
 
-    private fun startTrackingUserLocation() = viewModelScope.launch {
-        startLocationProviderUseCase()
-    }
-
-    private fun stopTrackUserLocation() = viewModelScope.launch {
-        stopLocationProviderUseCase()
-    }
-
-    private fun subscribeToUserLocation() = viewModelScope.launch {
-        locationStateUseCase().collectLatest { locationState ->
-            updateUiState {
-                copy {
-                    LocationTrackerState.userLocation set locationState.parseToString()
-                }
-            }
+    private fun startTrackingUserLocation() =
+        viewModelScope.launch {
+            startLocationProviderUseCase()
         }
-    }
 
-    private fun subscribeToLastKnownLocation() = viewModelScope.launch {
-        lastKnownLocationUseCase().collectLatest { lastKnownLocation ->
-            lastKnownLocation?.let { location ->
+    private fun stopTrackUserLocation() =
+        viewModelScope.launch {
+            stopLocationProviderUseCase()
+        }
+
+    private fun subscribeToUserLocation() =
+        viewModelScope.launch {
+            locationStateUseCase().collectLatest { locationState ->
                 updateUiState {
                     copy {
-                        LocationTrackerState.lastKnownLocation set location.parseToString()
+                        LocationTrackerState.userLocation set locationState.parseToString()
                     }
                 }
             }
         }
-    }
 
-    private fun Location.parseToString() = this
-        .toString()
-        .replace(PARENTHESES_OPENED, "($BREAK_LINE$WHITE_SPACE")
-        .replace(PARENTHESES_CLOSED, "$BREAK_LINE$PARENTHESES_CLOSED")
-        .replace(COMA, "$COMA$BREAK_LINE")
+    private fun subscribeToLastKnownLocation() =
+        viewModelScope.launch {
+            lastKnownLocationUseCase().collectLatest { lastKnownLocation ->
+                lastKnownLocation?.let { location ->
+                    updateUiState {
+                        copy {
+                            LocationTrackerState.lastKnownLocation set location.parseToString()
+                        }
+                    }
+                }
+            }
+        }
+
+    private fun Location.parseToString() =
+        this
+            .toString()
+            .replace(PARENTHESES_OPENED, "($BREAK_LINE$WHITE_SPACE")
+            .replace(PARENTHESES_CLOSED, "$BREAK_LINE$PARENTHESES_CLOSED")
+            .replace(COMA, "$COMA$BREAK_LINE")
 
     override fun onCleared() {
         stopTrackUserLocation()

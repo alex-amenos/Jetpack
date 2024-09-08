@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 internal interface FileDownloaderRepository {
     val downloadingFiles: StateFlow<List<DownloaderFile>>
     val downloadedFiles: StateFlow<List<DownloaderFile>>
+
     suspend fun downloadFile(fileUrl: String): Either<FileDownloaderError, Long>
+
     fun fileDownloaded(downloadId: Long)
 }

@@ -33,7 +33,4 @@ sealed class Route {
 
     @Serializable
     data object Settings : Route()
-
-    @Serializable
-    data object Spacex : Route()
 }

@@ -12,6 +12,7 @@ private val loadBallClickerModule by lazy {
     loadKoinModules(ballClickerModule)
 }
 
-private val ballClickerModule: Module = module {
-    viewModel { BallClickerViewModel() }
-}
+private val ballClickerModule: Module =
+    module {
+        viewModel { BallClickerViewModel() }
+    }

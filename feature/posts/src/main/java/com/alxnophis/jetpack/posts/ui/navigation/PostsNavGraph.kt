@@ -22,7 +22,7 @@ fun NavGraphBuilder.postsNavGraph(navController: NavHostController) {
                     PostsEvent.GoBackRequested -> navController.popBackStack()
                     else -> viewModel.handleEvent(event)
                 }
-            }
+            },
         )
     }
 }

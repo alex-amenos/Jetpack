@@ -4,11 +4,11 @@ import arrow.retrofit.adapter.either.EitherCallAdapterFactory
 import com.alxnophis.jetpack.api.BuildConfig
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
-import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 class JsonPlaceholderRetrofitFactory {
     private val okHttpClient: OkHttpClient =
@@ -36,12 +36,14 @@ class JsonPlaceholderRetrofitFactory {
             .build()
             .create(JsonPlaceholderRetrofitService::class.java)
 
-    private fun loggingInterceptor() = HttpLoggingInterceptor().apply {
-        level = when {
-            isDebugBuildType() -> HttpLoggingInterceptor.Level.BODY
-            else -> HttpLoggingInterceptor.Level.NONE
+    private fun loggingInterceptor() =
+        HttpLoggingInterceptor().apply {
+            level =
+                when {
+                    isDebugBuildType() -> HttpLoggingInterceptor.Level.BODY
+                    else -> HttpLoggingInterceptor.Level.NONE
+                }
         }
-    }
 
     companion object {
         private const val BASE_URL = "https://jsonplaceholder.typicode.com"

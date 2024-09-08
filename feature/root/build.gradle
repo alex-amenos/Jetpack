@@ -14,6 +14,5 @@ dependencies {
     implementation project(Modules.FEATURE_MY_PLAYGROUND)
     implementation project(Modules.FEATURE_POSTS)
     implementation project(Modules.FEATURE_SETTINGS)
-    implementation project(Modules.FEATURE_SPACEX)
     implementation project(Modules.FEATURE_FILE_DOWNLOADER)
 }

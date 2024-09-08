@@ -14,7 +14,6 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 
 open class BaseApp : Application() {
-
     override fun onCreate() {
         super.onCreate()
         initKoin()
@@ -24,15 +23,16 @@ open class BaseApp : Application() {
     }
 
     private fun initKoin() {
-        val koinApp = startKoin {
-            androidContext(this@BaseApp)
-            modules(
-                listOf(
-                    coreModule,
-                    apiModule
+        val koinApp =
+            startKoin {
+                androidContext(this@BaseApp)
+                modules(
+                    listOf(
+                        coreModule,
+                        apiModule,
+                    ),
                 )
-            )
-        }
+            }
         if (BuildConfig.DEBUG) {
             koinApp.logger(KoinLogger())
         }
@@ -49,7 +49,7 @@ open class BaseApp : Application() {
             createNotificationChannel(
                 channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
                 channelName = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_NAME,
-                notificationImportance = NotificationManager.IMPORTANCE_HIGH
+                notificationImportance = NotificationManager.IMPORTANCE_HIGH,
             )
         }
     }
@@ -62,7 +62,7 @@ open class BaseApp : Application() {
                     .detectDiskWrites()
                     .detectNetwork() // or .detectAll() for all detectable problems
                     .penaltyLog()
-                    .build()
+                    .build(),
             )
             StrictMode.setVmPolicy(
                 StrictMode.VmPolicy.Builder()
@@ -70,7 +70,7 @@ open class BaseApp : Application() {
                     .detectLeakedClosableObjects()
                     .penaltyLog()
 //                .penaltyDeath()
-                    .build()
+                    .build(),
             )
         }
     }

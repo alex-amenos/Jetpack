@@ -29,33 +29,34 @@ import com.alxnophis.jetpack.settings.ui.contract.Theme
 internal fun SettingsThemeItem(
     selectedTheme: Theme,
     modifier: Modifier = Modifier,
-    onOptionSelected: (option: Theme) -> Unit
+    onOptionSelected: (option: Theme) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     SettingsItem(modifier = modifier) {
         Row(
-            modifier = Modifier
-                .clickable(
-                    onClick = { expanded = !expanded },
-                    onClickLabel = stringResource(R.string.settings_cd_select_theme)
-                )
-                .padding(mediumPadding)
-                .testTag(SettingsTags.TAG_SELECT_THEME)
+            modifier =
+                Modifier
+                    .clickable(
+                        onClick = { expanded = !expanded },
+                        onClickLabel = stringResource(R.string.settings_cd_select_theme),
+                    )
+                    .padding(mediumPadding)
+                    .testTag(SettingsTags.TAG_SELECT_THEME),
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = stringResource(R.string.settings_option_theme)
+                text = stringResource(R.string.settings_option_theme),
             )
             Text(
                 modifier = Modifier.testTag(SettingsTags.TAG_THEME),
-                text = stringResource(selectedTheme.label)
+                text = stringResource(selectedTheme.label),
             )
         }
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             offset = DpOffset(x = 16.dp, y = 0.dp),
-            properties = PopupProperties(usePlatformDefaultWidth = true)
+            properties = PopupProperties(usePlatformDefaultWidth = true),
         ) {
             Theme.values().forEach { theme ->
                 DropdownMenuItem(
@@ -64,7 +65,7 @@ internal fun SettingsThemeItem(
                         expanded = false
                     },
                     modifier = Modifier.testTag(SettingsTags.TAG_THEME_OPTION + theme),
-                    text = { Text(text = stringResource(theme.label)) }
+                    text = { Text(text = stringResource(theme.label)) },
                 )
             }
         }
@@ -79,7 +80,7 @@ private fun SettingsThemeItemPreview() {
         SettingsThemeItem(
             modifier = Modifier.fillMaxWidth(),
             selectedTheme = Theme.SYSTEM,
-            onOptionSelected = {}
+            onOptionSelected = {},
         )
     }
 }

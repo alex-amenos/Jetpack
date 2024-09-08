@@ -20,7 +20,7 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 @Composable
 internal fun AuthenticationScreen(
     state: AuthenticationState,
-    onEvent: (AuthenticationEvent) -> Unit = {}
+    onEvent: (AuthenticationEvent) -> Unit = {},
 ) {
     LaunchedEffect(state.isUserAuthorized) {
         if (state.isUserAuthorized) {
@@ -36,29 +36,31 @@ internal fun AuthenticationScreen(
 @Composable
 internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
-    onEvent: AuthenticationEvent.() -> Unit = {}
+    onEvent: AuthenticationEvent.() -> Unit = {},
 ) {
     AppTheme {
         AuthenticationForm(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.surface)
-                .fillMaxSize(),
+            modifier =
+                Modifier
+                    .background(MaterialTheme.colorScheme.surface)
+                    .fillMaxSize(),
             authenticationMode = authenticationState.authenticationMode,
             isLoading = authenticationState.isLoading,
             email = authenticationState.email,
             password = authenticationState.password,
             completedPasswordRequirements = authenticationState.passwordRequirements,
-            enableAuthentication = if (authenticationState.isFormValid()) {
-                !authenticationState.isLoading
-            } else {
-                false
-            },
-            handleEvent = onEvent
+            enableAuthentication =
+                if (authenticationState.isFormValid()) {
+                    !authenticationState.isLoading
+                } else {
+                    false
+                },
+            handleEvent = onEvent,
         )
         if (authenticationState.error != NO_ERROR) {
             CoreErrorDialog(
                 errorMessage = stringResource(authenticationState.error),
-                dismissError = { onEvent(AuthenticationEvent.ErrorDismissRequested) }
+                dismissError = { onEvent(AuthenticationEvent.ErrorDismissRequested) },
             )
         }
     }

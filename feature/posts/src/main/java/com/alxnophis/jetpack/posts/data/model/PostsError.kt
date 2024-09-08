@@ -1,8 +1,11 @@
 package com.alxnophis.jetpack.posts.data.model
 
 sealed class PostsError {
-    object Network : PostsError()
-    object Server : PostsError()
-    object Unknown : PostsError()
-    object Unexpected : PostsError()
+    data object Network : PostsError()
+
+    data object Server : PostsError()
+
+    data object Unknown : PostsError()
+
+    data object Unexpected : PostsError()
 }

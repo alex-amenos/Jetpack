@@ -18,9 +18,8 @@ import kotlinx.coroutines.launch
 
 internal class HomeViewModel(
     private val getNavigationItemsUseCase: GetNavigationItemsUseCase,
-    initialState: HomeState = HomeState.initialState
+    initialState: HomeState = HomeState.initialState,
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
-
     override fun handleEvent(event: HomeEvent) {
         viewModelScope.launch {
             when (event) {
@@ -52,7 +51,7 @@ internal class HomeViewModel(
                                 HomeState.data set navigationItems
                             }
                         }
-                    }
+                    },
                 )
         }
     }

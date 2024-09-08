@@ -34,7 +34,7 @@ class PostsViewModelUnitTests : FunSpec({
     test(
         "GIVEN a PostsViewModel with default initial state " +
             "WHEN initialize " +
-            "THEN show AND hide loading AND post state should end with a list of posts"
+            "THEN show AND hide loading AND post state should end with a list of posts",
     ) {
         val viewModel = PostsViewModel(postsRepository = postRepositoryMock)
         whenever(postRepositoryMock.getPosts()).thenReturn(postList.right())
@@ -53,18 +53,19 @@ class PostsViewModelUnitTests : FunSpec({
         PostsError.Network to R.string.posts_error_network,
         PostsError.Server to R.string.posts_error_server,
         PostsError.Unknown to R.string.posts_error_unknown,
-        PostsError.Unexpected to R.string.posts_error_unexpected
+        PostsError.Unexpected to R.string.posts_error_unexpected,
     ).forEach { (error, errorMessage) ->
         test(
             "GIVEN a PostsViewModel with default initial state " +
                 "WHEN get post fails with ${error::class.simpleName} error" +
-                "THEN show AND hide loading AND post state result should be an error with messageId $errorMessage"
+                "THEN show AND hide loading AND post state result should be an error with messageId $errorMessage",
         ) {
             val errorId = 1L
-            val viewModel = PostsViewModel(
-                postsRepository = postRepositoryMock,
-                getRandomUUID = { errorId }
-            )
+            val viewModel =
+                PostsViewModel(
+                    postsRepository = postRepositoryMock,
+                    getRandomUUID = { errorId },
+                )
             whenever(postRepositoryMock.getPosts()).thenReturn(error.left())
 
             viewModel.handleEvent(PostsEvent.Initialized)
@@ -72,10 +73,11 @@ class PostsViewModelUnitTests : FunSpec({
             viewModel.uiState.test {
                 awaitItem() shouldBe PostsState.initialState
                 awaitItem() shouldBe PostsState.initialState.copy(isLoading = true)
-                awaitItem() shouldBe PostsState.initialState.copy(
-                    isLoading = false,
-                    errorMessages = listOf(ErrorMessage(id = errorId, messageId = errorMessage))
-                )
+                awaitItem() shouldBe
+                    PostsState.initialState.copy(
+                        isLoading = false,
+                        errorMessages = listOf(ErrorMessage(id = errorId, messageId = errorMessage)),
+                    )
                 expectNoEvents()
             }
         }
@@ -84,13 +86,14 @@ class PostsViewModelUnitTests : FunSpec({
     test(
         "GIVEN a PostViewModel initialized with an error " +
             "WHEN DismissError event " +
-            "THEN post state result should be without errors"
+            "THEN post state result should be without errors",
     ) {
         val errorId = 1L
-        val viewModel = PostsViewModel(
-            postsRepository = postRepositoryMock,
-            getRandomUUID = { errorId }
-        )
+        val viewModel =
+            PostsViewModel(
+                postsRepository = postRepositoryMock,
+                getRandomUUID = { errorId },
+            )
         whenever(postRepositoryMock.getPosts()).thenReturn(PostsError.Network.left())
 
         viewModel.handleEvent(PostsEvent.DismissErrorRequested(errorId))
@@ -105,13 +108,14 @@ class PostsViewModelUnitTests : FunSpec({
     xtest(
         "GIVEN a PostViewModel initialized " +
             "WHEN go back event " +
-            "THEN throw IllegalStateException"
+            "THEN throw IllegalStateException",
     ) {
         val errorId = 1L
-        val viewModel = PostsViewModel(
-            postsRepository = postRepositoryMock,
-            getRandomUUID = { errorId }
-        )
+        val viewModel =
+            PostsViewModel(
+                postsRepository = postRepositoryMock,
+                getRandomUUID = { errorId },
+            )
 
         shouldThrow<IllegalStateException> {
             viewModel.handleEvent(PostsEvent.GoBackRequested)

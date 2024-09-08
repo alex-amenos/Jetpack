@@ -18,7 +18,6 @@ import com.alxnophis.jetpack.notifications.navigation.notificationsNavGraph
 import com.alxnophis.jetpack.posts.ui.navigation.postsNavGraph
 import com.alxnophis.jetpack.router.screen.Route
 import com.alxnophis.jetpack.settings.ui.navigation.settingsNavGraph
-import com.alxnophis.jetpack.spacex.ui.navigation.spacexNavGraph
 
 @Composable
 fun SetupNavGraph(navHostController: NavHostController) {
@@ -26,7 +25,7 @@ fun SetupNavGraph(navHostController: NavHostController) {
         SetStatusBarColor()
         NavHost(
             navController = navHostController,
-            startDestination = Route.Home
+            startDestination = Route.Home,
         ) {
             homeNavGraph(navHostController)
             authenticationNavGraph(navHostController)
@@ -37,7 +36,6 @@ fun SetupNavGraph(navHostController: NavHostController) {
             locationTrackerNavGraph(navHostController)
             postsNavGraph(navHostController)
             settingsNavGraph(navHostController)
-            spacexNavGraph(navHostController)
         }
     }
 }

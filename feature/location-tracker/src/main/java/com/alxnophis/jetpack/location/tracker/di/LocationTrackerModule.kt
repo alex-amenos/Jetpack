@@ -25,25 +25,26 @@ fun injectLocationTracker() = loadLocationTrackerModules
 private val loadLocationTrackerModules by lazy {
     loadKoinModules(
         listOf(
-            locationTrackerModule
-        )
+            locationTrackerModule,
+        ),
     )
 }
 
-private val locationTrackerModule: Module = module {
-    single<LocationDataSource> {
-        val context = androidContext()
-        LocationDataSourceImpl(
-            fusedLocationProvider = LocationServices.getFusedLocationProviderClient(context),
-            locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        )
+private val locationTrackerModule: Module =
+    module {
+        single<LocationDataSource> {
+            val context = androidContext()
+            LocationDataSourceImpl(
+                fusedLocationProvider = LocationServices.getFusedLocationProviderClient(context),
+                locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager,
+            )
+        }
+        factory<LocationRepository> { LocationRepositoryImpl(get()) }
+        factory { LocationAvailableUseCase(get()) }
+        factory { LocationFlowUseCase(get()) }
+        factory { LastKnownLocationFlowUseCase(get()) }
+        factory { ProvideLastKnownLocationUseCase(get()) }
+        factory { StartLocationProviderUseCase(get()) }
+        factory { StopLocationProviderUseCase(get()) }
+        viewModel { LocationTrackerViewModel(get(), get(), get(), get()) }
     }
-    factory<LocationRepository> { LocationRepositoryImpl(get()) }
-    factory { LocationAvailableUseCase(get()) }
-    factory { LocationFlowUseCase(get()) }
-    factory { LastKnownLocationFlowUseCase(get()) }
-    factory { ProvideLastKnownLocationUseCase(get()) }
-    factory { StartLocationProviderUseCase(get()) }
-    factory { StopLocationProviderUseCase(get()) }
-    viewModel { LocationTrackerViewModel(get(), get(), get(), get()) }
-}

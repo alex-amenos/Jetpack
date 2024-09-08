@@ -1,27 +1,25 @@
 [versions]
-android-gradle-plugin = "8.5.0"
+android-gradle-plugin = "8.6.0"
 android-junit5-plugin = "1.8.2.1"
-androidx-activity = "1.9.0"
-androidx-annotations = "1.8.0"
+androidx-activity = "1.9.2"
+androidx-annotations = "1.8.2"
 androidx-appcompat = "1.7.0"
 androidx-arch-core = "2.2.0"
-androidx-compose-bom = "2024.06.00"
+androidx-compose-bom = "2024.09.00"
 androidx-compose-compiler = "1.5.3"
 androidx-compose-constraint-layout = "1.0.1"
-androidx-compose-navigation = "2.8.0-beta04"
-androidx-compose-viewmodel = "2.8.3"
+androidx-compose-navigation = "2.8.0"
+androidx-compose-viewmodel = "2.8.5"
 androidx-core-ktx = "1.13.1"
-androidx-lifecycle = "2.8.3"
+androidx-lifecycle = "2.8.5"
 androidx-lifecycle-extension = "2.2.0"
 androidx-test-junit = "1.2.1"
 androidx-test-rules = "1.6.1"
-androidx-test-runner = "1.6.1"
-androidx-work = "2.9.0"
-apollo-gradle-plugin = "3.7.5"
+androidx-test-runner = "1.6.2"
+androidx-work = "2.9.1"
 arrow-optics-ksp-plugin = "1.2.4"
 arrow-stack = "1.2.0"
 coil = "2.2.2"
-com-apollographql-apollo3 = "3.7.5"
 com-google-accompanist = "0.25.1"
 com-squareup-okhttp3 = "4.10.0"
 com-squareup-retrofit2 = "2.9.0"
@@ -39,7 +37,7 @@ kotlin-gradle-plugin = "1.8.20"
 kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
 kover = "0.6.1"
-ktlint-gradle = "11.3.2"
+ktlint-gradle = "12.1.1"
 kotlinx-serialization-json = "1.6.3"
 leak-canary = "2.10"
 mockito-kotlin = "4.1.0"
@@ -89,12 +87,6 @@ androidx-test-junit = { module = "androidx.test.ext:junit-ktx", version.ref = "a
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test-rules" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
 androidx-work = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
-apollo-adapters = { module = "com.apollographql.apollo3:apollo-adapters", version.ref = "com-apollographql-apollo3" }
-apollo-api = { module = "com.apollographql.apollo3:apollo-api", version.ref = "com-apollographql-apollo3" }
-apollo-gradle-plugin = { module = "com.apollographql.apollo3:apollo-gradle-plugin", version.ref = "apollo-gradle-plugin" }
-apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "com-apollographql-apollo3" }
-apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite", version.ref = "com-apollographql-apollo3" }
-apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "com-apollographql-apollo3" }
 arrow-core = { module = "io.arrow-kt:arrow-core" }
 arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
 arrow-optics = { module = "io.arrow-kt:arrow-optics" }
@@ -161,13 +153,6 @@ androidx-compose = [
     "androidx-compose-ui-util",
     "androidx-compose-viewmodel",
 ]
-apollo = [
-    "apollo-adapters",
-    "apollo-api",
-    "apollo-normalized-cache",
-    "apollo-normalized-cache-sqlite",
-    "apollo-runtime",
-]
 kotest = [
     "kotest-assertions",
     "kotest-property",
@@ -187,7 +172,7 @@ retrofit = [
 ]
 
 [plugins]
-android-application = "com.android.application:8.5.0"
+android-application = "com.android.application:8.6.0"
 ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
 google-ksp = "com.google.devtools.ksp:1.9.10-1.0.13"
 kotlin-android = "org.jetbrains.kotlin.android:1.9.10"

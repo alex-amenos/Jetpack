@@ -7,5 +7,5 @@ data class Location(
     val accuracy: Float,
     val speed: Float,
     val bearing: Float,
-    val time: Long
+    val time: Long,
 )

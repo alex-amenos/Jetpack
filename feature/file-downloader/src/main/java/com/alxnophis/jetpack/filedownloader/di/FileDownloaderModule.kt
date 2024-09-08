@@ -17,8 +17,9 @@ private val loadFileDownloaderModules by lazy {
     loadKoinModules(fileDownloaderModule)
 }
 
-internal val fileDownloaderModule: Module = module {
-    factory<DownloaderDataSource> { AndroidDownloaderDataSourceImpl(androidContext(), get()) }
-    single<FileDownloaderRepository> { FileDownloaderRepositoryImpl(get()) }
-    viewModel { FileDownloaderViewModel(get()) }
-}
+internal val fileDownloaderModule: Module =
+    module {
+        factory<DownloaderDataSource> { AndroidDownloaderDataSourceImpl(androidContext(), get()) }
+        single<FileDownloaderRepository> { FileDownloaderRepositoryImpl(get()) }
+        viewModel { FileDownloaderViewModel(get()) }
+    }

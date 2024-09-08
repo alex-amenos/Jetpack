@@ -7,26 +7,23 @@ import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import java.io.IOException
 
 object CallErrorMother {
-
-    fun ioError(
-        cause: IOException = IOException()
-    ) = IOError(
-        cause = cause
-    )
+    fun ioError(cause: IOException = IOException()) =
+        IOError(
+            cause = cause,
+        )
 
     fun httpError(
         code: Int,
         message: String = EMPTY,
-        body: String = EMPTY
+        body: String = EMPTY,
     ) = HttpError(
         code = code,
         message = message,
-        body = body
+        body = body,
     )
 
-    fun unexpectedCallError(
-        cause: Throwable = Throwable()
-    ) = UnexpectedCallError(
-        cause = cause
-    )
+    fun unexpectedCallError(cause: Throwable = Throwable()) =
+        UnexpectedCallError(
+            cause = cause,
+        )
 }

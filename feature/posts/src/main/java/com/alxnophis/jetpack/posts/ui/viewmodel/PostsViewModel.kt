@@ -3,8 +3,8 @@ package com.alxnophis.jetpack.posts.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostsError
@@ -20,7 +20,7 @@ import java.util.UUID
 internal class PostsViewModel(
     private val postsRepository: PostsRepository,
     initialState: PostsState = PostsState.initialState,
-    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits }
+    private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits },
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
@@ -55,7 +55,7 @@ internal class PostsViewModel(
                                 PostsState.posts set posts
                             }
                         }
-                    }
+                    },
                 )
         }
     }
@@ -67,12 +67,12 @@ internal class PostsViewModel(
             ErrorMessage(
                 id = getRandomUUID(),
                 messageId =
-                when (this@mapTo) {
-                    PostsError.Network -> R.string.posts_error_network
-                    PostsError.Server -> R.string.posts_error_server
-                    PostsError.Unknown -> R.string.posts_error_unknown
-                    PostsError.Unexpected -> R.string.posts_error_unexpected
-                }
+                    when (this@mapTo) {
+                        PostsError.Network -> R.string.posts_error_network
+                        PostsError.Server -> R.string.posts_error_server
+                        PostsError.Unknown -> R.string.posts_error_unknown
+                        PostsError.Unexpected -> R.string.posts_error_unexpected
+                    },
             )
 
     private fun dismissError(errorId: Long) {

@@ -8,7 +8,6 @@ buildscript {
     dependencies {
         classpath libs.gradle.test.logger.plugin
         classpath libs.android.gradle.plugin
-        classpath libs.apollo.gradle.plugin
         classpath libs.android.junit5.plugin
         classpath libs.kotlin.gradle.plugin
         classpath libs.kover

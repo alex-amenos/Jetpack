@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.setMain
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainCoroutineListener(
-    private val testDispatcher: TestDispatcher = StandardTestDispatcher()
+    private val testDispatcher: TestDispatcher = StandardTestDispatcher(),
 ) : TestListener {
     override suspend fun beforeSpec(spec: Spec) {
         Dispatchers.setMain(testDispatcher)

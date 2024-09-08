@@ -12,21 +12,26 @@ import retrofit2.http.Path
 
 @Suppress("unused")
 interface JsonPlaceholderRetrofitService {
-
     @GET("/posts")
     suspend fun getPosts(): Either<CallError, List<PostApiModel>>
 
     @GET("/posts/{id}")
-    suspend fun getPostById(@Path("id") id: Int): Either<CallError, PostApiModel>
+    suspend fun getPostById(
+        @Path("id") id: Int,
+    ): Either<CallError, PostApiModel>
 
     @GET("/comments?postId={id}")
-    suspend fun getCommentsByPostId(@Path("id") postId: Int): Either<CallError, List<CommentApiModel>>
+    suspend fun getCommentsByPostId(
+        @Path("id") postId: Int,
+    ): Either<CallError, List<CommentApiModel>>
 
     @GET("/users")
     suspend fun getUsers(): Either<CallError, List<UserApiModel>>
 
     @GET("/users/{id}")
-    suspend fun getUsersBy(@Path("id") userId: Int): Either<CallError, UserApiModel>
+    suspend fun getUsersBy(
+        @Path("id") userId: Int,
+    ): Either<CallError, UserApiModel>
 
     @GET("/albums")
     suspend fun getAlbums(): Either<CallError, List<AlbumApiModel>>
@@ -35,5 +40,7 @@ interface JsonPlaceholderRetrofitService {
     suspend fun getPhotos(): Either<CallError, List<PhotoApiModel>>
 
     @GET("/photos?album={id}")
-    suspend fun getPhotosByAlbumId(@Path("id") albumId: Int): Either<CallError, List<PhotoApiModel>>
+    suspend fun getPhotosByAlbumId(
+        @Path("id") albumId: Int,
+    ): Either<CallError, List<PhotoApiModel>>
 }

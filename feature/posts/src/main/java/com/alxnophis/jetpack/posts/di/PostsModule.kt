@@ -14,7 +14,8 @@ private val loadPostsModules by lazy {
     loadKoinModules(postModule)
 }
 
-private val postModule: Module = module {
-    factory<PostsRepository> { PostsRepositoryImpl(get()) }
-    viewModel { PostsViewModel(get()) }
-}
+private val postModule: Module =
+    module {
+        factory<PostsRepository> { PostsRepositoryImpl(get()) }
+        viewModel { PostsViewModel(get()) }
+    }
