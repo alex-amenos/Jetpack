@@ -1,20 +1,9 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-shared.gradle"
-apply plugin: "com.apollographql.apollo3"
 
 android {
     namespace 'com.alxnophis.jetpack.api'
 }
 
 dependencies {
-    implementation libs.bundles.apollo
     implementation libs.bundles.retrofit
-}
-
-apollo {
-    generateTestBuilders.set(true)
-    testDirConnection {
-        connectToKotlinSourceSet("main")
-    }
-    packageName.set("com.alxnophis.jetpack.spacex")
-    mapScalar("Date", "java.util.Date", "com.apollographql.apollo3.adapter.DateAdapter")
 }

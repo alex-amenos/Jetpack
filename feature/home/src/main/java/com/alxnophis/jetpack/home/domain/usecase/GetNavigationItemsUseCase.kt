@@ -24,7 +24,6 @@ class GetNavigationItemsUseCase(
                         posts,
                         locationTracker,
                         gameBallClicker,
-                        spacex
                     )
                 }.mapLeft { NavigationError.Unknown }
         }
@@ -65,13 +64,6 @@ class GetNavigationItemsUseCase(
                 emoji = "🔴",
                 description = "Be the fastest ball clicker!",
                 route = Route.GameBallClicker
-            )
-        private val spacex =
-            NavigationItem(
-                name = "SpaceX",
-                emoji = "🚀",
-                description = "Welcome to the SpaceX GraphQL API",
-                route = Route.Spacex
             )
         private val notifications =
             NavigationItem(
