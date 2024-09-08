@@ -10,12 +10,12 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 internal const val NO_ERROR = 0
 
 internal sealed class AuthenticationEvent : UiEvent {
-    object Authenticated : AuthenticationEvent()
-    object AutoCompleteAuthorizationRequested : AuthenticationEvent()
-    object ErrorDismissRequested : AuthenticationEvent()
-    object ToggleAuthenticationModeRequested : AuthenticationEvent()
-    object SetUserNotAuthorized : AuthenticationEvent()
-    object GoBackRequested : AuthenticationEvent()
+    data object Authenticated : AuthenticationEvent()
+    data object AutoCompleteAuthorizationRequested : AuthenticationEvent()
+    data object ErrorDismissRequested : AuthenticationEvent()
+    data object ToggleAuthenticationModeRequested : AuthenticationEvent()
+    data object SetUserNotAuthorized : AuthenticationEvent()
+    data object GoBackRequested : AuthenticationEvent()
     data class EmailChanged(val email: String) : AuthenticationEvent()
     data class PasswordChanged(val password: String) : AuthenticationEvent()
     data class NavigateToAuthScreenRequested(val email: String) : AuthenticationEvent()
@@ -34,8 +34,8 @@ internal data class AuthenticationState(
 
     fun isFormValid(): Boolean {
         return password.isNotEmpty() &&
-            email.isNotEmpty() &&
-            (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
+                email.isNotEmpty() &&
+                (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
     }
 
     internal companion object {

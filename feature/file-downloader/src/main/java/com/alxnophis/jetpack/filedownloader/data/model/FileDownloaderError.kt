@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.filedownloader.data.model
 
 sealed class FileDownloaderError {
-    object FileDownloading : FileDownloaderError()
-    object FileDownloaded : FileDownloaderError()
-    object Unknown : FileDownloaderError()
+    data object FileDownloading : FileDownloaderError()
+    data object FileDownloaded : FileDownloaderError()
+    data object Unknown : FileDownloaderError()
 }

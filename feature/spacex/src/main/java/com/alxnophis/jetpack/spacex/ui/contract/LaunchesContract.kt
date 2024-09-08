@@ -2,15 +2,15 @@ package com.alxnophis.jetpack.spacex.ui.contract
 
 import androidx.compose.runtime.Immutable
 import arrow.optics.optics
+import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
-import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.spacex.ui.model.PastLaunchModel
 
 internal sealed class LaunchesEvent : UiEvent {
-    object Initialized : LaunchesEvent()
-    object RefreshPastLaunchesRequested : LaunchesEvent()
-    object GoBackRequested : LaunchesEvent()
+    data object Initialized : LaunchesEvent()
+    data object RefreshPastLaunchesRequested : LaunchesEvent()
+    data object GoBackRequested : LaunchesEvent()
     data class DismissErrorRequested(val errorId: Long) : LaunchesEvent()
 }
 

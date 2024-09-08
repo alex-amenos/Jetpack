@@ -9,9 +9,9 @@ import com.alxnophis.jetpack.router.screen.Route
 internal const val NO_ERROR = 0
 
 internal sealed class HomeEvent : UiEvent {
-    object Initialized : HomeEvent()
-    object ErrorDismissRequested : HomeEvent()
-    object GoBackRequested : HomeEvent()
+    data object Initialized : HomeEvent()
+    data object ErrorDismissRequested : HomeEvent()
+    data object GoBackRequested : HomeEvent()
     data class NavigationRequested(val route: Route) : HomeEvent()
 }
 

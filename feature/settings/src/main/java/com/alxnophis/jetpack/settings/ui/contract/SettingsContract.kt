@@ -7,10 +7,10 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
 
 internal sealed class SettingsEvent : UiEvent {
-    object ManageSubscription : SettingsEvent()
-    object SetNotifications : SettingsEvent()
-    object SetHint : SettingsEvent()
-    object GoBackRequested : SettingsEvent()
+    data object ManageSubscription : SettingsEvent()
+    data object SetNotifications : SettingsEvent()
+    data object SetHint : SettingsEvent()
+    data object GoBackRequested : SettingsEvent()
     data class SetMarketingOption(val marketingOption: MarketingOption) : SettingsEvent()
     data class SetTheme(val theme: Theme) : SettingsEvent()
 }

@@ -6,9 +6,9 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 
 internal sealed class LocationTrackerEvent : UiEvent {
-    object FineLocationPermissionGranted : LocationTrackerEvent()
-    object StopTrackingRequested : LocationTrackerEvent()
-    object GoBackRequested : LocationTrackerEvent()
+    data object FineLocationPermissionGranted : LocationTrackerEvent()
+    data object StopTrackingRequested : LocationTrackerEvent()
+    data object GoBackRequested : LocationTrackerEvent()
 }
 
 @optics

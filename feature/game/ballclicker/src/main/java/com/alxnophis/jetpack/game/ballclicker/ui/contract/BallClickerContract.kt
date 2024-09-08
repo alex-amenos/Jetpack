@@ -5,10 +5,10 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 
 internal sealed class BallClickerEvent : UiEvent {
-    object BallClicked : BallClickerEvent()
-    object StartRequested : BallClickerEvent()
-    object StopRequested : BallClickerEvent()
-    object GoBackRequested : BallClickerEvent()
+    data object BallClicked : BallClickerEvent()
+    data object StartRequested : BallClickerEvent()
+    data object StopRequested : BallClickerEvent()
+    data object GoBackRequested : BallClickerEvent()
 }
 
 @optics
