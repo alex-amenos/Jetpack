@@ -39,8 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastSumBy
-import com.alxnophis.jetpack.core.ui.theme.paddingM
-import com.alxnophis.jetpack.core.ui.theme.paddingS
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -82,8 +82,15 @@ private fun Modifier.drawScrollbar(
         val startOffset = state.value / totalSize * canvasSize
         val drawScrollbar =
             onDrawScrollbar(
-                orientation, reverseDirection, atEnd, showScrollbar,
-                thickness, color, alpha, thumbSize, startOffset,
+                orientation,
+                reverseDirection,
+                atEnd,
+                showScrollbar,
+                thickness,
+                color,
+                alpha,
+                thumbSize,
+                startOffset,
             )
         onDrawWithContent {
             drawContent()
@@ -249,7 +256,7 @@ fun ScrollbarPreview() {
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(paddingM),
+                        .padding(mediumPadding),
             )
         }
     }
@@ -269,7 +276,7 @@ fun LazyListScrollbarPreview() {
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(paddingM),
+                        .padding(mediumPadding),
             )
         }
     }
@@ -290,7 +297,7 @@ fun HorizontalScrollbarPreview() {
                 text = (it + 1).toString(),
                 modifier =
                     Modifier
-                        .padding(horizontal = paddingS, vertical = paddingM),
+                        .padding(horizontal = smallPadding, vertical = mediumPadding),
             )
         }
     }
@@ -309,7 +316,7 @@ fun LazyListHorizontalScrollbarPreview() {
                 text = (it + 1).toString(),
                 modifier =
                     Modifier
-                        .padding(horizontal = paddingS, vertical = paddingM),
+                        .padding(horizontal = smallPadding, vertical = mediumPadding),
             )
         }
     }

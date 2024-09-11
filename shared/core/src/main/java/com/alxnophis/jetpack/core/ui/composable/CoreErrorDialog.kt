@@ -16,8 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.paddingS
-import com.alxnophis.jetpack.core.ui.theme.paddingXS
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 
 @Composable
 fun CoreErrorDialog(
@@ -49,7 +49,7 @@ fun CoreErrorDialog(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(bottom = paddingXS, end = paddingS),
+                        .padding(bottom = extraSmallPadding, end = smallPadding),
                 contentAlignment = Alignment.CenterEnd,
             ) {
                 TextButton(

@@ -68,9 +68,9 @@ import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.autofill
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
-import com.alxnophis.jetpack.core.ui.theme.paddingM
-import com.alxnophis.jetpack.core.ui.theme.paddingXL
-import com.alxnophis.jetpack.core.ui.theme.paddingXS
+import com.alxnophis.jetpack.core.ui.theme.extraLargePadding
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 
 @ExperimentalComposeUiApi
 @Composable
@@ -117,10 +117,10 @@ internal fun AuthenticationForm(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = paddingXL),
+                    .padding(horizontal = extraLargePadding),
         ) {
             Column(
-                modifier = Modifier.padding(paddingM),
+                modifier = Modifier.padding(mediumPadding),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 val onEmailChanged: (String) -> Unit = { email ->
@@ -376,7 +376,7 @@ fun PasswordRequirementsView(
                     },
                 modifier =
                     Modifier
-                        .padding(paddingXS)
+                        .padding(extraSmallPadding)
                         .semantics(mergeDescendants = true) {
                             text = AnnotatedString(requirementStatus)
                         },
@@ -435,7 +435,7 @@ fun ToggleAuthenticationMode(
         Text(
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(paddingXS),
+            modifier = Modifier.padding(extraSmallPadding),
             text =
                 stringResource(
                     if (authenticationMode == AuthenticationMode.SIGN_IN) {

@@ -43,7 +43,7 @@ import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.paddingM
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
@@ -146,7 +146,7 @@ internal fun PostList(
                 Modifier
                     .fillMaxWidth()
                     .drawVerticalScrollbar(listState),
-            contentPadding = PaddingValues(top = toolbarHeight, start = paddingM, end = paddingM),
+            contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding),
         ) {
             items(
                 items = state.posts,
@@ -157,7 +157,7 @@ internal fun PostList(
                         item = item,
                         modifier =
                             Modifier
-                                .padding(vertical = paddingM)
+                                .padding(vertical = mediumPadding)
                                 .fillParentMaxWidth(),
                     )
                 },
@@ -178,7 +178,7 @@ private fun CardPostItem(
                 Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .padding(paddingM),
+                    .padding(mediumPadding),
         ) {
             Text(
                 modifier =
@@ -198,7 +198,7 @@ private fun CardPostItem(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(top = paddingM, bottom = paddingM)
+                        .padding(top = mediumPadding, bottom = mediumPadding)
                         .placeholder(
                             visible = state.isLoading,
                             color = Color.Gray,

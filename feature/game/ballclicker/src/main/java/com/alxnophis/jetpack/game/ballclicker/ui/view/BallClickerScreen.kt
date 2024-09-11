@@ -29,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.paddingM
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.game.ballclicker.R
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
@@ -59,7 +59,7 @@ internal fun BallClickerScreen(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(paddingM),
+                        .padding(mediumPadding),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -155,12 +155,11 @@ private fun randomOffset(
     radius: Float,
     width: Int,
     height: Int,
-): Offset {
-    return Offset(
+): Offset =
+    Offset(
         x = Random.nextInt(radius.roundToInt(), width - radius.roundToInt()).toFloat(),
         y = Random.nextInt(radius.roundToInt(), height - radius.roundToInt()).toFloat(),
     )
-}
 
 @Preview
 @Composable

@@ -33,8 +33,8 @@ import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMinor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.paddingL
-import com.alxnophis.jetpack.core.ui.theme.paddingM
+import com.alxnophis.jetpack.core.ui.theme.largePadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.notifications.R
 import com.alxnophis.jetpack.router.extension.appPendingIntent
 
@@ -59,7 +59,7 @@ internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
                     Modifier
                         .padding(paddingValues = it)
                         .fillMaxSize()
-                        .padding(paddingM),
+                        .padding(mediumPadding),
             )
         }
     }
@@ -92,7 +92,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(paddingL),
+                        .padding(largePadding),
                 text = stringResource(id = R.string.notifications_request_permission),
                 onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
             )
@@ -105,7 +105,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(paddingL),
+                    .padding(largePadding),
             text = stringResource(id = R.string.notifications_show_notification),
             onClick = {
                 if (hasNotificationPermission) {

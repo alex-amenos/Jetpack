@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.paddingM
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.myplayground.R
 import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundEvent
 import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundState
@@ -56,7 +56,7 @@ internal fun MyPlaygroundScreen(
                         .background(MaterialTheme.colorScheme.surface)
                         .fillMaxSize()
                         .padding(paddingValues)
-                        .padding(paddingM),
+                        .padding(mediumPadding),
             )
         }
     }

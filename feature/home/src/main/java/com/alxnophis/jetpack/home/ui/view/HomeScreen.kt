@@ -34,8 +34,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.paddingM
-import com.alxnophis.jetpack.core.ui.theme.paddingXS
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
@@ -123,7 +123,7 @@ internal fun SectionsList(
                             .clickable { navigateTo(item.route) }
                             .fillMaxWidth()
                             .wrapContentHeight()
-                            .padding(paddingM),
+                            .padding(mediumPadding),
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
@@ -137,7 +137,7 @@ internal fun SectionsList(
                             Modifier
                                 .weight(0.9f)
                                 .fillMaxWidth()
-                                .padding(start = paddingM),
+                                .padding(start = mediumPadding),
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -151,7 +151,7 @@ internal fun SectionsList(
                             modifier =
                                 Modifier
                                     .wrapContentSize()
-                                    .padding(top = paddingXS),
+                                    .padding(top = extraSmallPadding),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             text = item.description,

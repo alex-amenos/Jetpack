@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
-import com.alxnophis.jetpack.core.ui.theme.paddingM
-import com.alxnophis.jetpack.core.ui.theme.paddingXS
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 
 @SuppressLint("ModifierParameter")
 @Composable
@@ -57,7 +57,7 @@ fun CoreButtonMinor(
                     MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT)
                 },
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(paddingXS),
+            modifier = Modifier.padding(extraSmallPadding),
             text = text,
         )
     }
@@ -75,7 +75,7 @@ private fun CoreButtonMinorPreview() {
             modifier =
                 Modifier
                     .wrapContentHeight()
-                    .padding(paddingM),
+                    .padding(mediumPadding),
         ) {
             CoreButtonMinor(
                 modifier = Modifier.fillMaxWidth(),

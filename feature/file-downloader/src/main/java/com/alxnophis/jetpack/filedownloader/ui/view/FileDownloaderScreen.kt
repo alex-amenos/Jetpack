@@ -52,7 +52,7 @@ import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.paddingM
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
@@ -93,7 +93,7 @@ internal fun FileDownloaderScreen(
                         .drawVerticalScrollbar(rememberScrollState())
                         .fillMaxSize()
                         .padding(paddingValues)
-                        .padding(paddingM),
+                        .padding(mediumPadding),
             )
 
             FileDownloaderErrors(
