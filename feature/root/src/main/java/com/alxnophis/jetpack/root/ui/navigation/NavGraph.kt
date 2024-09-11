@@ -14,7 +14,7 @@ import com.alxnophis.jetpack.game.ballclicker.ui.navigation.ballClickerNavGraph
 import com.alxnophis.jetpack.home.ui.navigation.homeNavGraph
 import com.alxnophis.jetpack.location.tracker.ui.navigation.locationTrackerNavGraph
 import com.alxnophis.jetpack.myplayground.navigation.myPlaygroundNavGraph
-import com.alxnophis.jetpack.notifications.navigation.notificationsNavGraph
+import com.alxnophis.jetpack.notifications.ui.navigation.notificationsNavGraph
 import com.alxnophis.jetpack.posts.ui.navigation.postsNavGraph
 import com.alxnophis.jetpack.router.screen.Route
 import com.alxnophis.jetpack.settings.ui.navigation.settingsNavGraph
