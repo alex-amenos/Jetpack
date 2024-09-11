@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.notifications.navigation
+package com.alxnophis.jetpack.notifications.ui.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

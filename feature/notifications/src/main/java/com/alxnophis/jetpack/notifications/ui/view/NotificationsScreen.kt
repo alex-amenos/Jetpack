@@ -36,6 +36,7 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.largePadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.notifications.R
+import com.alxnophis.jetpack.router.extension.appPendingIntent
 
 @Composable
 internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
@@ -109,11 +110,12 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
             onClick = {
                 if (hasNotificationPermission) {
                     context.showNotification(
-                        title = "Lorem ipsum",
-                        content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        titleResId = R.string.notifications_push_title,
+                        contentResId = R.string.notifications_push_subtitle,
                         icon = R.drawable.notifications_ic_push,
                         channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
                         notificationId = 1,
+                        contentIntent = context.appPendingIntent(),
                     )
                 }
             },

@@ -82,8 +82,15 @@ private fun Modifier.drawScrollbar(
         val startOffset = state.value / totalSize * canvasSize
         val drawScrollbar =
             onDrawScrollbar(
-                orientation, reverseDirection, atEnd, showScrollbar,
-                thickness, color, alpha, thumbSize, startOffset,
+                orientation,
+                reverseDirection,
+                atEnd,
+                showScrollbar,
+                thickness,
+                color,
+                alpha,
+                thumbSize,
+                startOffset,
             )
         onDrawWithContent {
             drawContent()

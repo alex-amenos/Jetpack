@@ -155,12 +155,10 @@ private fun randomOffset(
     radius: Float,
     width: Int,
     height: Int,
-): Offset {
-    return Offset(
-        x = Random.nextInt(radius.roundToInt(), width - radius.roundToInt()).toFloat(),
-        y = Random.nextInt(radius.roundToInt(), height - radius.roundToInt()).toFloat(),
-    )
-}
+) = Offset(
+    x = Random.nextInt(radius.roundToInt(), width - radius.roundToInt()).toFloat(),
+    y = Random.nextInt(radius.roundToInt(), height - radius.roundToInt()).toFloat(),
+)
 
 @Preview
 @Composable
