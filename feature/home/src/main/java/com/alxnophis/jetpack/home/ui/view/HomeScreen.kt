@@ -79,13 +79,13 @@ internal fun HomeScreen(
 internal fun HomeTopBar() {
     TopAppBar(
         colors =
-        TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-        ),
+            TopAppBarDefaults.mediumTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
+                navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+            ),
         title = {
             Text(
                 text = stringResource(id = R.string.home_title),
@@ -107,9 +107,9 @@ internal fun SectionsList(
     LazyColumn(
         state = rememberLazyListState(),
         modifier =
-        Modifier
-            .background(color = MaterialTheme.colorScheme.surface)
-            .padding(paddingValues),
+            Modifier
+                .background(color = MaterialTheme.colorScheme.surface)
+                .padding(paddingValues),
     ) {
         items(
             items = state.data,
@@ -119,11 +119,11 @@ internal fun SectionsList(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier =
-                    Modifier
-                        .clickable { navigateTo(item.route) }
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(paddingM),
+                        Modifier
+                            .clickable { navigateTo(item.route) }
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(paddingM),
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
@@ -134,10 +134,10 @@ internal fun SectionsList(
                     )
                     Column(
                         modifier =
-                        Modifier
-                            .weight(0.9f)
-                            .fillMaxWidth()
-                            .padding(start = paddingM),
+                            Modifier
+                                .weight(0.9f)
+                                .fillMaxWidth()
+                                .padding(start = paddingM),
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -149,9 +149,9 @@ internal fun SectionsList(
                         )
                         Text(
                             modifier =
-                            Modifier
-                                .wrapContentSize()
-                                .padding(top = paddingXS),
+                                Modifier
+                                    .wrapContentSize()
+                                    .padding(top = paddingXS),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             text = item.description,
@@ -172,20 +172,20 @@ private fun HomeScreenPreview() {
         HomeState(
             isLoading = false,
             data =
-            listOf(
-                NavigationItem(
-                    name = "Screen 1",
-                    emoji = "🐻",
-                    description = "Lorem ipsum",
-                    route = Route.Authentication,
+                listOf(
+                    NavigationItem(
+                        name = "Screen 1",
+                        emoji = "🐻",
+                        description = "Lorem ipsum",
+                        route = Route.Authentication,
+                    ),
+                    NavigationItem(
+                        name = "Screen 2",
+                        emoji = "🦊",
+                        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                        route = Route.Settings,
+                    ),
                 ),
-                NavigationItem(
-                    name = "Screen 2",
-                    emoji = "🦊",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                    route = Route.Settings,
-                ),
-            ),
             error = NO_ERROR,
         )
     HomeScreen(state)

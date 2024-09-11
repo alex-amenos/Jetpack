@@ -37,22 +37,22 @@ fun CoreButtonMajor(
         enabled = isEnabled,
         shape = RoundedCornerShape(8.dp),
         border =
-        BorderStroke(
-            width = 1.dp,
-            color =
-            if (isEnabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.primary.copy(alpha = 0f)
-            },
-        ),
+            BorderStroke(
+                width = 1.dp,
+                color =
+                    if (isEnabled) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0f)
+                    },
+            ),
         colors =
-        ButtonDefaults.textButtonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT),
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = DISABLED_CONTENT),
-        ),
+            ButtonDefaults.textButtonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT),
+                disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = DISABLED_CONTENT),
+            ),
     ) {
         Text(
             style = MaterialTheme.typography.titleMedium,
@@ -73,9 +73,9 @@ private fun CoreButtonMajorPreview() {
     AppTheme {
         Column(
             modifier =
-            Modifier
-                .wrapContentHeight()
-                .padding(paddingM),
+                Modifier
+                    .wrapContentHeight()
+                    .padding(paddingM),
         ) {
             CoreButtonMajor(
                 modifier = Modifier.fillMaxWidth(),

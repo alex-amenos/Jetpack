@@ -41,7 +41,7 @@ fun Context.showNotification(
     visibility: Int = NotificationCompat.VISIBILITY_PRIVATE,
     priority: Int = NotificationCompat.PRIORITY_DEFAULT,
     category: String = NotificationCompat.CATEGORY_MESSAGE,
-    contentIntent: PendingIntent? = null
+    contentIntent: PendingIntent? = null,
 ) {
     val notificationManage = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val notification =

@@ -47,9 +47,9 @@ fun CoreErrorDialog(
         confirmButton = {
             Box(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = paddingXS, end = paddingS),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = paddingXS, end = paddingS),
                 contentAlignment = Alignment.CenterEnd,
             ) {
                 TextButton(

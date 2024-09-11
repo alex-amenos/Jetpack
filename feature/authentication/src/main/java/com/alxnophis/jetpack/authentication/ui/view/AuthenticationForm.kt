@@ -91,9 +91,9 @@ internal fun AuthenticationForm(
         AnimatedVisibility(visible = isLoading) {
             LinearProgressIndicator(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(4.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .height(4.dp),
                 color = MaterialTheme.colorScheme.secondary,
             )
         }
@@ -103,11 +103,11 @@ internal fun AuthenticationForm(
         AuthenticationTitle(
             authenticationMode = authenticationMode,
             modifier =
-            Modifier.clickable {
-                if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                    handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorizationRequested)
-                }
-            },
+                Modifier.clickable {
+                    if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                        handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorizationRequested)
+                    }
+                },
         )
 
         Spacer(modifier = Modifier.height(40.dp))
@@ -115,9 +115,9 @@ internal fun AuthenticationForm(
         val passwordFocusRequester = FocusRequester()
         Card(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = paddingXL),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = paddingXL),
         ) {
             Column(
                 modifier = Modifier.padding(paddingM),
@@ -131,12 +131,12 @@ internal fun AuthenticationForm(
                     onEmailChanged = onEmailChanged,
                     onNextClicked = { passwordFocusRequester.requestFocus() },
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .autofill(
-                            autofillTypes = listOf(AutofillType.EmailAddress),
-                            onFill = onEmailChanged,
-                        ),
+                        Modifier
+                            .fillMaxWidth()
+                            .autofill(
+                                autofillTypes = listOf(AutofillType.EmailAddress),
+                                onFill = onEmailChanged,
+                            ),
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -149,13 +149,13 @@ internal fun AuthenticationForm(
                     onPasswordChanged = onPasswordChanged,
                     onDoneClicked = { handleEvent(AuthenticationEvent.Authenticated) },
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .focusRequester(passwordFocusRequester)
-                        .autofill(
-                            autofillTypes = listOf(AutofillType.Password),
-                            onFill = onPasswordChanged,
-                        ),
+                        Modifier
+                            .fillMaxWidth()
+                            .focusRequester(passwordFocusRequester)
+                            .autofill(
+                                autofillTypes = listOf(AutofillType.Password),
+                                onFill = onPasswordChanged,
+                            ),
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -199,13 +199,13 @@ internal fun AuthenticationTitle(
     Text(
         modifier = modifier,
         text =
-        stringResource(
-            if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                R.string.authentication_label_sign_in_to_account
-            } else {
-                R.string.authentication_label_sign_up_for_account
-            },
-        ),
+            stringResource(
+                if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                    R.string.authentication_label_sign_in_to_account
+                } else {
+                    R.string.authentication_label_sign_up_for_account
+                },
+            ),
         color = MaterialTheme.colorScheme.primary,
         style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.Bold,
@@ -237,14 +237,14 @@ fun EmailInput(
             )
         },
         keyboardOptions =
-        KeyboardOptions(
-            imeAction = ImeAction.Next,
-            keyboardType = KeyboardType.Email,
-        ),
+            KeyboardOptions(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Email,
+            ),
         keyboardActions =
-        KeyboardActions(
-            onNext = { onNextClicked() },
-        ),
+            KeyboardActions(
+                onNext = { onNextClicked() },
+            ),
     )
 }
 
@@ -265,10 +265,10 @@ fun PasswordInput(
         singleLine = true,
         onValueChange = { onPasswordChanged(it) },
         visualTransformation =
-        when {
-            isPasswordHidden -> PasswordVisualTransformation()
-            else -> VisualTransformation.None
-        },
+            when {
+                isPasswordHidden -> PasswordVisualTransformation()
+                else -> VisualTransformation.None
+            },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Lock,
@@ -278,22 +278,22 @@ fun PasswordInput(
         trailingIcon = {
             Icon(
                 modifier =
-                Modifier.clickable(
-                    onClickLabel =
-                    if (isPasswordHidden) {
-                        stringResource(R.string.authentication_cd_show_password)
-                    } else {
-                        stringResource(R.string.authentication_cd_hide_password)
+                    Modifier.clickable(
+                        onClickLabel =
+                            if (isPasswordHidden) {
+                                stringResource(R.string.authentication_cd_show_password)
+                            } else {
+                                stringResource(R.string.authentication_cd_hide_password)
+                            },
+                    ) {
+                        isPasswordHidden = !isPasswordHidden
                     },
-                ) {
-                    isPasswordHidden = !isPasswordHidden
-                },
                 imageVector =
-                if (isPasswordHidden) {
-                    Icons.Default.Visibility
-                } else {
-                    Icons.Default.VisibilityOff
-                },
+                    if (isPasswordHidden) {
+                        Icons.Default.Visibility
+                    } else {
+                        Icons.Default.VisibilityOff
+                    },
                 contentDescription = null,
             )
         },
@@ -304,17 +304,17 @@ fun PasswordInput(
             )
         },
         keyboardOptions =
-        KeyboardOptions(
-            imeAction = ImeAction.Done,
-            keyboardType = KeyboardType.Password,
-        ),
+            KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Password,
+            ),
         keyboardActions =
-        KeyboardActions(
-            onDone = {
-                onDoneClicked()
-                keyboardController?.hide()
-            },
-        ),
+            KeyboardActions(
+                onDone = {
+                    onDoneClicked()
+                    keyboardController?.hide()
+                },
+            ),
     )
 }
 
@@ -363,23 +363,23 @@ fun PasswordRequirementsView(
             Requirement(
                 message = requirementStatus,
                 icon =
-                if (satisfied) {
-                    Icons.Default.Check
-                } else {
-                    Icons.Default.Close
-                },
-                tint =
-                if (satisfied) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                },
-                modifier =
-                Modifier
-                    .padding(paddingXS)
-                    .semantics(mergeDescendants = true) {
-                        text = AnnotatedString(requirementStatus)
+                    if (satisfied) {
+                        Icons.Default.Check
+                    } else {
+                        Icons.Default.Close
                     },
+                tint =
+                    if (satisfied) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    },
+                modifier =
+                    Modifier
+                        .padding(paddingXS)
+                        .semantics(mergeDescendants = true) {
+                            text = AnnotatedString(requirementStatus)
+                        },
             )
         }
     }
@@ -397,13 +397,13 @@ fun AuthenticationButton(
     CoreButtonMajor(
         modifier = modifier,
         text =
-        stringResource(
-            if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                R.string.authentication_action_sign_in
-            } else {
-                R.string.authentication_action_sign_up
-            },
-        ),
+            stringResource(
+                if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                    R.string.authentication_action_sign_in
+                } else {
+                    R.string.authentication_action_sign_up
+                },
+            ),
         isEnabled = enableAuthentication,
         onClick = {
             keyboardController?.hide()
@@ -425,25 +425,25 @@ fun ToggleAuthenticationMode(
         enabled = isEnabled,
         shape = RoundedCornerShape(0.dp),
         colors =
-        ButtonDefaults.textButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-            disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = DISABLED_CONTENT),
-            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = DISABLED_CONTENT),
-        ),
+            ButtonDefaults.textButtonColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = DISABLED_CONTENT),
+                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = DISABLED_CONTENT),
+            ),
     ) {
         Text(
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(paddingXS),
             text =
-            stringResource(
-                if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                    R.string.authentication_action_need_account
-                } else {
-                    R.string.authentication_action_already_have_account
-                },
-            ),
+                stringResource(
+                    if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                        R.string.authentication_action_need_account
+                    } else {
+                        R.string.authentication_action_already_have_account
+                    },
+                ),
         )
     }
 }
@@ -478,11 +478,11 @@ private fun AuthenticationSignUpFormPreview() {
             email = EMPTY,
             password = EMPTY,
             completedPasswordRequirements =
-            listOf(
-                PasswordRequirements.CAPITAL_LETTER,
-                PasswordRequirements.EIGHT_CHARACTERS,
-                PasswordRequirements.NUMBER,
-            ),
+                listOf(
+                    PasswordRequirements.CAPITAL_LETTER,
+                    PasswordRequirements.EIGHT_CHARACTERS,
+                    PasswordRequirements.NUMBER,
+                ),
             enableAuthentication = true,
             handleEvent = {},
         )

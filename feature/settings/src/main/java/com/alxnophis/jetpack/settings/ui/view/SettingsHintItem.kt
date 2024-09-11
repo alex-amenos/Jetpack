@@ -38,15 +38,15 @@ fun SettingsHintItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier =
-            Modifier
-                .toggleable(
-                    value = checked,
-                    onValueChange = { onShowHintToggled() },
-                    role = Role.Checkbox,
-                )
-                .semantics { stateDescription = hintsEnabledState }
-                .padding(paddingM)
-                .testTag(TAG_CHECK_ITEM),
+                Modifier
+                    .toggleable(
+                        value = checked,
+                        onValueChange = { onShowHintToggled() },
+                        role = Role.Checkbox,
+                    )
+                    .semantics { stateDescription = hintsEnabledState }
+                    .padding(paddingM)
+                    .testTag(TAG_CHECK_ITEM),
         ) {
             Text(
                 text = title,

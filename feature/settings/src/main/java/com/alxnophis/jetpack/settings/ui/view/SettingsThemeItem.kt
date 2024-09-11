@@ -35,13 +35,13 @@ internal fun SettingsThemeItem(
     SettingsItem(modifier = modifier) {
         Row(
             modifier =
-            Modifier
-                .clickable(
-                    onClick = { expanded = !expanded },
-                    onClickLabel = stringResource(R.string.settings_cd_select_theme),
-                )
-                .padding(paddingM)
-                .testTag(SettingsTags.TAG_SELECT_THEME),
+                Modifier
+                    .clickable(
+                        onClick = { expanded = !expanded },
+                        onClickLabel = stringResource(R.string.settings_cd_select_theme),
+                    )
+                    .padding(paddingM)
+                    .testTag(SettingsTags.TAG_SELECT_THEME),
         ) {
             Text(
                 modifier = Modifier.weight(1f),

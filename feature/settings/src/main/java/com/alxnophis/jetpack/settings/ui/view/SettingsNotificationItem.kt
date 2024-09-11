@@ -38,15 +38,15 @@ internal fun SettingsNotificationItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier =
-            Modifier
-                .toggleable(
-                    value = checked,
-                    onValueChange = { onToggleNotificationSettings() },
-                    role = Role.Switch,
-                )
-                .semantics { stateDescription = notificationsEnabledState }
-                .padding(paddingM)
-                .testTag(TAG_TOGGLE_ITEM),
+                Modifier
+                    .toggleable(
+                        value = checked,
+                        onValueChange = { onToggleNotificationSettings() },
+                        role = Role.Switch,
+                    )
+                    .semantics { stateDescription = notificationsEnabledState }
+                    .padding(paddingM)
+                    .testTag(TAG_TOGGLE_ITEM),
         ) {
             Text(
                 text = title,

@@ -26,13 +26,13 @@ internal fun SettingsManageSubscriptionItem(
     SettingsItem(modifier = modifier) {
         Row(
             modifier =
-            Modifier
-                .clickable(
-                    onClickLabel = stringResource(id = R.string.settings_cd_open_subscription),
-                ) {
-                    onSubscriptionClicked()
-                }
-                .padding(paddingM),
+                Modifier
+                    .clickable(
+                        onClickLabel = stringResource(id = R.string.settings_cd_open_subscription),
+                    ) {
+                        onSubscriptionClicked()
+                    }
+                    .padding(paddingM),
         ) {
             Text(
                 modifier = Modifier.weight(1f),

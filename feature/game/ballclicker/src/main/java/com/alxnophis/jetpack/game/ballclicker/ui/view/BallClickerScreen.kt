@@ -51,25 +51,25 @@ internal fun BallClickerScreen(
     AppTheme {
         Column(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.surface),
+                Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.surface),
         ) {
             Row(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(paddingM),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(paddingM),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text =
-                    buildString {
-                        append(stringResource(R.string.ball_clicker_points))
-                        append(WHITE_SPACE)
-                        append(state.points)
-                    },
+                        buildString {
+                            append(stringResource(R.string.ball_clicker_points))
+                            append(WHITE_SPACE)
+                            append(state.points)
+                        },
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -89,10 +89,10 @@ internal fun BallClickerScreen(
                 ) {
                     Text(
                         text =
-                        when {
-                            state.isTimerRunning -> stringResource(R.string.ball_clicker_reset)
-                            else -> stringResource(R.string.ball_clicker_start)
-                        },
+                            when {
+                                state.isTimerRunning -> stringResource(R.string.ball_clicker_reset)
+                                else -> stringResource(R.string.ball_clicker_start)
+                            },
                     )
                 }
             }
@@ -122,25 +122,25 @@ private fun BallClickerContent(
         }
         Canvas(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .pointerInput(enabled) {
-                    if (!enabled) {
-                        return@pointerInput
-                    }
-                    detectTapGestures {
-                        val distance = sqrt((it.x - ballPosition.x).pow(2) + (it.y - ballPosition.y).pow(2))
-                        if (distance <= radius) {
-                            ballPosition =
-                                randomOffset(
-                                    radius = radius,
-                                    width = constraints.maxWidth,
-                                    height = constraints.maxHeight,
-                                )
-                            ballClick()
+                Modifier
+                    .fillMaxSize()
+                    .pointerInput(enabled) {
+                        if (!enabled) {
+                            return@pointerInput
                         }
-                    }
-                },
+                        detectTapGestures {
+                            val distance = sqrt((it.x - ballPosition.x).pow(2) + (it.y - ballPosition.y).pow(2))
+                            if (distance <= radius) {
+                                ballPosition =
+                                    randomOffset(
+                                        radius = radius,
+                                        width = constraints.maxWidth,
+                                        height = constraints.maxHeight,
+                                    )
+                                ballClick()
+                            }
+                        }
+                    },
         ) {
             drawCircle(
                 color = ballColor,

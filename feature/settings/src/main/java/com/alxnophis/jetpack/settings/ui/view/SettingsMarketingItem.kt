@@ -41,23 +41,23 @@ internal fun SettingsMarketingItem(
             options.forEachIndexed { index, option ->
                 Row(
                     modifier =
-                    Modifier
-                        .selectable(
-                            selected = selectedOption.id == index,
-                            onClick = {
-                                val marketingOption =
-                                    if (index == MarketingOption.ALLOWED.id) {
-                                        MarketingOption.ALLOWED
-                                    } else {
-                                        MarketingOption.NOT_ALLOWED
-                                    }
-                                onOptionSelected(marketingOption)
-                            },
-                            role = Role.RadioButton,
-                        )
-                        .fillMaxWidth()
-                        .padding(start = paddingL, end = paddingM, top = paddingM, bottom = paddingM)
-                        .testTag(TAG_MARKETING_OPTION + index),
+                        Modifier
+                            .selectable(
+                                selected = selectedOption.id == index,
+                                onClick = {
+                                    val marketingOption =
+                                        if (index == MarketingOption.ALLOWED.id) {
+                                            MarketingOption.ALLOWED
+                                        } else {
+                                            MarketingOption.NOT_ALLOWED
+                                        }
+                                    onOptionSelected(marketingOption)
+                                },
+                                role = Role.RadioButton,
+                            )
+                            .fillMaxWidth()
+                            .padding(start = paddingL, end = paddingM, top = paddingM, bottom = paddingM)
+                            .testTag(TAG_MARKETING_OPTION + index),
                 ) {
                     RadioButton(
                         selected = selectedOption.id == index,

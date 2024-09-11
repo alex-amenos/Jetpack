@@ -52,11 +52,11 @@ internal fun MyPlaygroundScreen(
                 state = state,
                 handleEvent = onEvent,
                 modifier =
-                Modifier
-                    .background(MaterialTheme.colorScheme.surface)
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(paddingM),
+                    Modifier
+                        .background(MaterialTheme.colorScheme.surface)
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(paddingM),
             )
         }
     }

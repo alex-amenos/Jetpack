@@ -46,9 +46,9 @@ internal fun LocationTrackerScreen(
     AppTheme {
         Scaffold(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface),
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -94,10 +94,10 @@ private fun LocationPermission(
     } else {
         Column(
             modifier =
-            Modifier
-                .padding(paddingValues)
-                .wrapContentSize()
-                .padding(paddingM),
+                Modifier
+                    .padding(paddingValues)
+                    .wrapContentSize()
+                    .padding(paddingM),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -150,13 +150,13 @@ private fun UserLocation(
         )
         Text(
             modifier =
-            Modifier
-                .wrapContentSize()
-                .padding(paddingM),
+                Modifier
+                    .wrapContentSize()
+                    .padding(paddingM),
             text =
-            state.lastKnownLocation.ifEmpty {
-                stringResource(id = R.string.location_tracker_location_not_available)
-            },
+                state.lastKnownLocation.ifEmpty {
+                    stringResource(id = R.string.location_tracker_location_not_available)
+                },
         )
         Text(
             modifier = Modifier.padding(start = paddingM, end = paddingM, top = paddingM, bottom = paddingS),
@@ -167,13 +167,13 @@ private fun UserLocation(
         )
         Text(
             modifier =
-            Modifier
-                .wrapContentSize()
-                .padding(paddingM),
+                Modifier
+                    .wrapContentSize()
+                    .padding(paddingM),
             text =
-            state.userLocation.ifEmpty {
-                stringResource(id = R.string.location_tracker_location_not_available)
-            },
+                state.userLocation.ifEmpty {
+                    stringResource(id = R.string.location_tracker_location_not_available)
+                },
         )
     }
 }

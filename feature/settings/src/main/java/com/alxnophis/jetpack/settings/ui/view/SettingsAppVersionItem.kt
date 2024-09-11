@@ -23,9 +23,9 @@ internal fun SettingsAppVersion(
     SettingsItem(modifier = modifier) {
         Row(
             modifier =
-            Modifier
-                .padding(horizontal = paddingM)
-                .semantics(mergeDescendants = true) {},
+                Modifier
+                    .padding(horizontal = paddingM)
+                    .semantics(mergeDescendants = true) {},
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(

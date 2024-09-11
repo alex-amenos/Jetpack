@@ -56,10 +56,10 @@ internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
         ) {
             NotificationPermission(
                 modifier =
-                Modifier
-                    .padding(paddingValues = it)
-                    .fillMaxSize()
-                    .padding(paddingM),
+                    Modifier
+                        .padding(paddingValues = it)
+                        .fillMaxSize()
+                        .padding(paddingM),
             )
         }
     }
@@ -90,9 +90,9 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CoreButtonMinor(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(paddingL),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(paddingL),
                 text = stringResource(id = R.string.notifications_request_permission),
                 onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
             )
@@ -103,9 +103,9 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         }
         CoreButtonMajor(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(paddingL),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(paddingL),
             text = stringResource(id = R.string.notifications_show_notification),
             onClick = {
                 if (hasNotificationPermission) {
@@ -115,7 +115,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
                         icon = R.drawable.notifications_ic_push,
                         channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
                         notificationId = 1,
-                        contentIntent = context.appPendingIntent()
+                        contentIntent = context.appPendingIntent(),
                     )
                 }
             },
