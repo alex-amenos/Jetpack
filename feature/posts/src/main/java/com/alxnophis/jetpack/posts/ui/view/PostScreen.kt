@@ -43,7 +43,7 @@ import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingM
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
@@ -97,10 +97,10 @@ private fun PostContent(
             }
         Box(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
-                    .nestedScroll(nestedScrollConnection),
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
+                .nestedScroll(nestedScrollConnection),
         ) {
             PostList(
                 state = state,
@@ -110,9 +110,9 @@ private fun PostContent(
             )
             CoreTopBar(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
+                Modifier
+                    .fillMaxWidth()
+                    .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
                 title = stringResource(id = R.string.posts_title),
                 onBack = { onEvent(PostsEvent.GoBackRequested) },
             )
@@ -143,10 +143,10 @@ internal fun PostList(
         LazyColumn(
             state = listState,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .drawVerticalScrollbar(listState),
-            contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding),
+            Modifier
+                .fillMaxWidth()
+                .drawVerticalScrollbar(listState),
+            contentPadding = PaddingValues(top = toolbarHeight, start = paddingM, end = paddingM),
         ) {
             items(
                 items = state.posts,
@@ -156,9 +156,9 @@ internal fun PostList(
                         state = state,
                         item = item,
                         modifier =
-                            Modifier
-                                .padding(vertical = mediumPadding)
-                                .fillParentMaxWidth(),
+                        Modifier
+                            .padding(vertical = paddingM)
+                            .fillParentMaxWidth(),
                     )
                 },
             )
@@ -175,20 +175,20 @@ private fun CardPostItem(
     Card(modifier = modifier) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(mediumPadding),
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(paddingM),
         ) {
             Text(
                 modifier =
-                    Modifier
-                        .wrapContentSize()
-                        .placeholder(
-                            visible = state.isLoading,
-                            color = Color.Gray,
-                            shape = RoundedCornerShape(4.dp),
-                        ),
+                Modifier
+                    .wrapContentSize()
+                    .placeholder(
+                        visible = state.isLoading,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(4.dp),
+                    ),
                 text = item.title.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp,
@@ -196,14 +196,14 @@ private fun CardPostItem(
             )
             Text(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = mediumPadding, bottom = mediumPadding)
-                        .placeholder(
-                            visible = state.isLoading,
-                            color = Color.Gray,
-                            shape = RoundedCornerShape(4.dp),
-                        ),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = paddingM, bottom = paddingM)
+                    .placeholder(
+                        visible = state.isLoading,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(4.dp),
+                    ),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 5,
@@ -231,7 +231,7 @@ private fun PostScreenPreview() {
             userId = 1,
             title = "Title 2",
             body =
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                     "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         )
     val state =

@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingM
 import com.alxnophis.jetpack.settings.R
 
 @Composable
@@ -23,9 +23,9 @@ internal fun SettingsAppVersion(
     SettingsItem(modifier = modifier) {
         Row(
             modifier =
-                Modifier
-                    .padding(horizontal = mediumPadding)
-                    .semantics(mergeDescendants = true) {},
+            Modifier
+                .padding(horizontal = paddingM)
+                .semantics(mergeDescendants = true) {},
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(

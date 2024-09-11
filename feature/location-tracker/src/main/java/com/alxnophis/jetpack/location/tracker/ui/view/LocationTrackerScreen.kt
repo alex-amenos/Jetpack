@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
-import com.alxnophis.jetpack.core.ui.theme.smallPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingM
+import com.alxnophis.jetpack.core.ui.theme.paddingS
 import com.alxnophis.jetpack.location.tracker.R
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerState
@@ -46,9 +46,9 @@ internal fun LocationTrackerScreen(
     AppTheme {
         Scaffold(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -94,10 +94,10 @@ private fun LocationPermission(
     } else {
         Column(
             modifier =
-                Modifier
-                    .padding(paddingValues)
-                    .wrapContentSize()
-                    .padding(mediumPadding),
+            Modifier
+                .padding(paddingValues)
+                .wrapContentSize()
+                .padding(paddingM),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -124,7 +124,7 @@ private fun LocationPermission(
                 textAlign = TextAlign.Justify,
                 text = stringResource(textIdToShow),
             )
-            Spacer(modifier = Modifier.height(mediumPadding + 25.dp))
+            Spacer(modifier = Modifier.height(paddingM + 25.dp))
             CoreButtonMajor(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { locationPermissionsState.launchMultiplePermissionRequest() },
@@ -142,7 +142,7 @@ private fun UserLocation(
 ) {
     Column(modifier.padding(paddingValues)) {
         Text(
-            modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
+            modifier = Modifier.padding(start = paddingM, end = paddingM, top = paddingM, bottom = paddingS),
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
@@ -150,16 +150,16 @@ private fun UserLocation(
         )
         Text(
             modifier =
-                Modifier
-                    .wrapContentSize()
-                    .padding(mediumPadding),
+            Modifier
+                .wrapContentSize()
+                .padding(paddingM),
             text =
-                state.lastKnownLocation.ifEmpty {
-                    stringResource(id = R.string.location_tracker_location_not_available)
-                },
+            state.lastKnownLocation.ifEmpty {
+                stringResource(id = R.string.location_tracker_location_not_available)
+            },
         )
         Text(
-            modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
+            modifier = Modifier.padding(start = paddingM, end = paddingM, top = paddingM, bottom = paddingS),
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
@@ -167,13 +167,13 @@ private fun UserLocation(
         )
         Text(
             modifier =
-                Modifier
-                    .wrapContentSize()
-                    .padding(mediumPadding),
+            Modifier
+                .wrapContentSize()
+                .padding(paddingM),
             text =
-                state.userLocation.ifEmpty {
-                    stringResource(id = R.string.location_tracker_location_not_available)
-                },
+            state.userLocation.ifEmpty {
+                stringResource(id = R.string.location_tracker_location_not_available)
+            },
         )
     }
 }

@@ -33,8 +33,8 @@ import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMinor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.largePadding
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingL
+import com.alxnophis.jetpack.core.ui.theme.paddingM
 import com.alxnophis.jetpack.notifications.R
 
 @Composable
@@ -55,10 +55,10 @@ internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
         ) {
             NotificationPermission(
                 modifier =
-                    Modifier
-                        .padding(paddingValues = it)
-                        .fillMaxSize()
-                        .padding(mediumPadding),
+                Modifier
+                    .padding(paddingValues = it)
+                    .fillMaxSize()
+                    .padding(paddingM),
             )
         }
     }
@@ -89,9 +89,9 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CoreButtonMinor(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(largePadding),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(paddingL),
                 text = stringResource(id = R.string.notifications_request_permission),
                 onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
             )
@@ -102,9 +102,9 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         }
         CoreButtonMajor(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(largePadding),
+            Modifier
+                .fillMaxWidth()
+                .padding(paddingL),
             text = stringResource(id = R.string.notifications_show_notification),
             onClick = {
                 if (hasNotificationPermission) {

@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
-import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingM
+import com.alxnophis.jetpack.core.ui.theme.paddingXS
 
 @SuppressLint("ModifierParameter")
 @Composable
@@ -37,27 +37,27 @@ fun CoreButtonMinor(
         enabled = isEnabled,
         shape = RoundedCornerShape(8.dp),
         border =
-            BorderStroke(
-                width = 1.dp,
-                color =
-                    if (isEnabled) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT)
-                    },
-            ),
+        BorderStroke(
+            width = 1.dp,
+            color =
+            if (isEnabled) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT)
+            },
+        ),
         onClick = { onClick() },
     ) {
         Text(
             style = MaterialTheme.typography.titleMedium,
             color =
-                if (isEnabled) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT)
-                },
+            if (isEnabled) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT)
+            },
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(extraSmallPadding),
+            modifier = Modifier.padding(paddingXS),
             text = text,
         )
     }
@@ -73,9 +73,9 @@ private fun CoreButtonMinorPreview() {
     AppTheme {
         Column(
             modifier =
-                Modifier
-                    .wrapContentHeight()
-                    .padding(mediumPadding),
+            Modifier
+                .wrapContentHeight()
+                .padding(paddingM),
         ) {
             CoreButtonMinor(
                 modifier = Modifier.fillMaxWidth(),

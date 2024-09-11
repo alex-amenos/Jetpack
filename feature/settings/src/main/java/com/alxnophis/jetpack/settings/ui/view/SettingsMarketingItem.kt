@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.largePadding
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingL
+import com.alxnophis.jetpack.core.ui.theme.paddingM
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_MARKETING_OPTION
@@ -35,29 +35,29 @@ internal fun SettingsMarketingItem(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                modifier = Modifier.padding(mediumPadding),
+                modifier = Modifier.padding(paddingM),
                 text = stringResource(R.string.settings_option_marketing),
             )
             options.forEachIndexed { index, option ->
                 Row(
                     modifier =
-                        Modifier
-                            .selectable(
-                                selected = selectedOption.id == index,
-                                onClick = {
-                                    val marketingOption =
-                                        if (index == MarketingOption.ALLOWED.id) {
-                                            MarketingOption.ALLOWED
-                                        } else {
-                                            MarketingOption.NOT_ALLOWED
-                                        }
-                                    onOptionSelected(marketingOption)
-                                },
-                                role = Role.RadioButton,
-                            )
-                            .fillMaxWidth()
-                            .padding(start = largePadding, end = mediumPadding, top = mediumPadding, bottom = mediumPadding)
-                            .testTag(TAG_MARKETING_OPTION + index),
+                    Modifier
+                        .selectable(
+                            selected = selectedOption.id == index,
+                            onClick = {
+                                val marketingOption =
+                                    if (index == MarketingOption.ALLOWED.id) {
+                                        MarketingOption.ALLOWED
+                                    } else {
+                                        MarketingOption.NOT_ALLOWED
+                                    }
+                                onOptionSelected(marketingOption)
+                            },
+                            role = Role.RadioButton,
+                        )
+                        .fillMaxWidth()
+                        .padding(start = paddingL, end = paddingM, top = paddingM, bottom = paddingM)
+                        .testTag(TAG_MARKETING_OPTION + index),
                 ) {
                     RadioButton(
                         selected = selectedOption.id == index,
@@ -65,7 +65,7 @@ internal fun SettingsMarketingItem(
                     )
                     Text(
                         text = option,
-                        modifier = Modifier.padding(start = mediumPadding),
+                        modifier = Modifier.padding(start = paddingM),
                     )
                 }
             }

@@ -17,7 +17,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingM
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.ui.view.SettingsTags.TAG_CHECK_ITEM
 
@@ -38,15 +38,15 @@ fun SettingsHintItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier =
-                Modifier
-                    .toggleable(
-                        value = checked,
-                        onValueChange = { onShowHintToggled() },
-                        role = Role.Checkbox,
-                    )
-                    .semantics { stateDescription = hintsEnabledState }
-                    .padding(mediumPadding)
-                    .testTag(TAG_CHECK_ITEM),
+            Modifier
+                .toggleable(
+                    value = checked,
+                    onValueChange = { onShowHintToggled() },
+                    role = Role.Checkbox,
+                )
+                .semantics { stateDescription = hintsEnabledState }
+                .padding(paddingM)
+                .testTag(TAG_CHECK_ITEM),
         ) {
             Text(
                 text = title,

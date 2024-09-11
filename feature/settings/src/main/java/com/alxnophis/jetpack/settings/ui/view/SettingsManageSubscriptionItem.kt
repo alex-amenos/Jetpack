@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingM
 import com.alxnophis.jetpack.settings.R
 
 @Composable
@@ -26,13 +26,13 @@ internal fun SettingsManageSubscriptionItem(
     SettingsItem(modifier = modifier) {
         Row(
             modifier =
-                Modifier
-                    .clickable(
-                        onClickLabel = stringResource(id = R.string.settings_cd_open_subscription),
-                    ) {
-                        onSubscriptionClicked()
-                    }
-                    .padding(mediumPadding),
+            Modifier
+                .clickable(
+                    onClickLabel = stringResource(id = R.string.settings_cd_open_subscription),
+                ) {
+                    onSubscriptionClicked()
+                }
+                .padding(paddingM),
         ) {
             Text(
                 modifier = Modifier.weight(1f),

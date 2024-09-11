@@ -52,7 +52,7 @@ import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingM
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderState
@@ -89,11 +89,11 @@ internal fun FileDownloaderScreen(
                 state = state,
                 handleEvent = onEvent,
                 modifier =
-                    Modifier
-                        .drawVerticalScrollbar(rememberScrollState())
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                        .padding(mediumPadding),
+                Modifier
+                    .drawVerticalScrollbar(rememberScrollState())
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(paddingM),
             )
 
             FileDownloaderErrors(
@@ -132,9 +132,9 @@ private fun FileDownloaderContent(
             trailingIcon = {
                 IconButton(
                     modifier =
-                        Modifier
-                            .wrapContentSize()
-                            .padding(4.dp),
+                    Modifier
+                        .wrapContentSize()
+                        .padding(4.dp),
                     onClick = {
                         handleEvent.invoke(FileDownloaderEvent.UrlChanged(EMPTY))
                     },
@@ -146,15 +146,15 @@ private fun FileDownloaderContent(
                 }
             },
             keyboardActions =
-                KeyboardActions(
-                    onSend = { downloadFileEvent() },
-                ),
+            KeyboardActions(
+                onSend = { downloadFileEvent() },
+            ),
             isError =
-                if (state.url.isNotEmpty()) {
-                    !state.url.isValidUrl()
-                } else {
-                    false
-                },
+            if (state.url.isNotEmpty()) {
+                !state.url.isValidUrl()
+            } else {
+                false
+            },
         )
 
         Spacer(modifier = Modifier.height(25.dp))
@@ -182,11 +182,11 @@ private fun FileDownloaderContent(
 private fun FileDownloaderDivider() {
     HorizontalDivider(
         modifier =
-            Modifier
-                .height(1.dp)
-                .fillMaxWidth()
-                .alpha(0.2f)
-                .background(MaterialTheme.colorScheme.onBackground),
+        Modifier
+            .height(1.dp)
+            .fillMaxWidth()
+            .alpha(0.2f)
+            .background(MaterialTheme.colorScheme.onBackground),
     )
 }
 
@@ -307,10 +307,10 @@ private fun FileDownloaderScaffoldPreview() {
             url = EMPTY,
             error = com.alxnophis.jetpack.core.R.string.core_error_title,
             fileStatusList =
-                listOf(
-                    "Lorem ipsum dolor sit amet",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                ),
+            listOf(
+                "Lorem ipsum dolor sit amet",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+            ),
         )
     FileDownloaderScreen(
         state = state,

@@ -16,8 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
-import com.alxnophis.jetpack.core.ui.theme.smallPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingS
+import com.alxnophis.jetpack.core.ui.theme.paddingXS
 
 @Composable
 fun CoreErrorDialog(
@@ -47,9 +47,9 @@ fun CoreErrorDialog(
         confirmButton = {
             Box(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = extraSmallPadding, end = smallPadding),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = paddingXS, end = paddingS),
                 contentAlignment = Alignment.CenterEnd,
             ) {
                 TextButton(

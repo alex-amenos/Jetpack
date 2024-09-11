@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
-import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.paddingM
+import com.alxnophis.jetpack.core.ui.theme.paddingXS
 
 @Composable
 fun CoreButtonMajor(
@@ -37,27 +37,27 @@ fun CoreButtonMajor(
         enabled = isEnabled,
         shape = RoundedCornerShape(8.dp),
         border =
-            BorderStroke(
-                width = 1.dp,
-                color =
-                    if (isEnabled) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0f)
-                    },
-            ),
+        BorderStroke(
+            width = 1.dp,
+            color =
+            if (isEnabled) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.primary.copy(alpha = 0f)
+            },
+        ),
         colors =
-            ButtonDefaults.textButtonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT),
-                disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = DISABLED_CONTENT),
-            ),
+        ButtonDefaults.textButtonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT),
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = DISABLED_CONTENT),
+        ),
     ) {
         Text(
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(extraSmallPadding),
+            modifier = Modifier.padding(paddingXS),
             text = text,
         )
     }
@@ -73,9 +73,9 @@ private fun CoreButtonMajorPreview() {
     AppTheme {
         Column(
             modifier =
-                Modifier
-                    .wrapContentHeight()
-                    .padding(mediumPadding),
+            Modifier
+                .wrapContentHeight()
+                .padding(paddingM),
         ) {
             CoreButtonMajor(
                 modifier = Modifier.fillMaxWidth(),
