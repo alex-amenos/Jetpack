@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.myplayground.navigation
+package com.alxnophis.jetpack.myplayground.ui.navigation
 
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
