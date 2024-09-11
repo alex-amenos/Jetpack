@@ -47,7 +47,7 @@ fun Context.showNotification(
     val notification =
         NotificationCompat
             .Builder(applicationContext, channelId)
-            .setContentTitle(this.getString(titleResId))
+            .setContentTitle(getString(titleResId))
             .setContentText(getString(contentResId))
             .setSmallIcon(icon)
             .setVisibility(visibility)

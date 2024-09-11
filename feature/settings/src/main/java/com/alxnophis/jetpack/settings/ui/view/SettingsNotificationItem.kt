@@ -43,7 +43,8 @@ internal fun SettingsNotificationItem(
                         value = checked,
                         onValueChange = { onToggleNotificationSettings() },
                         role = Role.Switch,
-                    ).semantics { stateDescription = notificationsEnabledState }
+                    )
+                    .semantics { stateDescription = notificationsEnabledState }
                     .padding(mediumPadding)
                     .testTag(TAG_TOGGLE_ITEM),
         ) {

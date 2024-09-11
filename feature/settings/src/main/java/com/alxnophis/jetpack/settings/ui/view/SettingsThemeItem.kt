@@ -39,7 +39,8 @@ internal fun SettingsThemeItem(
                     .clickable(
                         onClick = { expanded = !expanded },
                         onClickLabel = stringResource(R.string.settings_cd_select_theme),
-                    ).padding(mediumPadding)
+                    )
+                    .padding(mediumPadding)
                     .testTag(SettingsTags.TAG_SELECT_THEME),
         ) {
             Text(
