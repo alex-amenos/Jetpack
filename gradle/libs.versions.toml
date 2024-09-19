@@ -59,6 +59,9 @@ androidx-arch-core-common = { module = "androidx.arch.core:core-common", version
 androidx-arch-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-arch-core" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-compose-adaptive = { module = "androidx.compose.material3.adaptive:adaptive" }
+androidx-compose-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout" }
+androidx-compose-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation" }
 androidx-compose-animation = { module = "androidx.compose.animation:animation" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
 androidx-compose-constraint-layout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "androidx-compose-constraint-layout" }
@@ -139,6 +142,9 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 [bundles]
 androidx-compose = [
     "androidx-compose-activity",
+    "androidx-compose-adaptive",
+    "androidx-compose-adaptive-layout",
+    "androidx-compose-adaptive-navigation",
     "androidx-compose-animation",
     "androidx-compose-constraint-layout",
     "androidx-compose-foundation",
