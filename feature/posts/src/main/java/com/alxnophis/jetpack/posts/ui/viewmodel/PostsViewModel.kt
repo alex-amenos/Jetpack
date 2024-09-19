@@ -5,6 +5,7 @@ import arrow.core.Either
 import arrow.optics.copy
 import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.kotlin.constants.VIEW_MODEL_STOP_TIMEOUT_MILLIS
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostsError
@@ -14,6 +15,10 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.alxnophis.jetpack.posts.ui.contract.errorMessages
 import com.alxnophis.jetpack.posts.ui.contract.isLoading
 import com.alxnophis.jetpack.posts.ui.contract.posts
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -22,11 +27,21 @@ internal class PostsViewModel(
     initialState: PostsState = PostsState.initialState,
     private val getRandomUUID: () -> Long = { UUID.randomUUID().mostSignificantBits },
 ) : BaseViewModel<PostsEvent, PostsState>(initialState) {
+    override val uiState: StateFlow<PostsState> =
+        _uiState
+            .onStart { updatePosts() }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(VIEW_MODEL_STOP_TIMEOUT_MILLIS),
+                initialValue = initialState,
+            )
+
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
             when (event) {
-                PostsEvent.Initialized -> updatePosts()
-                PostsEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
+                PostsEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented in ViewModel")
+                PostsEvent.OnUpdatePostRequested -> updatePosts()
+                is PostsEvent.OnPostClicked -> throw IllegalStateException("On post clicked not implemented in ViewModel")
                 is PostsEvent.DismissErrorRequested -> dismissError(event.errorId)
             }
         }

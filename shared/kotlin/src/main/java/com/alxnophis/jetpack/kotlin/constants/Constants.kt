@@ -2,6 +2,10 @@
 
 package com.alxnophis.jetpack.kotlin.constants
 
+// ViewModel constants
+const val VIEW_MODEL_STOP_TIMEOUT_MILLIS = 5000L
+
+// Basic constants
 const val BREAK_LINE = "\n"
 const val BLANK = " "
 const val COMA = ","

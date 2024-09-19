@@ -8,11 +8,13 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.posts.data.model.Post
 
 internal sealed interface PostsEvent : UiEvent {
-    object Initialized : PostsEvent
+    data object OnUpdatePostRequested : PostsEvent
 
-    object GoBackRequested : PostsEvent
+    data object GoBackRequested : PostsEvent
 
     data class DismissErrorRequested(val errorId: Long) : PostsEvent
+
+    data class OnPostClicked(val post: Post) : PostsEvent
 }
 
 @Immutable

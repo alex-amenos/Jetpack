@@ -3,4 +3,5 @@
     <string name="core_feature_not_implemented" translatable="false">Feature pending to be implemented</string>
     <string name="core_error_title" translatable="false">Whoops!</string>
     <string name="core_cd_go_back">Go back to the previous screen</string>
+    <string name="core_cd_close">Close screen</string>
 </resources>
