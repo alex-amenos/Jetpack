@@ -12,9 +12,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.R
@@ -25,6 +27,7 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 fun CoreTopBar(
     title: String,
     modifier: Modifier = Modifier,
+    navIconImageVector: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
     onBack: () -> Unit,
 ) {
     TopAppBar(
@@ -44,6 +47,8 @@ fun CoreTopBar(
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = 1.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         navigationIcon = {
@@ -52,7 +57,7 @@ fun CoreTopBar(
                 onClick = onBack,
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    imageVector = navIconImageVector,
                     contentDescription = stringResource(id = R.string.core_cd_go_back),
                     tint = MaterialTheme.colorScheme.onPrimary,
                 )
