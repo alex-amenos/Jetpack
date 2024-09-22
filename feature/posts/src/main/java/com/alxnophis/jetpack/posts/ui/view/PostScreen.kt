@@ -32,6 +32,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -39,7 +41,6 @@ import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
-import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
@@ -48,6 +49,7 @@ import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
+import com.alxnophis.jetpack.posts.ui.contract.UiPostError
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -91,10 +93,10 @@ private fun PostContent(
             }
         Box(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
-                    .nestedScroll(nestedScrollConnection),
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
+                .nestedScroll(nestedScrollConnection),
         ) {
             PostList(
                 state = state,
@@ -104,16 +106,22 @@ private fun PostContent(
             )
             CoreTopBar(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.floatValue.roundToInt()) },
+                Modifier
+                    .fillMaxWidth()
+                    .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.floatValue.roundToInt()) },
                 title = stringResource(id = R.string.posts_title),
                 onBack = { onEvent(PostsEvent.GoBackRequested) },
             )
-            state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
+            state.error?.let { error: UiPostError ->
                 CoreErrorDialog(
-                    errorMessage = error.composableMessage(),
-                    dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested(error.id)) },
+                    errorMessage =
+                    when (error) {
+                        UiPostError.Network -> stringResource(R.string.posts_error_network)
+                        UiPostError.Server -> stringResource(R.string.posts_error_server)
+                        UiPostError.Unknown -> stringResource(R.string.posts_error_unknown)
+                        UiPostError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+                    },
+                    dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested) },
                 )
             }
         }
@@ -132,14 +140,14 @@ internal fun PostList(
         modifier = modifier,
         indicatorPadding = PaddingValues(top = toolbarHeight + 8.dp),
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(PostsEvent.OnUpdatePostRequested) },
+        onRefresh = { handleEvent.invoke(PostsEvent.OnUpdatePostsRequested) },
     ) {
         LazyColumn(
             state = listState,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .drawVerticalScrollbar(listState),
+            Modifier
+                .fillMaxWidth()
+                .drawVerticalScrollbar(listState),
             contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding),
         ) {
             items(
@@ -150,10 +158,10 @@ internal fun PostList(
                         state = state,
                         item = item,
                         modifier =
-                            Modifier
-                                .padding(vertical = mediumPadding)
-                                .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
-                                .fillParentMaxWidth(),
+                        Modifier
+                            .padding(vertical = mediumPadding)
+                            .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
+                            .fillParentMaxWidth(),
                     )
                 },
             )
@@ -170,20 +178,20 @@ private fun CardPostItem(
     Card(modifier = modifier) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(mediumPadding),
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(mediumPadding),
         ) {
             Text(
                 modifier =
-                    Modifier
-                        .wrapContentSize()
-                        .placeholder(
-                            visible = state.isLoading,
-                            color = Color.Gray,
-                            shape = RoundedCornerShape(4.dp),
-                        ),
+                Modifier
+                    .wrapContentSize()
+                    .placeholder(
+                        visible = state.isLoading,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(4.dp),
+                    ),
                 text = item.titleCapitalized,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp,
@@ -191,14 +199,14 @@ private fun CardPostItem(
             )
             Text(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = mediumPadding, bottom = mediumPadding)
-                        .placeholder(
-                            visible = state.isLoading,
-                            color = Color.Gray,
-                            shape = RoundedCornerShape(4.dp),
-                        ),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = mediumPadding, bottom = mediumPadding)
+                    .placeholder(
+                        visible = state.isLoading,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(4.dp),
+                    ),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 5,
@@ -212,26 +220,60 @@ private fun CardPostItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun PostScreenPreview() {
-    val post1 =
-        Post(
-            id = 1,
-            userId = 1,
-            title = "Title 1",
-            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-        )
-    val post2 =
-        Post(
-            id = 2,
-            userId = 1,
-            title = "Title 2",
-            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " + "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        )
-    val state =
+private fun PostScreenPreview(
+    @PreviewParameter(PostStateProvider::class) state: PostsState
+) {
+    PostsScreen(state)
+}
+
+private class PostStateProvider : PreviewParameterProvider<PostsState> {
+    override val values = sequenceOf(
         PostsState(
             isLoading = false,
             posts = listOf(post1, post2),
-            errorMessages = emptyList(),
+            error = null,
+        ),
+        PostsState(
+            isLoading = false,
+            posts = emptyList(),
+            error = UiPostError.Network,
+        ),
+        PostsState(
+            isLoading = false,
+            posts = emptyList(),
+            error = UiPostError.Server,
+        ),
+        PostsState(
+            isLoading = false,
+            posts = emptyList(),
+            error = UiPostError.Unknown,
+        ),
+        PostsState(
+            isLoading = false,
+            posts = emptyList(),
+            error = UiPostError.Unexpected,
+        ),
+        PostsState(
+            isLoading = true,
+            posts = emptyList(),
+            error = null,
         )
-    PostsScreen(state)
+    )
+
+    companion object {
+        val post1 =
+            Post(
+                id = 1,
+                userId = 1,
+                title = "Title 1",
+                body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+            )
+        val post2 =
+            Post(
+                id = 2,
+                userId = 1,
+                title = "Title 2",
+                body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " + "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            )
+    }
 }
