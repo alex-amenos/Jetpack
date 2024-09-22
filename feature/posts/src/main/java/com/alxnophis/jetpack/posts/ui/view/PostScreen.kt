@@ -93,10 +93,10 @@ private fun PostContent(
             }
         Box(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-                .nestedScroll(nestedScrollConnection),
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .nestedScroll(nestedScrollConnection),
         ) {
             PostList(
                 state = state,
@@ -106,21 +106,21 @@ private fun PostContent(
             )
             CoreTopBar(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.floatValue.roundToInt()) },
+                    Modifier
+                        .fillMaxWidth()
+                        .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.floatValue.roundToInt()) },
                 title = stringResource(id = R.string.posts_title),
                 onBack = { onEvent(PostsEvent.GoBackRequested) },
             )
             state.error?.let { error: UiPostError ->
                 CoreErrorDialog(
                     errorMessage =
-                    when (error) {
-                        UiPostError.Network -> stringResource(R.string.posts_error_network)
-                        UiPostError.Server -> stringResource(R.string.posts_error_server)
-                        UiPostError.Unknown -> stringResource(R.string.posts_error_unknown)
-                        UiPostError.Unexpected -> stringResource(R.string.posts_error_unexpected)
-                    },
+                        when (error) {
+                            UiPostError.Network -> stringResource(R.string.posts_error_network)
+                            UiPostError.Server -> stringResource(R.string.posts_error_server)
+                            UiPostError.Unknown -> stringResource(R.string.posts_error_unknown)
+                            UiPostError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+                        },
                     dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested) },
                 )
             }
@@ -145,9 +145,9 @@ internal fun PostList(
         LazyColumn(
             state = listState,
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .drawVerticalScrollbar(listState),
+                Modifier
+                    .fillMaxWidth()
+                    .drawVerticalScrollbar(listState),
             contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding),
         ) {
             items(
@@ -158,10 +158,10 @@ internal fun PostList(
                         state = state,
                         item = item,
                         modifier =
-                        Modifier
-                            .padding(vertical = mediumPadding)
-                            .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
-                            .fillParentMaxWidth(),
+                            Modifier
+                                .padding(vertical = mediumPadding)
+                                .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
+                                .fillParentMaxWidth(),
                     )
                 },
             )
@@ -178,20 +178,20 @@ private fun CardPostItem(
     Card(modifier = modifier) {
         Column(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(mediumPadding),
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(mediumPadding),
         ) {
             Text(
                 modifier =
-                Modifier
-                    .wrapContentSize()
-                    .placeholder(
-                        visible = state.isLoading,
-                        color = Color.Gray,
-                        shape = RoundedCornerShape(4.dp),
-                    ),
+                    Modifier
+                        .wrapContentSize()
+                        .placeholder(
+                            visible = state.isLoading,
+                            color = Color.Gray,
+                            shape = RoundedCornerShape(4.dp),
+                        ),
                 text = item.titleCapitalized,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp,
@@ -199,14 +199,14 @@ private fun CardPostItem(
             )
             Text(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = mediumPadding, bottom = mediumPadding)
-                    .placeholder(
-                        visible = state.isLoading,
-                        color = Color.Gray,
-                        shape = RoundedCornerShape(4.dp),
-                    ),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = mediumPadding, bottom = mediumPadding)
+                        .placeholder(
+                            visible = state.isLoading,
+                            color = Color.Gray,
+                            shape = RoundedCornerShape(4.dp),
+                        ),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 5,
@@ -221,44 +221,45 @@ private fun CardPostItem(
 @Preview(showBackground = true)
 @Composable
 private fun PostScreenPreview(
-    @PreviewParameter(PostStateProvider::class) state: PostsState
+    @PreviewParameter(PostStateProvider::class) state: PostsState,
 ) {
     PostsScreen(state)
 }
 
 private class PostStateProvider : PreviewParameterProvider<PostsState> {
-    override val values = sequenceOf(
-        PostsState(
-            isLoading = false,
-            posts = listOf(post1, post2),
-            error = null,
-        ),
-        PostsState(
-            isLoading = false,
-            posts = emptyList(),
-            error = UiPostError.Network,
-        ),
-        PostsState(
-            isLoading = false,
-            posts = emptyList(),
-            error = UiPostError.Server,
-        ),
-        PostsState(
-            isLoading = false,
-            posts = emptyList(),
-            error = UiPostError.Unknown,
-        ),
-        PostsState(
-            isLoading = false,
-            posts = emptyList(),
-            error = UiPostError.Unexpected,
-        ),
-        PostsState(
-            isLoading = true,
-            posts = emptyList(),
-            error = null,
+    override val values =
+        sequenceOf(
+            PostsState(
+                isLoading = false,
+                posts = listOf(post1, post2),
+                error = null,
+            ),
+            PostsState(
+                isLoading = false,
+                posts = emptyList(),
+                error = UiPostError.Network,
+            ),
+            PostsState(
+                isLoading = false,
+                posts = emptyList(),
+                error = UiPostError.Server,
+            ),
+            PostsState(
+                isLoading = false,
+                posts = emptyList(),
+                error = UiPostError.Unknown,
+            ),
+            PostsState(
+                isLoading = false,
+                posts = emptyList(),
+                error = UiPostError.Unexpected,
+            ),
+            PostsState(
+                isLoading = true,
+                posts = emptyList(),
+                error = null,
+            ),
         )
-    )
 
     companion object {
         val post1 =
@@ -273,7 +274,9 @@ private class PostStateProvider : PreviewParameterProvider<PostsState> {
                 id = 2,
                 userId = 1,
                 title = "Title 2",
-                body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " + "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                body =
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             )
     }
 }
