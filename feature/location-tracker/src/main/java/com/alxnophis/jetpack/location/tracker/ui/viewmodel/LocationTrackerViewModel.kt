@@ -36,9 +36,11 @@ internal class LocationTrackerViewModel(
                     subscribeToUserLocation()
                     subscribeToLastKnownLocation()
                 }
+
                 LocationTrackerEvent.StopTrackingRequested -> {
                     stopTrackUserLocation()
                 }
+
                 LocationTrackerEvent.GoBackRequested -> throw IllegalStateException("GoBackRequested not implemented")
             }
         }

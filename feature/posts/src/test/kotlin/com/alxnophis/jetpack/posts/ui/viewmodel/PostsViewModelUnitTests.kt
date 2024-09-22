@@ -37,8 +37,8 @@ class PostsViewModelUnitTests : FunSpec({
     // Review: Not tested by UiState change -> stateIn
     test(
         "GIVEN a PostsViewModel with default initial state " +
-                "WHEN initialize " +
-                "THEN show AND hide loading AND post state should end with a list of posts",
+            "WHEN initialize " +
+            "THEN show AND hide loading AND post state should end with a list of posts",
     ) {
         val viewModel = PostsViewModel(postsRepository = postRepositoryMock)
         whenever(postRepositoryMock.getPosts()).thenReturn(postList.right())
@@ -53,8 +53,8 @@ class PostsViewModelUnitTests : FunSpec({
     // Review: Not tested by UiState change
     test(
         "GIVEN a PostsViewModel with default initial state " +
-                "WHEN updates posts " +
-                "THEN show AND hide loading AND post state should end with a list of posts",
+            "WHEN updates posts " +
+            "THEN show AND hide loading AND post state should end with a list of posts",
     ) {
         val viewModel = PostsViewModel(postsRepository = postRepositoryMock)
         whenever(postRepositoryMock.getPosts()).thenReturn(postList.right())
@@ -75,8 +75,8 @@ class PostsViewModelUnitTests : FunSpec({
     ).forEach { (error, uiError) ->
         test(
             "GIVEN a PostsViewModel with default initial state " +
-                    "WHEN updates post fails with ${error::class.simpleName} error" +
-                    "THEN show AND hide loading AND post state result should be an UiError",
+                "WHEN updates post fails with ${error::class.simpleName} error" +
+                "THEN show AND hide loading AND post state result should be an UiError",
         ) {
             val viewModel =
                 PostsViewModel(postsRepository = postRepositoryMock)
@@ -87,10 +87,10 @@ class PostsViewModelUnitTests : FunSpec({
             viewModel.uiState.test {
                 awaitItem() shouldBe PostsState.initialState
                 awaitItem() shouldBe
-                        PostsState.initialState.copy(
-                            isLoading = false,
-                            error = uiError,
-                        )
+                    PostsState.initialState.copy(
+                        isLoading = false,
+                        error = uiError,
+                    )
                 expectNoEvents()
             }
         }
@@ -98,8 +98,8 @@ class PostsViewModelUnitTests : FunSpec({
 
     test(
         "GIVEN a PostViewModel initialized with an error " +
-                "WHEN DismissError event " +
-                "THEN post state result should be without errors",
+            "WHEN DismissError event " +
+            "THEN post state result should be without errors",
     ) {
         val viewModel =
             PostsViewModel(postsRepository = postRepositoryMock)
@@ -116,8 +116,8 @@ class PostsViewModelUnitTests : FunSpec({
     // TODO - Review this test
     xtest(
         "GIVEN a PostViewModel initialized " +
-                "WHEN go back event " +
-                "THEN throw IllegalStateException",
+            "WHEN go back event " +
+            "THEN throw IllegalStateException",
     ) {
         val viewModel =
             PostsViewModel(postsRepository = postRepositoryMock)

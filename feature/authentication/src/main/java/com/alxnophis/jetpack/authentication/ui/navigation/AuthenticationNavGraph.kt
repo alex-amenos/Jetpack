@@ -31,6 +31,7 @@ fun NavGraphBuilder.authenticationNavGraph(navController: NavHostController) {
                             }
                         }
                     }
+
                     else -> viewModel.handleEvent(event)
                 }
             },

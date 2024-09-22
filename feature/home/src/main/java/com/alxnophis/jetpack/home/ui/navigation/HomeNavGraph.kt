@@ -28,6 +28,7 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
                         navController.popBackStack()
                         finish()
                     }
+
                     is HomeEvent.NavigationRequested -> navController.navigate(event.route)
                     else -> viewModel.handleEvent(event)
                 }
