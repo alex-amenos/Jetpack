@@ -47,9 +47,9 @@ import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.data.model.Post
+import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
-import com.alxnophis.jetpack.posts.ui.contract.UiPostError
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -112,14 +112,14 @@ private fun PostContent(
                 title = stringResource(id = R.string.posts_title),
                 onBack = { onEvent(PostsEvent.GoBackRequested) },
             )
-            state.error?.let { error: UiPostError ->
+            state.error?.let { error: PostUiError ->
                 CoreErrorDialog(
                     errorMessage =
                         when (error) {
-                            UiPostError.Network -> stringResource(R.string.posts_error_network)
-                            UiPostError.Server -> stringResource(R.string.posts_error_server)
-                            UiPostError.Unknown -> stringResource(R.string.posts_error_unknown)
-                            UiPostError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+                            PostUiError.Network -> stringResource(R.string.posts_error_network)
+                            PostUiError.Server -> stringResource(R.string.posts_error_server)
+                            PostUiError.Unknown -> stringResource(R.string.posts_error_unknown)
+                            PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
                         },
                     dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested) },
                 )
@@ -237,22 +237,22 @@ private class PostStateProvider : PreviewParameterProvider<PostsState> {
             PostsState(
                 isLoading = false,
                 posts = emptyList(),
-                error = UiPostError.Network,
+                error = PostUiError.Network,
             ),
             PostsState(
                 isLoading = false,
                 posts = emptyList(),
-                error = UiPostError.Server,
+                error = PostUiError.Server,
             ),
             PostsState(
                 isLoading = false,
                 posts = emptyList(),
-                error = UiPostError.Unknown,
+                error = PostUiError.Unknown,
             ),
             PostsState(
                 isLoading = false,
                 posts = emptyList(),
-                error = UiPostError.Unexpected,
+                error = PostUiError.Unexpected,
             ),
             PostsState(
                 isLoading = true,

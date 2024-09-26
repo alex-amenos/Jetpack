@@ -19,7 +19,7 @@ internal sealed interface PostsEvent : UiEvent {
 internal data class PostsState(
     val isLoading: Boolean,
     val posts: List<Post>,
-    val error: UiPostError?,
+    val error: PostUiError?,
 ) : UiState {
     internal companion object {
         val initialState =
@@ -31,12 +31,12 @@ internal data class PostsState(
     }
 }
 
-internal sealed interface UiPostError {
-    data object Network : UiPostError
+sealed interface PostUiError {
+    data object Network : PostUiError
 
-    data object Server : UiPostError
+    data object Server : PostUiError
 
-    data object Unknown : UiPostError
+    data object Unknown : PostUiError
 
-    data object Unexpected : UiPostError
+    data object Unexpected : PostUiError
 }

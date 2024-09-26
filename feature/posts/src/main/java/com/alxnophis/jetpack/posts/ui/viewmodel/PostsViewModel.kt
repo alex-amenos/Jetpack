@@ -7,9 +7,9 @@ import com.alxnophis.jetpack.kotlin.constants.VIEW_MODEL_STOP_TIMEOUT_MILLIS
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
+import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
-import com.alxnophis.jetpack.posts.ui.contract.UiPostError
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
@@ -66,12 +66,12 @@ internal class PostsViewModel(
 
     private suspend fun getPosts(): Either<PostsError, List<Post>> = postsRepository.getPosts()
 
-    private fun PostsError.mapToUiError(): UiPostError =
+    private fun PostsError.mapToUiError(): PostUiError =
         when (this) {
-            PostsError.Network -> UiPostError.Network
-            PostsError.Server -> UiPostError.Server
-            PostsError.Unknown -> UiPostError.Unknown
-            PostsError.Unexpected -> UiPostError.Unexpected
+            PostsError.Network -> PostUiError.Network
+            PostsError.Server -> PostUiError.Server
+            PostsError.Unknown -> PostUiError.Unknown
+            PostsError.Unexpected -> PostUiError.Unexpected
         }
 
     private fun dismissError() {
