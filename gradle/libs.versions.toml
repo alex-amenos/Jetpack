@@ -1,5 +1,5 @@
 [versions]
-android-gradle-plugin = "8.6.0"
+android-gradle-plugin = "8.6.1"
 android-junit5-plugin = "1.8.2.1"
 androidx-activity = "1.9.2"
 androidx-annotations = "1.8.2"
@@ -29,6 +29,7 @@ gradle-test-logger-plugin = "3.2.0"
 io-kotest = "5.7.2"
 junit = "4.13.2"
 junit-vintage-engine = "5.9.2"
+kluent = "1.72"
 koin-android = "3.4.2"
 koin-android-compose = "3.4.5"
 koin-android-work-manager = "3.3.3"
@@ -59,6 +60,9 @@ androidx-arch-core-common = { module = "androidx.arch.core:core-common", version
 androidx-arch-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-arch-core" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-compose-adaptive = { module = "androidx.compose.material3.adaptive:adaptive" }
+androidx-compose-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout" }
+androidx-compose-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation" }
 androidx-compose-animation = { module = "androidx.compose.animation:animation" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
 androidx-compose-constraint-layout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "androidx-compose-constraint-layout" }
@@ -105,6 +109,8 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "org-junit-jupiter" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "org-junit-jupiter" }
 junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit-vintage-engine" }
+kluent = { module = "org.amshove.kluent:kluent-android", version.ref = "kluent" }
+kluent-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin-gradle-plugin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
 koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-android-work-manager" }
@@ -139,6 +145,9 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 [bundles]
 androidx-compose = [
     "androidx-compose-activity",
+    "androidx-compose-adaptive",
+    "androidx-compose-adaptive-layout",
+    "androidx-compose-adaptive-navigation",
     "androidx-compose-animation",
     "androidx-compose-constraint-layout",
     "androidx-compose-foundation",

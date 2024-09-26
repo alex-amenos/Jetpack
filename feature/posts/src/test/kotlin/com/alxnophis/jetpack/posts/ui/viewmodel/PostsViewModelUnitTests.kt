@@ -3,122 +3,126 @@ package com.alxnophis.jetpack.posts.ui.viewmodel
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
-import com.alxnophis.jetpack.core.ui.model.ErrorMessage
-import com.alxnophis.jetpack.posts.R
+import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
+import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
-import com.alxnophis.jetpack.testing.listener.MainCoroutineListener
-import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
+import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
+import org.amshove.kluent.shouldBeEqualTo
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.util.stream.Stream
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExperimentalCoroutinesApi
-class PostsViewModelUnitTests : FunSpec({
+internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
+    private val postRepositoryMock: PostsRepository = mock()
 
-    val post1 = PostMother(id = 1, userId = 1, title = "title1", body = "body1")
-    val post2 = PostMother(id = 2, userId = 2, title = "title2", body = "body2")
-    val postList = listOf(post1, post2)
-    val postRepositoryMock: PostsRepository = mock()
+    override fun beforeEachCompleted() {
+        reset(postRepositoryMock)
+    }
 
-    register(MainCoroutineListener(StandardTestDispatcher()))
+    @Test
+    fun `GIVEN get posts succeeds WHEN initialize THEN verify get posts AND update uiState`() {
+        runTest {
+            val viewModel = viewModelMother()
+            whenever(postRepositoryMock.getPosts()).thenReturn(postList.right())
 
-    coroutineTestScope = true
-
-    test(
-        "GIVEN a PostsViewModel with default initial state " +
-            "WHEN initialize " +
-            "THEN show AND hide loading AND post state should end with a list of posts",
-    ) {
-        val viewModel = PostsViewModel(postsRepository = postRepositoryMock)
-        whenever(postRepositoryMock.getPosts()).thenReturn(postList.right())
-
-        viewModel.handleEvent(PostsEvent.Initialized)
-
-        viewModel.uiState.test {
-            awaitItem() shouldBe PostsState.initialState
-            awaitItem() shouldBe PostsState.initialState.copy(isLoading = true)
-            awaitItem() shouldBe PostsState.initialState.copy(isLoading = false, posts = postList)
-            expectNoEvents()
+            viewModel.uiState.test {
+                awaitItem() shouldBeEqualTo PostsState.initialState
+                awaitItem() shouldBeEqualTo PostsState.initialState.copy(isLoading = false, posts = postList)
+                expectNoEvents()
+            }
+            verify(postRepositoryMock).getPosts()
         }
     }
 
-    listOf(
-        PostsError.Network to R.string.posts_error_network,
-        PostsError.Server to R.string.posts_error_server,
-        PostsError.Unknown to R.string.posts_error_unknown,
-        PostsError.Unexpected to R.string.posts_error_unexpected,
-    ).forEach { (error, errorMessage) ->
-        test(
-            "GIVEN a PostsViewModel with default initial state " +
-                "WHEN get post fails with ${error::class.simpleName} error" +
-                "THEN show AND hide loading AND post state result should be an error with messageId $errorMessage",
-        ) {
-            val errorId = 1L
-            val viewModel =
-                PostsViewModel(
-                    postsRepository = postRepositoryMock,
-                    getRandomUUID = { errorId },
-                )
+    @ParameterizedTest
+    @MethodSource("postErrorsTestCases")
+    fun `GIVEN get posts fails WHEN initialize THEN verify get posts AND update uiState with the error`(
+        error: PostsError,
+        uiError: PostUiError,
+    ) {
+        runTest {
+            val viewModel = viewModelMother()
             whenever(postRepositoryMock.getPosts()).thenReturn(error.left())
 
-            viewModel.handleEvent(PostsEvent.Initialized)
+            viewModel.uiState.test {
+                awaitItem() shouldBeEqualTo PostsState.initialState
+                awaitItem() shouldBeEqualTo PostsState.initialState.copy(isLoading = false, error = uiError)
+                expectNoEvents()
+            }
+            verify(postRepositoryMock).getPosts()
+        }
+    }
+
+    @Test
+    fun `GIVEN get posts succeeds WHEN update posts is requested THEN verify get posts AND update uiState`() {
+        runTest {
+            val viewModel = viewModelMother()
+            whenever(postRepositoryMock.getPosts()).thenReturn(postList.right())
+
+            viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
             viewModel.uiState.test {
-                awaitItem() shouldBe PostsState.initialState
-                awaitItem() shouldBe PostsState.initialState.copy(isLoading = true)
-                awaitItem() shouldBe
-                    PostsState.initialState.copy(
-                        isLoading = false,
-                        errorMessages = listOf(ErrorMessage(id = errorId, messageId = errorMessage)),
-                    )
+                awaitItem() shouldBeEqualTo PostsState.initialState
+                awaitItem() shouldBeEqualTo PostsState.initialState.copy(isLoading = false, posts = postList)
+                expectNoEvents()
+            }
+            verify(postRepositoryMock, times(2)).getPosts()
+        }
+    }
+
+    @Test
+    fun `GIVEN a uiState with error WHEN dismiss error is requested THEN update uiState without error`() {
+        runTest {
+            val initialState = PostsState.initialState.copy(error = PostUiError.Network)
+            val viewModel = viewModelMother(initialState = initialState)
+            whenever(postRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
+
+            viewModel.handleEvent(PostsEvent.DismissErrorRequested)
+
+            viewModel.uiState.test {
+                skipItems(1)
+                awaitItem() shouldBeEqualTo initialState.copy(error = null)
                 expectNoEvents()
             }
         }
     }
 
-    test(
-        "GIVEN a PostViewModel initialized with an error " +
-            "WHEN DismissError event " +
-            "THEN post state result should be without errors",
-    ) {
-        val errorId = 1L
-        val viewModel =
-            PostsViewModel(
-                postsRepository = postRepositoryMock,
-                getRandomUUID = { errorId },
+    private fun viewModelMother(
+        postsRepository: PostsRepository = postRepositoryMock,
+        initialState: PostsState = PostsState.initialState,
+    ) = PostsViewModel(
+        postsRepository = postsRepository,
+        initialState = initialState,
+    )
+
+    private companion object {
+        val post1 = PostMother(id = 1, userId = 1, title = "title1", body = "body1")
+        val post2 = PostMother(id = 2, userId = 2, title = "title2", body = "body2")
+        val postList = listOf(post1, post2)
+
+        @JvmStatic
+        private fun postErrorsTestCases() =
+            Stream.of(
+                Arguments.of(PostsError.Network, PostUiError.Network),
+                Arguments.of(PostsError.Server, PostUiError.Server),
+                Arguments.of(PostsError.Unknown, PostUiError.Unknown),
+                Arguments.of(PostsError.Unexpected, PostUiError.Unexpected),
             )
-        whenever(postRepositoryMock.getPosts()).thenReturn(PostsError.Network.left())
-
-        viewModel.handleEvent(PostsEvent.DismissErrorRequested(errorId))
-
-        viewModel.uiState.test {
-            expectMostRecentItem() shouldBe PostsState.initialState
-            expectNoEvents()
-        }
     }
-
-    // TODO - Review this test
-    xtest(
-        "GIVEN a PostViewModel initialized " +
-            "WHEN go back event " +
-            "THEN throw IllegalStateException",
-    ) {
-        val errorId = 1L
-        val viewModel =
-            PostsViewModel(
-                postsRepository = postRepositoryMock,
-                getRandomUUID = { errorId },
-            )
-
-        shouldThrow<IllegalStateException> {
-            viewModel.handleEvent(PostsEvent.GoBackRequested)
-        }
-    }
-})
+}

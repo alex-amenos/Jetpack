@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.posts.ui.view
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,22 +32,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
-import com.alxnophis.jetpack.core.ui.model.ErrorMessage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.data.model.Post
+import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsState
 import com.google.accompanist.placeholder.material.placeholder
@@ -58,7 +58,7 @@ import kotlin.math.roundToInt
 private val toolbarHeight = 56.dp
 
 /**
- * Nestedscroll
+ * How Nested Scroll is used in Jetpack Compose:
  * Link: https://developer.android.com/reference/kotlin/androidx/compose/ui/input/nestedscroll/package-summary
  */
 @Composable
@@ -66,10 +66,6 @@ internal fun PostsScreen(
     state: PostsState,
     onEvent: (PostsEvent) -> Unit = {},
 ) {
-    BackHandler { onEvent(PostsEvent.GoBackRequested) }
-    LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-        onEvent(PostsEvent.Initialized)
-    }
     PostContent(state, onEvent)
 }
 
@@ -112,14 +108,20 @@ private fun PostContent(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.value.roundToInt()) },
+                        .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.floatValue.roundToInt()) },
                 title = stringResource(id = R.string.posts_title),
                 onBack = { onEvent(PostsEvent.GoBackRequested) },
             )
-            state.errorMessages.firstOrNull()?.let { error: ErrorMessage ->
+            state.error?.let { error: PostUiError ->
                 CoreErrorDialog(
-                    errorMessage = error.composableMessage(),
-                    dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested(error.id)) },
+                    errorMessage =
+                        when (error) {
+                            PostUiError.Network -> stringResource(R.string.posts_error_network)
+                            PostUiError.Server -> stringResource(R.string.posts_error_server)
+                            PostUiError.Unknown -> stringResource(R.string.posts_error_unknown)
+                            PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+                        },
+                    dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested) },
                 )
             }
         }
@@ -138,7 +140,7 @@ internal fun PostList(
         modifier = modifier,
         indicatorPadding = PaddingValues(top = toolbarHeight + 8.dp),
         state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(PostsEvent.Initialized) },
+        onRefresh = { handleEvent.invoke(PostsEvent.OnUpdatePostsRequested) },
     ) {
         LazyColumn(
             state = listState,
@@ -158,6 +160,7 @@ internal fun PostList(
                         modifier =
                             Modifier
                                 .padding(vertical = mediumPadding)
+                                .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
                                 .fillParentMaxWidth(),
                     )
                 },
@@ -189,7 +192,7 @@ private fun CardPostItem(
                             color = Color.Gray,
                             shape = RoundedCornerShape(4.dp),
                         ),
-                text = item.title.replaceFirstChar { it.uppercase() },
+                text = item.titleCapitalized,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -217,28 +220,63 @@ private fun CardPostItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun PostScreenPreview() {
-    val post1 =
-        Post(
-            id = 1,
-            userId = 1,
-            title = "Title 1",
-            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-        )
-    val post2 =
-        Post(
-            id = 2,
-            userId = 1,
-            title = "Title 2",
-            body =
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                    "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        )
-    val state =
-        PostsState(
-            isLoading = false,
-            posts = listOf(post1, post2),
-            errorMessages = emptyList(),
-        )
+private fun PostScreenPreview(
+    @PreviewParameter(PostStateProvider::class) state: PostsState,
+) {
     PostsScreen(state)
+}
+
+private class PostStateProvider : PreviewParameterProvider<PostsState> {
+    override val values =
+        sequenceOf(
+            PostsState(
+                isLoading = false,
+                posts = listOf(post1, post2),
+                error = null,
+            ),
+            PostsState(
+                isLoading = false,
+                posts = emptyList(),
+                error = PostUiError.Network,
+            ),
+            PostsState(
+                isLoading = false,
+                posts = emptyList(),
+                error = PostUiError.Server,
+            ),
+            PostsState(
+                isLoading = false,
+                posts = emptyList(),
+                error = PostUiError.Unknown,
+            ),
+            PostsState(
+                isLoading = false,
+                posts = emptyList(),
+                error = PostUiError.Unexpected,
+            ),
+            PostsState(
+                isLoading = true,
+                posts = emptyList(),
+                error = null,
+            ),
+        )
+
+    companion object {
+        val post1 =
+            Post(
+                id = 1,
+                userId = 1,
+                title = "Title 1",
+                body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+            )
+        val post2 =
+            Post(
+                id = 2,
+                userId = 1,
+                title = "Title 2",
+                body =
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            )
+    }
 }

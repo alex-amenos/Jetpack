@@ -15,7 +15,7 @@ It is the home screen where you can select some of experiments of this project.
 Authentication form with SignUp and SignIn.<br><br>
 More experiment info:<br>
 
-- Expriment with testing: unit test, snapshot tests and android tests
+- Experiment with testing: unit test, snapshot tests and android tests
 
 <img alt="Authentication screen" src="./images/authentication_screen.png" width="300" />
 
@@ -41,6 +41,7 @@ More experiment info:<br>
 ## Posts
 
 Load posts from JsonPlaceholder Rest API<br><br>
+Uses adaptive layouts<br><br>
 More experiment info:<br>
 
 - Experiment with testing: unit test, snapshot tests.

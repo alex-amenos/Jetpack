@@ -240,12 +240,14 @@ private fun FileDownloaderErrors(
                 error = state.error,
                 onDismiss = dismissError,
             )
+
         state.error != NO_ERROR ->
             SnackbarError(
                 modifier = Modifier.fillMaxSize(),
                 error = state.error,
                 onDismiss = dismissError,
             )
+
         else -> doNothing()
     }
 }
