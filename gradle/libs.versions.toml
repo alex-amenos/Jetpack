@@ -29,6 +29,7 @@ gradle-test-logger-plugin = "3.2.0"
 io-kotest = "5.7.2"
 junit = "4.13.2"
 junit-vintage-engine = "5.9.2"
+kluent = "1.72"
 koin-android = "3.4.2"
 koin-android-compose = "3.4.5"
 koin-android-work-manager = "3.3.3"
@@ -108,6 +109,7 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "org-junit-jupiter" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "org-junit-jupiter" }
 junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit-vintage-engine" }
+kluent = { module = "org.amshove.kluent:kluent-android", version.ref = "kluent" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
 koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-android-work-manager" }

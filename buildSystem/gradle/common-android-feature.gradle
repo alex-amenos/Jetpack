@@ -40,6 +40,7 @@ dependencies {
     testImplementation libs.kotlinx.coroutines.test
     testImplementation libs.koin.test
     testImplementation libs.bundles.kotest
+    testImplementation libs.kluent
     testImplementation libs.kotlin.reflect
     testImplementation libs.bundles.mockito
     testImplementation libs.junit
