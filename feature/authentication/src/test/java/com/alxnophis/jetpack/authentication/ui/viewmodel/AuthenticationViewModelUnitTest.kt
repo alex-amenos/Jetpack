@@ -12,17 +12,16 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
-import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
-
     private lateinit var viewModel: AuthenticationViewModel
 
     override fun beforeEachCompleted() {
@@ -35,7 +34,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 assertEquals(
                     AuthenticationState.initialState,
-                    awaitItem()
+                    awaitItem(),
                 )
                 expectNoEvents()
             }
@@ -50,11 +49,11 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 assertEquals(
                     AuthenticationState.initialState,
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_UP),
-                    awaitItem()
+                    awaitItem(),
                 )
                 expectNoEvents()
             }
@@ -72,11 +71,11 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 assertEquals(
                     initialState,
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     initialState.copy(authenticationMode = AuthenticationMode.SIGN_IN),
-                    awaitItem()
+                    awaitItem(),
                 )
                 expectNoEvents()
             }
@@ -94,11 +93,11 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 assertEquals(
                     initialState,
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     initialState.copy(error = NO_ERROR),
-                    awaitItem()
+                    awaitItem(),
                 )
                 expectNoEvents()
             }
@@ -113,11 +112,11 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 assertEquals(
                     AuthenticationState.initialState,
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     AuthenticationState.initialState.copy(email = EMAIL),
-                    awaitItem()
+                    awaitItem(),
                 )
                 expectNoEvents()
             }
@@ -132,18 +131,19 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 assertEquals(
                     AuthenticationState.initialState,
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     AuthenticationState.initialState.copy(
                         password = PASSWORD,
-                        passwordRequirements = listOf(
-                            PasswordRequirements.EIGHT_CHARACTERS,
-                            PasswordRequirements.CAPITAL_LETTER,
-                            PasswordRequirements.NUMBER
-                        )
+                        passwordRequirements =
+                            listOf(
+                                PasswordRequirements.EIGHT_CHARACTERS,
+                                PasswordRequirements.CAPITAL_LETTER,
+                                PasswordRequirements.NUMBER,
+                            ),
                     ),
-                    awaitItem()
+                    awaitItem(),
                 )
                 expectNoEvents()
             }
@@ -162,18 +162,18 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 assertEquals(
                     initialState,
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     initialState.copy(isLoading = true),
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     initialState.copy(
                         isLoading = false,
-                        isUserAuthorized = true
+                        isUserAuthorized = true,
                     ),
-                    awaitItem()
+                    awaitItem(),
                 )
                 expectNoEvents()
             }
@@ -192,11 +192,11 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 assertEquals(
                     initialState,
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     initialState.copy(isUserAuthorized = false),
-                    awaitItem()
+                    awaitItem(),
                 )
                 expectNoEvents()
             }
@@ -215,18 +215,18 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 assertEquals(
                     initialState,
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     initialState.copy(isLoading = true),
-                    awaitItem()
+                    awaitItem(),
                 )
                 assertEquals(
                     initialState.copy(
                         isLoading = false,
-                        error = R.string.authentication_auth_error
+                        error = R.string.authentication_auth_error,
                     ),
-                    awaitItem()
+                    awaitItem(),
                 )
                 expectNoEvents()
             }
@@ -235,10 +235,10 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
 
     private fun viewModelMother(
         initialState: AuthenticationState = AuthenticationState.initialState,
-        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock
+        authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock,
     ) = AuthenticationViewModel(
         authenticateUseCase,
-        initialState
+        initialState,
     )
 
     companion object {

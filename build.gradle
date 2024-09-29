@@ -7,8 +7,7 @@ buildscript {
 
     dependencies {
         classpath libs.gradle.test.logger.plugin
-        classpath libs.gradle
-        classpath libs.apollo.gradle.plugin
+        classpath libs.android.gradle.plugin
         classpath libs.android.junit5.plugin
         classpath libs.kotlin.gradle.plugin
         classpath libs.kover
@@ -21,6 +20,7 @@ plugins {
     alias libs.plugins.kover apply true
     alias libs.plugins.android.application apply false
     alias libs.plugins.kotlin.android apply false
+    alias libs.plugins.kotlin.serialization apply false
     alias libs.plugins.ben.manes.versions apply true
     alias libs.plugins.version.catalog.update apply true
     alias libs.plugins.google.ksp apply false
@@ -42,8 +42,8 @@ subprojects {
     apply from: "$rootDir/buildSystem/gradle/dependency-updates.gradle"
 }
 
-task clean(type: Delete) {
-    delete buildDir
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
 }
 
 task installGitHook(type: Copy) {

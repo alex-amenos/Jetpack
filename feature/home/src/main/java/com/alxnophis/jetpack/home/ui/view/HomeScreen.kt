@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
-import com.alxnophis.jetpack.core.ui.composable.ComposableLifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
@@ -41,35 +41,33 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
-import com.alxnophis.jetpack.router.screen.Screen
+import com.alxnophis.jetpack.router.screen.Route
 
 @Composable
 internal fun HomeScreen(
     state: HomeState,
-    onEvent: (HomeEvent) -> Unit = {}
+    onEvent: (HomeEvent) -> Unit = {},
 ) {
     BackHandler {
         onEvent(HomeEvent.GoBackRequested)
     }
-    ComposableLifecycle { _, event ->
-        if (event == Lifecycle.Event.ON_CREATE) {
-            onEvent(HomeEvent.Initialized)
-        }
+    LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
+        onEvent(HomeEvent.Initialized)
     }
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            topBar = { HomeTopBar() }
+            topBar = { HomeTopBar() },
         ) { paddingValues ->
             SectionsList(
                 paddingValues = paddingValues,
                 state = state,
-                navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) }
+                navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) },
             )
             if (state.error != NO_ERROR) {
                 CoreErrorDialog(
                     errorMessage = stringResource(state.error),
-                    dismissError = { onEvent(HomeEvent.ErrorDismissRequested) }
+                    dismissError = { onEvent(HomeEvent.ErrorDismissRequested) },
                 )
             }
         }
@@ -80,22 +78,23 @@ internal fun HomeScreen(
 @Composable
 internal fun HomeTopBar() {
     TopAppBar(
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-        ),
+        colors =
+            TopAppBarDefaults.mediumTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
+                navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+            ),
         title = {
             Text(
                 text = stringResource(id = R.string.home_title),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp
+                letterSpacing = 1.sp,
             )
-        }
+        },
     )
 }
 
@@ -103,13 +102,14 @@ internal fun HomeTopBar() {
 internal fun SectionsList(
     paddingValues: PaddingValues,
     state: HomeState,
-    navigateTo: (route: String) -> Unit
+    navigateTo: (route: Route) -> Unit,
 ) {
     LazyColumn(
         state = rememberLazyListState(),
-        modifier = Modifier
-            .background(color = MaterialTheme.colorScheme.surface)
-            .padding(paddingValues)
+        modifier =
+            Modifier
+                .background(color = MaterialTheme.colorScheme.surface)
+                .padding(paddingValues),
     ) {
         items(
             items = state.data,
@@ -118,24 +118,26 @@ internal fun SectionsList(
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .clickable { navigateTo(item.screen.route) }
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(mediumPadding)
+                    modifier =
+                        Modifier
+                            .clickable { navigateTo(item.route) }
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(mediumPadding),
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         text = item.emoji,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
                     )
                     Column(
-                        modifier = Modifier
-                            .weight(0.9f)
-                            .fillMaxWidth()
-                            .padding(start = mediumPadding)
+                        modifier =
+                            Modifier
+                                .weight(0.9f)
+                                .fillMaxWidth()
+                                .padding(start = mediumPadding),
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -143,21 +145,22 @@ internal fun SectionsList(
                             color = MaterialTheme.colorScheme.onSurface,
                             text = item.name,
                             fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
                         )
                         Text(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(top = extraSmallPadding),
+                            modifier =
+                                Modifier
+                                    .wrapContentSize()
+                                    .padding(top = extraSmallPadding),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             text = item.description,
-                            fontWeight = FontWeight.Light
+                            fontWeight = FontWeight.Light,
                         )
                     }
                 }
-                Divider(color = Color.LightGray)
-            }
+                HorizontalDivider(color = Color.LightGray)
+            },
         )
     }
 }
@@ -165,23 +168,25 @@ internal fun SectionsList(
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    val state = HomeState(
-        isLoading = false,
-        data = listOf(
-            NavigationItem(
-                name = "Screen 1",
-                emoji = "🐻",
-                description = "Lorem ipsum",
-                screen = Screen.Authentication
-            ),
-            NavigationItem(
-                name = "Screen 2",
-                emoji = "🦊",
-                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                screen = Screen.Settings
-            )
-        ),
-        error = NO_ERROR
-    )
+    val state =
+        HomeState(
+            isLoading = false,
+            data =
+                listOf(
+                    NavigationItem(
+                        name = "Screen 1",
+                        emoji = "🐻",
+                        description = "Lorem ipsum",
+                        route = Route.Authentication,
+                    ),
+                    NavigationItem(
+                        name = "Screen 2",
+                        emoji = "🦊",
+                        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                        route = Route.Settings,
+                    ),
+                ),
+            error = NO_ERROR,
+        )
     HomeScreen(state)
 }

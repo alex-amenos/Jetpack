@@ -8,7 +8,6 @@ import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
 class SettingsNotificationItemTest : BaseComposeTest() {
-
     @Test
     fun title_displayed() {
         val title = "Enable Notifications"
@@ -16,7 +15,7 @@ class SettingsNotificationItemTest : BaseComposeTest() {
             SettingsNotificationItem(
                 title = title,
                 checked = true,
-                onToggleNotificationSettings = {}
+                onToggleNotificationSettings = {},
             )
         }
         composeTestRule
@@ -30,7 +29,7 @@ class SettingsNotificationItemTest : BaseComposeTest() {
             SettingsNotificationItem(
                 title = "Enable Notifications",
                 checked = true,
-                onToggleNotificationSettings = {}
+                onToggleNotificationSettings = {},
             )
         }
         composeTestRule

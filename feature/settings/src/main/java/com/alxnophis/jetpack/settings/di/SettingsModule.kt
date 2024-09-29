@@ -12,6 +12,7 @@ private val loadSettingsModule by lazy {
     loadKoinModules(settingsModule)
 }
 
-private val settingsModule: Module = module {
-    viewModel { SettingsViewModel() }
-}
+private val settingsModule: Module =
+    module {
+        viewModel { SettingsViewModel() }
+    }

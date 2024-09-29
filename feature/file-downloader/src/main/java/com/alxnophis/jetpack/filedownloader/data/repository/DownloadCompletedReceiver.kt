@@ -8,10 +8,12 @@ import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 
 internal class DownloadCompletedReceiver : BroadcastReceiver() {
-
     private val fileDownloaderRepository: FileDownloaderRepository by inject(FileDownloaderRepository::class.java)
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(
+        context: Context?,
+        intent: Intent?,
+    ) {
         if (intent?.action == DOWNLOAD_COMPLETE_ACTION) {
             val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, DEFAULT_ID)
             if (id != DEFAULT_ID) {

@@ -43,7 +43,7 @@ internal class PostsRepositoryIntegrationTests : BehaviorSpec({
             CallErrorMother.unexpectedCallError() to PostsError.Unexpected,
             CallErrorMother.httpError(code = 300) to PostsError.Network,
             CallErrorMother.httpError(code = 400) to PostsError.Network,
-            CallErrorMother.httpError(code = 500) to PostsError.Server
+            CallErrorMother.httpError(code = 500) to PostsError.Server,
         ).forEach { (apiError, expectedError) ->
             When("get post from API fails with $apiError") {
                 whenever(apiDataSourceMock.getPosts()).thenReturn(apiError.left())

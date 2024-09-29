@@ -19,9 +19,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantExecutorExtension::class)
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 open class BaseViewModelUnitTest {
-
     val testScheduler = TestCoroutineScheduler()
-    open val testDispatcher = StandardTestDispatcher(testScheduler)
+    val testDispatcher = StandardTestDispatcher(testScheduler)
     val testScope = TestScope(testDispatcher)
 
     @BeforeEach

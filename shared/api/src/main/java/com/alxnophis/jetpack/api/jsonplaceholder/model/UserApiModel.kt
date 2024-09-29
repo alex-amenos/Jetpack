@@ -8,7 +8,7 @@ data class UserApiModel(
     val address: AddressApiModel,
     val phone: String,
     val website: String,
-    val company: CompanyApiModel
+    val company: CompanyApiModel,
 )
 
 data class AddressApiModel(
@@ -16,16 +16,16 @@ data class AddressApiModel(
     val suite: String,
     val city: String,
     val zipcode: String,
-    val geo: GeoApiModel
+    val geo: GeoApiModel,
 )
 
 data class GeoApiModel(
     val lat: String,
-    val lng: String
+    val lng: String,
 )
 
 data class CompanyApiModel(
     val name: String,
     val catchPhrase: String,
-    val bs: String
+    val bs: String,
 )

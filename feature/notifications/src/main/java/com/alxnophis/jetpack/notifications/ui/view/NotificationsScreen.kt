@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,11 +36,10 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.largePadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.notifications.R
+import com.alxnophis.jetpack.router.extension.appPendingIntent
 
 @Composable
-internal fun NotificationsScreen(
-    navigateBack: () -> Unit = {}
-) {
+internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
     BackHandler {
         navigateBack()
     }
@@ -51,72 +50,75 @@ internal fun NotificationsScreen(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.notifications_title),
-                    onBack = { navigateBack() }
+                    onBack = { navigateBack() },
                 )
-            }
+            },
         ) {
             NotificationPermission(
-                modifier = Modifier
-                    .padding(paddingValues = it)
-                    .fillMaxSize()
-                    .padding(mediumPadding)
+                modifier =
+                    Modifier
+                        .padding(paddingValues = it)
+                        .fillMaxSize()
+                        .padding(mediumPadding),
             )
         }
     }
 }
 
 @Composable
-private fun NotificationPermission(
-    modifier: Modifier = Modifier
-) {
+private fun NotificationPermission(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var hasNotificationPermission by remember {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
             mutableStateOf(
-                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED,
             )
         } else {
             mutableStateOf(true)
         }
     }
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted -> hasNotificationPermission = isGranted }
-    )
+    val permissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { isGranted -> hasNotificationPermission = isGranted },
+        )
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CoreButtonMinor(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(largePadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(largePadding),
                 text = stringResource(id = R.string.notifications_request_permission),
-                onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) }
+                onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.height(15.dp),
-                color = Color.Transparent
+                color = Color.Transparent,
             )
         }
         CoreButtonMajor(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(largePadding),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(largePadding),
             text = stringResource(id = R.string.notifications_show_notification),
             onClick = {
                 if (hasNotificationPermission) {
                     context.showNotification(
-                        title = "Lorem ipsum",
-                        content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        icon = R.drawable.ic_push_notification,
+                        titleResId = R.string.notifications_push_title,
+                        contentResId = R.string.notifications_push_subtitle,
+                        icon = R.drawable.notifications_ic_push,
                         channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
-                        notificationId = 1
+                        notificationId = 1,
+                        contentIntent = context.appPendingIntent(),
                     )
                 }
-            }
+            },
         )
     }
 }

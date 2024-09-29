@@ -8,17 +8,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 
 internal class LocationRepositoryImpl(
-    val locationDataSource: LocationDataSource
+    private val locationDataSource: LocationDataSource,
 ) : LocationRepository {
-
     override val locationSharedFlow: SharedFlow<Location> =
         locationDataSource.locationSharedFlow
 
-    override fun provideLastKnownLocationFlow(): Flow<Location?> =
-        locationDataSource.provideLastKnownLocationFlow()
+    override fun provideLastKnownLocationFlow(): Flow<Location?> = locationDataSource.provideLastKnownLocationFlow()
 
-    override fun hasLocationAvailable(): Either<Unit, Unit> =
-        locationDataSource.hasLocationAvailable()
+    override fun hasLocationAvailable(): Either<Unit, Unit> = locationDataSource.hasLocationAvailable()
 
     override suspend fun startLocationProvider(locationParameters: LocationParameters) {
         locationDataSource.startLocationProvider(locationParameters)

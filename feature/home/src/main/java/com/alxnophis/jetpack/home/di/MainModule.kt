@@ -13,7 +13,8 @@ private val loadHomeModules by lazy {
     loadKoinModules(homeModule)
 }
 
-private val homeModule: Module = module {
-    factory { GetNavigationItemsUseCase() }
-    viewModel { HomeViewModel(get()) }
-}
+private val homeModule: Module =
+    module {
+        factory { GetNavigationItemsUseCase() }
+        viewModel { HomeViewModel(get()) }
+    }

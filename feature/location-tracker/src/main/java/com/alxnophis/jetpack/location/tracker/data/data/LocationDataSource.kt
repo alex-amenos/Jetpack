@@ -10,7 +10,10 @@ internal interface LocationDataSource {
     val locationSharedFlow: SharedFlow<Location>
 
     fun provideLastKnownLocationFlow(): Flow<Location?>
+
     fun hasLocationAvailable(): Either<Unit, Unit>
+
     suspend fun startLocationProvider(locationParameters: LocationParameters)
+
     suspend fun stopLocationProvider()
 }

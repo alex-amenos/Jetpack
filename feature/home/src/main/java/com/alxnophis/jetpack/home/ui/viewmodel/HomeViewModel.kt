@@ -3,7 +3,7 @@ package com.alxnophis.jetpack.home.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
@@ -18,9 +18,8 @@ import kotlinx.coroutines.launch
 
 internal class HomeViewModel(
     private val getNavigationItemsUseCase: GetNavigationItemsUseCase,
-    initialState: HomeState = HomeState.initialState
+    initialState: HomeState = HomeState.initialState,
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
-
     override fun handleEvent(event: HomeEvent) {
         viewModelScope.launch {
             when (event) {
@@ -52,7 +51,7 @@ internal class HomeViewModel(
                                 HomeState.data set navigationItems
                             }
                         }
-                    }
+                    },
                 )
         }
     }

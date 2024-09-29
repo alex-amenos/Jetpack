@@ -20,15 +20,14 @@ import com.alxnophis.jetpack.authentication.ui.contract.isLoading
 import com.alxnophis.jetpack.authentication.ui.contract.isUserAuthorized
 import com.alxnophis.jetpack.authentication.ui.contract.password
 import com.alxnophis.jetpack.authentication.ui.contract.passwordRequirements
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import kotlinx.coroutines.launch
 
 internal class AuthenticationViewModel(
     private val authenticateUseCase: AuthenticateUseCase,
-    initialState: AuthenticationState = AuthenticationState.initialState
+    initialState: AuthenticationState = AuthenticationState.initialState,
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
-
     override fun handleEvent(event: AuthenticationEvent) {
         viewModelScope.launch {
             when (event) {
@@ -99,7 +98,7 @@ internal class AuthenticationViewModel(
                             AuthenticationState.isUserAuthorized set true
                         }
                     }
-                }
+                },
             )
         }
     }
@@ -115,10 +114,11 @@ internal class AuthenticationViewModel(
     }
 
     private fun toggleAuthenticationMode() {
-        val newAuthenticationMode = when (currentState.authenticationMode) {
-            AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
-            else -> AuthenticationMode.SIGN_IN
-        }
+        val newAuthenticationMode =
+            when (currentState.authenticationMode) {
+                AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
+                else -> AuthenticationMode.SIGN_IN
+            }
         updateUiState {
             copy {
                 AuthenticationState.authenticationMode set newAuthenticationMode
@@ -149,8 +149,10 @@ internal class AuthenticationViewModel(
         }
     }
 
-    private suspend fun authenticateUser(email: String, password: String): Either<AuthenticationError, Unit> =
-        authenticateUseCase.invoke(email, password)
+    private suspend fun authenticateUser(
+        email: String,
+        password: String,
+    ): Either<AuthenticationError, Unit> = authenticateUseCase.invoke(email, password)
 
     companion object {
         private const val MIN_PASSWORD_LENGTH = 8

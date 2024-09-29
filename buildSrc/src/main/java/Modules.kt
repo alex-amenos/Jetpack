@@ -20,6 +20,5 @@ object Modules {
     const val FEATURE_POSTS = ":feature:posts"
     const val FEATURE_ROOT = ":feature:root"
     const val FEATURE_SETTINGS = ":feature:settings"
-    const val FEATURE_SPACEX = ":feature:spacex"
     const val FEATURE_FILE_DOWNLOADER = ":feature:file-downloader"
 }

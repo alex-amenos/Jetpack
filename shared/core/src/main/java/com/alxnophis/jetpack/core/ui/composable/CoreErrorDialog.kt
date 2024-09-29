@@ -23,7 +23,7 @@ import com.alxnophis.jetpack.core.ui.theme.smallPadding
 fun CoreErrorDialog(
     errorMessage: String,
     modifier: Modifier = Modifier,
-    dismissError: () -> Unit
+    dismissError: () -> Unit,
 ) {
     AlertDialog(
         modifier = modifier,
@@ -33,7 +33,7 @@ fun CoreErrorDialog(
                 text = stringResource(R.string.core_error_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
         },
         text = {
@@ -41,27 +41,28 @@ fun CoreErrorDialog(
                 text = errorMessage,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
         },
         confirmButton = {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = extraSmallPadding, end = smallPadding),
-                contentAlignment = Alignment.CenterEnd
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = extraSmallPadding, end = smallPadding),
+                contentAlignment = Alignment.CenterEnd,
             ) {
                 TextButton(
-                    onClick = { dismissError() }
+                    onClick = { dismissError() },
                 ) {
                     Text(
                         text = stringResource(android.R.string.ok),
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 }
             }
-        }
+        },
     )
 }
 
@@ -72,7 +73,7 @@ fun CoreErrorDialogPreview() {
         CoreErrorDialog(
             modifier = Modifier.wrapContentSize(),
             errorMessage = "Error message",
-            dismissError = {}
+            dismissError = {},
         )
     }
 }

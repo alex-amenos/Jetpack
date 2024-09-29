@@ -10,6 +10,7 @@ dependencies {
     implementation libs.kotlinx.collections.immutable
     implementation libs.kotlinx.coroutines.android
     implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.serialization.json
     implementation libs.koin.android
     implementation libs.timber
 
@@ -19,6 +20,8 @@ dependencies {
     testImplementation libs.junit
     testImplementation libs.junit.jupiter.api
     testImplementation libs.junit.jupiter.params
+    testImplementation libs.kluent
+    testImplementation libs.kluent.junit
     testImplementation libs.koin.test
     testImplementation libs.bundles.kotest
     testImplementation libs.bundles.mockito

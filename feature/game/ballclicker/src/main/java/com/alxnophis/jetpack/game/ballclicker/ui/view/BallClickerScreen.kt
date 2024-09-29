@@ -42,7 +42,7 @@ import kotlin.random.Random
 @Composable
 internal fun BallClickerScreen(
     state: BallClickerState,
-    onEvent: (BallClickerEvent) -> Unit
+    onEvent: (BallClickerEvent) -> Unit,
 ) {
     BackHandler {
         onEvent(BallClickerEvent.StopRequested)
@@ -50,30 +50,33 @@ internal fun BallClickerScreen(
     }
     AppTheme {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.surface)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.surface),
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(mediumPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(mediumPadding),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = buildString {
-                        append(stringResource(R.string.ball_clicker_points))
-                        append(WHITE_SPACE)
-                        append(state.points)
-                    },
+                    text =
+                        buildString {
+                            append(stringResource(R.string.ball_clicker_points))
+                            append(WHITE_SPACE)
+                            append(state.points)
+                        },
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 Text(
                     text = state.currentTimeInSeconds.toString(),
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 Button(
                     onClick = {
@@ -82,13 +85,14 @@ internal fun BallClickerScreen(
                         } else {
                             onEvent(BallClickerEvent.StartRequested)
                         }
-                    }
+                    },
                 ) {
                     Text(
-                        text = when {
-                            state.isTimerRunning -> stringResource(R.string.ball_clicker_reset)
-                            else -> stringResource(R.string.ball_clicker_start)
-                        }
+                        text =
+                            when {
+                                state.isTimerRunning -> stringResource(R.string.ball_clicker_reset)
+                                else -> stringResource(R.string.ball_clicker_start)
+                            },
                     )
                 }
             }
@@ -104,7 +108,7 @@ private fun BallClickerContent(
     radius: Float = 100f,
     enabled: Boolean = false,
     ballColor: Color = MaterialTheme.colorScheme.secondary,
-    ballClick: () -> Unit = {}
+    ballClick: () -> Unit = {},
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         var ballPosition by remember {
@@ -112,45 +116,49 @@ private fun BallClickerContent(
                 randomOffset(
                     radius = radius,
                     width = constraints.maxWidth,
-                    height = constraints.maxHeight
-                )
+                    height = constraints.maxHeight,
+                ),
             )
         }
         Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(enabled) {
-                    if (!enabled) {
-                        return@pointerInput
-                    }
-                    detectTapGestures {
-                        val distance = sqrt((it.x - ballPosition.x).pow(2) + (it.y - ballPosition.y).pow(2))
-                        if (distance <= radius) {
-                            ballPosition = randomOffset(
-                                radius = radius,
-                                width = constraints.maxWidth,
-                                height = constraints.maxHeight
-                            )
-                            ballClick()
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .pointerInput(enabled) {
+                        if (!enabled) {
+                            return@pointerInput
                         }
-                    }
-                }
+                        detectTapGestures {
+                            val distance = sqrt((it.x - ballPosition.x).pow(2) + (it.y - ballPosition.y).pow(2))
+                            if (distance <= radius) {
+                                ballPosition =
+                                    randomOffset(
+                                        radius = radius,
+                                        width = constraints.maxWidth,
+                                        height = constraints.maxHeight,
+                                    )
+                                ballClick()
+                            }
+                        }
+                    },
         ) {
             drawCircle(
                 color = ballColor,
                 radius = radius,
-                center = ballPosition
+                center = ballPosition,
             )
         }
     }
 }
 
-private fun randomOffset(radius: Float, width: Int, height: Int): Offset {
-    return Offset(
-        x = Random.nextInt(radius.roundToInt(), width - radius.roundToInt()).toFloat(),
-        y = Random.nextInt(radius.roundToInt(), height - radius.roundToInt()).toFloat()
-    )
-}
+private fun randomOffset(
+    radius: Float,
+    width: Int,
+    height: Int,
+) = Offset(
+    x = Random.nextInt(radius.roundToInt(), width - radius.roundToInt()).toFloat(),
+    y = Random.nextInt(radius.roundToInt(), height - radius.roundToInt()).toFloat(),
+)
 
 @Preview
 @Composable

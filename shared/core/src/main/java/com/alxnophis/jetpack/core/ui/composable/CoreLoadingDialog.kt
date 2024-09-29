@@ -22,27 +22,29 @@ fun CoreLoadingDialog(isLoading: Boolean) {
     if (isLoading) {
         Dialog(
             onDismissRequest = {},
-            properties = DialogProperties(
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false
-            )
+            properties =
+                DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false,
+                ),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(100.dp)
-                    .background(
-                        color = White,
-                        shape = RoundedCornerShape(50.dp)
-                    )
+                modifier =
+                    Modifier
+                        .size(100.dp)
+                        .background(
+                            color = White,
+                            shape = RoundedCornerShape(50.dp),
+                        ),
             ) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(45.dp),
-                    strokeWidth = 5.dp
+                    strokeWidth = 5.dp,
                 )
                 CircularProgressIndicator(
                     modifier = Modifier.size(30.dp),
-                    strokeWidth = 3.dp
+                    strokeWidth = 3.dp,
                 )
             }
         }

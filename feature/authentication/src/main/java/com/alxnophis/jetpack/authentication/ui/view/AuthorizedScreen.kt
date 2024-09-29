@@ -18,20 +18,21 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 @Composable
 internal fun AuthorizedScreen(
     userEmail: String,
-    navigateBack: () -> Unit = {}
+    navigateBack: () -> Unit = {},
 ) {
     BackHandler { navigateBack() }
     AppTheme {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = stringResource(R.string.authentication_authorized, userEmail),
                 style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }
@@ -41,6 +42,6 @@ internal fun AuthorizedScreen(
 @Composable
 private fun AuthorizedScreenPreview() {
     AuthorizedScreen(
-        userEmail = "my@email.com"
+        userEmail = "my@email.com",
     )
 }

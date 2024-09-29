@@ -2,8 +2,8 @@ package com.alxnophis.jetpack.settings.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.optics.copy
-import com.alxnophis.jetpack.core.base.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.core.extensions.doNothing
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
 import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
 import com.alxnophis.jetpack.settings.ui.contract.SettingsState
@@ -15,9 +15,8 @@ import com.alxnophis.jetpack.settings.ui.contract.themeOption
 import kotlinx.coroutines.launch
 
 internal class SettingsViewModel(
-    initialState: SettingsState = SettingsState.initialState
+    initialState: SettingsState = SettingsState.initialState,
 ) : BaseViewModel<SettingsEvent, SettingsState>(initialState) {
-
     override fun handleEvent(event: SettingsEvent) {
         viewModelScope.launch {
             when (event) {

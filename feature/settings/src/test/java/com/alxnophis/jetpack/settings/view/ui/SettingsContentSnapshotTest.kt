@@ -11,40 +11,42 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class SettingsContentSnapshotTest {
-
     @get:Rule
-    val paparazzi = Paparazzi(
-        deviceConfig = DeviceConfig.PIXEL_6,
-        maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE
-    )
+    val paparazzi =
+        Paparazzi(
+            deviceConfig = DeviceConfig.PIXEL_6,
+            maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE,
+        )
 
     @Test
     fun composable_all_enabled() {
         snapshot(
-            state = SettingsState(
-                notificationsEnabled = true,
-                hintsEnabled = true,
-                marketingOption = MarketingOption.ALLOWED,
-                themeOption = Theme.SYSTEM
-            )
+            state =
+                SettingsState(
+                    notificationsEnabled = true,
+                    hintsEnabled = true,
+                    marketingOption = MarketingOption.ALLOWED,
+                    themeOption = Theme.SYSTEM,
+                ),
         )
     }
 
     @Test
     fun composable_all_disabled() {
         snapshot(
-            state = SettingsState(
-                notificationsEnabled = false,
-                hintsEnabled = false,
-                marketingOption = MarketingOption.NOT_ALLOWED,
-                themeOption = Theme.LIGHT
-            )
+            state =
+                SettingsState(
+                    notificationsEnabled = false,
+                    hintsEnabled = false,
+                    marketingOption = MarketingOption.NOT_ALLOWED,
+                    themeOption = Theme.LIGHT,
+                ),
         )
     }
 
     private fun snapshot(
         state: SettingsState,
-        appVersion: String = APP_VERSION
+        appVersion: String = APP_VERSION,
     ) {
         paparazzi.snapshot {
             SettingsScreen(state = state, appVersion = appVersion)

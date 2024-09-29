@@ -26,33 +26,35 @@ internal fun SettingsNotificationItem(
     title: String,
     checked: Boolean,
     modifier: Modifier = Modifier,
-    onToggleNotificationSettings: () -> Unit
+    onToggleNotificationSettings: () -> Unit,
 ) {
-    val notificationsEnabledState = if (checked) {
-        stringResource(id = R.string.settings_cd_notifications_enabled)
-    } else {
-        stringResource(id = R.string.settings_cd_notifications_disabled)
-    }
+    val notificationsEnabledState =
+        if (checked) {
+            stringResource(id = R.string.settings_cd_notifications_enabled)
+        } else {
+            stringResource(id = R.string.settings_cd_notifications_disabled)
+        }
     SettingsItem(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .toggleable(
-                    value = checked,
-                    onValueChange = { onToggleNotificationSettings() },
-                    role = Role.Switch
-                )
-                .semantics { stateDescription = notificationsEnabledState }
-                .padding(mediumPadding)
-                .testTag(TAG_TOGGLE_ITEM)
+            modifier =
+                Modifier
+                    .toggleable(
+                        value = checked,
+                        onValueChange = { onToggleNotificationSettings() },
+                        role = Role.Switch,
+                    )
+                    .semantics { stateDescription = notificationsEnabledState }
+                    .padding(mediumPadding)
+                    .testTag(TAG_TOGGLE_ITEM),
         ) {
             Text(
                 text = title,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
             Switch(
                 checked = checked,
-                onCheckedChange = null
+                onCheckedChange = null,
             )
         }
     }
@@ -67,7 +69,7 @@ private fun SettingsNotificationItemPreview() {
             modifier = Modifier.fillMaxWidth(),
             title = "Lorem ipsum dolor sit amet",
             checked = true,
-            onToggleNotificationSettings = {}
+            onToggleNotificationSettings = {},
         )
     }
 }

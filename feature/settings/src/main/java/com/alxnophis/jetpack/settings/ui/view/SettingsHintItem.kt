@@ -26,33 +26,35 @@ fun SettingsHintItem(
     title: String,
     checked: Boolean,
     modifier: Modifier = Modifier,
-    onShowHintToggled: () -> Unit
+    onShowHintToggled: () -> Unit,
 ) {
-    val hintsEnabledState = if (checked) {
-        stringResource(id = R.string.settings_cd_hints_enabled)
-    } else {
-        stringResource(id = R.string.settings_cd_hints_disabled)
-    }
+    val hintsEnabledState =
+        if (checked) {
+            stringResource(id = R.string.settings_cd_hints_enabled)
+        } else {
+            stringResource(id = R.string.settings_cd_hints_disabled)
+        }
     SettingsItem(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .toggleable(
-                    value = checked,
-                    onValueChange = { onShowHintToggled() },
-                    role = Role.Checkbox
-                )
-                .semantics { stateDescription = hintsEnabledState }
-                .padding(mediumPadding)
-                .testTag(TAG_CHECK_ITEM)
+            modifier =
+                Modifier
+                    .toggleable(
+                        value = checked,
+                        onValueChange = { onShowHintToggled() },
+                        role = Role.Checkbox,
+                    )
+                    .semantics { stateDescription = hintsEnabledState }
+                    .padding(mediumPadding)
+                    .testTag(TAG_CHECK_ITEM),
         ) {
             Text(
                 text = title,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
             Checkbox(
                 checked = checked,
-                onCheckedChange = null
+                onCheckedChange = null,
             )
         }
     }
@@ -67,7 +69,7 @@ private fun SettingsHintItemPreview() {
             modifier = Modifier.fillMaxWidth(),
             title = "Lorem ipsum dolor sit amet",
             checked = true,
-            onShowHintToggled = {}
+            onShowHintToggled = {},
         )
     }
 }

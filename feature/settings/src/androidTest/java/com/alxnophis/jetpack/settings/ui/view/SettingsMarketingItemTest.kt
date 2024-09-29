@@ -7,14 +7,13 @@ import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
 class SettingsMarketingItemTest : BaseComposeTest() {
-
     @Test
     fun marketing_option_selected() {
         val option = MarketingOption.NOT_ALLOWED
         composeTestRule.setContent {
             SettingsMarketingItem(
                 selectedOption = option,
-                onOptionSelected = { }
+                onOptionSelected = { },
             )
         }
         composeTestRule
