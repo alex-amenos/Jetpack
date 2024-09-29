@@ -1,0 +1,4 @@
+# .aiexclude file with * blocks all files in its directory and all sub-directories,
+# recursively from being used in Gemini in Android Studio (aka Studio Bot).
+# https://developer.android.com/studio/preview/gemini/data-and-privacy#aiexclude
+*
