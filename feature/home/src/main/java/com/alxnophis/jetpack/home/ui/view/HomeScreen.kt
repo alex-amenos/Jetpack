@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -61,9 +60,10 @@ internal fun HomeScreen(
         ) { paddingValues ->
             SectionsList(
                 state = state,
-                modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.surface)
-                    .padding(paddingValues),
+                modifier =
+                    Modifier
+                        .background(color = MaterialTheme.colorScheme.surface)
+                        .padding(paddingValues),
                 navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) },
             )
             if (state.error != NO_ERROR) {

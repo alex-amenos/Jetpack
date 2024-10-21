@@ -69,12 +69,13 @@ private fun PostContent(
         ) { padding ->
             uiState.error?.let { error: PostUiError ->
                 CoreErrorDialog(
-                    errorMessage = when (error) {
-                        PostUiError.Network -> stringResource(R.string.posts_error_network)
-                        PostUiError.Server -> stringResource(R.string.posts_error_server)
-                        PostUiError.Unknown -> stringResource(R.string.posts_error_unknown)
-                        PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
-                    },
+                    errorMessage =
+                        when (error) {
+                            PostUiError.Network -> stringResource(R.string.posts_error_network)
+                            PostUiError.Server -> stringResource(R.string.posts_error_server)
+                            PostUiError.Unknown -> stringResource(R.string.posts_error_unknown)
+                            PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+                        },
                     dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested) },
                 )
             }
@@ -83,10 +84,11 @@ private fun PostContent(
                 uiState = uiState,
                 handleEvent = onEvent,
                 lazyListState = lazyListState,
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxWidth()
-                    .drawVerticalScrollbar(lazyListState),
+                modifier =
+                    Modifier
+                        .padding(padding)
+                        .fillMaxWidth()
+                        .drawVerticalScrollbar(lazyListState),
             )
         }
     }
@@ -99,7 +101,6 @@ private fun PostList(
     modifier: Modifier = Modifier,
     handleEvent: PostsEvent.() -> Unit,
 ) {
-
     LazyColumn(
         state = lazyListState,
         modifier = modifier,
@@ -112,10 +113,11 @@ private fun PostList(
                 CardPostItem(
                     state = uiState,
                     item = item,
-                    modifier = Modifier
-                        .padding(vertical = mediumPadding)
-                        .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
-                        .fillParentMaxWidth(),
+                    modifier =
+                        Modifier
+                            .padding(vertical = mediumPadding)
+                            .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
+                            .fillParentMaxWidth(),
                 )
             },
         )
@@ -130,33 +132,36 @@ private fun CardPostItem(
 ) {
     Card(modifier = modifier) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(mediumPadding),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(mediumPadding),
         ) {
             Text(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .placeholder(
-                        visible = state.isLoading,
-                        color = Color.Gray,
-                        shape = RoundedCornerShape(4.dp),
-                    ),
+                modifier =
+                    Modifier
+                        .wrapContentSize()
+                        .placeholder(
+                            visible = state.isLoading,
+                            color = Color.Gray,
+                            shape = RoundedCornerShape(4.dp),
+                        ),
                 text = item.titleCapitalized,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.SemiBold,
             )
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = mediumPadding, bottom = mediumPadding)
-                    .placeholder(
-                        visible = state.isLoading,
-                        color = Color.Gray,
-                        shape = RoundedCornerShape(4.dp),
-                    ),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = mediumPadding, bottom = mediumPadding)
+                        .placeholder(
+                            visible = state.isLoading,
+                            color = Color.Gray,
+                            shape = RoundedCornerShape(4.dp),
+                        ),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 5,
@@ -177,51 +182,56 @@ private fun PostScreenPreview(
 }
 
 private class PostStateProvider : PreviewParameterProvider<PostsUiState> {
-    override val values = sequenceOf(
-        PostsUiState(
-            isLoading = false,
-            posts = listOf(post1, post2),
-            error = null,
-        ),
-        PostsUiState(
-            isLoading = false,
-            posts = emptyList(),
-            error = PostUiError.Network,
-        ),
-        PostsUiState(
-            isLoading = false,
-            posts = emptyList(),
-            error = PostUiError.Server,
-        ),
-        PostsUiState(
-            isLoading = false,
-            posts = emptyList(),
-            error = PostUiError.Unknown,
-        ),
-        PostsUiState(
-            isLoading = false,
-            posts = emptyList(),
-            error = PostUiError.Unexpected,
-        ),
-        PostsUiState(
-            isLoading = true,
-            posts = emptyList(),
-            error = null,
-        ),
-    )
+    override val values =
+        sequenceOf(
+            PostsUiState(
+                isLoading = false,
+                posts = listOf(post1, post2),
+                error = null,
+            ),
+            PostsUiState(
+                isLoading = false,
+                posts = emptyList(),
+                error = PostUiError.Network,
+            ),
+            PostsUiState(
+                isLoading = false,
+                posts = emptyList(),
+                error = PostUiError.Server,
+            ),
+            PostsUiState(
+                isLoading = false,
+                posts = emptyList(),
+                error = PostUiError.Unknown,
+            ),
+            PostsUiState(
+                isLoading = false,
+                posts = emptyList(),
+                error = PostUiError.Unexpected,
+            ),
+            PostsUiState(
+                isLoading = true,
+                posts = emptyList(),
+                error = null,
+            ),
+        )
 
     companion object {
-        val post1 = Post(
-            id = 1,
-            userId = 1,
-            title = "Title 1",
-            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-        )
-        val post2 = Post(
-            id = 2,
-            userId = 1,
-            title = "Title 2",
-            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " + "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        )
+        val post1 =
+            Post(
+                id = 1,
+                userId = 1,
+                title = "Title 1",
+                body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+            )
+        val post2 =
+            Post(
+                id = 2,
+                userId = 1,
+                title = "Title 2",
+                body =
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            )
     }
 }

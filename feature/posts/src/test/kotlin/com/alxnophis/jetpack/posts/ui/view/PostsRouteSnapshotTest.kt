@@ -19,20 +19,20 @@ internal class PostsRouteSnapshotTest {
             deviceConfig = DeviceConfig.PIXEL_6,
             maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE,
             environment =
-            detectEnvironment().run {
-                copy(compileSdkVersion = 33, platformDir = platformDir.replace("34", "33"))
-            },
+                detectEnvironment().run {
+                    copy(compileSdkVersion = 33, platformDir = platformDir.replace("34", "33"))
+                },
         )
 
     @Test
     fun composable_content_loaded() {
         snapshot(
             state =
-            PostsUiState(
-                isLoading = false,
-                posts = listOf(POST_1, POST_2),
-                error = null,
-            ),
+                PostsUiState(
+                    isLoading = false,
+                    posts = listOf(POST_1, POST_2),
+                    error = null,
+                ),
         )
     }
 
@@ -40,11 +40,11 @@ internal class PostsRouteSnapshotTest {
     fun composable_loading() {
         snapshot(
             state =
-            PostsUiState(
-                isLoading = true,
-                posts = emptyList(),
-                error = null,
-            ),
+                PostsUiState(
+                    isLoading = true,
+                    posts = emptyList(),
+                    error = null,
+                ),
         )
     }
 
@@ -52,11 +52,11 @@ internal class PostsRouteSnapshotTest {
     fun composable_error() {
         snapshot(
             state =
-            PostsUiState(
-                isLoading = false,
-                posts = emptyList(),
-                error = PostUiError.Network,
-            ),
+                PostsUiState(
+                    isLoading = false,
+                    posts = emptyList(),
+                    error = PostUiError.Network,
+                ),
         )
     }
 
