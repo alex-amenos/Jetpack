@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.root.ui
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -20,6 +21,7 @@ class RootActivity : AppCompatActivity() {
                 @Suppress("DEPRECATION")
                 savedInstanceState?.getParcelable(NAVIGATION_STATE)
             }
+        enableEdgeToEdge()
         setContent {
             navigationController = rememberNavController()
             navigationController.restoreState(restoredState)
