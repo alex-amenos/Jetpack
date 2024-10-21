@@ -45,10 +45,9 @@ internal fun LocationTrackerScreen(
     }
     AppTheme {
         Scaffold(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
             topBar = {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -81,43 +80,39 @@ private fun LocationPermission(
     composableWithPermissionGranted: @Composable () -> Unit,
     handleEvent: LocationTrackerEvent.() -> Unit,
 ) {
-    val locationPermissionsState =
-        rememberMultiplePermissionsState(
-            listOf(
-                android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-            ),
-        )
+    val locationPermissionsState = rememberMultiplePermissionsState(
+        listOf(
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+        ),
+    )
     if (locationPermissionsState.allPermissionsGranted) {
         handleEvent(LocationTrackerEvent.FineLocationPermissionGranted)
         composableWithPermissionGranted()
     } else {
         Column(
-            modifier =
-                Modifier
-                    .padding(paddingValues)
-                    .wrapContentSize()
-                    .padding(mediumPadding),
+            modifier = Modifier
+                .padding(paddingValues)
+                .wrapContentSize()
+                .padding(mediumPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val allPermissionsRevoked = locationPermissionsState.permissions.size == locationPermissionsState.revokedPermissions.size
-            val textIdToShow =
-                if (!allPermissionsRevoked) {
-                    // If not all the permissions are revoked, it's because the user accepted the COARSE location permission, but not the FINE one.
-                    R.string.location_tracker_permissions_revoked
-                } else if (locationPermissionsState.shouldShowRationale) {
-                    // Both location permissions have been denied
-                    R.string.location_tracker_location_permission_rationale
-                } else {
-                    // First time the user sees this feature or the user doesn't want to be asked again
-                    R.string.location_tracker_feature_require_permission
-                }
-            val buttonPermissionsId =
-                when {
-                    allPermissionsRevoked -> R.string.location_tracker_request_permissions
-                    else -> R.string.location_tracker_allow_fine_location
-                }
+            val textIdToShow = if (!allPermissionsRevoked) {
+                // If not all the permissions are revoked, it's because the user accepted the COARSE location permission, but not the FINE one.
+                R.string.location_tracker_permissions_revoked
+            } else if (locationPermissionsState.shouldShowRationale) {
+                // Both location permissions have been denied
+                R.string.location_tracker_location_permission_rationale
+            } else {
+                // First time the user sees this feature or the user doesn't want to be asked again
+                R.string.location_tracker_feature_require_permission
+            }
+            val buttonPermissionsId = when {
+                allPermissionsRevoked -> R.string.location_tracker_request_permissions
+                else -> R.string.location_tracker_allow_fine_location
+            }
             Spacer(modifier = Modifier.height(25.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -149,14 +144,12 @@ private fun UserLocation(
             text = stringResource(id = R.string.location_tracker_last_known_location),
         )
         Text(
-            modifier =
-                Modifier
-                    .wrapContentSize()
-                    .padding(mediumPadding),
-            text =
-                state.lastKnownLocation.ifEmpty {
-                    stringResource(id = R.string.location_tracker_location_not_available)
-                },
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(mediumPadding),
+            text = state.lastKnownLocation.ifEmpty {
+                stringResource(id = R.string.location_tracker_location_not_available)
+            },
         )
         Text(
             modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
@@ -166,14 +159,12 @@ private fun UserLocation(
             text = stringResource(id = R.string.location_tracker_current_location),
         )
         Text(
-            modifier =
-                Modifier
-                    .wrapContentSize()
-                    .padding(mediumPadding),
-            text =
-                state.userLocation.ifEmpty {
-                    stringResource(id = R.string.location_tracker_location_not_available)
-                },
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(mediumPadding),
+            text = state.userLocation.ifEmpty {
+                stringResource(id = R.string.location_tracker_location_not_available)
+            },
         )
     }
 }
@@ -181,11 +172,10 @@ private fun UserLocation(
 @Preview(showBackground = true)
 @Composable
 private fun UserLocationPreview() {
-    val state =
-        LocationTrackerState(
-            lastKnownLocation = "Last known location",
-            userLocation = "Current Location",
-        )
+    val state = LocationTrackerState(
+        lastKnownLocation = "Last known location",
+        userLocation = "Current Location",
+    )
     AppTheme {
         Column(modifier = Modifier.fillMaxSize()) {
             UserLocation(

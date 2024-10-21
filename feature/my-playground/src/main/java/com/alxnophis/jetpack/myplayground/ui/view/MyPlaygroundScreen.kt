@@ -54,8 +54,8 @@ internal fun MyPlaygroundScreen(
                 modifier =
                     Modifier
                         .background(MaterialTheme.colorScheme.surface)
-                        .fillMaxSize()
                         .padding(paddingValues)
+                        .fillMaxSize()
                         .padding(mediumPadding),
             )
         }
