@@ -12,7 +12,6 @@ buildscript {
         classpath libs.kotlin.gradle.plugin
         classpath libs.kover
         classpath libs.ktlint.gradle
-        classpath libs.paparazzi.gradle.plugin
     }
 }
 

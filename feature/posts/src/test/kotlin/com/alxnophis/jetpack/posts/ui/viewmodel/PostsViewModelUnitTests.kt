@@ -9,7 +9,7 @@ import com.alxnophis.jetpack.posts.data.model.PostsError
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
-import com.alxnophis.jetpack.posts.ui.contract.PostsState
+import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -42,8 +42,8 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
             whenever(postRepositoryMock.getPosts()).thenReturn(postList.right())
 
             viewModel.uiState.test {
-                awaitItem() shouldBeEqualTo PostsState.initialState
-                awaitItem() shouldBeEqualTo PostsState.initialState.copy(isLoading = false, posts = postList)
+                awaitItem() shouldBeEqualTo PostsUiState.initialState
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(isLoading = false, posts = postList)
                 expectNoEvents()
             }
             verify(postRepositoryMock).getPosts()
@@ -61,8 +61,8 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
             whenever(postRepositoryMock.getPosts()).thenReturn(error.left())
 
             viewModel.uiState.test {
-                awaitItem() shouldBeEqualTo PostsState.initialState
-                awaitItem() shouldBeEqualTo PostsState.initialState.copy(isLoading = false, error = uiError)
+                awaitItem() shouldBeEqualTo PostsUiState.initialState
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(isLoading = false, error = uiError)
                 expectNoEvents()
             }
             verify(postRepositoryMock).getPosts()
@@ -78,8 +78,8 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
             viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
             viewModel.uiState.test {
-                awaitItem() shouldBeEqualTo PostsState.initialState
-                awaitItem() shouldBeEqualTo PostsState.initialState.copy(isLoading = false, posts = postList)
+                awaitItem() shouldBeEqualTo PostsUiState.initialState
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(isLoading = false, posts = postList)
                 expectNoEvents()
             }
             verify(postRepositoryMock, times(2)).getPosts()
@@ -89,7 +89,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
     @Test
     fun `GIVEN a uiState with error WHEN dismiss error is requested THEN update uiState without error`() {
         runTest {
-            val initialState = PostsState.initialState.copy(error = PostUiError.Network)
+            val initialState = PostsUiState.initialState.copy(error = PostUiError.Network)
             val viewModel = viewModelMother(initialState = initialState)
             whenever(postRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
 
@@ -105,7 +105,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
 
     private fun viewModelMother(
         postsRepository: PostsRepository = postRepositoryMock,
-        initialState: PostsState = PostsState.initialState,
+        initialState: PostsUiState = PostsUiState.initialState,
     ) = PostsViewModel(
         postsRepository = postsRepository,
         initialState = initialState,

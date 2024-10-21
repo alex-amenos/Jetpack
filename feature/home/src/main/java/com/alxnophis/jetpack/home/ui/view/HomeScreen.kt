@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,8 +59,11 @@ internal fun HomeScreen(
             topBar = { HomeTopBar() },
         ) { paddingValues ->
             SectionsList(
-                paddingValues = paddingValues,
                 state = state,
+                modifier =
+                    Modifier
+                        .background(color = MaterialTheme.colorScheme.surface)
+                        .padding(paddingValues),
                 navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) },
             )
             if (state.error != NO_ERROR) {
@@ -100,16 +102,13 @@ internal fun HomeTopBar() {
 
 @Composable
 internal fun SectionsList(
-    paddingValues: PaddingValues,
     state: HomeState,
+    modifier: Modifier = Modifier,
     navigateTo: (route: Route) -> Unit,
 ) {
     LazyColumn(
         state = rememberLazyListState(),
-        modifier =
-            Modifier
-                .background(color = MaterialTheme.colorScheme.surface)
-                .padding(paddingValues),
+        modifier = modifier,
     ) {
         items(
             items = state.data,

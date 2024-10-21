@@ -16,14 +16,14 @@ internal sealed interface PostsEvent : UiEvent {
 }
 
 @Immutable
-internal data class PostsState(
+internal data class PostsUiState(
     val isLoading: Boolean,
     val posts: List<Post>,
     val error: PostUiError?,
 ) : UiState {
     internal companion object {
         val initialState =
-            PostsState(
+            PostsUiState(
                 isLoading = false,
                 posts = emptyList(),
                 error = null,

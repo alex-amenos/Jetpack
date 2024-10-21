@@ -9,7 +9,7 @@ import com.alxnophis.jetpack.posts.data.model.PostsError
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
-import com.alxnophis.jetpack.posts.ui.contract.PostsState
+import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
@@ -18,9 +18,9 @@ import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
     private val postsRepository: PostsRepository,
-    initialState: PostsState = PostsState.initialState,
-) : BaseViewModel<PostsEvent, PostsState>(initialState) {
-    override val uiState: StateFlow<PostsState> =
+    initialState: PostsUiState = PostsUiState.initialState,
+) : BaseViewModel<PostsEvent, PostsUiState>(initialState) {
+    override val uiState: StateFlow<PostsUiState> =
         _uiState.onStart { updatePosts() }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(VIEW_MODEL_STOP_TIMEOUT_MILLIS),

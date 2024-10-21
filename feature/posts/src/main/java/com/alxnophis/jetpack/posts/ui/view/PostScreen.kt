@@ -1,41 +1,34 @@
 package com.alxnophis.jetpack.posts.ui.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
@@ -43,76 +36,38 @@ import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
-import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
-import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
-import com.alxnophis.jetpack.posts.ui.contract.PostsState
+import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlin.math.roundToInt
 
-private val toolbarHeight = 56.dp
-
-/**
- * How Nested Scroll is used in Jetpack Compose:
- * Link: https://developer.android.com/reference/kotlin/androidx/compose/ui/input/nestedscroll/package-summary
- */
 @Composable
 internal fun PostsScreen(
-    state: PostsState,
+    state: PostsUiState,
     onEvent: (PostsEvent) -> Unit = {},
 ) {
     PostContent(state, onEvent)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PostContent(
-    state: PostsState,
+    uiState: PostsUiState,
     onEvent: (PostsEvent) -> Unit = {},
 ) {
     AppTheme {
-        val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
-        val toolbarOffsetHeightPx = remember { mutableFloatStateOf(ZERO_FLOAT) }
-        val nestedScrollConnection =
-            remember {
-                object : NestedScrollConnection {
-                    override fun onPreScroll(
-                        available: Offset,
-                        source: NestedScrollSource,
-                    ): Offset {
-                        val delta = available.y
-                        val newOffset = toolbarOffsetHeightPx.floatValue + delta
-                        toolbarOffsetHeightPx.floatValue = newOffset.coerceIn(-toolbarHeightPx, ZERO_FLOAT)
-                        return Offset.Zero
-                    }
-                }
-            }
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
-                    .nestedScroll(nestedScrollConnection),
-        ) {
-            PostList(
-                state = state,
-                toolbarHeight = toolbarHeight,
-                handleEvent = onEvent,
-                modifier = Modifier.fillMaxSize(),
-            )
-            CoreTopBar(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .offset { IntOffset(x = ZERO_INT, y = toolbarOffsetHeightPx.floatValue.roundToInt()) },
-                title = stringResource(id = R.string.posts_title),
-                onBack = { onEvent(PostsEvent.GoBackRequested) },
-            )
-            state.error?.let { error: PostUiError ->
+        Scaffold(
+            topBar = {
+                CoreTopBar(
+                    title = stringResource(id = R.string.posts_title),
+                    onBack = { onEvent(PostsEvent.GoBackRequested) },
+                )
+            },
+            modifier = Modifier.nestedScroll(rememberNestedScrollInteropConnection()),
+        ) { padding ->
+            uiState.error?.let { error: PostUiError ->
                 CoreErrorDialog(
                     errorMessage =
                         when (error) {
@@ -124,54 +79,64 @@ private fun PostContent(
                     dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested) },
                 )
             }
+            PullToRefreshBox(
+                isRefreshing = uiState.isLoading,
+                onRefresh = {
+                    onEvent.invoke(PostsEvent.OnUpdatePostsRequested)
+                },
+                modifier =
+                    Modifier
+                        .padding(padding)
+                        .fillMaxWidth(),
+            ) {
+                val lazyListState = rememberLazyListState()
+                PostList(
+                    uiState = uiState,
+                    handleEvent = onEvent,
+                    lazyListState = lazyListState,
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .drawVerticalScrollbar(lazyListState),
+                )
+            }
         }
     }
 }
 
 @Composable
-internal fun PostList(
-    state: PostsState,
-    toolbarHeight: Dp,
+private fun PostList(
+    uiState: PostsUiState,
+    lazyListState: LazyListState,
     modifier: Modifier = Modifier,
     handleEvent: PostsEvent.() -> Unit,
 ) {
-    val listState = rememberLazyListState()
-    SwipeRefresh(
+    LazyColumn(
+        state = lazyListState,
         modifier = modifier,
-        indicatorPadding = PaddingValues(top = toolbarHeight + 8.dp),
-        state = rememberSwipeRefreshState(state.isLoading),
-        onRefresh = { handleEvent.invoke(PostsEvent.OnUpdatePostsRequested) },
+        contentPadding = PaddingValues(horizontal = mediumPadding),
     ) {
-        LazyColumn(
-            state = listState,
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .drawVerticalScrollbar(listState),
-            contentPadding = PaddingValues(top = toolbarHeight, start = mediumPadding, end = mediumPadding),
-        ) {
-            items(
-                items = state.posts,
-                key = { item: Post -> item.id },
-                itemContent = { item: Post ->
-                    CardPostItem(
-                        state = state,
-                        item = item,
-                        modifier =
-                            Modifier
-                                .padding(vertical = mediumPadding)
-                                .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
-                                .fillParentMaxWidth(),
-                    )
-                },
-            )
-        }
+        items(
+            items = uiState.posts,
+            key = { item: Post -> item.id },
+            itemContent = { item: Post ->
+                CardPostItem(
+                    state = uiState,
+                    item = item,
+                    modifier =
+                        Modifier
+                            .padding(vertical = mediumPadding)
+                            .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
+                            .fillParentMaxWidth(),
+                )
+            },
+        )
     }
 }
 
 @Composable
 private fun CardPostItem(
-    state: PostsState,
+    state: PostsUiState,
     item: Post,
     modifier: Modifier = Modifier,
 ) {
@@ -221,40 +186,40 @@ private fun CardPostItem(
 @Preview(showBackground = true)
 @Composable
 private fun PostScreenPreview(
-    @PreviewParameter(PostStateProvider::class) state: PostsState,
+    @PreviewParameter(PostStateProvider::class) state: PostsUiState,
 ) {
     PostsScreen(state)
 }
 
-private class PostStateProvider : PreviewParameterProvider<PostsState> {
+private class PostStateProvider : PreviewParameterProvider<PostsUiState> {
     override val values =
         sequenceOf(
-            PostsState(
+            PostsUiState(
                 isLoading = false,
                 posts = listOf(post1, post2),
                 error = null,
             ),
-            PostsState(
+            PostsUiState(
                 isLoading = false,
                 posts = emptyList(),
                 error = PostUiError.Network,
             ),
-            PostsState(
+            PostsUiState(
                 isLoading = false,
                 posts = emptyList(),
                 error = PostUiError.Server,
             ),
-            PostsState(
+            PostsUiState(
                 isLoading = false,
                 posts = emptyList(),
                 error = PostUiError.Unknown,
             ),
-            PostsState(
+            PostsUiState(
                 isLoading = false,
                 posts = emptyList(),
                 error = PostUiError.Unexpected,
             ),
-            PostsState(
+            PostsUiState(
                 isLoading = true,
                 posts = emptyList(),
                 error = null,

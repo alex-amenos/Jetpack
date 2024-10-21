@@ -38,7 +38,7 @@ internal fun PostDetail(
                 IconButton(
                     modifier =
                         Modifier
-                            .padding(top = 12.dp)
+                            .padding(top = 12.dp, start = 4.dp)
                             .testTag(CoreTags.TAG_CORE_BACK),
                     onClick = onNavigateBack,
                 ) {
@@ -57,8 +57,8 @@ internal fun PostDetail(
             Column(
                 modifier =
                     Modifier
+                        .fillMaxWidth()
                         .padding(paddingValues)
-                        .fillMaxSize()
                         .verticalScroll(rememberScrollState()),
             ) {
                 Text(
@@ -75,8 +75,8 @@ internal fun PostDetail(
                 Text(
                     modifier =
                         Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 24.dp, horizontal = 16.dp),
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 24.dp),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge,
                     text = post.body,

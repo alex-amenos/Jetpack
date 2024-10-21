@@ -3,7 +3,10 @@ package com.alxnophis.jetpack.authentication.ui.view
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,8 +28,9 @@ internal fun AuthorizedScreen(
         Box(
             modifier =
                 Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
+                    .windowInsetsPadding(WindowInsets.systemBars)
+                    .background(MaterialTheme.colorScheme.surface)
+                    .fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
             Text(
