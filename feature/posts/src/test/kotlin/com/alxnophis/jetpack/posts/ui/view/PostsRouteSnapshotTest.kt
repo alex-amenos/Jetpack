@@ -5,7 +5,7 @@ import app.cash.paparazzi.Paparazzi
 import app.cash.paparazzi.detectEnvironment
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
-import com.alxnophis.jetpack.posts.ui.contract.PostsState
+import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import com.alxnophis.jetpack.testing.constants.PAPARAZZI_MAX_PERCENT_DIFFERENCE
 import org.junit.Rule
 import org.junit.Test
@@ -19,20 +19,20 @@ internal class PostsRouteSnapshotTest {
             deviceConfig = DeviceConfig.PIXEL_6,
             maxPercentDifference = PAPARAZZI_MAX_PERCENT_DIFFERENCE,
             environment =
-                detectEnvironment().run {
-                    copy(compileSdkVersion = 33, platformDir = platformDir.replace("34", "33"))
-                },
+            detectEnvironment().run {
+                copy(compileSdkVersion = 33, platformDir = platformDir.replace("34", "33"))
+            },
         )
 
     @Test
     fun composable_content_loaded() {
         snapshot(
             state =
-                PostsState(
-                    isLoading = false,
-                    posts = listOf(POST_1, POST_2),
-                    error = null,
-                ),
+            PostsUiState(
+                isLoading = false,
+                posts = listOf(POST_1, POST_2),
+                error = null,
+            ),
         )
     }
 
@@ -40,11 +40,11 @@ internal class PostsRouteSnapshotTest {
     fun composable_loading() {
         snapshot(
             state =
-                PostsState(
-                    isLoading = true,
-                    posts = emptyList(),
-                    error = null,
-                ),
+            PostsUiState(
+                isLoading = true,
+                posts = emptyList(),
+                error = null,
+            ),
         )
     }
 
@@ -52,15 +52,15 @@ internal class PostsRouteSnapshotTest {
     fun composable_error() {
         snapshot(
             state =
-                PostsState(
-                    isLoading = false,
-                    posts = emptyList(),
-                    error = PostUiError.Network,
-                ),
+            PostsUiState(
+                isLoading = false,
+                posts = emptyList(),
+                error = PostUiError.Network,
+            ),
         )
     }
 
-    private fun snapshot(state: PostsState) {
+    private fun snapshot(state: PostsUiState) {
         paparazzi.snapshot {
             PostsScreen(state)
         }
