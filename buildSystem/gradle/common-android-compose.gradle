@@ -1,3 +1,5 @@
+apply plugin: 'com.android.compose.screenshot'
+
 android {
     buildFeatures {
         compose true
@@ -8,6 +10,8 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.androidx.compose.compiler.get()
     }
+
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
 dependencies {
@@ -25,6 +29,8 @@ dependencies {
     androidTestImplementation(composeBom)
     androidTestImplementation project(Modules.SHARED_TESTING)
     androidTestImplementation libs.androidx.compose.ui.test
+
+    screenshotTestImplementation(libs.androidx.compose.ui.tooling)
 
     // https://slackhq.github.io/compose-lints/
     lintChecks libs.slack.lint.compose
