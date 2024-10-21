@@ -1,5 +1,3 @@
-apply plugin: 'app.cash.paparazzi'
-
 android {
     buildFeatures {
         compose true
