@@ -3,10 +3,8 @@ package com.alxnophis.jetpack.posts.ui.view
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,9 +13,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,6 +51,7 @@ internal fun PostsScreen(
     PostContent(state, onEvent)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PostContent(
     uiState: PostsUiState,
@@ -65,7 +66,6 @@ private fun PostContent(
                 )
             },
             modifier = Modifier.nestedScroll(rememberNestedScrollInteropConnection()),
-            contentWindowInsets = WindowInsets.statusBars,
         ) { padding ->
             uiState.error?.let { error: PostUiError ->
                 CoreErrorDialog(
@@ -79,17 +79,27 @@ private fun PostContent(
                     dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested) },
                 )
             }
-            val lazyListState = rememberLazyListState()
-            PostList(
-                uiState = uiState,
-                handleEvent = onEvent,
-                lazyListState = lazyListState,
+            PullToRefreshBox(
+                isRefreshing = uiState.isLoading,
+                onRefresh = {
+                    onEvent.invoke(PostsEvent.OnUpdatePostsRequested)
+                },
                 modifier =
                     Modifier
                         .padding(padding)
-                        .fillMaxWidth()
-                        .drawVerticalScrollbar(lazyListState),
-            )
+                        .fillMaxWidth(),
+            ) {
+                val lazyListState = rememberLazyListState()
+                PostList(
+                    uiState = uiState,
+                    handleEvent = onEvent,
+                    lazyListState = lazyListState,
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .drawVerticalScrollbar(lazyListState),
+                )
+            }
         }
     }
 }
