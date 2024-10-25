@@ -1,5 +1,5 @@
 [versions]
-android-gradle-plugin = "8.6.1"
+android-gradle-plugin = "8.7.1"
 android-junit5-plugin = "1.8.2.1"
 androidx-activity = "1.9.2"
 androidx-annotations = "1.8.2"
@@ -179,7 +179,7 @@ retrofit = [
 ]
 
 [plugins]
-android-application = "com.android.application:8.6.1"
+android-application = "com.android.application:8.7.1"
 android-compose-screenshot = "com.android.compose.screenshot:0.0.1-alpha07"
 ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
 google-ksp = "com.google.devtools.ksp:1.9.10-1.0.13"
