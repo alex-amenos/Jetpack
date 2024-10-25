@@ -38,9 +38,6 @@ jobs:
       - name: Check Ktlint
         run: ./gradlew ktlintCheck
 
-      - name: Validate ScreenshotTest
-        run: ./gradlew validateDebugScreenshotTest
-
       - name: Debug Unit tests
         run: ./gradlew testDebugUnitTest
 

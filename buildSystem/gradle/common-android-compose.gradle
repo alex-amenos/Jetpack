@@ -13,7 +13,7 @@ android {
 
     testOptions {
         screenshotTests {
-            imageDifferenceThreshold = 0.0005f
+            imageDifferenceThreshold = 0.0001f // 0.01%
         }
     }
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
