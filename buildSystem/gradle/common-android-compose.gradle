@@ -11,6 +11,11 @@ android {
         kotlinCompilerExtensionVersion libs.versions.androidx.compose.compiler.get()
     }
 
+    testOptions {
+        screenshotTests {
+            imageDifferenceThreshold = 0.0001f
+        }
+    }
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
