@@ -7,7 +7,6 @@ import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.view.provider.PostDetailProvider
 
 internal class PostDetailsPreviewsScreenshots {
-
     @Preview(showBackground = true)
     @Composable
     private fun PostDetailScreenTesting(

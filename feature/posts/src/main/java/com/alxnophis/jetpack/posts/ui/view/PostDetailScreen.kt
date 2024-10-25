@@ -92,7 +92,7 @@ internal fun PostDetailScreen(
 @Preview(showBackground = true)
 @Composable
 internal fun PostDetailPreview(
-    @PreviewParameter(PostDetailProvider::class) post: Post
+    @PreviewParameter(PostDetailProvider::class) post: Post,
 ) {
     PostDetailScreen(
         post = post,

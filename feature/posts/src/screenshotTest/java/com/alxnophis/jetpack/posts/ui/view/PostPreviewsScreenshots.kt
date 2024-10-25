@@ -7,7 +7,6 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import com.alxnophis.jetpack.posts.ui.view.provider.PostStateProvider
 
 internal class PostPreviewsScreenshots {
-
     @Preview(showBackground = true)
     @Composable
     private fun PostScreenTesting(
