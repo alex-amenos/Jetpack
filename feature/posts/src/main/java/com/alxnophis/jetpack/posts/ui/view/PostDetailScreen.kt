@@ -21,16 +21,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.posts.data.model.Post
+import com.alxnophis.jetpack.posts.ui.view.provider.PostDetailPreviewProvider
 
 @Composable
-internal fun PostDetail(
+internal fun PostDetailScreen(
     post: Post,
-    onNavigateBack: () -> Unit,
+    onNavigateBack: () -> Unit = {},
 ) {
     AppTheme {
         Scaffold(
@@ -89,15 +91,10 @@ internal fun PostDetail(
 
 @Preview(showBackground = true)
 @Composable
-private fun PostDetailPreview() {
-    val post =
-        Post(
-            id = 1,
-            userId = 1,
-            title = "Lorem ipsum dolor",
-            body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        )
-    PostDetail(
+internal fun PostDetailPreview(
+    @PreviewParameter(PostDetailPreviewProvider::class) post: Post,
+) {
+    PostDetailScreen(
         post = post,
         onNavigateBack = {},
     )

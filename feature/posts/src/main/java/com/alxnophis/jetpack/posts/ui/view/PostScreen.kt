@@ -28,7 +28,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
@@ -41,6 +40,7 @@ import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
+import com.alxnophis.jetpack.posts.ui.view.provider.PostStatePreviewProvider
 import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
@@ -186,62 +186,7 @@ private fun CardPostItem(
 @Preview(showBackground = true)
 @Composable
 private fun PostScreenPreview(
-    @PreviewParameter(PostStateProvider::class) state: PostsUiState,
+    @PreviewParameter(PostStatePreviewProvider::class) state: PostsUiState,
 ) {
     PostsScreen(state)
-}
-
-private class PostStateProvider : PreviewParameterProvider<PostsUiState> {
-    override val values =
-        sequenceOf(
-            PostsUiState(
-                isLoading = false,
-                posts = listOf(post1, post2),
-                error = null,
-            ),
-            PostsUiState(
-                isLoading = false,
-                posts = emptyList(),
-                error = PostUiError.Network,
-            ),
-            PostsUiState(
-                isLoading = false,
-                posts = emptyList(),
-                error = PostUiError.Server,
-            ),
-            PostsUiState(
-                isLoading = false,
-                posts = emptyList(),
-                error = PostUiError.Unknown,
-            ),
-            PostsUiState(
-                isLoading = false,
-                posts = emptyList(),
-                error = PostUiError.Unexpected,
-            ),
-            PostsUiState(
-                isLoading = true,
-                posts = emptyList(),
-                error = null,
-            ),
-        )
-
-    companion object {
-        val post1 =
-            Post(
-                id = 1,
-                userId = 1,
-                title = "Title 1",
-                body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-            )
-        val post2 =
-            Post(
-                id = 2,
-                userId = 1,
-                title = "Title 2",
-                body =
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            )
-    }
 }
