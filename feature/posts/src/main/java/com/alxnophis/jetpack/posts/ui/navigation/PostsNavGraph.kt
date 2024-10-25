@@ -18,7 +18,7 @@ import androidx.navigation.compose.composable
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.di.injectPosts
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
-import com.alxnophis.jetpack.posts.ui.view.PostDetail
+import com.alxnophis.jetpack.posts.ui.view.PostDetailScreen
 import com.alxnophis.jetpack.posts.ui.view.PostsScreen
 import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
 import com.alxnophis.jetpack.router.screen.Route
@@ -53,7 +53,7 @@ fun NavGraphBuilder.postsNavGraph(navController: NavHostController) {
             detailPane = {
                 AnimatedPane {
                     navigator.currentDestination?.content?.let { post ->
-                        PostDetail(
+                        PostDetailScreen(
                             onNavigateBack = { navigator.navigateBack() },
                             post = post,
                         )

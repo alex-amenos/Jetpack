@@ -6,10 +6,13 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import com.alxnophis.jetpack.posts.ui.view.provider.PostStateProvider
 
-@Preview(showBackground = true)
-@Composable
-private fun PostScreenPreview(
-    @PreviewParameter(PostStateProvider::class) state: PostsUiState,
-) {
-    PostsScreen(state)
+internal class PostPreviewsScreenshots {
+
+    @Preview(showBackground = true)
+    @Composable
+    private fun PostScreenTesting(
+        @PreviewParameter(PostStateProvider::class) state: PostsUiState,
+    ) {
+        PostsScreen(state)
+    }
 }
