@@ -3,7 +3,7 @@ package com.alxnophis.jetpack.posts.ui.view.provider
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.alxnophis.jetpack.posts.data.model.Post
 
-internal class PostDetailProvider : PreviewParameterProvider<Post> {
+internal class PostDetailPreviewProvider : PreviewParameterProvider<Post> {
     override val values: Sequence<Post>
         get() =
             sequenceOf(

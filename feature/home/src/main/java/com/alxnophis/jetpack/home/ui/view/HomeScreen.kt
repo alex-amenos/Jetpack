@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -40,6 +41,7 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
+import com.alxnophis.jetpack.home.ui.view.provider.HomePreviewProvider
 import com.alxnophis.jetpack.router.screen.Route
 
 @Composable
@@ -166,26 +168,8 @@ internal fun SectionsList(
 
 @Preview
 @Composable
-private fun HomeScreenPreview() {
-    val state =
-        HomeState(
-            isLoading = false,
-            data =
-                listOf(
-                    NavigationItem(
-                        name = "Screen 1",
-                        emoji = "🐻",
-                        description = "Lorem ipsum",
-                        route = Route.Authentication,
-                    ),
-                    NavigationItem(
-                        name = "Screen 2",
-                        emoji = "🦊",
-                        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        route = Route.Settings,
-                    ),
-                ),
-            error = NO_ERROR,
-        )
-    HomeScreen(state)
+private fun HomeScreenPreview(
+    @PreviewParameter(HomePreviewProvider::class) uiState: HomeState,
+) {
+    HomeScreen(uiState)
 }

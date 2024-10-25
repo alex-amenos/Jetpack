@@ -5,7 +5,7 @@ import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 
-internal class PostStateProvider : PreviewParameterProvider<PostsUiState> {
+internal class PostStatePreviewProvider : PreviewParameterProvider<PostsUiState> {
     override val values =
         sequenceOf(
             PostsUiState(

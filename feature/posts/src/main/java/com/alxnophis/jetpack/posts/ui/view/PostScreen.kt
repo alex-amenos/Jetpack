@@ -40,7 +40,7 @@ import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
-import com.alxnophis.jetpack.posts.ui.view.provider.PostStateProvider
+import com.alxnophis.jetpack.posts.ui.view.provider.PostStatePreviewProvider
 import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
@@ -186,7 +186,7 @@ private fun CardPostItem(
 @Preview(showBackground = true)
 @Composable
 private fun PostScreenPreview(
-    @PreviewParameter(PostStateProvider::class) state: PostsUiState,
+    @PreviewParameter(PostStatePreviewProvider::class) state: PostsUiState,
 ) {
     PostsScreen(state)
 }

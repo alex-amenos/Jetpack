@@ -27,7 +27,7 @@ import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.posts.data.model.Post
-import com.alxnophis.jetpack.posts.ui.view.provider.PostDetailProvider
+import com.alxnophis.jetpack.posts.ui.view.provider.PostDetailPreviewProvider
 
 @Composable
 internal fun PostDetailScreen(
@@ -92,7 +92,7 @@ internal fun PostDetailScreen(
 @Preview(showBackground = true)
 @Composable
 internal fun PostDetailPreview(
-    @PreviewParameter(PostDetailProvider::class) post: Post,
+    @PreviewParameter(PostDetailPreviewProvider::class) post: Post,
 ) {
     PostDetailScreen(
         post = post,
