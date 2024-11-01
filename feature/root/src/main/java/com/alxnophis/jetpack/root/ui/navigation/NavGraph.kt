@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,7 +38,6 @@ import com.alxnophis.jetpack.posts.ui.view.PostsFeature
 import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 
 @SuppressLint("ComposeModifierMissing")
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun SetupNavGraph(navHostController: NavHostController) {
     AppTheme {
@@ -46,111 +46,139 @@ fun SetupNavGraph(navHostController: NavHostController) {
             navController = navHostController,
             startDestination = Route.Home,
         ) {
-            // HOME module
-            composable<Route.Home> {
-                HomeFeature(
-                    onNavigateTo = { feature: Feature ->
-                        val route: Route =
-                            when (feature) {
-                                Feature.Authentication -> Route.Authentication
-                                Feature.FileDownloader -> Route.FileDownloader
-                                Feature.GameBallClicker -> Route.GameBallClicker
-                                Feature.LocationTracker -> Route.LocationTracker
-                                Feature.MyPlayground -> Route.MyPlayground
-                                Feature.Notifications -> Route.Notifications
-                                Feature.Posts -> Route.Posts
-                                Feature.Settings -> Route.Settings
-                            }
-                        navHostController.navigate(route)
-                    },
-                    onBack = { navHostController.popBackStack() },
-                )
-            }
-            // AUTHENTICATION Module
-            composable<Route.Authentication> {
-                AuthenticationFeature(
-                    navigateInCaseOfSuccess = { email ->
-                        navHostController.navigate(
-                            route = Route.Authorized(email),
-                        ) {
-                            popUpTo(Route.Authentication) {
-                                inclusive = true
-                            }
-                        }
-                    },
-                    onBack = { navHostController.popBackStack() },
-                )
-            }
-            composable<Route.Authorized> {
-                val args = it.toRoute<Route.Authorized>()
-                requireNotNull(args.email) { "Email can not be null, is required to login" }
-                AuthorizedFeature(
-                    userEmail = args.email,
-                    onBack = { navHostController.popBackStack() },
-                )
-            }
-            // BALL CLICKER module
-            composable<Route.GameBallClicker> {
-                BallClickerFeature(
-                    onBack = { navHostController.popBackStack() },
-                )
-            }
-            // FILE DOWNLOADER module
-            composable<Route.FileDownloader> {
-                FileDownloaderFeature(onBack = { navHostController.popBackStack() })
-            }
-            // MY PLAYGROUND module
-            composable<Route.MyPlayground> {
-                MyPlaygroundFeature(onBack = { navHostController.popBackStack() })
-            }
-            // NOTIFICATIONS module
-            composable<Route.Notifications> {
-                NotificationsFeature(onBack = { navHostController.popBackStack() })
-            }
-            // LOCATION TRACKER module
-            composable<Route.LocationTracker> {
-                LocationTrackerFeature(onBack = { navHostController.popBackStack() })
-            }
-            // POSTS module
-            composable<Route.Posts> {
-                val navigator = rememberListDetailPaneScaffoldNavigator<Post>()
-                BackHandler(navigator.canNavigateBack()) {
-                    navigator.navigateBack()
-                }
-                ListDetailPaneScaffold(
-                    directive = navigator.scaffoldDirective,
-                    value = navigator.scaffoldValue,
-                    listPane = {
-                        AnimatedPane {
-                            PostsFeature(
-                                onPostSelected = { post ->
-                                    navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, post)
-                                },
-                                onBack = { navHostController.popBackStack() },
-                            )
-                        }
-                    },
-                    detailPane = {
-                        AnimatedPane {
-                            navigator.currentDestination?.content?.let { post ->
-                                PostDetailFeature(
-                                    post = post,
-                                    onBack = { navigator.navigateBack() },
-                                )
-                            }
-                        }
-                    },
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .windowInsetsPadding(WindowInsets.systemBars),
-                )
-            }
-            // SETTINGS module
-            composable<Route.Settings> {
-                SettingsFeature(onBack = { navHostController.popBackStack() })
-            }
+            home(navHostController)
+            authentication(navHostController)
+            ballClicker(navHostController)
+            fileDownloader(navHostController)
+            myPlayground(navHostController)
+            notifications(navHostController)
+            locationTracker(navHostController)
+            posts(navHostController)
+            settings(navHostController)
         }
+    }
+}
+
+private fun NavGraphBuilder.home(navHostController: NavHostController) {
+    composable<Route.Home> {
+        HomeFeature(
+            onNavigateTo = { feature: Feature ->
+                val route: Route =
+                    when (feature) {
+                        Feature.Authentication -> Route.Authentication
+                        Feature.FileDownloader -> Route.FileDownloader
+                        Feature.GameBallClicker -> Route.GameBallClicker
+                        Feature.LocationTracker -> Route.LocationTracker
+                        Feature.MyPlayground -> Route.MyPlayground
+                        Feature.Notifications -> Route.Notifications
+                        Feature.Posts -> Route.Posts
+                        Feature.Settings -> Route.Settings
+                    }
+                navHostController.navigate(route)
+            },
+            onBack = { navHostController.popBackStack() },
+        )
+    }
+}
+
+private fun NavGraphBuilder.authentication(navHostController: NavHostController) {
+    composable<Route.Authentication> {
+        AuthenticationFeature(
+            navigateInCaseOfSuccess = { email ->
+                navHostController.navigate(
+                    route = Route.Authorized(email),
+                ) {
+                    popUpTo(Route.Authentication) {
+                        inclusive = true
+                    }
+                }
+            },
+            onBack = { navHostController.popBackStack() },
+        )
+    }
+    composable<Route.Authorized> {
+        val args = it.toRoute<Route.Authorized>()
+        requireNotNull(args.email) { "Email can not be null, is required to login" }
+        AuthorizedFeature(
+            userEmail = args.email,
+            onBack = { navHostController.popBackStack() },
+        )
+    }
+}
+
+private fun NavGraphBuilder.ballClicker(navHostController: NavHostController) {
+    composable<Route.GameBallClicker> {
+        BallClickerFeature(
+            onBack = { navHostController.popBackStack() },
+        )
+    }
+}
+
+private fun NavGraphBuilder.fileDownloader(navHostController: NavHostController) {
+    composable<Route.FileDownloader> {
+        FileDownloaderFeature(onBack = { navHostController.popBackStack() })
+    }
+}
+
+private fun NavGraphBuilder.myPlayground(navHostController: NavHostController) {
+    composable<Route.MyPlayground> {
+        MyPlaygroundFeature(onBack = { navHostController.popBackStack() })
+    }
+}
+
+private fun NavGraphBuilder.notifications(navHostController: NavHostController) {
+    composable<Route.Notifications> {
+        NotificationsFeature(onBack = { navHostController.popBackStack() })
+    }
+}
+
+private fun NavGraphBuilder.locationTracker(navHostController: NavHostController) {
+    composable<Route.LocationTracker> {
+        LocationTrackerFeature(onBack = { navHostController.popBackStack() })
+    }
+}
+
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+private fun NavGraphBuilder.posts(navHostController: NavHostController) {
+    composable<Route.Posts> {
+        val navigator = rememberListDetailPaneScaffoldNavigator<Post>()
+        BackHandler(navigator.canNavigateBack()) {
+            navigator.navigateBack()
+        }
+        ListDetailPaneScaffold(
+            directive = navigator.scaffoldDirective,
+            value = navigator.scaffoldValue,
+            listPane = {
+                AnimatedPane {
+                    PostsFeature(
+                        onPostSelected = { post ->
+                            navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, post)
+                        },
+                        onBack = { navHostController.popBackStack() },
+                    )
+                }
+            },
+            detailPane = {
+                AnimatedPane {
+                    navigator.currentDestination?.content?.let { post ->
+                        PostDetailFeature(
+                            post = post,
+                            onBack = { navigator.navigateBack() },
+                        )
+                    }
+                }
+            },
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .windowInsetsPadding(WindowInsets.systemBars),
+        )
+    }
+}
+
+private fun NavGraphBuilder.settings(navHostController: NavHostController) {
+    composable<Route.Settings> {
+        SettingsFeature(onBack = { navHostController.popBackStack() })
     }
 }
 
