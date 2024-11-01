@@ -6,15 +6,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.home.di.injectHome
+import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
-import com.alxnophis.jetpack.router.screen.Route
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeFeature(
-    onNavigateTo: (Route) -> Unit,
+    onNavigateTo: (Feature) -> Unit,
     onBack: () -> Unit,
 ) {
     injectHome()
@@ -31,7 +31,7 @@ fun HomeFeature(
                     finish()
                 }
 
-                is HomeEvent.NavigationRequested -> onNavigateTo(event.route)
+                is HomeEvent.NavigationRequested -> onNavigateTo(event.feature)
                 else -> viewModel.handleEvent(event)
             }
         },

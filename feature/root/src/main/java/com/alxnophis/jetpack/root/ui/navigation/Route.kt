@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.router.screen
+package com.alxnophis.jetpack.root.ui.navigation
 
 import kotlinx.serialization.Serializable
 

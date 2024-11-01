@@ -26,6 +26,7 @@ import com.alxnophis.jetpack.authentication.ui.view.AuthorizedFeature
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.filedownloader.ui.view.FileDownloaderFeature
 import com.alxnophis.jetpack.game.ballclicker.ui.view.BallClickerFeature
+import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.ui.view.HomeFeature
 import com.alxnophis.jetpack.location.tracker.ui.view.LocationTrackerFeature
 import com.alxnophis.jetpack.myplayground.ui.view.MyPlaygroundFeature
@@ -33,7 +34,6 @@ import com.alxnophis.jetpack.notifications.ui.navigation.NotificationsFeature
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.view.PostDetailFeature
 import com.alxnophis.jetpack.posts.ui.view.PostsFeature
-import com.alxnophis.jetpack.router.screen.Route
 import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 
 @SuppressLint("ComposeModifierMissing")
@@ -48,7 +48,22 @@ fun SetupNavGraph(navHostController: NavHostController) {
         ) {
             // HOME module
             composable<Route.Home> {
-                HomeFeature(onNavigateTo = { route: Route -> navHostController.navigate(route) }, onBack = { navHostController.popBackStack() })
+                HomeFeature(
+                    onNavigateTo = { feature: Feature ->
+                        val route: Route = when (feature) {
+                            Feature.Authentication -> Route.Authentication
+                            Feature.FileDownloader -> Route.FileDownloader
+                            Feature.GameBallClicker -> Route.GameBallClicker
+                            Feature.LocationTracker -> Route.LocationTracker
+                            Feature.MyPlayground -> Route.MyPlayground
+                            Feature.Notifications -> Route.Notifications
+                            Feature.Posts -> Route.Posts
+                            Feature.Settings -> Route.Settings
+                        }
+                        navHostController.navigate(route)
+                    },
+                    onBack = { navHostController.popBackStack() },
+                )
             }
             // AUTHENTICATION Module
             composable<Route.Authentication> {

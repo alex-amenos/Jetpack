@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.home.domain.model
 
-import com.alxnophis.jetpack.router.screen.Route
 import java.util.UUID
 
 data class NavigationItem(
@@ -8,5 +7,5 @@ data class NavigationItem(
     val emoji: String,
     val name: String,
     val description: String,
-    val route: Route,
+    val feature: Feature,
 )
