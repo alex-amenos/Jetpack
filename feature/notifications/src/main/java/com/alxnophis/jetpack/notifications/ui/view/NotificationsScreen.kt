@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
+import com.alxnophis.jetpack.core.extensions.appPendingIntent
 import com.alxnophis.jetpack.core.extensions.showNotification
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMinor
@@ -36,7 +37,6 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.largePadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.notifications.R
-import com.alxnophis.jetpack.router.extension.appPendingIntent
 
 @Composable
 internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
@@ -56,10 +56,10 @@ internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
         ) {
             NotificationPermission(
                 modifier =
-                    Modifier
-                        .padding(paddingValues = it)
-                        .fillMaxSize()
-                        .padding(mediumPadding),
+                Modifier
+                    .padding(paddingValues = it)
+                    .fillMaxSize()
+                    .padding(mediumPadding),
             )
         }
     }
@@ -90,9 +90,9 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CoreButtonMinor(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(largePadding),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(largePadding),
                 text = stringResource(id = R.string.notifications_request_permission),
                 onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
             )
@@ -103,9 +103,9 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         }
         CoreButtonMajor(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(largePadding),
+            Modifier
+                .fillMaxWidth()
+                .padding(largePadding),
             text = stringResource(id = R.string.notifications_show_notification),
             onClick = {
                 if (hasNotificationPermission) {

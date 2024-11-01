@@ -4,7 +4,6 @@ apply from: "$rootDir/buildSystem/gradle/common-android-compose.gradle"
 dependencies {
     implementation project(Modules.SHARED_CORE)
     implementation project(Modules.SHARED_KOTLIN)
-    implementation project(Modules.SHARED_ROUTER)
 
     implementation libs.androidx.annotations
     implementation libs.androidx.activity
