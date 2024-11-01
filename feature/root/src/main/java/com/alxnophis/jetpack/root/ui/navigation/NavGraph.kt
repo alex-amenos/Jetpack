@@ -50,16 +50,17 @@ fun SetupNavGraph(navHostController: NavHostController) {
             composable<Route.Home> {
                 HomeFeature(
                     onNavigateTo = { feature: Feature ->
-                        val route: Route = when (feature) {
-                            Feature.Authentication -> Route.Authentication
-                            Feature.FileDownloader -> Route.FileDownloader
-                            Feature.GameBallClicker -> Route.GameBallClicker
-                            Feature.LocationTracker -> Route.LocationTracker
-                            Feature.MyPlayground -> Route.MyPlayground
-                            Feature.Notifications -> Route.Notifications
-                            Feature.Posts -> Route.Posts
-                            Feature.Settings -> Route.Settings
-                        }
+                        val route: Route =
+                            when (feature) {
+                                Feature.Authentication -> Route.Authentication
+                                Feature.FileDownloader -> Route.FileDownloader
+                                Feature.GameBallClicker -> Route.GameBallClicker
+                                Feature.LocationTracker -> Route.LocationTracker
+                                Feature.MyPlayground -> Route.MyPlayground
+                                Feature.Notifications -> Route.Notifications
+                                Feature.Posts -> Route.Posts
+                                Feature.Settings -> Route.Settings
+                            }
                         navHostController.navigate(route)
                     },
                     onBack = { navHostController.popBackStack() },
@@ -139,9 +140,10 @@ fun SetupNavGraph(navHostController: NavHostController) {
                             }
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .windowInsetsPadding(WindowInsets.systemBars),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .windowInsetsPadding(WindowInsets.systemBars),
                 )
             }
             // SETTINGS module

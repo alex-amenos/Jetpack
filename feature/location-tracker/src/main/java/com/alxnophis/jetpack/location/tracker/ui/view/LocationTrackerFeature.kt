@@ -8,9 +8,7 @@ import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewMo
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun LocationTrackerFeature(
-    onBack: () -> Unit,
-) {
+fun LocationTrackerFeature(onBack: () -> Unit) {
     injectLocationTracker()
     val viewModel = getViewModel<LocationTrackerViewModel>()
     LocationTrackerScreen(

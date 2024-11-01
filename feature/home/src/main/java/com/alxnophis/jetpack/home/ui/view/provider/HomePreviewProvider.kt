@@ -13,20 +13,20 @@ internal class HomePreviewProvider : PreviewParameterProvider<HomeState> {
                 HomeState(
                     isLoading = false,
                     data =
-                    listOf(
-                        NavigationItem(
-                            name = "Screen 1",
-                            emoji = "🐻",
-                            description = "Lorem ipsum",
-                            feature = Feature.Authentication,
+                        listOf(
+                            NavigationItem(
+                                name = "Screen 1",
+                                emoji = "🐻",
+                                description = "Lorem ipsum",
+                                feature = Feature.Authentication,
+                            ),
+                            NavigationItem(
+                                name = "Screen 2",
+                                emoji = "🦊",
+                                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                                feature = Feature.Settings,
+                            ),
                         ),
-                        NavigationItem(
-                            name = "Screen 2",
-                            emoji = "🦊",
-                            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                            feature = Feature.Settings,
-                        ),
-                    ),
                     error = NO_ERROR,
                 ),
             )

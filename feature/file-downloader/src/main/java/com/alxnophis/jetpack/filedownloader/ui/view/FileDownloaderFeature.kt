@@ -8,9 +8,7 @@ import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun FileDownloaderFeature(
-    onBack: () -> Unit,
-) {
+fun FileDownloaderFeature(onBack: () -> Unit) {
     injectFileDownloader()
     val viewModel = getViewModel<FileDownloaderViewModel>()
     FileDownloaderScreen(

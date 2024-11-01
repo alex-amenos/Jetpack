@@ -56,10 +56,10 @@ internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
         ) {
             NotificationPermission(
                 modifier =
-                Modifier
-                    .padding(paddingValues = it)
-                    .fillMaxSize()
-                    .padding(mediumPadding),
+                    Modifier
+                        .padding(paddingValues = it)
+                        .fillMaxSize()
+                        .padding(mediumPadding),
             )
         }
     }
@@ -90,9 +90,9 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CoreButtonMinor(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(largePadding),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(largePadding),
                 text = stringResource(id = R.string.notifications_request_permission),
                 onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
             )
@@ -103,9 +103,9 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         }
         CoreButtonMajor(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(largePadding),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(largePadding),
             text = stringResource(id = R.string.notifications_show_notification),
             onClick = {
                 if (hasNotificationPermission) {

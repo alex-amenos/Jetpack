@@ -63,9 +63,9 @@ internal fun HomeScreen(
             SectionsList(
                 state = state,
                 modifier =
-                Modifier
-                    .background(color = MaterialTheme.colorScheme.surface)
-                    .padding(paddingValues),
+                    Modifier
+                        .background(color = MaterialTheme.colorScheme.surface)
+                        .padding(paddingValues),
                 navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) },
             )
             if (state.error != NO_ERROR) {
@@ -83,13 +83,13 @@ internal fun HomeScreen(
 internal fun HomeTopBar() {
     TopAppBar(
         colors =
-        TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-        ),
+            TopAppBarDefaults.mediumTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
+                navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+            ),
         title = {
             Text(
                 text = stringResource(id = R.string.home_title),
@@ -120,11 +120,11 @@ internal fun SectionsList(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier =
-                    Modifier
-                        .clickable { navigateTo(item.feature) }
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(mediumPadding),
+                        Modifier
+                            .clickable { navigateTo(item.feature) }
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(mediumPadding),
                 ) {
                     Text(
                         modifier = Modifier.wrapContentSize(),
@@ -135,10 +135,10 @@ internal fun SectionsList(
                     )
                     Column(
                         modifier =
-                        Modifier
-                            .weight(0.9f)
-                            .fillMaxWidth()
-                            .padding(start = mediumPadding),
+                            Modifier
+                                .weight(0.9f)
+                                .fillMaxWidth()
+                                .padding(start = mediumPadding),
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -150,9 +150,9 @@ internal fun SectionsList(
                         )
                         Text(
                             modifier =
-                            Modifier
-                                .wrapContentSize()
-                                .padding(top = extraSmallPadding),
+                                Modifier
+                                    .wrapContentSize()
+                                    .padding(top = extraSmallPadding),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             text = item.description,

@@ -12,5 +12,4 @@ fun PostDetailFeature(
         onNavigateBack = onBack,
         post = post,
     )
-
 }

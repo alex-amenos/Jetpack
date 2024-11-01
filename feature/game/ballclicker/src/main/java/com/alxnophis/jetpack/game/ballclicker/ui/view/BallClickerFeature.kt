@@ -8,9 +8,7 @@ import com.alxnophis.jetpack.game.ballclicker.ui.viewmodel.BallClickerViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun BallClickerFeature(
-    onBack: () -> Unit,
-) {
+fun BallClickerFeature(onBack: () -> Unit) {
     injectBallClicker()
     val viewModel = getViewModel<BallClickerViewModel>()
     BallClickerScreen(

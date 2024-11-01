@@ -9,9 +9,7 @@ import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun SettingsFeature(
-    onBack: () -> Unit
-) {
+fun SettingsFeature(onBack: () -> Unit) {
     injectSettings()
     val viewModel = getViewModel<SettingsViewModel>()
     SettingsScreen(

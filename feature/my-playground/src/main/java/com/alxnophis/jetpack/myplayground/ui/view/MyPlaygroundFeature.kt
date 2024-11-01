@@ -8,9 +8,7 @@ import com.alxnophis.jetpack.myplayground.ui.viewmodel.MyPlaygroundViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun MyPlaygroundFeature(
-    onBack: () -> Unit,
-) {
+fun MyPlaygroundFeature(onBack: () -> Unit) {
     injectMyPlayground()
     val viewModel = getViewModel<MyPlaygroundViewModel>()
     MyPlaygroundScreen(
