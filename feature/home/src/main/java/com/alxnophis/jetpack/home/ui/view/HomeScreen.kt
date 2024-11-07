@@ -37,12 +37,12 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.home.R
+import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.home.ui.view.provider.HomePreviewProvider
-import com.alxnophis.jetpack.router.screen.Route
 
 @Composable
 internal fun HomeScreen(
@@ -106,7 +106,7 @@ internal fun HomeTopBar() {
 internal fun SectionsList(
     state: HomeState,
     modifier: Modifier = Modifier,
-    navigateTo: (route: Route) -> Unit,
+    navigateTo: (feature: Feature) -> Unit,
 ) {
     LazyColumn(
         state = rememberLazyListState(),
@@ -121,7 +121,7 @@ internal fun SectionsList(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier =
                         Modifier
-                            .clickable { navigateTo(item.route) }
+                            .clickable { navigateTo(item.feature) }
                             .fillMaxWidth()
                             .wrapContentHeight()
                             .padding(mediumPadding),

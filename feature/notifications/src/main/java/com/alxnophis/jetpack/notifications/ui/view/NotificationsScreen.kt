@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
+import com.alxnophis.jetpack.core.extensions.appPendingIntent
 import com.alxnophis.jetpack.core.extensions.showNotification
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMinor
@@ -36,7 +37,6 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.largePadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.notifications.R
-import com.alxnophis.jetpack.router.extension.appPendingIntent
 
 @Composable
 internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {

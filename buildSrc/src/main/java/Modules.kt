@@ -7,7 +7,6 @@ object Modules {
     const val SHARED_API = ":shared:api"
     const val SHARED_CORE = ":shared:core"
     const val SHARED_KOTLIN = ":shared:kotlin"
-    const val SHARED_ROUTER = ":shared:router"
     const val SHARED_TESTING = ":shared:testing"
 
     // Feature modules

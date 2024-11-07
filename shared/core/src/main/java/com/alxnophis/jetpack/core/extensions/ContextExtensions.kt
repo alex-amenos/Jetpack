@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.core.extensions
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
@@ -57,4 +58,14 @@ fun Context.showNotification(
             .setVibrate(vibratePattern)
             .build()
     notificationManage.notify(notificationId, notification)
+}
+
+private const val ROOT_ACTIVITY = "com.alxnophis.jetpack.root.ui.RootActivity"
+
+fun Context.appPendingIntent(): PendingIntent {
+    val intent =
+        Intent()
+            .setClassName(this, ROOT_ACTIVITY)
+            .apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK }
+    return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 }
