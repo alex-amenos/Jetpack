@@ -89,8 +89,7 @@ internal class LocationDataSourceImpl(
                         Timber.e("Error getting last known location: ${exception.message}")
                         trySend(null)
                     }
-                }
-                .addOnFailureListener {
+                }.addOnFailureListener {
                     trySend(null)
                 }
             awaitClose { Timber.d("LocationDataSource - ProvideLastKnownLocationFlow - awaitClose") }
@@ -103,8 +102,7 @@ internal class LocationDataSourceImpl(
                     true -> Unit
                     false -> throw RuntimeException("Location is not enabled")
                 }
-            }
-            .mapLeft { Unit.left() }
+            }.mapLeft { Unit.left() }
 
     @SuppressLint("MissingPermission")
     override suspend fun startLocationProvider(locationParameters: LocationParameters) {
@@ -118,8 +116,7 @@ internal class LocationDataSourceImpl(
                                 .Builder(
                                     locationParameters.priority,
                                     locationParameters.fastestInterval,
-                                )
-                                .setPriority(locationParameters.priority)
+                                ).setPriority(locationParameters.priority)
                                 .build()
                         it.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
                     }

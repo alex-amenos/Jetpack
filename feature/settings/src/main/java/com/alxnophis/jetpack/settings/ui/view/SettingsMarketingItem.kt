@@ -54,8 +54,7 @@ internal fun SettingsMarketingItem(
                                     onOptionSelected(marketingOption)
                                 },
                                 role = Role.RadioButton,
-                            )
-                            .fillMaxWidth()
+                            ).fillMaxWidth()
                             .padding(start = largePadding, end = mediumPadding, top = mediumPadding, bottom = mediumPadding)
                             .testTag(TAG_MARKETING_OPTION + index),
                 ) {

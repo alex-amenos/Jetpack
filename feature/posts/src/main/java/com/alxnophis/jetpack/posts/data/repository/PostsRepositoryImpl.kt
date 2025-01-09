@@ -25,8 +25,7 @@ class PostsRepositoryImpl(
                 .getPosts()
                 .map { posts: List<PostApiModel> ->
                     posts.map { it.mapToPost() }
-                }
-                .mapLeft { error: CallError ->
+                }.mapLeft { error: CallError ->
                     Timber.d("GET posts error: $error")
                     when {
                         error is IOError -> PostsError.Unexpected

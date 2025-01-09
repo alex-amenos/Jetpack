@@ -42,8 +42,7 @@ internal class FileDownloaderRepositoryImpl(
                                 }
                         }
                     }
-                }
-                .mapLeft { exception ->
+                }.mapLeft { exception ->
                     when (exception) {
                         is FileDownloadedException -> FileDownloaderError.FileDownloaded
                         is FileDownloadingException -> FileDownloaderError.FileDownloading

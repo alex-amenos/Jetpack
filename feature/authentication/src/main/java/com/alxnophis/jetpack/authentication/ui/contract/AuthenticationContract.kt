@@ -22,11 +22,17 @@ internal sealed class AuthenticationEvent : UiEvent {
 
     data object GoBackRequested : AuthenticationEvent()
 
-    data class EmailChanged(val email: String) : AuthenticationEvent()
+    data class EmailChanged(
+        val email: String,
+    ) : AuthenticationEvent()
 
-    data class PasswordChanged(val password: String) : AuthenticationEvent()
+    data class PasswordChanged(
+        val password: String,
+    ) : AuthenticationEvent()
 
-    data class NavigateToAuthScreenRequested(val email: String) : AuthenticationEvent()
+    data class NavigateToAuthScreenRequested(
+        val email: String,
+    ) : AuthenticationEvent()
 }
 
 @optics
@@ -39,11 +45,10 @@ internal data class AuthenticationState(
     val isLoading: Boolean,
     val error: Int,
 ) : UiState {
-    fun isFormValid(): Boolean {
-        return password.isNotEmpty() &&
+    fun isFormValid(): Boolean =
+        password.isNotEmpty() &&
             email.isNotEmpty() &&
             (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
-    }
 
     internal companion object {
         val initialState =

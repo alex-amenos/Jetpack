@@ -66,16 +66,14 @@ internal class BallClickerViewModel(
                             BallClickerState.currentTimeInSeconds set seconds.toInt()
                         }
                     }
-                }
-                .onCompletion {
+                }.onCompletion {
                     updateUiState {
                         copy {
                             BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
                             BallClickerState.isTimerRunning set false
                         }
                     }
-                }
-                .cancellable()
+                }.cancellable()
                 .launchIn(timerScope)
                 .also { job -> timerJob = job }
         }

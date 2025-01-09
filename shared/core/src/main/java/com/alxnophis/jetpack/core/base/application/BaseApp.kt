@@ -57,7 +57,8 @@ open class BaseApp : Application() {
     private fun initStrictMode() {
         if (isDebugBuildType()) {
             StrictMode.setThreadPolicy(
-                StrictMode.ThreadPolicy.Builder()
+                StrictMode.ThreadPolicy
+                    .Builder()
                     .detectDiskReads()
                     .detectDiskWrites()
                     .detectNetwork() // or .detectAll() for all detectable problems
@@ -65,7 +66,8 @@ open class BaseApp : Application() {
                     .build(),
             )
             StrictMode.setVmPolicy(
-                StrictMode.VmPolicy.Builder()
+                StrictMode.VmPolicy
+                    .Builder()
                     .detectLeakedSqlLiteObjects()
                     .detectLeakedClosableObjects()
                     .penaltyLog()

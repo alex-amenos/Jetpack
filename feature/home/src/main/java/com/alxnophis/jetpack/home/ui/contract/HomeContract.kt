@@ -15,7 +15,9 @@ internal sealed class HomeEvent : UiEvent {
 
     data object GoBackRequested : HomeEvent()
 
-    data class NavigationRequested(val feature: Feature) : HomeEvent()
+    data class NavigationRequested(
+        val feature: Feature,
+    ) : HomeEvent()
 }
 
 @optics

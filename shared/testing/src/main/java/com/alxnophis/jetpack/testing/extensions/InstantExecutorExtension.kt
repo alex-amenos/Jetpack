@@ -10,7 +10,9 @@ import org.junit.jupiter.api.extension.ExtensionContext
 
 @VisibleForTesting
 @SuppressLint("RestrictedApi")
-class InstantExecutorExtension : BeforeEachCallback, AfterEachCallback {
+class InstantExecutorExtension :
+    BeforeEachCallback,
+    AfterEachCallback {
     override fun beforeEach(context: ExtensionContext?) {
         ArchTaskExecutor.getInstance().setDelegate(
             object : TaskExecutor() {

@@ -50,8 +50,7 @@ internal class FileDownloaderViewModel(
                             FileDownloaderState.fileStatusList set (downloadingList + downloadedList)
                         }
                     }
-                }
-                .collect()
+                }.collect()
         }
 
     private fun updateUrl(url: String) {

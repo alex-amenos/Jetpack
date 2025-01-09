@@ -6,6 +6,5 @@ import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
 class StartLocationProviderUseCase(
     private val locationRepository: LocationRepository,
 ) {
-    suspend operator fun invoke(locationParameters: LocationParameters = LocationParameters()) =
-        locationRepository.startLocationProvider(locationParameters)
+    suspend operator fun invoke(locationParameters: LocationParameters = LocationParameters()) = locationRepository.startLocationProvider(locationParameters)
 }
