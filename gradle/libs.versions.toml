@@ -180,7 +180,7 @@ retrofit = [
 
 [plugins]
 android-application = "com.android.application:8.8.0"
-android-compose-screenshot = "com.android.compose.screenshot:0.0.1-alpha07"
+android-compose-screenshot = "com.android.compose.screenshot:0.0.1-alpha08"
 ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
 google-ksp = "com.google.devtools.ksp:1.9.10-1.0.13"
 kotlin-android = "org.jetbrains.kotlin.android:1.9.10"
