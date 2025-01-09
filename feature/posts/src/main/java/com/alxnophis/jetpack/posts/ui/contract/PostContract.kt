@@ -12,7 +12,9 @@ internal sealed interface PostsEvent : UiEvent {
 
     data object DismissErrorRequested : PostsEvent
 
-    data class OnPostClicked(val post: Post) : PostsEvent
+    data class OnPostClicked(
+        val post: Post,
+    ) : PostsEvent
 }
 
 @Immutable

@@ -15,9 +15,13 @@ internal sealed class SettingsEvent : UiEvent {
 
     data object GoBackRequested : SettingsEvent()
 
-    data class SetMarketingOption(val marketingOption: MarketingOption) : SettingsEvent()
+    data class SetMarketingOption(
+        val marketingOption: MarketingOption,
+    ) : SettingsEvent()
 
-    data class SetTheme(val theme: Theme) : SettingsEvent()
+    data class SetTheme(
+        val theme: Theme,
+    ) : SettingsEvent()
 }
 
 @optics
@@ -38,7 +42,9 @@ internal data class SettingsState(
     }
 }
 
-internal enum class MarketingOption(val id: Int) {
+internal enum class MarketingOption(
+    val id: Int,
+) {
     ALLOWED(0),
     NOT_ALLOWED(1),
 }

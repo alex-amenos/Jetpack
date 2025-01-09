@@ -8,7 +8,9 @@ sealed class Route {
     data object Authentication : Route()
 
     @Serializable
-    data class Authorized(val email: String) : Route()
+    data class Authorized(
+        val email: String,
+    ) : Route()
 
     @Serializable
     data object Home : Route()

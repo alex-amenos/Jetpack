@@ -31,8 +31,7 @@ internal fun SettingsManageSubscriptionItem(
                         onClickLabel = stringResource(id = R.string.settings_cd_open_subscription),
                     ) {
                         onSubscriptionClicked()
-                    }
-                    .padding(mediumPadding),
+                    }.padding(mediumPadding),
         ) {
             Text(
                 modifier = Modifier.weight(1f),

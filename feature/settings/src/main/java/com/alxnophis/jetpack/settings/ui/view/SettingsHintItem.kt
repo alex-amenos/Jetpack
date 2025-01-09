@@ -43,8 +43,7 @@ fun SettingsHintItem(
                         value = checked,
                         onValueChange = { onShowHintToggled() },
                         role = Role.Checkbox,
-                    )
-                    .semantics { stateDescription = hintsEnabledState }
+                    ).semantics { stateDescription = hintsEnabledState }
                     .padding(mediumPadding)
                     .testTag(TAG_CHECK_ITEM),
         ) {

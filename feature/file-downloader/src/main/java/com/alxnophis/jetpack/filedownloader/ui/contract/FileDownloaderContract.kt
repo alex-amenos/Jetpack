@@ -14,7 +14,9 @@ internal sealed class FileDownloaderEvent : UiEvent {
 
     data object ErrorDismissRequested : FileDownloaderEvent()
 
-    data class UrlChanged(val url: String) : FileDownloaderEvent()
+    data class UrlChanged(
+        val url: String,
+    ) : FileDownloaderEvent()
 }
 
 @optics

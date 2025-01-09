@@ -23,8 +23,7 @@ class JsonPlaceholderRetrofitFactory {
                 if (BuildConfig.DEBUG) {
                     okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
                 }
-            }
-            .build()
+            }.build()
 
     operator fun invoke(): JsonPlaceholderRetrofitService =
         Retrofit
