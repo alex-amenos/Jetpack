@@ -5,7 +5,15 @@ insert_final_newline = true
 max_line_length = 150
 
 [*.{kt, kts}]
-ktlint_function_naming_ignore_when_annotated_with = Composable
-ktlint_disabled_rules = import-ordering
 ij_kotlin_name_count_to_use_star_import = 999
 ij_kotlin_name_count_to_use_star_import_for_members = 999
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+max_line_length = off
+# Ktlint rules
+ktlint_function_naming_ignore_when_annotated_with = Composable
+ktlint_standard_import-ordering = disabled
+ktlint_standard_backing-property-naming = disabled
+
+[*.md]
+max_line_length = off
