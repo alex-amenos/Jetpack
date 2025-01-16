@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -137,6 +138,7 @@ private fun PostList(
                     modifier =
                         Modifier
                             .padding(vertical = mediumPadding)
+                            .shadow(1.dp, shape = RoundedCornerShape(8.dp))
                             .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
                             .fillParentMaxWidth(),
                 )
@@ -151,7 +153,10 @@ private fun CardPostItem(
     item: Post,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+    ) {
         Column(
             modifier =
                 Modifier
