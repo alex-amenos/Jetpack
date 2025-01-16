@@ -8,10 +8,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -53,6 +57,7 @@ internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
                     onBack = { navigateBack() },
                 )
             },
+            contentWindowInsets = WindowInsets.safeDrawing,
         ) {
             NotificationPermission(
                 modifier =
@@ -91,7 +96,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
             CoreButtonMinor(
                 modifier =
                     Modifier
-                        .fillMaxWidth()
+                        .widthIn(min = 300.dp)
                         .padding(largePadding),
                 text = stringResource(id = R.string.notifications_request_permission),
                 onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
@@ -104,7 +109,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         CoreButtonMajor(
             modifier =
                 Modifier
-                    .fillMaxWidth()
+                    .widthIn(min = 300.dp)
                     .padding(largePadding),
             text = stringResource(id = R.string.notifications_show_notification),
             onClick = {

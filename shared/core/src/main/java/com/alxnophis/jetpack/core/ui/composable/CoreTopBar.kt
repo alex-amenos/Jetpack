@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.core.ui.composable
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -28,6 +29,7 @@ fun CoreTopBar(
     title: String,
     modifier: Modifier = Modifier,
     navIconImageVector: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
+    actions: @Composable RowScope.() -> Unit = {},
     onBack: () -> Unit,
 ) {
     TopAppBar(
@@ -51,6 +53,7 @@ fun CoreTopBar(
                 overflow = TextOverflow.Ellipsis,
             )
         },
+        actions = actions,
         navigationIcon = {
             IconButton(
                 modifier = Modifier.testTag(CoreTags.TAG_CORE_BACK),

@@ -4,12 +4,16 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -32,70 +36,77 @@ internal fun SettingsScreen(
     BackHandler { onEvent(SettingsEvent.GoBackRequested) }
     AppTheme {
         val context = LocalContext.current
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
-                    .verticalScroll(rememberScrollState()),
-        ) {
-            CoreTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.settings_title),
-                onBack = { onEvent(SettingsEvent.GoBackRequested) },
-            )
-            HorizontalDivider()
-            SettingsNotificationItem(
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.settings_option_notifications),
-                checked = state.notificationsEnabled,
-                onToggleNotificationSettings = { onEvent(SettingsEvent.SetNotifications) },
-            )
-            HorizontalDivider()
-            SettingsHintItem(
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.settings_option_hints),
-                checked = state.hintsEnabled,
-                onShowHintToggled = { onEvent(SettingsEvent.SetHint) },
-            )
-            HorizontalDivider()
-            SettingsManageSubscriptionItem(
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.settings_option_manage_subscription),
-                onSubscriptionClicked = {
-                    Toast
-                        .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
-                        .show()
-                    onEvent(SettingsEvent.ManageSubscription)
-                },
-            )
-            HorizontalDivider()
-            SettingsSectionSpacer(
-                modifier = Modifier.fillMaxWidth(),
-            )
-            SettingsMarketingItem(
-                modifier = Modifier.fillMaxWidth(),
-                selectedOption = state.marketingOption,
-                onOptionSelected = { marketingOption ->
-                    onEvent(SettingsEvent.SetMarketingOption(marketingOption))
-                },
-            )
-            HorizontalDivider()
-            SettingsThemeItem(
-                modifier = Modifier.fillMaxWidth(),
-                selectedTheme = state.themeOption,
-                onOptionSelected = { theme ->
-                    onEvent(SettingsEvent.SetTheme(theme))
-                },
-            )
-            SettingsSectionSpacer(
-                modifier = Modifier.fillMaxWidth(),
-            )
-            SettingsAppVersion(
-                modifier = Modifier.fillMaxWidth(),
-                appVersion = appVersion,
-            )
-            HorizontalDivider()
+        Scaffold(
+            topBar = {
+                CoreTopBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = stringResource(id = R.string.settings_title),
+                    onBack = { onEvent(SettingsEvent.GoBackRequested) },
+                )
+            },
+            modifier = Modifier.fillMaxSize(),
+            contentWindowInsets = WindowInsets.safeDrawing,
+        ) { paddingValues ->
+            Column(
+                modifier =
+                    Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surface)
+                        .verticalScroll(rememberScrollState()),
+            ) {
+                SettingsNotificationItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = stringResource(id = R.string.settings_option_notifications),
+                    checked = state.notificationsEnabled,
+                    onToggleNotificationSettings = { onEvent(SettingsEvent.SetNotifications) },
+                )
+                HorizontalDivider()
+                SettingsHintItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = stringResource(id = R.string.settings_option_hints),
+                    checked = state.hintsEnabled,
+                    onShowHintToggled = { onEvent(SettingsEvent.SetHint) },
+                )
+                HorizontalDivider()
+                SettingsManageSubscriptionItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = stringResource(id = R.string.settings_option_manage_subscription),
+                    onSubscriptionClicked = {
+                        Toast
+                            .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
+                            .show()
+                        onEvent(SettingsEvent.ManageSubscription)
+                    },
+                )
+                HorizontalDivider()
+                SettingsSectionSpacer(
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                SettingsMarketingItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    selectedOption = state.marketingOption,
+                    onOptionSelected = { marketingOption ->
+                        onEvent(SettingsEvent.SetMarketingOption(marketingOption))
+                    },
+                )
+                HorizontalDivider()
+                SettingsThemeItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    selectedTheme = state.themeOption,
+                    onOptionSelected = { theme ->
+                        onEvent(SettingsEvent.SetTheme(theme))
+                    },
+                )
+                SettingsSectionSpacer(
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                SettingsAppVersion(
+                    modifier = Modifier.fillMaxWidth(),
+                    appVersion = appVersion,
+                )
+                HorizontalDivider()
+            }
         }
     }
 }

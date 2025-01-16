@@ -2,10 +2,7 @@ package com.alxnophis.jetpack.authentication.ui.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,11 +40,6 @@ internal fun AuthenticationContent(
 ) {
     AppTheme {
         AuthenticationForm(
-            modifier =
-                Modifier
-                    .windowInsetsPadding(WindowInsets.systemBars)
-                    .background(MaterialTheme.colorScheme.surface)
-                    .fillMaxSize(),
             authenticationMode = authenticationState.authenticationMode,
             isLoading = authenticationState.isLoading,
             email = authenticationState.email,

@@ -1,20 +1,28 @@
 package com.alxnophis.jetpack.authentication.ui.view
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.sharp.Help
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Email
@@ -24,9 +32,11 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -42,6 +52,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -50,7 +61,6 @@ import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -65,6 +75,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
+import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.autofill
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
@@ -81,135 +92,145 @@ internal fun AuthenticationForm(
     authenticationMode: AuthenticationMode,
     completedPasswordRequirements: List<PasswordRequirements>,
     enableAuthentication: Boolean,
-    modifier: Modifier = Modifier,
     handleEvent: AuthenticationEvent.() -> Unit,
 ) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        AnimatedVisibility(visible = isLoading) {
-            LinearProgressIndicator(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(4.dp),
-                color = MaterialTheme.colorScheme.secondary,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        AuthenticationTitle(
-            authenticationMode = authenticationMode,
-            modifier =
-                Modifier.clickable {
-                    if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                        handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorizationRequested)
+    Scaffold(
+        topBar = {
+            CoreTopBar(
+                title =
+                    stringResource(
+                        if (authenticationMode == AuthenticationMode.SIGN_IN) {
+                            R.string.authentication_label_sign_in_to_account
+                        } else {
+                            R.string.authentication_label_sign_up_for_account
+                        },
+                    ),
+                modifier = Modifier.fillMaxWidth(),
+                navIconImageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                actions = {
+                    IconButton(
+                        onClick = { handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorizationRequested) },
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Sharp.Help,
+                            contentDescription = null,
+                        )
                     }
                 },
-        )
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        val passwordFocusRequester = FocusRequester()
-        Card(
+                onBack = { handleEvent(AuthenticationEvent.GoBackRequested) },
+            )
+        },
+        modifier =
+            Modifier
+                .background(MaterialTheme.colorScheme.surface)
+                .fillMaxSize(),
+        contentWindowInsets = WindowInsets.safeDrawing,
+    ) { paddingValues ->
+        Column(
             modifier =
                 Modifier
+                    .padding(paddingValues)
                     .fillMaxWidth()
-                    .padding(horizontal = extraLargePadding),
+                    .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Column(
-                modifier = Modifier.padding(mediumPadding),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                val onEmailChanged: (String) -> Unit = { email ->
-                    handleEvent(AuthenticationEvent.EmailChanged(email))
-                }
-                EmailInput(
-                    email = email,
-                    onEmailChanged = onEmailChanged,
-                    onNextClicked = { passwordFocusRequester.requestFocus() },
+            AnimatedVisibility(visible = isLoading) {
+                LinearProgressIndicator(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .autofill(
-                                autofillTypes = listOf(AutofillType.EmailAddress),
-                                onFill = onEmailChanged,
-                            ),
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                val onPasswordChanged: (String) -> Unit = { password ->
-                    handleEvent(AuthenticationEvent.PasswordChanged(password))
-                }
-                PasswordInput(
-                    password = password,
-                    onPasswordChanged = onPasswordChanged,
-                    onDoneClicked = { handleEvent(AuthenticationEvent.Authenticated) },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .focusRequester(passwordFocusRequester)
-                            .autofill(
-                                autofillTypes = listOf(AutofillType.Password),
-                                onFill = onPasswordChanged,
-                            ),
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                AnimatedVisibility(
-                    visible = authenticationMode == AuthenticationMode.SIGN_UP,
-                ) {
-                    PasswordRequirementsView(
-                        modifier = Modifier.fillMaxWidth(),
-                        satisfiedRequirements = completedPasswordRequirements,
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                AuthenticationButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    enableAuthentication = enableAuthentication,
-                    authenticationMode = authenticationMode,
-                    onAuthenticate = { handleEvent(AuthenticationEvent.Authenticated) },
+                            .height(4.dp),
+                    color = MaterialTheme.colorScheme.secondary,
                 )
             }
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            val passwordFocusRequester = FocusRequester()
+            Card(
+                modifier =
+                    Modifier
+                        .padding(horizontal = extraLargePadding)
+                        .then(
+                            if (LocalConfiguration.current.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
+                                Modifier.fillMaxWidth(0.5f)
+                            } else {
+                                Modifier.fillMaxWidth()
+                            },
+                        ),
+            ) {
+                Column(
+                    modifier = Modifier.padding(mediumPadding),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    val onEmailChanged: (String) -> Unit = { email ->
+                        handleEvent(AuthenticationEvent.EmailChanged(email))
+                    }
+                    EmailInput(
+                        email = email,
+                        onEmailChanged = onEmailChanged,
+                        onNextClicked = { passwordFocusRequester.requestFocus() },
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .autofill(
+                                    autofillTypes = listOf(AutofillType.EmailAddress),
+                                    onFill = onEmailChanged,
+                                ),
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    val onPasswordChanged: (String) -> Unit = { password ->
+                        handleEvent(AuthenticationEvent.PasswordChanged(password))
+                    }
+                    PasswordInput(
+                        password = password,
+                        onPasswordChanged = onPasswordChanged,
+                        onDoneClicked = { handleEvent(AuthenticationEvent.Authenticated) },
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .focusRequester(passwordFocusRequester)
+                                .autofill(
+                                    autofillTypes = listOf(AutofillType.Password),
+                                    onFill = onPasswordChanged,
+                                ),
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    AnimatedVisibility(
+                        visible = authenticationMode == AuthenticationMode.SIGN_UP,
+                    ) {
+                        PasswordRequirementsView(
+                            modifier = Modifier.fillMaxWidth(),
+                            satisfiedRequirements = completedPasswordRequirements,
+                        )
+                    }
+
+                    AuthenticationButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        enableAuthentication = enableAuthentication,
+                        authenticationMode = authenticationMode,
+                        onAuthenticate = { handleEvent(AuthenticationEvent.Authenticated) },
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            ToggleAuthenticationMode(
+                modifier =
+                    Modifier
+                        .wrapContentSize()
+                        .height(56.dp),
+                isEnabled = isLoading.not(),
+                authenticationMode = authenticationMode,
+                toggleAuthentication = { handleEvent(AuthenticationEvent.ToggleAuthenticationModeRequested) },
+            )
         }
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        ToggleAuthenticationMode(
-            modifier = Modifier.fillMaxWidth(),
-            isEnabled = isLoading.not(),
-            authenticationMode = authenticationMode,
-            toggleAuthentication = { handleEvent(AuthenticationEvent.ToggleAuthenticationModeRequested) },
-        )
     }
-}
-
-@Composable
-internal fun AuthenticationTitle(
-    authenticationMode: AuthenticationMode,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        modifier = modifier,
-        text =
-            stringResource(
-                if (authenticationMode == AuthenticationMode.SIGN_IN) {
-                    R.string.authentication_label_sign_in_to_account
-                } else {
-                    R.string.authentication_label_sign_up_for_account
-                },
-            ),
-        color = MaterialTheme.colorScheme.primary,
-        style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.Bold,
-    )
 }
 
 @Composable
@@ -423,7 +444,7 @@ fun ToggleAuthenticationMode(
         onClick = { toggleAuthentication() },
         modifier = modifier,
         enabled = isEnabled,
-        shape = RoundedCornerShape(0.dp),
+        shape = RoundedCornerShape(16.dp),
         colors =
             ButtonDefaults.textButtonColors(
                 containerColor = MaterialTheme.colorScheme.surface,
@@ -435,7 +456,7 @@ fun ToggleAuthenticationMode(
         Text(
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(extraSmallPadding),
+            modifier = Modifier.wrapContentSize(),
             text =
                 stringResource(
                     if (authenticationMode == AuthenticationMode.SIGN_IN) {
@@ -454,7 +475,6 @@ fun ToggleAuthenticationMode(
 private fun AuthenticationSighInFormPreview() {
     AppTheme {
         AuthenticationForm(
-            modifier = Modifier.wrapContentSize(),
             authenticationMode = AuthenticationMode.SIGN_IN,
             isLoading = true,
             email = EMPTY,
@@ -472,7 +492,6 @@ private fun AuthenticationSighInFormPreview() {
 private fun AuthenticationSignUpFormPreview() {
     AppTheme {
         AuthenticationForm(
-            modifier = Modifier.wrapContentSize(),
             authenticationMode = AuthenticationMode.SIGN_UP,
             isLoading = true,
             email = EMPTY,
