@@ -2,9 +2,12 @@ package com.alxnophis.jetpack.posts.ui.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -40,7 +43,7 @@ internal fun PostDetailScreen(
                 IconButton(
                     modifier =
                         Modifier
-                            .padding(top = 12.dp, start = 4.dp)
+                            .windowInsetsPadding(WindowInsets.safeDrawing)
                             .testTag(CoreTags.TAG_CORE_BACK),
                     onClick = onNavigateBack,
                 ) {
@@ -55,6 +58,7 @@ internal fun PostDetailScreen(
                 Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface),
+            contentWindowInsets = WindowInsets.safeDrawing,
         ) { paddingValues ->
             Column(
                 modifier =

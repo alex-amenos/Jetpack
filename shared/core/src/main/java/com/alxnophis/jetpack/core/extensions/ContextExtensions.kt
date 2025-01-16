@@ -21,16 +21,13 @@ fun Context.getVersionName(): String =
             } else {
                 packageManager.getPackageInfo(packageName, ZERO_INT)
             }
-        packageInfo.versionName
+        packageInfo.versionName ?: EMPTY
     } catch (e: PackageManager.NameNotFoundException) {
         e.printStackTrace()
         EMPTY
     }
 
-fun Context.getVersion(): String =
-    StringBuilder()
-        .append(this.getVersionName())
-        .toString()
+fun Context.getVersion(): String = StringBuilder().append(this.getVersionName()).toString()
 
 fun Context.showNotification(
     @StringRes titleResId: Int,
@@ -63,9 +60,6 @@ fun Context.showNotification(
 private const val ROOT_ACTIVITY = "com.alxnophis.jetpack.root.ui.RootActivity"
 
 fun Context.appPendingIntent(): PendingIntent {
-    val intent =
-        Intent()
-            .setClassName(this, ROOT_ACTIVITY)
-            .apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK }
+    val intent = Intent().setClassName(this, ROOT_ACTIVITY).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK }
     return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 }

@@ -3,8 +3,13 @@ package com.alxnophis.jetpack.posts.ui.view
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,8 +25,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -66,6 +73,7 @@ private fun PostContent(
                 )
             },
             modifier = Modifier.nestedScroll(rememberNestedScrollInteropConnection()),
+            contentWindowInsets = WindowInsets.statusBars,
         ) { padding ->
             uiState.error?.let { error: PostUiError ->
                 CoreErrorDialog(
@@ -114,7 +122,11 @@ private fun PostList(
     LazyColumn(
         state = lazyListState,
         modifier = modifier,
-        contentPadding = PaddingValues(horizontal = mediumPadding),
+        contentPadding =
+            PaddingValues(
+                start = WindowInsets.safeDrawing.asPaddingValues().calculateStartPadding(LocalLayoutDirection.current) + mediumPadding,
+                end = mediumPadding,
+            ),
     ) {
         items(
             items = uiState.posts,
@@ -126,6 +138,7 @@ private fun PostList(
                     modifier =
                         Modifier
                             .padding(vertical = mediumPadding)
+                            .shadow(1.dp, shape = RoundedCornerShape(8.dp))
                             .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
                             .fillParentMaxWidth(),
                 )
@@ -140,7 +153,10 @@ private fun CardPostItem(
     item: Post,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+    ) {
         Column(
             modifier =
                 Modifier

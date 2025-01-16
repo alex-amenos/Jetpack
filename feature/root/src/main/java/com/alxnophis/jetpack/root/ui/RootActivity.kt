@@ -13,6 +13,7 @@ class RootActivity : AppCompatActivity() {
     private lateinit var navigationController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         val restoredState =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -21,7 +22,6 @@ class RootActivity : AppCompatActivity() {
                 @Suppress("DEPRECATION")
                 savedInstanceState?.getParcelable(NAVIGATION_STATE)
             }
-        enableEdgeToEdge()
         setContent {
             navigationController = rememberNavController()
             navigationController.restoreState(restoredState)
