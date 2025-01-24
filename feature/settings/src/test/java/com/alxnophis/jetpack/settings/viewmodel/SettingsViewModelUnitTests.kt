@@ -9,11 +9,11 @@ import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
-import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 private class SettingsViewModelUnitTests : BaseUnitTest() {
@@ -29,14 +29,8 @@ private class SettingsViewModelUnitTests : BaseUnitTest() {
             viewModel.handleEvent(event)
 
             viewModel.uiState.test {
-                assertEquals(
-                    initialSettingsState,
-                    awaitItem(),
-                )
-                assertEquals(
-                    state,
-                    awaitItem(),
-                )
+                awaitItem() shouldBeEqualTo initialSettingsState
+                awaitItem() shouldBeEqualTo state
             }
         }
     }

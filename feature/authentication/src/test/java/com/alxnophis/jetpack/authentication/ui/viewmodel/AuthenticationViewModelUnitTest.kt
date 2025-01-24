@@ -14,11 +14,11 @@ import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
@@ -32,10 +32,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     fun `WHEN init THEN validate initial state`() {
         runTest {
             viewModel.uiState.test {
-                assertEquals(
-                    AuthenticationState.initialState,
-                    awaitItem(),
-                )
+                awaitItem() shouldBeEqualTo AuthenticationState.initialState
                 expectNoEvents()
             }
         }
@@ -47,14 +44,8 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.handleEvent(AuthenticationEvent.ToggleAuthenticationModeRequested)
 
             viewModel.uiState.test {
-                assertEquals(
-                    AuthenticationState.initialState,
-                    awaitItem(),
-                )
-                assertEquals(
-                    AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_UP),
-                    awaitItem(),
-                )
+                awaitItem() shouldBeEqualTo AuthenticationState.initialState
+                awaitItem() shouldBeEqualTo AuthenticationState.initialState.copy(authenticationMode = AuthenticationMode.SIGN_UP)
                 expectNoEvents()
             }
         }
@@ -69,14 +60,8 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.handleEvent(AuthenticationEvent.ToggleAuthenticationModeRequested)
 
             viewModel.uiState.test {
-                assertEquals(
-                    initialState,
-                    awaitItem(),
-                )
-                assertEquals(
-                    initialState.copy(authenticationMode = AuthenticationMode.SIGN_IN),
-                    awaitItem(),
-                )
+                awaitItem() shouldBeEqualTo initialState
+                awaitItem() shouldBeEqualTo initialState.copy(authenticationMode = AuthenticationMode.SIGN_IN)
                 expectNoEvents()
             }
         }
@@ -91,14 +76,8 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.handleEvent(AuthenticationEvent.ErrorDismissRequested)
 
             viewModel.uiState.test {
-                assertEquals(
-                    initialState,
-                    awaitItem(),
-                )
-                assertEquals(
-                    initialState.copy(error = NO_ERROR),
-                    awaitItem(),
-                )
+                awaitItem() shouldBeEqualTo initialState
+                awaitItem() shouldBeEqualTo initialState.copy(error = NO_ERROR)
                 expectNoEvents()
             }
         }
@@ -110,14 +89,8 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.handleEvent(AuthenticationEvent.EmailChanged(EMAIL))
 
             viewModel.uiState.test {
-                assertEquals(
-                    AuthenticationState.initialState,
-                    awaitItem(),
-                )
-                assertEquals(
-                    AuthenticationState.initialState.copy(email = EMAIL),
-                    awaitItem(),
-                )
+                awaitItem() shouldBeEqualTo AuthenticationState.initialState
+                awaitItem() shouldBeEqualTo AuthenticationState.initialState.copy(email = EMAIL)
                 expectNoEvents()
             }
         }
@@ -129,11 +102,8 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.handleEvent(AuthenticationEvent.PasswordChanged(PASSWORD))
 
             viewModel.uiState.test {
-                assertEquals(
-                    AuthenticationState.initialState,
-                    awaitItem(),
-                )
-                assertEquals(
+                awaitItem() shouldBeEqualTo AuthenticationState.initialState
+                awaitItem() shouldBeEqualTo
                     AuthenticationState.initialState.copy(
                         password = PASSWORD,
                         passwordRequirements =
@@ -142,9 +112,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                                 PasswordRequirements.CAPITAL_LETTER,
                                 PasswordRequirements.NUMBER,
                             ),
-                    ),
-                    awaitItem(),
-                )
+                    )
                 expectNoEvents()
             }
         }
@@ -160,21 +128,13 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.handleEvent(AuthenticationEvent.Authenticated)
 
             viewModel.uiState.test {
-                assertEquals(
-                    initialState,
-                    awaitItem(),
-                )
-                assertEquals(
-                    initialState.copy(isLoading = true),
-                    awaitItem(),
-                )
-                assertEquals(
+                awaitItem() shouldBeEqualTo initialState
+                awaitItem() shouldBeEqualTo initialState.copy(isLoading = true)
+                awaitItem() shouldBeEqualTo
                     initialState.copy(
                         isLoading = false,
                         isUserAuthorized = true,
-                    ),
-                    awaitItem(),
-                )
+                    )
                 expectNoEvents()
             }
         }
@@ -190,14 +150,8 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.handleEvent(AuthenticationEvent.SetUserNotAuthorized)
 
             viewModel.uiState.test {
-                assertEquals(
-                    initialState,
-                    awaitItem(),
-                )
-                assertEquals(
-                    initialState.copy(isUserAuthorized = false),
-                    awaitItem(),
-                )
+                awaitItem() shouldBeEqualTo initialState
+                awaitItem() shouldBeEqualTo initialState.copy(isUserAuthorized = false)
                 expectNoEvents()
             }
         }
@@ -213,21 +167,13 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.handleEvent(AuthenticationEvent.Authenticated)
 
             viewModel.uiState.test {
-                assertEquals(
-                    initialState,
-                    awaitItem(),
-                )
-                assertEquals(
-                    initialState.copy(isLoading = true),
-                    awaitItem(),
-                )
-                assertEquals(
+                awaitItem() shouldBeEqualTo initialState
+                awaitItem() shouldBeEqualTo initialState.copy(isLoading = true)
+                awaitItem() shouldBeEqualTo
                     initialState.copy(
                         isLoading = false,
                         error = R.string.authentication_auth_error,
-                    ),
-                    awaitItem(),
-                )
+                    )
                 expectNoEvents()
             }
         }

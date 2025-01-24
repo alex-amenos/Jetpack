@@ -23,7 +23,6 @@ dependencies {
     testImplementation libs.kluent
     testImplementation libs.kluent.junit
     testImplementation libs.koin.test
-    testImplementation libs.bundles.kotest
     testImplementation libs.bundles.mockito
     testImplementation libs.turbine
 
