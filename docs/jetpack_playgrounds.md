@@ -46,7 +46,10 @@ More experiment info:<br>
 
 - Experiment with testing: unit test, snapshot tests.
 
-<img alt="Posts screen" src="./images/posts_screen.png" width="300" />
+<img alt="Posts screen 1" src="./images/posts_screen.png" width="300" />
+<img alt="Posts screen 2" src="./images/posts_screen_detail.png" width="300" />
+
+<img alt="Posts screen 3" src="./images/posts_screen_landscape.png" width="500" />
 
 ## Location tracker
 
