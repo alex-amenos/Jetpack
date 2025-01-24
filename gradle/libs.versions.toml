@@ -26,7 +26,6 @@ com-squareup-retrofit2 = "2.9.0"
 google-android-material = "1.12.0"
 google-play-services-location = "21.3.0"
 gradle-test-logger-plugin = "3.2.0"
-io-kotest = "5.7.2"
 junit = "4.13.2"
 junit-vintage-engine = "5.9.2"
 kluent = "1.72"
@@ -115,9 +114,6 @@ koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", versio
 koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-android-work-manager" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "io-kotest" }
-kotest-property = { module = "io.kotest:kotest-property", version.ref = "io-kotest" }
-kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "io-kotest" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
@@ -159,11 +155,6 @@ androidx-compose = [
     "androidx-compose-ui-tooling-preview",
     "androidx-compose-ui-util",
     "androidx-compose-viewmodel",
-]
-kotest = [
-    "kotest-assertions",
-    "kotest-property",
-    "kotest-runner",
 ]
 mockito = [
     "mockito",

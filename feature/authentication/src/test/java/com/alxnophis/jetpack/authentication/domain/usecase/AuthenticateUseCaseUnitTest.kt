@@ -6,9 +6,9 @@ import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_EMAIL
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.Companion.AUTHORIZED_PASSWORD
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
@@ -22,7 +22,7 @@ private class AuthenticateUseCaseUnitTest : BaseUnitTest() {
         runTest {
             val result = useCase.invoke(VALID_EMAIL, VALID_PASSWORD)
 
-            result shouldBe Unit.right()
+            result shouldBeEqualTo Unit.right()
         }
     }
 
@@ -31,7 +31,7 @@ private class AuthenticateUseCaseUnitTest : BaseUnitTest() {
         runTest {
             val result = useCase.invoke(INVALID_EMAIL, INVALID_PASSWORD)
 
-            result shouldBe AuthenticationError.WrongAuthentication.left()
+            result shouldBeEqualTo AuthenticationError.WrongAuthentication.left()
         }
     }
 

@@ -38,7 +38,6 @@ dependencies {
     testImplementation libs.androidx.arch.core.testing
     testImplementation libs.kotlinx.coroutines.test
     testImplementation libs.koin.test
-    testImplementation libs.bundles.kotest
     testImplementation libs.kluent
     testImplementation libs.kluent.junit
     testImplementation libs.kotlin.reflect
