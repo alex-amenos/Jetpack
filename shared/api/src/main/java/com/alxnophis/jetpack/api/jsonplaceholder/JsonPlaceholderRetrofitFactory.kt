@@ -1,8 +1,10 @@
 package com.alxnophis.jetpack.api.jsonplaceholder
 
+import android.content.Context
 import arrow.retrofit.adapter.either.EitherCallAdapterFactory
 import com.alxnophis.jetpack.api.BuildConfig
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,7 +12,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-class JsonPlaceholderRetrofitFactory {
+class JsonPlaceholderRetrofitFactory(
+    context: Context,
+) {
     private val okHttpClient: OkHttpClient =
         OkHttpClient
             .Builder()
@@ -19,6 +23,7 @@ class JsonPlaceholderRetrofitFactory {
             .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor())
+            .addInterceptor(ChuckerInterceptor(context))
             .also { okHttpClientBuilder ->
                 if (BuildConfig.DEBUG) {
                     okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
