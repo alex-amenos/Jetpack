@@ -53,23 +53,23 @@ import com.google.accompanist.placeholder.material.placeholder
 @Composable
 internal fun PostsScreen(
     state: PostsUiState,
-    onEvent: (PostsEvent) -> Unit = {},
+    handleEvent: (PostsEvent) -> Unit = {},
 ) {
-    PostContent(state, onEvent)
+    PostContent(state, handleEvent)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PostContent(
     uiState: PostsUiState,
-    onEvent: (PostsEvent) -> Unit = {},
+    handleEvent: PostsEvent.() -> Unit = {},
 ) {
     AppTheme {
         Scaffold(
             topBar = {
                 CoreTopBar(
                     title = stringResource(id = R.string.posts_title),
-                    onBack = { onEvent(PostsEvent.GoBackRequested) },
+                    onBack = { PostsEvent.GoBackRequested.handleEvent() },
                 )
             },
             modifier = Modifier.nestedScroll(rememberNestedScrollInteropConnection()),
@@ -84,13 +84,13 @@ private fun PostContent(
                             PostUiError.Unknown -> stringResource(R.string.posts_error_unknown)
                             PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
                         },
-                    dismissError = { onEvent.invoke(PostsEvent.DismissErrorRequested) },
+                    dismissError = { PostsEvent.DismissErrorRequested.handleEvent() },
                 )
             }
             PullToRefreshBox(
                 isRefreshing = uiState.isLoading,
                 onRefresh = {
-                    onEvent.invoke(PostsEvent.OnUpdatePostsRequested)
+                    PostsEvent.OnUpdatePostsRequested.handleEvent()
                 },
                 modifier =
                     Modifier
@@ -100,7 +100,7 @@ private fun PostContent(
                 val lazyListState = rememberLazyListState()
                 PostList(
                     uiState = uiState,
-                    handleEvent = onEvent,
+                    handleEvent = handleEvent,
                     lazyListState = lazyListState,
                     modifier =
                         Modifier
@@ -139,7 +139,7 @@ private fun PostList(
                         Modifier
                             .padding(vertical = mediumPadding)
                             .shadow(1.dp, shape = RoundedCornerShape(8.dp))
-                            .clickable { handleEvent.invoke(PostsEvent.OnPostClicked(item)) }
+                            .clickable { PostsEvent.OnPostClicked(item).handleEvent() }
                             .fillParentMaxWidth(),
                 )
             },
