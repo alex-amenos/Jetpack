@@ -19,6 +19,7 @@ androidx-test-runner = "1.6.2"
 androidx-work = "2.10.0"
 arrow-optics-ksp-plugin = "1.2.4"
 arrow-stack = "1.2.0"
+chucker = "4.1.0"
 coil = "2.2.2"
 com-google-accompanist = "0.25.1"
 com-squareup-okhttp3 = "4.10.0"
@@ -133,6 +134,8 @@ retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", 
 slack-lint-compose = { module = "com.slack.lint.compose:compose-lint-checks", version.ref = "slack-lint-compose" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
+chucker-release = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
 
 [bundles]
 androidx-compose = [
