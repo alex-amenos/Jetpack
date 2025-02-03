@@ -5,7 +5,6 @@ import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
-import com.alxnophis.jetpack.posts.ui.contract.status
 
 internal class PostStatePreviewProvider : PreviewParameterProvider<PostsUiState> {
     override val values =
