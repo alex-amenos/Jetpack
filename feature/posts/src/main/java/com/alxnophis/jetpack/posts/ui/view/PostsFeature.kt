@@ -17,7 +17,7 @@ fun PostsFeature(
     val viewModel = getViewModel<PostsViewModel>()
     PostsScreen(
         state = viewModel.uiState.collectAsStateWithLifecycle().value,
-        onEvent = { event ->
+        handleEvent = { event ->
             when (event) {
                 PostsEvent.GoBackRequested -> onBack()
                 is PostsEvent.OnPostClicked -> onPostSelected(event.post)

@@ -19,21 +19,31 @@ internal sealed interface PostsEvent : UiEvent {
 
 @Immutable
 internal data class PostsUiState(
-    val isLoading: Boolean,
+    val status: PostsStatus,
     val posts: List<Post>,
     val error: PostUiError?,
 ) : UiState {
+    val isLoading: Boolean = status == PostsStatus.Loading
+
     internal companion object {
         val initialState =
             PostsUiState(
-                isLoading = false,
+                status = PostsStatus.Loading,
                 posts = emptyList(),
                 error = null,
             )
     }
 }
 
-sealed interface PostUiError {
+internal sealed interface PostsStatus {
+    data object Loading : PostsStatus
+
+    data object Success : PostsStatus
+
+    data object Error : PostsStatus
+}
+
+internal sealed interface PostUiError {
     data object Network : PostUiError
 
     data object Server : PostUiError

@@ -9,6 +9,7 @@ import com.alxnophis.jetpack.posts.data.model.PostsError
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
+import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,7 +44,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo PostsUiState.initialState
-                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(isLoading = false, posts = postList)
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList)
                 expectNoEvents()
             }
             verify(postRepositoryMock).getPosts()
@@ -62,7 +63,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo PostsUiState.initialState
-                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(isLoading = false, error = uiError)
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Error, error = uiError)
                 expectNoEvents()
             }
             verify(postRepositoryMock).getPosts()
@@ -79,7 +80,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo PostsUiState.initialState
-                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(isLoading = false, posts = postList)
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList)
                 expectNoEvents()
             }
             verify(postRepositoryMock, times(2)).getPosts()
@@ -97,7 +98,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 skipItems(1)
-                awaitItem() shouldBeEqualTo initialState.copy(error = null)
+                awaitItem() shouldBeEqualTo initialState.copy(status = PostsStatus.Success, error = null)
                 expectNoEvents()
             }
         }

@@ -58,7 +58,7 @@ jobs:
 
       # Example use of `signedReleaseFile` output -- not needed
       - name: Upload Release APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Signed Jetpack APK
           path: ${{steps.sign_app.outputs.signedFile}}
