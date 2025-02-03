@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -26,7 +27,6 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
@@ -48,7 +48,6 @@ import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import com.alxnophis.jetpack.posts.ui.view.provider.PostStatePreviewProvider
-import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
 internal fun PostsScreen(
@@ -102,16 +101,14 @@ private fun PostContent(
                     uiState = uiState,
                     handleEvent = handleEvent,
                     lazyListState = lazyListState,
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .drawVerticalScrollbar(lazyListState),
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PostList(
     uiState: PostsUiState,
@@ -119,37 +116,44 @@ private fun PostList(
     modifier: Modifier = Modifier,
     handleEvent: PostsEvent.() -> Unit,
 ) {
-    LazyColumn(
-        state = lazyListState,
+    PullToRefreshBox(
+        isRefreshing = uiState.isLoading,
+        onRefresh = { PostsEvent.OnUpdatePostsRequested.handleEvent() },
         modifier = modifier,
-        contentPadding =
-            PaddingValues(
-                start = WindowInsets.safeDrawing.asPaddingValues().calculateStartPadding(LocalLayoutDirection.current) + mediumPadding,
-                end = mediumPadding,
-            ),
     ) {
-        items(
-            items = uiState.posts,
-            key = { item: Post -> item.id },
-            itemContent = { item: Post ->
-                CardPostItem(
-                    state = uiState,
-                    item = item,
-                    modifier =
-                        Modifier
-                            .padding(vertical = mediumPadding)
-                            .shadow(1.dp, shape = RoundedCornerShape(8.dp))
-                            .clickable { PostsEvent.OnPostClicked(item).handleEvent() }
-                            .fillParentMaxWidth(),
-                )
-            },
-        )
+        LazyColumn(
+            state = lazyListState,
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .drawVerticalScrollbar(lazyListState),
+            contentPadding =
+                PaddingValues(
+                    start = WindowInsets.safeDrawing.asPaddingValues().calculateStartPadding(LocalLayoutDirection.current) + mediumPadding,
+                    end = mediumPadding,
+                ),
+        ) {
+            items(
+                items = uiState.posts,
+                key = { item: Post -> item.id },
+                itemContent = { item: Post ->
+                    CardPostItem(
+                        item = item,
+                        modifier =
+                            Modifier
+                                .padding(vertical = mediumPadding)
+                                .shadow(1.dp, shape = RoundedCornerShape(8.dp))
+                                .clickable { PostsEvent.OnPostClicked(item).handleEvent() }
+                                .fillParentMaxWidth(),
+                    )
+                },
+            )
+        }
     }
 }
 
 @Composable
 private fun CardPostItem(
-    state: PostsUiState,
     item: Post,
     modifier: Modifier = Modifier,
 ) {
@@ -167,12 +171,7 @@ private fun CardPostItem(
             Text(
                 modifier =
                     Modifier
-                        .wrapContentSize()
-                        .placeholder(
-                            visible = state.isLoading,
-                            color = Color.Gray,
-                            shape = RoundedCornerShape(4.dp),
-                        ),
+                        .wrapContentSize(),
                 text = item.titleCapitalized,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp,
@@ -182,12 +181,7 @@ private fun CardPostItem(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(top = mediumPadding, bottom = mediumPadding)
-                        .placeholder(
-                            visible = state.isLoading,
-                            color = Color.Gray,
-                            shape = RoundedCornerShape(4.dp),
-                        ),
+                        .padding(top = mediumPadding, bottom = mediumPadding),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 5,

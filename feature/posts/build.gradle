@@ -8,6 +8,4 @@ android {
 dependencies {
     implementation project(Modules.SHARED_API)
     implementation libs.retrofit
-    implementation libs.google.accompanits.swiperefresh
-    implementation libs.google.accompanits.placeholder
 }

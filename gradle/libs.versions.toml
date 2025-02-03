@@ -98,8 +98,6 @@ arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
 arrow-stack = { module = "io.arrow-kt:arrow-stack", version.ref = "arrow-stack" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 google-accompanits-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "com-google-accompanist" }
-google-accompanits-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "com-google-accompanist" }
-google-accompanits-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "com-google-accompanist" }
 google-android-material = { module = "com.google.android.material:material", version.ref = "google-android-material" }
 google-play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "google-play-services-location" }
 gradle-test-logger-plugin = { module = "com.adarshr:gradle-test-logger-plugin", version.ref = "gradle-test-logger-plugin" }
