@@ -3,40 +3,42 @@ package com.alxnophis.jetpack.posts.ui.view.provider
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
+import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
+import com.alxnophis.jetpack.posts.ui.contract.status
 
 internal class PostStatePreviewProvider : PreviewParameterProvider<PostsUiState> {
     override val values =
         sequenceOf(
             PostsUiState(
-                isLoading = false,
+                status = PostsStatus.Success,
                 posts = listOf(post1, post2),
                 error = null,
             ),
             PostsUiState(
-                isLoading = false,
+                status = PostsStatus.Loading,
+                posts = emptyList(),
+                error = null,
+            ),
+            PostsUiState(
+                status = PostsStatus.Error,
                 posts = emptyList(),
                 error = PostUiError.Network,
             ),
             PostsUiState(
-                isLoading = false,
+                status = PostsStatus.Error,
                 posts = emptyList(),
                 error = PostUiError.Server,
             ),
             PostsUiState(
-                isLoading = false,
+                status = PostsStatus.Error,
                 posts = emptyList(),
                 error = PostUiError.Unknown,
             ),
             PostsUiState(
-                isLoading = false,
+                status = PostsStatus.Error,
                 posts = emptyList(),
                 error = PostUiError.Unexpected,
-            ),
-            PostsUiState(
-                isLoading = true,
-                posts = emptyList(),
-                error = null,
             ),
         )
 

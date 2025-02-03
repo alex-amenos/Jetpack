@@ -9,6 +9,7 @@ import com.alxnophis.jetpack.posts.data.model.PostsError
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
+import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -41,13 +42,13 @@ internal class PostsViewModel(
     private fun updatePosts() {
         viewModelScope.launch {
             updateUiState {
-                copy(isLoading = true)
+                copy(status = PostsStatus.Loading)
             }
             getPosts().fold(
                 { error ->
                     updateUiState {
                         copy(
-                            isLoading = false,
+                            status = PostsStatus.Error,
                             error = error.mapToUiError(),
                         )
                     }
@@ -55,7 +56,7 @@ internal class PostsViewModel(
                 { posts: List<Post> ->
                     updateUiState {
                         copy(
-                            isLoading = false,
+                            status = PostsStatus.Success,
                             posts = posts,
                         )
                     }
@@ -76,7 +77,10 @@ internal class PostsViewModel(
 
     private fun dismissError() {
         updateUiState {
-            copy(error = null)
+            copy(
+                status = PostsStatus.Success,
+                error = null,
+            )
         }
     }
 }
