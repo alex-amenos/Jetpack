@@ -62,8 +62,11 @@ android {
     }
 
     kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    kotlin.compilerOptions {
         freeCompilerArgs = ['-Xstring-concat=inline']
-        jvmTarget = JavaVersion.VERSION_17
     }
 
     lint {
