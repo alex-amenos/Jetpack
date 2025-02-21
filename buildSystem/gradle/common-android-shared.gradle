@@ -6,6 +6,7 @@ dependencies {
     implementation libs.arrow.core
     implementation libs.arrow.fx.coroutines
     implementation libs.arrow.optics
+    implementation libs.arrow.optics.compose
     implementation libs.arrow.retrofit
     implementation libs.kotlinx.collections.immutable
     implementation libs.kotlinx.coroutines.android

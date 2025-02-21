@@ -91,6 +91,7 @@ androidx-work = { module = "androidx.work:work-runtime-ktx", version.ref = "andr
 arrow-core = { module = "io.arrow-kt:arrow-core" }
 arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
 arrow-optics = { module = "io.arrow-kt:arrow-optics" }
+arrow-optics-compose = { module = "io.arrow-kt:arrow-optics-compose" }
 arrow-optics-ksp-plugin = { module = "io.arrow-kt:arrow-optics-ksp-plugin", version.ref = "arrow-stack" }
 arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
 arrow-stack = { module = "io.arrow-kt:arrow-stack", version.ref = "arrow-stack" }
