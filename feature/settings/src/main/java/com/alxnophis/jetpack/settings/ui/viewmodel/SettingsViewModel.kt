@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.settings.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import arrow.optics.copy
+import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
@@ -35,34 +35,26 @@ internal class SettingsViewModel(
     }
 
     private fun toggleNotifications() {
-        updateUiState {
-            copy {
-                SettingsState.notificationsEnabled transform { !it }
-            }
+        _uiState.updateCopy {
+            SettingsState.notificationsEnabled transform { !it }
         }
     }
 
     private fun toggleHint() {
-        updateUiState {
-            copy {
-                SettingsState.hintsEnabled transform { !it }
-            }
+        _uiState.updateCopy {
+            SettingsState.hintsEnabled transform { !it }
         }
     }
 
     private fun setMarketing(option: MarketingOption) {
-        updateUiState {
-            copy {
-                SettingsState.marketingOption set option
-            }
+        _uiState.updateCopy {
+            SettingsState.marketingOption set option
         }
     }
 
     private fun setTheme(theme: Theme) {
-        updateUiState {
-            copy {
-                SettingsState.themeOption set theme
-            }
+        _uiState.updateCopy {
+            SettingsState.themeOption set theme
         }
     }
 }

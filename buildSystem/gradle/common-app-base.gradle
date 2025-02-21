@@ -46,9 +46,7 @@ android {
             def versionCode = versionCode
             def date = new Date()
             def formattedDate = date.format('ddMMyy_HHmm')
-            def newApkName = project + SEP + buildType +
-                    SEP + versionCode + SEP + versionName +
-                    SEP + formattedDate + apkExtension
+            def newApkName = project + SEP + buildType + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
             outputFileName = new File(newApkName)
         }
         if (variant.buildType.name == "debug") {
@@ -62,8 +60,11 @@ android {
     }
 
     kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    kotlin.compilerOptions {
         freeCompilerArgs = ['-Xstring-concat=inline']
-        jvmTarget = JavaVersion.VERSION_17
     }
 
     lint {
@@ -73,26 +74,22 @@ android {
         ignoreTestSources true
         htmlOutput file("$buildDir/reports/lint/lint-results.html")
         xmlOutput file("$buildDir/reports/lint/lint-results.xml")
-        disable += [
-                'LogNotTimber',
-                'StringFormatInTimber',
-                'ThrowableNotAtBeginning',
-                'BinaryOperationInTimber',
-                'TimberArgCount',
-                'TimberArgTypes',
-                'TimberTagLength',
-                'TimberExceptionLogging'
-        ]
+        disable += ['LogNotTimber',
+                    'StringFormatInTimber',
+                    'ThrowableNotAtBeginning',
+                    'BinaryOperationInTimber',
+                    'TimberArgCount',
+                    'TimberArgTypes',
+                    'TimberTagLength',
+                    'TimberExceptionLogging']
     }
 
     packagingOptions {
         resources {
-            excludes += [
-                    '**/attach_hotspot_windows.dll',
-                    'META-INF/licenses/**',
-                    'META-INF/AL2.0',
-                    'META-INF/LGPL2.1',
-            ]
+            excludes += ['**/attach_hotspot_windows.dll',
+                         'META-INF/licenses/**',
+                         'META-INF/AL2.0',
+                         'META-INF/LGPL2.1',]
         }
     }
 }

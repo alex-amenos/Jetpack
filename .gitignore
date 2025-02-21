@@ -75,6 +75,9 @@ freeline_project_description.json
 *.war
 *.ear
 
+# Kotlin 2.0
+.kotlin/
+
 # fastlane
 fastlane/report.xml
 fastlane/Preview.html

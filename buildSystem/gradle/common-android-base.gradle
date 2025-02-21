@@ -48,8 +48,11 @@ android {
     }
 
     kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    kotlin.compilerOptions {
         freeCompilerArgs = ['-Xstring-concat=inline']
-        jvmTarget = JavaVersion.VERSION_17
     }
 
     testOptions {
@@ -73,26 +76,22 @@ android {
         ignoreTestSources true
         htmlOutput file("$buildDir/reports/lint/lint-results.html")
         xmlOutput file("$buildDir/reports/lint/lint-results.xml")
-        disable += [
-                'LogNotTimber',
-                'StringFormatInTimber',
-                'ThrowableNotAtBeginning',
-                'BinaryOperationInTimber',
-                'TimberArgCount',
-                'TimberArgTypes',
-                'TimberTagLength',
-                'TimberExceptionLogging'
-        ]
+        disable += ['LogNotTimber',
+                    'StringFormatInTimber',
+                    'ThrowableNotAtBeginning',
+                    'BinaryOperationInTimber',
+                    'TimberArgCount',
+                    'TimberArgTypes',
+                    'TimberTagLength',
+                    'TimberExceptionLogging']
     }
 
     packagingOptions {
         resources {
-            excludes += [
-                    '**/attach_hotspot_windows.dll',
-                    'META-INF/licenses/**',
-                    'META-INF/AL2.0',
-                    'META-INF/LGPL2.1',
-            ]
+            excludes += ['**/attach_hotspot_windows.dll',
+                         'META-INF/licenses/**',
+                         'META-INF/AL2.0',
+                         'META-INF/LGPL2.1',]
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.myplayground.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import arrow.optics.copy
+import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundEvent
 import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundState
@@ -16,10 +16,8 @@ internal class MyPlaygroundViewModel(
             when (event) {
                 MyPlaygroundEvent.GoBackRequested -> throw IllegalStateException("GoBackRequested not implemented")
                 is MyPlaygroundEvent.TextFieldChanged ->
-                    updateUiState {
-                        copy {
-                            MyPlaygroundState.textFieldValue set event.value
-                        }
+                    _uiState.updateCopy {
+                        MyPlaygroundState.textFieldValue set event.value
                     }
             }
         }

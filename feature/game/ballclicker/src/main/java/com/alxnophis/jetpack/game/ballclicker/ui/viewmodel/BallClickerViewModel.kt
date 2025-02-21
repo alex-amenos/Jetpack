@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.game.ballclicker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import arrow.optics.copy
+import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
@@ -44,34 +44,26 @@ internal class BallClickerViewModel(
     }
 
     private fun ballClicked() {
-        updateUiState {
-            copy {
-                BallClickerState.points set (points + 1)
-            }
+        _uiState.updateCopy {
+            BallClickerState.points set (currentState.points + 1)
         }
     }
 
     private fun startGame() =
         viewModelScope.launch {
-            updateUiState {
-                copy {
-                    BallClickerState.isTimerRunning set true
-                    BallClickerState.points set DEFAULT_POINTS
-                }
+            _uiState.updateCopy {
+                BallClickerState.isTimerRunning set true
+                BallClickerState.points set DEFAULT_POINTS
             }
             tickerFlow()
                 .onEach { seconds ->
-                    updateUiState {
-                        copy {
-                            BallClickerState.currentTimeInSeconds set seconds.toInt()
-                        }
+                    _uiState.updateCopy {
+                        BallClickerState.currentTimeInSeconds set seconds.toInt()
                     }
                 }.onCompletion {
-                    updateUiState {
-                        copy {
-                            BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
-                            BallClickerState.isTimerRunning set false
-                        }
+                    _uiState.updateCopy {
+                        BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
+                        BallClickerState.isTimerRunning set false
                     }
                 }.cancellable()
                 .launchIn(timerScope)
@@ -81,11 +73,9 @@ internal class BallClickerViewModel(
     private fun stopGame() =
         viewModelScope.launch {
             timerJob?.cancel()
-            updateUiState {
-                copy {
-                    BallClickerState.isTimerRunning set false
-                    BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
-                }
+            _uiState.updateCopy {
+                BallClickerState.isTimerRunning set false
+                BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
             }
         }
 

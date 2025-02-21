@@ -2,7 +2,7 @@ package com.alxnophis.jetpack.home.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
-import arrow.optics.copy
+import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.NavigationError
@@ -33,26 +33,23 @@ internal class HomeViewModel(
 
     private fun loadNavigationItems() {
         viewModelScope.launch {
-            updateUiState { copy(isLoading = true) }
-            getNavigationItems()
-                .fold(
-                    {
-                        updateUiState {
-                            copy {
-                                HomeState.isLoading set false
-                                HomeState.error set R.string.home_error_loading_navigation_items
-                            }
-                        }
-                    },
-                    { navigationItems ->
-                        updateUiState {
-                            copy {
-                                HomeState.isLoading set false
-                                HomeState.data set navigationItems
-                            }
-                        }
-                    },
-                )
+            _uiState.updateCopy {
+                HomeState.isLoading set true
+            }
+            getNavigationItems().fold(
+                {
+                    _uiState.updateCopy {
+                        HomeState.isLoading set false
+                        HomeState.error set R.string.home_error_loading_navigation_items
+                    }
+                },
+                { navigationItems ->
+                    _uiState.updateCopy {
+                        HomeState.isLoading set false
+                        HomeState.data set navigationItems
+                    }
+                },
+            )
         }
     }
 
@@ -60,10 +57,8 @@ internal class HomeViewModel(
 
     private fun dismissError() {
         viewModelScope.launch {
-            updateUiState {
-                copy {
-                    HomeState.error set NO_ERROR
-                }
+            _uiState.updateCopy {
+                HomeState.error set NO_ERROR
             }
         }
     }
