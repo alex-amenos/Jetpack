@@ -1,21 +1,25 @@
 package com.alxnophis.jetpack.game.ballclicker.ui.view
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,9 +34,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import com.alxnophis.jetpack.core.ui.theme.smallPadding
 import com.alxnophis.jetpack.game.ballclicker.R
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
@@ -52,55 +59,84 @@ internal fun BallClickerScreen(
         onEvent(BallClickerEvent.GoBackRequested)
     }
     AppTheme {
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .windowInsetsPadding(WindowInsets.safeDrawing)
-                    .background(color = MaterialTheme.colorScheme.surface),
-        ) {
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(mediumPadding),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text =
-                        buildString {
-                            append(stringResource(R.string.ball_clicker_points))
-                            append(WHITE_SPACE)
-                            append(state.points)
-                        },
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = state.currentTimeInSeconds.toString(),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-                Button(
-                    onClick = {
-                        if (state.isTimerRunning) {
-                            onEvent(BallClickerEvent.StopRequested)
-                        } else {
-                            onEvent(BallClickerEvent.StartRequested)
-                        }
-                    },
+        Scaffold(
+            topBar = {
+                Row(
+                    modifier =
+                        Modifier
+                            .background(color = MaterialTheme.colorScheme.primary)
+                            .statusBarsPadding()
+                            .displayCutoutPadding()
+                            .fillMaxWidth()
+                            .padding(mediumPadding),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text =
-                            when {
-                                state.isTimerRunning -> stringResource(R.string.ball_clicker_reset)
-                                else -> stringResource(R.string.ball_clicker_start)
+                            buildString {
+                                append(stringResource(R.string.ball_clicker_points))
+                                append(WHITE_SPACE)
+                                append(state.points)
                             },
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
                     )
+                    Text(
+                        text = state.currentTimeInSeconds.toString(),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    )
+                    Button(
+                        onClick = {
+                            if (state.isTimerRunning) {
+                                onEvent(BallClickerEvent.StopRequested)
+                            } else {
+                                onEvent(BallClickerEvent.StartRequested)
+                            }
+                        },
+                        colors =
+                            ButtonColors(
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = DISABLED_CONTENT),
+                                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTENT),
+                            ),
+                        border =
+                            BorderStroke(
+                                width = 2.dp,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                            ),
+                        modifier =
+                            Modifier
+                                .wrapContentWidth()
+                                .padding(horizontal = smallPadding),
+                    ) {
+                        Text(
+                            text =
+                                when {
+                                    state.isTimerRunning -> stringResource(R.string.ball_clicker_reset)
+                                    else -> stringResource(R.string.ball_clicker_start)
+                                },
+                        )
+                    }
                 }
-            }
-            BallClickerContent(enabled = state.isTimerRunning) {
+            },
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.primary),
+            contentWindowInsets = WindowInsets.safeDrawing,
+        ) { paddingValues ->
+            BallClickerContent(
+                enabled = state.isTimerRunning,
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+            ) {
                 onEvent(BallClickerEvent.BallClicked)
             }
         }
@@ -109,12 +145,13 @@ internal fun BallClickerScreen(
 
 @Composable
 private fun BallClickerContent(
+    modifier: Modifier = Modifier,
     radius: Float = 100f,
     enabled: Boolean = false,
     ballColor: Color = MaterialTheme.colorScheme.secondary,
     ballClick: () -> Unit = {},
 ) {
-    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+    BoxWithConstraints(modifier = modifier) {
         var ballPosition by remember {
             mutableStateOf(
                 randomOffset(
@@ -167,5 +204,11 @@ private fun randomOffset(
 @Preview
 @Composable
 private fun BallClickerPreview() {
-    BallClickerContent()
+    val state =
+        BallClickerState(
+            points = 3,
+            currentTimeInSeconds = 20,
+            isTimerRunning = false,
+        )
+    BallClickerScreen(state = state, onEvent = {})
 }
