@@ -45,7 +45,9 @@ internal class PostsViewModel(
 
     private fun updatePosts() {
         viewModelScope.launch {
-            _uiState.updateCopy { PostsStatus.Loading }
+            _uiState.updateCopy {
+                PostsUiState.status set PostsStatus.Loading
+            }
             getPosts().fold(
                 { error ->
                     _uiState.updateCopy {
@@ -74,11 +76,9 @@ internal class PostsViewModel(
         }
 
     private fun dismissError() {
-        updateUiState {
-            copy(
-                status = PostsStatus.Success,
-                error = null,
-            )
+        _uiState.updateCopy {
+            PostsUiState.status set PostsStatus.Success
+            PostsUiState.error set null
         }
     }
 }

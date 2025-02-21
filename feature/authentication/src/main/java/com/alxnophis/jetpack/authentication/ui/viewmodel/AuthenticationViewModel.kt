@@ -2,7 +2,7 @@ package com.alxnophis.jetpack.authentication.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
-import arrow.optics.copy
+import arrow.optics.updateCopy
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
@@ -46,10 +46,8 @@ internal class AuthenticationViewModel(
 
     private fun updateEmail(email: String) {
         viewModelScope.launch {
-            updateUiState {
-                copy {
-                    AuthenticationState.email set email
-                }
+            _uiState.updateCopy {
+                AuthenticationState.email set email
             }
         }
     }
@@ -66,37 +64,29 @@ internal class AuthenticationViewModel(
             if (newPassword.any { it.isDigit() }) {
                 requirements.add(PasswordRequirements.NUMBER)
             }
-            updateUiState {
-                copy {
-                    AuthenticationState.password set newPassword
-                    AuthenticationState.passwordRequirements set requirements.toList()
-                }
+            _uiState.updateCopy {
+                AuthenticationState.password set newPassword
+                AuthenticationState.passwordRequirements set requirements.toList()
             }
         }
     }
 
     private fun authenticate() {
         viewModelScope.launch {
-            updateUiState {
-                copy {
-                    AuthenticationState.isLoading set true
-                }
+            _uiState.updateCopy {
+                AuthenticationState.isLoading set true
             }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
-                    updateUiState {
-                        copy {
-                            AuthenticationState.isLoading set false
-                            AuthenticationState.error set R.string.authentication_auth_error
-                        }
+                    _uiState.updateCopy {
+                        AuthenticationState.isLoading set false
+                        AuthenticationState.error set R.string.authentication_auth_error
                     }
                 },
                 {
-                    updateUiState {
-                        copy {
-                            AuthenticationState.isLoading set false
-                            AuthenticationState.isUserAuthorized set true
-                        }
+                    _uiState.updateCopy {
+                        AuthenticationState.isLoading set false
+                        AuthenticationState.isUserAuthorized set true
                     }
                 },
             )
@@ -105,10 +95,8 @@ internal class AuthenticationViewModel(
 
     private fun dismissError() {
         viewModelScope.launch {
-            updateUiState {
-                copy {
-                    AuthenticationState.error set NO_ERROR
-                }
+            _uiState.updateCopy {
+                AuthenticationState.error set NO_ERROR
             }
         }
     }
@@ -119,32 +107,26 @@ internal class AuthenticationViewModel(
                 AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
                 else -> AuthenticationMode.SIGN_IN
             }
-        updateUiState {
-            copy {
-                AuthenticationState.authenticationMode set newAuthenticationMode
-                AuthenticationState.email set EMPTY
-                AuthenticationState.password set EMPTY
-            }
+        _uiState.updateCopy {
+            AuthenticationState.authenticationMode set newAuthenticationMode
+            AuthenticationState.email set EMPTY
+            AuthenticationState.password set EMPTY
         }
     }
 
     private fun setUserNotAuthorized() {
         viewModelScope.launch {
-            updateUiState {
-                copy {
-                    AuthenticationState.isUserAuthorized set false
-                }
+            _uiState.updateCopy {
+                AuthenticationState.isUserAuthorized set false
             }
         }
     }
 
     private fun autoCompleteAuthorization() {
         viewModelScope.launch {
-            updateUiState {
-                copy {
-                    AuthenticationState.email set AUTHORIZED_EMAIL
-                    AuthenticationState.password set AUTHORIZED_PASSWORD
-                }
+            _uiState.updateCopy {
+                AuthenticationState.email set AUTHORIZED_EMAIL
+                AuthenticationState.password set AUTHORIZED_PASSWORD
             }
         }
     }

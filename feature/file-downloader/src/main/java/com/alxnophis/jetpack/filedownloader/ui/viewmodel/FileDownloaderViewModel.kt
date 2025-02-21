@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.filedownloader.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import arrow.optics.copy
+import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.extensions.isValidUrl
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.filedownloader.R
@@ -45,20 +45,16 @@ internal class FileDownloaderViewModel(
                 .combine(fileDownloaderRepository.downloadedFiles) { downloadingFiles, downloadedFiles ->
                     val downloadingList = downloadingFiles.map { it.mapTo(DOWNLOADING_STATUS) }
                     val downloadedList = downloadedFiles.map { it.mapTo(DOWNLOADED_STATUS) }
-                    updateUiState {
-                        copy {
-                            FileDownloaderState.fileStatusList set (downloadingList + downloadedList)
-                        }
+                    _uiState.updateCopy {
+                        FileDownloaderState.fileStatusList set (downloadingList + downloadedList)
                     }
                 }.collect()
         }
 
     private fun updateUrl(url: String) {
         viewModelScope.launch {
-            updateUiState {
-                copy {
-                    FileDownloaderState.url set url
-                }
+            _uiState.updateCopy {
+                FileDownloaderState.url set url
             }
         }
     }
@@ -77,17 +73,13 @@ internal class FileDownloaderViewModel(
                                     FileDownloaderError.FileDownloading -> R.string.file_downloader_file_downloading
                                     FileDownloaderError.Unknown -> R.string.file_downloader_generic_error
                                 }
-                            updateUiState {
-                                copy {
-                                    FileDownloaderState.error set errorResId
-                                }
+                            _uiState.updateCopy {
+                                FileDownloaderState.error set errorResId
                             }
                         },
                         {
-                            updateUiState {
-                                copy {
-                                    FileDownloaderState.url set EMPTY
-                                }
+                            _uiState.updateCopy {
+                                FileDownloaderState.url set EMPTY
                             }
                         },
                     )
@@ -96,10 +88,8 @@ internal class FileDownloaderViewModel(
     }
 
     private fun dismissError() {
-        updateUiState {
-            copy {
-                FileDownloaderState.error set NO_ERROR
-            }
+        _uiState.updateCopy {
+            FileDownloaderState.error set NO_ERROR
         }
     }
 

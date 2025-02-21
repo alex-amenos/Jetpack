@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.location.tracker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import arrow.optics.copy
+import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.base.constants.BREAK_LINE
 import com.alxnophis.jetpack.core.base.constants.COMA
 import com.alxnophis.jetpack.core.base.constants.PARENTHESES_CLOSED
@@ -59,10 +59,8 @@ internal class LocationTrackerViewModel(
     private fun subscribeToUserLocation() =
         viewModelScope.launch {
             locationStateUseCase().collectLatest { locationState ->
-                updateUiState {
-                    copy {
-                        LocationTrackerState.userLocation set locationState.parseToString()
-                    }
+                _uiState.updateCopy {
+                    LocationTrackerState.userLocation set locationState.parseToString()
                 }
             }
         }
@@ -71,10 +69,8 @@ internal class LocationTrackerViewModel(
         viewModelScope.launch {
             lastKnownLocationUseCase().collectLatest { lastKnownLocation ->
                 lastKnownLocation?.let { location ->
-                    updateUiState {
-                        copy {
-                            LocationTrackerState.lastKnownLocation set location.parseToString()
-                        }
+                    _uiState.updateCopy {
+                        LocationTrackerState.lastKnownLocation set location.parseToString()
                     }
                 }
             }
