@@ -34,7 +34,7 @@ koin-android = "3.4.2"
 koin-android-compose = "3.4.5"
 koin-android-work-manager = "3.3.3"
 koin-test = "3.3.3"
-kotlin-gradle-plugin = "1.9.24"
+kotlin = "2.0.0"
 kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
 kover = "0.6.1"
@@ -107,13 +107,13 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", vers
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "org-junit-jupiter" }
 junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit-vintage-engine" }
 kluent = { module = "org.amshove.kluent:kluent-android", version.ref = "kluent" }
-kluent-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin-gradle-plugin" }
+kluent-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
 koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-android-work-manager" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
@@ -173,9 +173,10 @@ retrofit = [
 [plugins]
 android-application = "com.android.application:8.8.1"
 android-compose-screenshot = "com.android.compose.screenshot:0.0.1-alpha08"
+android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
-google-ksp = "com.google.devtools.ksp:1.9.10-1.0.13"
-kotlin-android = "org.jetbrains.kotlin.android:1.9.10"
-kotlin-serialization = "org.jetbrains.kotlin.plugin.serialization:1.9.10"
+google-ksp = "com.google.devtools.ksp:2.0.20-1.0.25"
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = "org.jetbrains.kotlinx.kover:0.6.1"
 version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"

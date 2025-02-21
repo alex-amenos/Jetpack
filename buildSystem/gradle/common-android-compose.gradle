@@ -1,14 +1,14 @@
 apply plugin: 'com.android.compose.screenshot'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+
+composeCompiler {
+    enableStrongSkippingMode = false
+    includeSourceInformation = true
+}
 
 android {
     buildFeatures {
         compose true
-    }
-
-    // Jetpack Compose to Kotlin Compatibility Map:
-    // https://developer.android.com/jetpack/androidx/releases/compose-kotlin
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.androidx.compose.compiler.get()
     }
 
     testOptions {
