@@ -28,12 +28,14 @@ plugins {
 }
 
 allprojects {
-    tasks.withType(Test) {
-        testLogging {
-            exceptionFormat 'full'
-            events 'started', 'skipped', 'passed', 'failed'
-            showStandardStreams true
-            outputs.upToDateWhen { false }
+    tasks.withType(Test).tap {
+        configureEach {
+            testLogging {
+                exceptionFormat 'full'
+                events 'started', 'skipped', 'passed', 'failed'
+                showStandardStreams true
+                outputs.upToDateWhen { false }
+            }
         }
     }
 }
