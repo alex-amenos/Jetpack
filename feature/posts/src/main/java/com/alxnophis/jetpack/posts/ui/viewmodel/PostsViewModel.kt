@@ -26,11 +26,14 @@ internal class PostsViewModel(
     initialState: PostsUiState = PostsUiState.initialState,
 ) : BaseViewModel<PostsEvent, PostsUiState>(initialState) {
     override val uiState: StateFlow<PostsUiState> =
-        _uiState.onStart { updatePosts() }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(VIEW_MODEL_STOP_TIMEOUT_MILLIS),
-            initialValue = initialState,
-        )
+        _uiState
+            .onStart {
+                if (currentState.posts.isEmpty()) updatePosts()
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(VIEW_MODEL_STOP_TIMEOUT_MILLIS),
+                initialValue = initialState,
+            )
 
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
