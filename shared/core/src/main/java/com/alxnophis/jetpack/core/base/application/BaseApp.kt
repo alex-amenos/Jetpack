@@ -10,6 +10,7 @@ import com.alxnophis.jetpack.core.di.KoinLogger
 import com.alxnophis.jetpack.core.di.coreModule
 import com.alxnophis.jetpack.core.extensions.isDebugBuildType
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
@@ -26,6 +27,7 @@ open class BaseApp : Application() {
         val koinApp =
             startKoin {
                 androidContext(this@BaseApp)
+                androidLogger()
                 modules(
                     listOf(
                         coreModule,
