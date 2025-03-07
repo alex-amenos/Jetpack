@@ -49,13 +49,15 @@ tasks.register('clean', Delete) {
     delete rootProject.layout.buildDirectory
 }
 
-task installGitHook(type: Copy) {
+tasks.register('installGitHook', Copy) {
     from new File(rootProject.rootDir, 'buildSystem/githooks/prepare-commit-msg')
     into { new File(rootProject.rootDir, '.git/hooks') }
     fileMode 0755
 }
 
-tasks.getByPath(':app:preBuild').dependsOn installGitHook
+afterEvaluate {
+    tasks.getByPath(':app:preBuild').dependsOn installGitHook
+}
 
 // Multi-module reports for instrumented tests
 // https://developer.android.com/studio/test/command-line#multi-module-reports-instrumented-tests
