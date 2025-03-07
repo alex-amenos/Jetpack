@@ -1,13 +1,14 @@
 [versions]
-android-gradle-plugin = "8.8.1"
+android-compose-screenshot = "0.0.1-alpha08"
+android-gradle-plugin = "8.8.2"
 android-junit5-plugin = "1.8.2.1"
-androidx-activity = "1.10.0"
+androidx-activity = "1.10.1"
 androidx-annotations = "1.9.1"
 androidx-appcompat = "1.7.0"
 androidx-arch-core = "2.2.0"
 androidx-compose-bom = "2025.02.00"
-androidx-compose-constraint-layout = "1.1.0"
-androidx-compose-navigation = "2.8.7"
+androidx-compose-constraint-layout = "1.1.1"
+androidx-compose-navigation = "2.8.8"
 androidx-compose-viewmodel = "2.8.7"
 androidx-core-ktx = "1.15.0"
 androidx-lifecycle = "2.8.7"
@@ -170,8 +171,8 @@ retrofit = [
 ]
 
 [plugins]
-android-application = "com.android.application:8.8.1"
-android-compose-screenshot = "com.android.compose.screenshot:0.0.1-alpha08"
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-compose-screenshot = { id = "com.android.compose.screenshot", version.ref = "android-compose-screenshot" }
 android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
 google-ksp = "com.google.devtools.ksp:2.1.10-1.0.30"
