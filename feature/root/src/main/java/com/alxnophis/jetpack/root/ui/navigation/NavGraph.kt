@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.root.ui.navigation
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,8 +13,6 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -41,7 +38,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun SetupNavGraph(navHostController: NavHostController) {
     AppTheme {
-        SetStatusBarColor()
         NavHost(
             navController = navHostController,
             startDestination = Route.Home,
@@ -190,11 +186,4 @@ private fun NavGraphBuilder.settings(navHostController: NavHostController) {
     composable<Route.Settings> {
         SettingsFeature(onBack = { navHostController.popBackStack() })
     }
-}
-
-@Composable
-internal fun SetStatusBarColor() {
-    val activity = LocalView.current.context as Activity
-    val colorArgb = MaterialTheme.colorScheme.primary.toArgb()
-    activity.window.statusBarColor = colorArgb
 }
