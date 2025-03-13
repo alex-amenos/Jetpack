@@ -1,14 +1,14 @@
 [versions]
-android-compose-screenshot = "0.0.1-alpha08"
-android-gradle-plugin = "8.8.2"
+android-compose-screenshot = "0.0.1-alpha09"
+android-gradle-plugin = "8.9.0"
 android-junit5-plugin = "1.8.2.1"
 androidx-activity = "1.10.1"
 androidx-annotations = "1.9.1"
 androidx-appcompat = "1.7.0"
 androidx-arch-core = "2.2.0"
-androidx-compose-bom = "2025.02.00"
+androidx-compose-bom = "2025.03.00"
 androidx-compose-constraint-layout = "1.1.1"
-androidx-compose-navigation = "2.8.8"
+androidx-compose-navigation = "2.8.9"
 androidx-compose-viewmodel = "2.8.7"
 androidx-core-ktx = "1.15.0"
 androidx-lifecycle = "2.8.7"
@@ -20,7 +20,6 @@ androidx-work = "2.10.0"
 arrow-stack = "2.0.1"
 chucker = "4.1.0"
 coil = "2.2.2"
-com-google-accompanist = "0.25.1"
 com-squareup-okhttp3 = "4.12.0"
 com-squareup-retrofit2 = "2.9.0"
 google-android-material = "1.12.0"
@@ -97,7 +96,6 @@ arrow-optics-ksp-plugin = { module = "io.arrow-kt:arrow-optics-ksp-plugin", vers
 arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
 arrow-stack = { module = "io.arrow-kt:arrow-stack", version.ref = "arrow-stack" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-google-accompanits-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "com-google-accompanist" }
 google-android-material = { module = "com.google.android.material:material", version.ref = "google-android-material" }
 google-play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "google-play-services-location" }
 gradle-test-logger-plugin = { module = "com.adarshr:gradle-test-logger-plugin", version.ref = "gradle-test-logger-plugin" }

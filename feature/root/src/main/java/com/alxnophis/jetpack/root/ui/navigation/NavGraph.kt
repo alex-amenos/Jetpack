@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.root.ui.navigation
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,34 +11,33 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.alxnophis.jetpack.authentication.ui.view.AuthenticationFeature
-import com.alxnophis.jetpack.authentication.ui.view.AuthorizedFeature
+import com.alxnophis.jetpack.authentication.ui.composable.AuthenticationFeature
+import com.alxnophis.jetpack.authentication.ui.composable.AuthorizedFeature
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.filedownloader.ui.view.FileDownloaderFeature
-import com.alxnophis.jetpack.game.ballclicker.ui.view.BallClickerFeature
+import com.alxnophis.jetpack.filedownloader.ui.composable.FileDownloaderFeature
+import com.alxnophis.jetpack.game.ballclicker.ui.composable.BallClickerFeature
 import com.alxnophis.jetpack.home.domain.model.Feature
-import com.alxnophis.jetpack.home.ui.view.HomeFeature
-import com.alxnophis.jetpack.location.tracker.ui.view.LocationTrackerFeature
-import com.alxnophis.jetpack.myplayground.ui.view.MyPlaygroundFeature
+import com.alxnophis.jetpack.home.ui.composable.HomeFeature
+import com.alxnophis.jetpack.location.tracker.ui.composable.LocationTrackerFeature
+import com.alxnophis.jetpack.myplayground.ui.composable.MyPlaygroundFeature
 import com.alxnophis.jetpack.notifications.ui.navigation.NotificationsFeature
 import com.alxnophis.jetpack.posts.data.model.Post
-import com.alxnophis.jetpack.posts.ui.view.PostDetailFeature
-import com.alxnophis.jetpack.posts.ui.view.PostsFeature
+import com.alxnophis.jetpack.posts.ui.composable.PostDetailFeature
+import com.alxnophis.jetpack.posts.ui.composable.PostsFeature
 import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
+import kotlinx.coroutines.launch
 
 @SuppressLint("ComposeModifierMissing")
 @Composable
 fun SetupNavGraph(navHostController: NavHostController) {
     AppTheme {
-        SetStatusBarColor()
         NavHost(
             navController = navHostController,
             startDestination = Route.Home,
@@ -139,9 +137,17 @@ private fun NavGraphBuilder.locationTracker(navHostController: NavHostController
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 private fun NavGraphBuilder.posts(navHostController: NavHostController) {
     composable<Route.Posts> {
+        val coroutineScope = rememberCoroutineScope()
         val navigator = rememberListDetailPaneScaffoldNavigator<Post>()
+        val navigateBack: () -> Unit = {
+            coroutineScope.launch {
+                navigator.navigateBack()
+            }
+        }
         BackHandler(navigator.canNavigateBack()) {
-            navigator.navigateBack()
+            coroutineScope.launch {
+                navigateBack()
+            }
         }
         ListDetailPaneScaffold(
             directive = navigator.scaffoldDirective,
@@ -150,7 +156,9 @@ private fun NavGraphBuilder.posts(navHostController: NavHostController) {
                 AnimatedPane {
                     PostsFeature(
                         onPostSelected = { post ->
-                            navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, post)
+                            coroutineScope.launch {
+                                navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, post)
+                            }
                         },
                         onBack = { navHostController.popBackStack() },
                     )
@@ -158,10 +166,10 @@ private fun NavGraphBuilder.posts(navHostController: NavHostController) {
             },
             detailPane = {
                 AnimatedPane {
-                    navigator.currentDestination?.content?.let { post ->
+                    navigator.currentDestination?.contentKey?.let { post ->
                         PostDetailFeature(
                             post = post,
-                            onBack = { navigator.navigateBack() },
+                            onBack = { navigateBack() },
                         )
                     }
                 }
@@ -178,11 +186,4 @@ private fun NavGraphBuilder.settings(navHostController: NavHostController) {
     composable<Route.Settings> {
         SettingsFeature(onBack = { navHostController.popBackStack() })
     }
-}
-
-@Composable
-internal fun SetStatusBarColor() {
-    val activity = LocalView.current.context as Activity
-    val colorArgb = MaterialTheme.colorScheme.primary.toArgb()
-    activity.window.statusBarColor = colorArgb
 }

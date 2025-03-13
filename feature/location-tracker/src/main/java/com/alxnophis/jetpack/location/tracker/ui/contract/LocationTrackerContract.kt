@@ -5,22 +5,24 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 
-internal sealed class LocationTrackerEvent : UiEvent {
-    data object FineLocationPermissionGranted : LocationTrackerEvent()
+internal sealed class LocationTrackerUiEvent : UiEvent {
+    data object FineLocationPermissionGrantedUi : LocationTrackerUiEvent()
 
-    data object StopTrackingRequested : LocationTrackerEvent()
+    data object StopTrackingRequested : LocationTrackerUiEvent()
 
-    data object GoBackRequested : LocationTrackerEvent()
+    data object GoBackRequested : LocationTrackerUiEvent()
 }
 
 @optics
-internal data class LocationTrackerState(
+internal data class LocationTrackerUiState(
+    val isFineLocationPermissionGranted: Boolean,
     val userLocation: String,
     val lastKnownLocation: String,
 ) : UiState {
     internal companion object {
         val initialState =
-            LocationTrackerState(
+            LocationTrackerUiState(
+                isFineLocationPermissionGranted = false,
                 userLocation = EMPTY,
                 lastKnownLocation = EMPTY,
             )
