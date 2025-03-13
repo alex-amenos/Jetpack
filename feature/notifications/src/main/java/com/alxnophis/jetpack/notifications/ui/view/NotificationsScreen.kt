@@ -74,9 +74,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var hasNotificationPermission by remember {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            mutableStateOf(
-                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED,
-            )
+            mutableStateOf(ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED)
         } else {
             mutableStateOf(true)
         }
