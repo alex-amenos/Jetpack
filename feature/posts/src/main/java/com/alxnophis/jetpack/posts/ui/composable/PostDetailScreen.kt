@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -39,21 +40,6 @@ internal fun PostDetailScreen(
 ) {
     AppTheme {
         Scaffold(
-            topBar = {
-                IconButton(
-                    modifier =
-                        Modifier
-                            .systemBarsPadding()
-                            .testTag(CoreTags.TAG_CORE_BACK),
-                    onClick = onNavigateBack,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(id = R.string.core_cd_close),
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                }
-            },
             modifier =
                 Modifier
                     .fillMaxSize()
@@ -67,11 +53,25 @@ internal fun PostDetailScreen(
                         .padding(paddingValues)
                         .verticalScroll(rememberScrollState()),
             ) {
+                IconButton(
+                    modifier =
+                        Modifier
+                            .wrapContentWidth()
+                            .align(Alignment.End)
+                            .testTag(CoreTags.TAG_CORE_BACK),
+                    onClick = onNavigateBack,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(id = R.string.core_cd_close),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
                 Text(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
@@ -82,7 +82,7 @@ internal fun PostDetailScreen(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 24.dp),
+                            .padding(horizontal = 8.dp, vertical = 24.dp),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge,
                     text = post.body,
@@ -96,6 +96,7 @@ internal fun PostDetailScreen(
 @Preview(fontScale = 1f)
 @Preview(fontScale = 1.5f)
 @Preview(fontScale = 2f)
+@Preview(widthDp = 640, heightDp = 360)
 @Composable
 internal fun PostDetailPreview(
     @PreviewParameter(PostDetailPreviewProvider::class) post: Post,
