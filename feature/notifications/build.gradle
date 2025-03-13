@@ -4,7 +4,3 @@ android {
     resourcePrefix = 'notifications'
     namespace = 'com.alxnophis.jetpack.notifications'
 }
-
-dependencies {
-    implementation libs.google.accompanits.permissions
-}
