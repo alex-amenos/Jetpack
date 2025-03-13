@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.safeGestures
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -43,7 +44,7 @@ internal fun PostDetailScreen(
                 IconButton(
                     modifier =
                         Modifier
-                            .safeDrawingPadding()
+                            .systemBarsPadding()
                             .testTag(CoreTags.TAG_CORE_BACK),
                     onClick = onNavigateBack,
                 ) {
@@ -58,7 +59,7 @@ internal fun PostDetailScreen(
                 Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface),
-            contentWindowInsets = WindowInsets.safeDrawing,
+            contentWindowInsets = WindowInsets.safeGestures,
         ) { paddingValues ->
             Column(
                 modifier =
@@ -93,7 +94,9 @@ internal fun PostDetailScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(fontScale = 1f)
+@Preview(fontScale = 1.5f)
+@Preview(fontScale = 2f)
 @Composable
 internal fun PostDetailPreview(
     @PreviewParameter(PostDetailPreviewProvider::class) post: Post,

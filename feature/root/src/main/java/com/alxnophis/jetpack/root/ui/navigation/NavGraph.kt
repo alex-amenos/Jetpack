@@ -12,6 +12,7 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
@@ -34,6 +35,7 @@ import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.view.PostDetailFeature
 import com.alxnophis.jetpack.posts.ui.view.PostsFeature
 import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
+import kotlinx.coroutines.launch
 
 @SuppressLint("ComposeModifierMissing")
 @Composable
@@ -139,9 +141,17 @@ private fun NavGraphBuilder.locationTracker(navHostController: NavHostController
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 private fun NavGraphBuilder.posts(navHostController: NavHostController) {
     composable<Route.Posts> {
+        val coroutineScope = rememberCoroutineScope()
         val navigator = rememberListDetailPaneScaffoldNavigator<Post>()
+        val navigateBack: () -> Unit = {
+            coroutineScope.launch {
+                navigator.navigateBack()
+            }
+        }
         BackHandler(navigator.canNavigateBack()) {
-            navigator.navigateBack()
+            coroutineScope.launch {
+                navigateBack()
+            }
         }
         ListDetailPaneScaffold(
             directive = navigator.scaffoldDirective,
@@ -150,7 +160,9 @@ private fun NavGraphBuilder.posts(navHostController: NavHostController) {
                 AnimatedPane {
                     PostsFeature(
                         onPostSelected = { post ->
-                            navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, post)
+                            coroutineScope.launch {
+                                navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, post)
+                            }
                         },
                         onBack = { navHostController.popBackStack() },
                     )
@@ -158,10 +170,10 @@ private fun NavGraphBuilder.posts(navHostController: NavHostController) {
             },
             detailPane = {
                 AnimatedPane {
-                    navigator.currentDestination?.content?.let { post ->
+                    navigator.currentDestination?.contentKey?.let { post ->
                         PostDetailFeature(
                             post = post,
-                            onBack = { navigator.navigateBack() },
+                            onBack = { navigateBack() },
                         )
                     }
                 }
