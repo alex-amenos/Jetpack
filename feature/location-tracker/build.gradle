@@ -7,7 +7,6 @@ android {
 
 dependencies {
     implementation libs.androidx.work
-    implementation libs.google.accompanits.permissions
     implementation libs.google.play.services.location
     implementation libs.koin.android.work.manager
 }
