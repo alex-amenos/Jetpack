@@ -5,7 +5,7 @@ import androidx.compose.ui.test.onNodeWithText
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
-class SettingsAppVersionTest : BaseComposeTest() {
+internal class SettingsAppVersionTest : BaseComposeTest() {
     @Test
     fun app_version_displayed() {
         composeTestRule.setContent {

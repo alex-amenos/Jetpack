@@ -21,7 +21,7 @@ import com.alxnophis.jetpack.settings.ui.contract.notificationsEnabled
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
-class SettingsTest : BaseComposeTest() {
+internal class SettingsTest : BaseComposeTest() {
     @Test
     fun settings_enable_notifications_is_displayed() {
         setSettingsContent()

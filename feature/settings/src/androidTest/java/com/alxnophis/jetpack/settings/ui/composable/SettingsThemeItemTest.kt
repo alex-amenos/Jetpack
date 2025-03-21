@@ -10,7 +10,7 @@ import com.alxnophis.jetpack.settings.ui.contract.Theme
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
-class SettingsThemeItemTest : BaseComposeTest() {
+internal class SettingsThemeItemTest : BaseComposeTest() {
     @Test
     fun selected_theme_displayed() {
         val option = Theme.DARK

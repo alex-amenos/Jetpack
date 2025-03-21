@@ -8,7 +8,7 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
-class SettingsManageSubscriptionItemTest : BaseComposeTest() {
+internal class SettingsManageSubscriptionItemTest : BaseComposeTest() {
     @Test
     fun title_displayed() {
         val title = "Manage Subscription"

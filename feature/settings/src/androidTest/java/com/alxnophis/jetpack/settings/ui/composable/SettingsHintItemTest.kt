@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import com.alxnophis.jetpack.testing.base.BaseComposeTest
 import org.junit.Test
 
-class SettingsHintItemTest : BaseComposeTest() {
+internal class SettingsHintItemTest : BaseComposeTest() {
     @Test
     fun title_displayed() {
         val title = "Show Hints"
