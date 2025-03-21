@@ -18,7 +18,7 @@ dependencies {
     debugImplementation libs.leak.canary
 
     testImplementation libs.kotlinx.coroutines.test
-    testImplementation libs.junit
+    testImplementation(platform(libs.junit.bom))
     testImplementation libs.junit.jupiter.api
     testImplementation libs.junit.jupiter.params
     testImplementation libs.kluent
@@ -27,6 +27,7 @@ dependencies {
     testImplementation libs.bundles.mockito
     testImplementation libs.turbine
 
+    testRuntimeOnly libs.junit.platform.launcher
     testRuntimeOnly libs.junit.jupiter.engine
     testRuntimeOnly libs.junit.vintage.engine
 

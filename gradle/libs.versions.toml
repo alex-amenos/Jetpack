@@ -25,8 +25,7 @@ com-squareup-retrofit2 = "2.9.0"
 google-android-material = "1.12.0"
 google-play-services-location = "21.3.0"
 gradle-test-logger-plugin = "3.2.0"
-junit = "4.13.2"
-junit-vintage-engine = "5.9.2"
+junit_bom = "5.12.1"
 kluent = "1.72"
 koin-android = "3.4.2"
 koin-android-compose = "3.4.5"
@@ -41,7 +40,6 @@ kotlinx-serialization-json = "1.6.3"
 leak-canary = "2.10"
 mockito-kotlin = "4.1.0"
 okhttp-profiler = "1.0.8"
-org-junit-jupiter = "5.9.2"
 org-mockito = "5.2.0"
 slack-lint-compose = "1.1.1"
 timber = "5.0.1"
@@ -99,11 +97,12 @@ coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 google-android-material = { module = "com.google.android.material:material", version.ref = "google-android-material" }
 google-play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "google-play-services-location" }
 gradle-test-logger-plugin = { module = "com.adarshr:gradle-test-logger-plugin", version.ref = "gradle-test-logger-plugin" }
-junit = { module = "junit:junit", version.ref = "junit" }
-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "org-junit-jupiter" }
-junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "org-junit-jupiter" }
-junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "org-junit-jupiter" }
-junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit-vintage-engine" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit_bom" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params" }
+junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 kluent = { module = "org.amshove.kluent:kluent-android", version.ref = "kluent" }
 kluent-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
