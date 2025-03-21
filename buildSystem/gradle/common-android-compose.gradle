@@ -35,8 +35,11 @@ dependencies {
     androidTestImplementation project(Modules.SHARED_TESTING)
     androidTestImplementation libs.androidx.compose.ui.test
 
+    screenshotTestImplementation(platform(libs.junit.bom))
     screenshotTestImplementation libs.androidx.compose.ui.tooling
+    screenshotTestImplementation libs.junit.platform.launcher
     screenshotTestImplementation libs.junit.jupiter.engine
+    screenshotTestImplementation libs.junit.vintage.engine
 
     // https://slackhq.github.io/compose-lints/
     lintChecks libs.slack.lint.compose
