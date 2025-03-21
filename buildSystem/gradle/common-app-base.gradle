@@ -49,9 +49,6 @@ android {
             def newApkName = project + SEP + buildType + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
             outputFileName = new File(newApkName)
         }
-        if (variant.buildType.name == "debug") {
-            variant.mergedFlavor.resourceConfigurations.add("xxhdpi")
-        }
     }
 
     compileOptions {
