@@ -6,6 +6,8 @@ It is a personal project to experiment with Android development.
 
 You can read about the Jetpack playgrounds [here](./docs/jetpack_playgrounds.md)
 
+To learn about the project's architecture, read [here](https://deepwiki.com/alex-amenos/Jetpack).
+
 ## Project Status
 
 ### Main
