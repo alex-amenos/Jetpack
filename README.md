@@ -23,6 +23,7 @@ To learn about the project's architecture, read [here](https://deepwiki.com/alex
 - [Kotlin Coding conventions](https://kotlinlang.org/docs/coding-conventions.html)
 - [Compose Lints rules by Slack](https://slackhq.github.io/compose-lints/rules/)
 - [Ktlint rules by Pinterest](https://pinterest.github.io/ktlint/rules/standard/)
-- [BOM to library version mapping](https://developer.android.com/jetpack/compose/bom/bom-mapping)
+- [AndroidX libraries versions](https://developer.android.com/jetpack/androidx/versions)
+- [Compose BOM version mapping](https://developer.android.com/jetpack/compose/bom/bom-mapping)
 - [Jetpack Compose to Kotlin compatibility map](https://developer.android.com/jetpack/androidx/releases/compose-kotlin)
 - [Google app architecture](https://developer.android.com/topic/architecture/intro)
