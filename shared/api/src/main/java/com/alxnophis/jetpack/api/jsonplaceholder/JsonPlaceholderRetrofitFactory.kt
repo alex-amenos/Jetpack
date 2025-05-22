@@ -6,10 +6,12 @@ import com.alxnophis.jetpack.api.BuildConfig
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
 class JsonPlaceholderRetrofitFactory(
@@ -36,7 +38,7 @@ class JsonPlaceholderRetrofitFactory(
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addCallAdapterFactory(EitherCallAdapterFactory())
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(jsonConverter)
             .build()
             .create(JsonPlaceholderRetrofitService::class.java)
 
@@ -55,5 +57,8 @@ class JsonPlaceholderRetrofitFactory(
         private const val TIMEOUT_CONNECT = 10L
         private const val TIMEOUT_READ = 10L
         private const val TIMEOUT_WRITE = 10L
+        private val contentType = "application/json; charset=UTF8".toMediaType()
+        private val jsonConfiguration = Json { ignoreUnknownKeys = true }
+        private val jsonConverter = jsonConfiguration.asConverterFactory(contentType)
     }
 }

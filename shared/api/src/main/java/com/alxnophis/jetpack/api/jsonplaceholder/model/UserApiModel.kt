@@ -1,31 +1,38 @@
 package com.alxnophis.jetpack.api.jsonplaceholder.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class UserApiModel(
-    val id: Int,
-    val name: String,
-    val username: String,
-    val email: String,
-    val address: AddressApiModel,
-    val phone: String,
-    val website: String,
-    val company: CompanyApiModel,
+    @SerialName("id") val id: Int,
+    @SerialName("name") val name: String,
+    @SerialName("username") val username: String,
+    @SerialName("email") val email: String,
+    @SerialName("address") val address: AddressApiModel,
+    @SerialName("phone") val phone: String,
+    @SerialName("website") val website: String,
+    @SerialName("company") val company: CompanyApiModel,
 )
 
+@Serializable
 data class AddressApiModel(
-    val street: String,
-    val suite: String,
-    val city: String,
-    val zipcode: String,
-    val geo: GeoApiModel,
+    @SerialName("street") val street: String,
+    @SerialName("suite") val suite: String,
+    @SerialName("city") val city: String,
+    @SerialName("zipcode") val zipcode: String,
+    @SerialName("geo") val geo: GeoApiModel,
 )
 
+@Serializable
 data class GeoApiModel(
-    val lat: String,
-    val lng: String,
+    @SerialName("lat") val lat: String,
+    @SerialName("lng") val lng: String,
 )
 
+@Serializable
 data class CompanyApiModel(
-    val name: String,
-    val catchPhrase: String,
-    val bs: String,
+    @SerialName("name") val name: String,
+    @SerialName("catchPhrase") val catchPhrase: String,
+    @SerialName("bs") val bs: String,
 )
