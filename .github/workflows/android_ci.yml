@@ -4,24 +4,21 @@ on:
   push:
     branches: [ develop, main ]
   pull_request:
-    branches: [ develop, main ]
+
+permissions:
+  actions: write
+  contents: read
 
 jobs:
-
-  cancel_previous:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Cancel Previous Workflow Runs
-        uses: n1hility/cancel-previous-runs@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
   quality_and_build_release:
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Workflow Runs
+        uses: n1hility/cancel-previous-runs@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -60,5 +57,5 @@ jobs:
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: Signed Jetpack APK
+          name: Signed Release APK
           path: ${{steps.sign_app.outputs.signedFile}}
