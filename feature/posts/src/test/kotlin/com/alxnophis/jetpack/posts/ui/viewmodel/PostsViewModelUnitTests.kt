@@ -74,11 +74,14 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
     fun `GIVEN get posts succeeds WHEN update posts is requested THEN verify get posts AND update uiState`() {
         runTest {
             val viewModel = viewModelMother()
-            whenever(postRepositoryMock.getPosts()).thenReturn(postList.right())
+            whenever(postRepositoryMock.getPosts())
+                .thenReturn(emptyList<Post>().right())
+                .thenReturn(postList.right())
 
             viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
             viewModel.uiState.test {
+                skipItems(2)
                 awaitItem() shouldBeEqualTo PostsUiState.initialState
                 awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList)
                 expectNoEvents()
@@ -97,7 +100,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
             viewModel.handleEvent(PostsEvent.DismissErrorRequested)
 
             viewModel.uiState.test {
-                skipItems(1)
+                skipItems(2)
                 awaitItem() shouldBeEqualTo initialState.copy(status = PostsStatus.Success, error = null)
                 expectNoEvents()
             }
