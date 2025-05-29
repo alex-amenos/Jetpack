@@ -101,14 +101,16 @@ private fun PostContent(
                     uiState = uiState,
                     handleEvent = handleEvent,
                     lazyListState = lazyListState,
-                    modifier = Modifier.fillMaxSize(),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .drawVerticalScrollbar(lazyListState),
                 )
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PostList(
     uiState: PostsUiState,
@@ -116,39 +118,30 @@ private fun PostList(
     modifier: Modifier = Modifier,
     handleEvent: PostsEvent.() -> Unit,
 ) {
-    PullToRefreshBox(
-        isRefreshing = uiState.isLoading,
-        onRefresh = { PostsEvent.OnUpdatePostsRequested.handleEvent() },
+    LazyColumn(
+        state = lazyListState,
         modifier = modifier,
+        contentPadding =
+            PaddingValues(
+                start = WindowInsets.safeDrawing.asPaddingValues().calculateStartPadding(LocalLayoutDirection.current) + mediumPadding,
+                end = mediumPadding,
+            ),
     ) {
-        LazyColumn(
-            state = lazyListState,
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .drawVerticalScrollbar(lazyListState),
-            contentPadding =
-                PaddingValues(
-                    start = WindowInsets.safeDrawing.asPaddingValues().calculateStartPadding(LocalLayoutDirection.current) + mediumPadding,
-                    end = mediumPadding,
-                ),
-        ) {
-            items(
-                items = uiState.posts,
-                key = { item: Post -> item.id },
-                itemContent = { item: Post ->
-                    CardPostItem(
-                        item = item,
-                        modifier =
-                            Modifier
-                                .padding(vertical = mediumPadding)
-                                .shadow(1.dp, shape = RoundedCornerShape(8.dp))
-                                .clickable { PostsEvent.OnPostClicked(item).handleEvent() }
-                                .fillParentMaxWidth(),
-                    )
-                },
-            )
-        }
+        items(
+            items = uiState.posts,
+            key = { item: Post -> item.id },
+            itemContent = { item: Post ->
+                CardPostItem(
+                    item = item,
+                    modifier =
+                        Modifier
+                            .padding(vertical = mediumPadding)
+                            .shadow(1.dp, shape = RoundedCornerShape(8.dp))
+                            .clickable { PostsEvent.OnPostClicked(item).handleEvent() }
+                            .fillParentMaxWidth(),
+                )
+            },
+        )
     }
 }
 

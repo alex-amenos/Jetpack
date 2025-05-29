@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.posts.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import arrow.core.Either
 import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.VIEW_MODEL_STOP_TIMEOUT_MILLIS
@@ -27,9 +26,8 @@ internal class PostsViewModel(
 ) : BaseViewModel<PostsEvent, PostsUiState>(initialState) {
     override val uiState: StateFlow<PostsUiState> =
         _uiState
-            .onStart {
-                if (currentState.posts.isEmpty()) updatePosts()
-            }.stateIn(
+            .onStart { getPosts() }
+            .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(VIEW_MODEL_STOP_TIMEOUT_MILLIS),
                 initialValue = initialState,
@@ -46,12 +44,17 @@ internal class PostsViewModel(
         }
     }
 
-    private fun updatePosts() {
-        viewModelScope.launch {
-            _uiState.updateCopy {
-                PostsUiState.status set PostsStatus.Loading
-            }
-            getPosts().fold(
+    private suspend fun updatePosts() {
+        _uiState.updateCopy {
+            PostsUiState.status set PostsStatus.Loading
+        }
+        getPosts()
+    }
+
+    private suspend fun getPosts() {
+        postsRepository
+            .getPosts()
+            .fold(
                 { error ->
                     _uiState.updateCopy {
                         PostsUiState.status set PostsStatus.Error
@@ -65,10 +68,7 @@ internal class PostsViewModel(
                     }
                 },
             )
-        }
     }
-
-    private suspend fun getPosts(): Either<PostsError, List<Post>> = postsRepository.getPosts()
 
     private fun PostsError.mapToUiError(): PostUiError =
         when (this) {
