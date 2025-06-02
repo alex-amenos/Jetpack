@@ -34,9 +34,9 @@ koin-test = "3.3.3"
 kotlin = "2.1.10"
 kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
+kotlinx-serialization-json = "1.8.1"
 kover = "0.6.1"
 ktlint-gradle = "12.1.1"
-kotlinx-serialization-json = "1.8.1"
 leak-canary = "2.10"
 mockito-kotlin = "4.1.0"
 okhttp-profiler = "1.0.8"
@@ -93,6 +93,8 @@ arrow-optics-compose = { module = "io.arrow-kt:arrow-optics-compose" }
 arrow-optics-ksp-plugin = { module = "io.arrow-kt:arrow-optics-ksp-plugin", version.ref = "arrow-stack" }
 arrow-retrofit = { module = "io.arrow-kt:arrow-core-retrofit" }
 arrow-stack = { module = "io.arrow-kt:arrow-stack", version.ref = "arrow-stack" }
+chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
+chucker-release = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 google-android-material = { module = "com.google.android.material:material", version.ref = "google-android-material" }
 google-play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "google-play-services-location" }
@@ -101,14 +103,13 @@ junit-bom = { module = "org.junit:junit-bom", version.ref = "junit_bom" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params" }
-junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine" }
 kluent = { module = "org.amshove.kluent:kluent-android", version.ref = "kluent" }
 kluent-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
 koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-android-work-manager" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
@@ -116,6 +117,7 @@ kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collec
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 kover = { module = "org.jetbrains.kotlinx:kover", version.ref = "kover" }
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
 leak-canary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leak-canary" }
@@ -131,8 +133,6 @@ retrofit-converter-kotlin_serialization = { module = "com.squareup.retrofit2:con
 slack-lint-compose = { module = "com.slack.lint.compose:compose-lint-checks", version.ref = "slack-lint-compose" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
-chucker-release = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
 
 [bundles]
 androidx-compose = [
@@ -169,8 +169,8 @@ retrofit = [
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
-android-compose-screenshot = { id = "com.android.compose.screenshot", version.ref = "android-compose-screenshot" }
 android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-compose-screenshot = { id = "com.android.compose.screenshot", version.ref = "android-compose-screenshot" }
 ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
 google-ksp = "com.google.devtools.ksp:2.1.10-1.0.30"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
