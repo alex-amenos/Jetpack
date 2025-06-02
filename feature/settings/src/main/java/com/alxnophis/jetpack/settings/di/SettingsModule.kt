@@ -18,5 +18,5 @@ private val loadSettingsModule by lazy {
 private val settingsModule: Module =
     module {
         single<SettingsRepository> { SettingsRepositoryImpl(androidContext()) }
-        viewModel { SettingsViewModel() }
+        viewModel { SettingsViewModel(get()) }
     }

@@ -5,6 +5,7 @@ import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
+import com.alxnophis.jetpack.settings.data.model.SettingsPreferences
 
 internal sealed class SettingsEvent : UiEvent {
     data object ManageSubscription : SettingsEvent()
@@ -55,4 +56,12 @@ internal enum class Theme(
     LIGHT(R.string.settings_light),
     DARK(R.string.settings_dark),
     SYSTEM(R.string.settings_system),
+    ;
+
+    fun map(): SettingsPreferences.ThemeOptions =
+        when (this) {
+            LIGHT -> SettingsPreferences.ThemeOptions.LIGHT
+            DARK -> SettingsPreferences.ThemeOptions.DARK
+            SYSTEM -> SettingsPreferences.ThemeOptions.SYSTEM
+        }
 }
