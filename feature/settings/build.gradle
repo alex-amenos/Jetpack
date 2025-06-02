@@ -4,3 +4,7 @@ android {
     resourcePrefix 'settings'
     namespace 'com.alxnophis.jetpack.settings'
 }
+
+dependencies {
+    implementation libs.androidx.datastore.preferences
+}

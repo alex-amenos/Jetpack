@@ -11,6 +11,7 @@ androidx-compose-constraint-layout = "1.1.1"
 androidx-compose-navigation = "2.9.0"
 androidx-compose-viewmodel = "2.9.0"
 androidx-core-ktx = "1.16.0"
+androidx-datastore = "1.1.7"
 androidx-lifecycle = "2.9.0"
 androidx-lifecycle-extension = "2.2.0"
 androidx-test-junit = "1.2.1"
@@ -76,6 +77,7 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 androidx-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-compose-viewmodel" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-extension = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "androidx-lifecycle-extension" }
