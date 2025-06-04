@@ -10,8 +10,6 @@ import com.alxnophis.jetpack.settings.data.model.SettingsPreferences
 import com.alxnophis.jetpack.settings.data.model.SettingsPreferencesError
 import com.alxnophis.jetpack.settings.data.model.SettingsPreferencesSerializer
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
 
 internal typealias UpdatedSuccessfully = Unit
 
@@ -29,7 +27,7 @@ internal class SettingsRepositoryImpl(
     private val settingsDataStoreData: Flow<SettingsPreferences>
         get() = context.dataStore.data
 
-    override suspend fun getSettings(): SettingsPreferences = settingsDataStoreData.firstOrNull() ?: SettingsPreferences.default
+    override fun getSettingsFlow(): Flow<SettingsPreferences> = settingsDataStoreData
 
     private suspend inline fun updatePreference(crossinline update: (SettingsPreferences) -> SettingsPreferences): Either<SettingsPreferencesError, Unit> =
         catch {

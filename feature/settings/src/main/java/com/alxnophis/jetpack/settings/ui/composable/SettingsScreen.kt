@@ -24,16 +24,16 @@ import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.settings.R
-import com.alxnophis.jetpack.settings.ui.contract.SettingsEvent
-import com.alxnophis.jetpack.settings.ui.contract.SettingsState
+import com.alxnophis.jetpack.settings.ui.contract.SettingsUiEvent
+import com.alxnophis.jetpack.settings.ui.contract.SettingsUiState
 
 @Composable
 internal fun SettingsScreen(
-    state: SettingsState,
-    onEvent: (SettingsEvent) -> Unit = {},
+    state: SettingsUiState,
+    onEvent: (SettingsUiEvent) -> Unit = {},
     appVersion: String = LocalContext.current.getVersion(),
 ) {
-    BackHandler { onEvent(SettingsEvent.GoBackRequested) }
+    BackHandler { onEvent(SettingsUiEvent.GoBackRequested) }
     AppTheme {
         val context = LocalContext.current
         Scaffold(
@@ -41,7 +41,7 @@ internal fun SettingsScreen(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.settings_title),
-                    onBack = { onEvent(SettingsEvent.GoBackRequested) },
+                    onBack = { onEvent(SettingsUiEvent.GoBackRequested) },
                 )
             },
             modifier = Modifier.fillMaxSize(),
@@ -59,14 +59,14 @@ internal fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.settings_option_notifications),
                     checked = state.notificationsEnabled,
-                    onToggleNotificationSettings = { onEvent(SettingsEvent.SetNotifications) },
+                    onToggleNotificationSettings = { onEvent(SettingsUiEvent.SetNotifications) },
                 )
                 HorizontalDivider()
                 SettingsHintItem(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.settings_option_hints),
                     checked = state.hintsEnabled,
-                    onShowHintToggled = { onEvent(SettingsEvent.SetHint) },
+                    onShowHintToggled = { onEvent(SettingsUiEvent.SetHint) },
                 )
                 HorizontalDivider()
                 SettingsManageSubscriptionItem(
@@ -76,7 +76,7 @@ internal fun SettingsScreen(
                         Toast
                             .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
                             .show()
-                        onEvent(SettingsEvent.ManageSubscription)
+                        onEvent(SettingsUiEvent.ManageSubscription)
                     },
                 )
                 HorizontalDivider()
@@ -87,7 +87,7 @@ internal fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     selectedOption = state.marketingOption,
                     onOptionSelected = { marketingOption ->
-                        onEvent(SettingsEvent.SetMarketingOption(marketingOption))
+                        onEvent(SettingsUiEvent.SetMarketingOption(marketingOption))
                     },
                 )
                 HorizontalDivider()
@@ -95,7 +95,7 @@ internal fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     selectedTheme = state.themeOption,
                     onOptionSelected = { theme ->
-                        onEvent(SettingsEvent.SetTheme(theme))
+                        onEvent(SettingsUiEvent.SetTheme(theme))
                     },
                 )
                 SettingsSectionSpacer(
@@ -114,7 +114,7 @@ internal fun SettingsScreen(
 @Preview(showBackground = true)
 @Composable
 private fun SettingsScreenPreview(
-    @PreviewParameter(SettingsPreviewProvider::class) uiState: SettingsState,
+    @PreviewParameter(SettingsPreviewProvider::class) uiState: SettingsUiState,
 ) {
     SettingsScreen(
         state = uiState,

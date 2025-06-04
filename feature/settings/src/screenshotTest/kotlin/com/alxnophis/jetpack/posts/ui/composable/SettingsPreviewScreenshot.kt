@@ -5,12 +5,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.alxnophis.jetpack.settings.ui.composable.SettingsPreviewProvider
 import com.alxnophis.jetpack.settings.ui.composable.SettingsScreen
-import com.alxnophis.jetpack.settings.ui.contract.SettingsState
+import com.alxnophis.jetpack.settings.ui.contract.SettingsUiState
 
 @Preview(showBackground = true)
 @Composable
 private fun SettingsScreenPreview(
-    @PreviewParameter(SettingsPreviewProvider::class) uiState: SettingsState,
+    @PreviewParameter(SettingsPreviewProvider::class) uiState: SettingsUiState,
 ) {
     SettingsScreen(
         state = uiState,

@@ -7,26 +7,26 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.settings.R
 import com.alxnophis.jetpack.settings.data.model.SettingsPreferences
 
-internal sealed class SettingsEvent : UiEvent {
-    data object ManageSubscription : SettingsEvent()
+internal sealed class SettingsUiEvent : UiEvent {
+    data object ManageSubscription : SettingsUiEvent()
 
-    data object SetNotifications : SettingsEvent()
+    data object SetNotifications : SettingsUiEvent()
 
-    data object SetHint : SettingsEvent()
+    data object SetHint : SettingsUiEvent()
 
-    data object GoBackRequested : SettingsEvent()
+    data object GoBackRequested : SettingsUiEvent()
 
     data class SetMarketingOption(
         val marketingOption: MarketingOption,
-    ) : SettingsEvent()
+    ) : SettingsUiEvent()
 
     data class SetTheme(
         val theme: Theme,
-    ) : SettingsEvent()
+    ) : SettingsUiEvent()
 }
 
 @optics
-internal data class SettingsState(
+internal data class SettingsUiState(
     val notificationsEnabled: Boolean,
     val hintsEnabled: Boolean,
     val marketingOption: MarketingOption,
@@ -34,10 +34,10 @@ internal data class SettingsState(
 ) : UiState {
     internal companion object {
         val initialState =
-            SettingsState(
+            SettingsUiState(
                 notificationsEnabled = false,
                 hintsEnabled = false,
-                marketingOption = MarketingOption.ALLOWED,
+                marketingOption = MarketingOption.NOT_ALLOWED,
                 themeOption = Theme.SYSTEM,
             )
     }
