@@ -30,11 +30,13 @@ android {
             debuggable true
             minifyEnabled false
             buildConfigField 'String', 'APP_PACKAGE_NAME', '"' + AppConfig.APP_PACKAGE_NAME_DEBUG + '"'
+            buildConfigField 'String', 'APP_CRYPTO_KEY_ALIAS', '"' + AppConfig.APP_PACKAGE_NAME_DEBUG.hashCode() + '"'
         }
         release {
             debuggable false
             minifyEnabled false
             buildConfigField 'String', 'APP_PACKAGE_NAME', '"' + AppConfig.APP_PACKAGE_NAME + '"'
+            buildConfigField 'String', 'APP_CRYPTO_KEY_ALIAS', '"' + AppConfig.APP_PACKAGE_NAME.hashCode() + '"'
         }
     }
 

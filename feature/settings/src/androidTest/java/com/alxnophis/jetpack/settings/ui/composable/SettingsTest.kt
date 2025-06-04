@@ -14,7 +14,7 @@ import com.alxnophis.jetpack.settings.ui.composable.SettingsTags.TAG_CHECK_ITEM
 import com.alxnophis.jetpack.settings.ui.composable.SettingsTags.TAG_MARKETING_OPTION
 import com.alxnophis.jetpack.settings.ui.composable.SettingsTags.TAG_TOGGLE_ITEM
 import com.alxnophis.jetpack.settings.ui.contract.MarketingOption
-import com.alxnophis.jetpack.settings.ui.contract.SettingsState
+import com.alxnophis.jetpack.settings.ui.contract.SettingsUiState
 import com.alxnophis.jetpack.settings.ui.contract.hintsEnabled
 import com.alxnophis.jetpack.settings.ui.contract.marketingOption
 import com.alxnophis.jetpack.settings.ui.contract.notificationsEnabled
@@ -62,8 +62,8 @@ internal class SettingsTest : BaseComposeTest() {
     fun enabled_notifications_toggles_state() {
         setSettingsContent(
             state =
-                SettingsState.initialState.copy {
-                    SettingsState.notificationsEnabled set true
+                SettingsUiState.initialState.copy {
+                    SettingsUiState.notificationsEnabled set true
                 },
         )
         composeTestRule
@@ -89,8 +89,8 @@ internal class SettingsTest : BaseComposeTest() {
     fun show_hints_enabled() {
         setSettingsContent(
             state =
-                SettingsState.initialState.copy {
-                    SettingsState.hintsEnabled set true
+                SettingsUiState.initialState.copy {
+                    SettingsUiState.hintsEnabled set true
                 },
         )
         composeTestRule
@@ -127,8 +127,8 @@ internal class SettingsTest : BaseComposeTest() {
     fun marketing_options_not_allowed() {
         setSettingsContent(
             state =
-                SettingsState.initialState.copy {
-                    SettingsState.marketingOption set MarketingOption.NOT_ALLOWED
+                SettingsUiState.initialState.copy {
+                    SettingsUiState.marketingOption set MarketingOption.NOT_ALLOWED
                 },
         )
         composeTestRule
@@ -147,7 +147,7 @@ internal class SettingsTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 
-    private fun setSettingsContent(state: SettingsState = SettingsState.initialState) {
+    private fun setSettingsContent(state: SettingsUiState = SettingsUiState.initialState) {
         composeTestRule.setContent {
             SettingsScreen(
                 state = state,
