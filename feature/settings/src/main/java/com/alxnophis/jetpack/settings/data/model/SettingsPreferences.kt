@@ -39,6 +39,24 @@ internal data class SettingsPreferences(
     }
 }
 
+/**
+ * Serializer for [SettingsPreferences].
+ *
+ * This serializer handles the reading and writing of [SettingsPreferences] to and from an [InputStream]
+ * and [OutputStream] respectively. The serialization process involves the following steps for security:
+ *
+ * 1. **Serialization to JSON**: The [SettingsPreferences] object is first converted into a JSON string.
+ * 2. **Encryption**: The JSON string (as bytes) is then encrypted using [Crypto].
+ * 3. **Base64 Encoding**: The encrypted bytes are Base64 encoded to ensure safe transmission and storage as a string.
+ *
+ * The deserialization process reverses these steps:
+ *
+ * 1. **Base64 Decoding**: The input string is Base64 decoded.
+ * 2. **Decryption**: The resulting bytes are decrypted using [Crypto].
+ * 3. **Deserialization from JSON**: The decrypted string is parsed from JSON back into a [SettingsPreferences] object.
+ *
+ * Encryption is applied to protect the user's settings data.
+ */
 internal object SettingsPreferencesSerializer : Serializer<SettingsPreferences> {
     override val defaultValue: SettingsPreferences
         get() = SettingsPreferences.default
