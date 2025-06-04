@@ -17,7 +17,7 @@ internal class SettingsRepositoryImpl(
     private val context: Context,
 ) : SettingsRepository {
     private val Context.dataStore: DataStore<SettingsPreferences> by dataStore(
-        fileName = SettingsPreferences.FILE_NAME,
+        fileName = SETTINGS_PREFERENCES_FILE_NAME,
         serializer = SettingsPreferencesSerializer,
     )
 
@@ -47,4 +47,8 @@ internal class SettingsRepositoryImpl(
     override suspend fun updateMarketingOption(enabled: Boolean): Either<SettingsPreferencesError, Unit> = updatePreference { it.copy(marketingOption = enabled) }
 
     override suspend fun updateThemeOption(themeOption: SettingsPreferences.ThemeOptions): Either<SettingsPreferencesError, Unit> = updatePreference { it.copy(themeOption = themeOption) }
+
+    companion object {
+        private const val SETTINGS_PREFERENCES_FILE_NAME = "settings_preferences"
+    }
 }

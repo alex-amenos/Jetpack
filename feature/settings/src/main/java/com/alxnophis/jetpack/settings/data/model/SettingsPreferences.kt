@@ -29,7 +29,6 @@ internal data class SettingsPreferences(
     }
 
     companion object {
-        const val FILE_NAME = "settings_preferences"
         val default =
             SettingsPreferences(
                 notificationsEnabled = false,
