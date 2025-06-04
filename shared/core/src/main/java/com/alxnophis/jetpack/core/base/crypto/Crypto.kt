@@ -11,7 +11,7 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 
 object Crypto {
-    private const val KEY_ALIAS = BuildConfig.APP_KEY_ALIAS
+    private const val KEY_ALIAS = BuildConfig.APP_CRYPTO_KEY_ALIAS
     private const val ALGORITHM = KeyProperties.KEY_ALGORITHM_AES
     private const val BLOCK_MODE = KeyProperties.BLOCK_MODE_CBC
     private const val PADDING = KeyProperties.ENCRYPTION_PADDING_PKCS7
