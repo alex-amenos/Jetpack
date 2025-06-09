@@ -32,6 +32,7 @@ fun Navigation(
 ) {
     AppTheme {
         val backStack = rememberNavBackStack(Route.Home)
+        val onBack: () -> Unit = { backStack.removeLastOrNull() }
         NavDisplay(
             backStack = backStack,
             modifier = modifier,
@@ -59,7 +60,7 @@ fun Navigation(
                                     }
                                 backStack.add(route)
                             },
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.Authentication> {
@@ -67,43 +68,43 @@ fun Navigation(
                             navigateInCaseOfSuccess = { email ->
                                 backStack.add(Route.Authorized(email))
                             },
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.Authorized> { key ->
                         AuthorizedFeature(
                             userEmail = key.email,
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.GameBallClicker> {
                         BallClickerFeature(
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.FileDownloader> {
                         FileDownloaderFeature(
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.MyPlayground> {
                         MyPlaygroundFeature(
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.Notifications> {
                         NotificationsFeature(
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.LocationTracker> {
                         LocationTrackerFeature(
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.Settings> {
                         SettingsFeature(
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.Posts> {
@@ -111,13 +112,13 @@ fun Navigation(
                             onPostSelected = { postId ->
                                 backStack.add(Route.PostDetail(postId))
                             },
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                     entry<Route.PostDetail> { key ->
                         PostDetailFeature(
                             postId = key.postId,
-                            onBack = { backStack.removeLastOrNull() },
+                            onBack = onBack,
                         )
                     }
                 },
