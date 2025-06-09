@@ -2,17 +2,16 @@
 android-compose-screenshot = "0.0.1-alpha09"
 android-gradle-plugin = "8.10.1"
 android-junit5-plugin = "1.8.2.1"
-androidx-activity = "1.10.1"
+androidx-activity = "1.12.0-alpha01"
 androidx-annotations = "1.9.1"
-androidx-appcompat = "1.7.0"
+androidx-appcompat = "1.7.1"
 androidx-arch-core = "2.2.0"
-androidx-compose-bom = "2025.05.01"
+androidx-compose-bom = "2025.06.00"
 androidx-compose-constraint-layout = "1.1.1"
-androidx-compose-navigation = "2.9.0"
-androidx-compose-viewmodel = "2.9.0"
+androidx-compose-viewmodel = "2.9.1"
 androidx-core-ktx = "1.16.0"
 androidx-datastore = "1.1.7"
-androidx-lifecycle = "2.9.0"
+androidx-lifecycle = "2.9.1"
 androidx-lifecycle-extension = "2.2.0"
 androidx-test-junit = "1.2.1"
 androidx-test-rules = "1.6.1"
@@ -36,10 +35,14 @@ kotlin = "2.1.10"
 kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization-json = "1.8.1"
+kotlinxSerializationCore = "1.8.1"
 kover = "0.6.1"
 ktlint-gradle = "12.1.1"
 leak-canary = "2.10"
+lifecycleViewmodelNav3 = "1.0.0-alpha01"
+material3AdaptiveNav3 = "1.0.0-SNAPSHOT"
 mockito-kotlin = "4.1.0"
+nav3Core = "1.0.0-alpha03"
 okhttp-profiler = "1.0.8"
 org-mockito = "5.2.0"
 slack-lint-compose = "1.1.1"
@@ -56,9 +59,6 @@ androidx-arch-core-common = { module = "androidx.arch.core:core-common", version
 androidx-arch-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-arch-core" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
-androidx-compose-adaptive = { module = "androidx.compose.material3.adaptive:adaptive" }
-androidx-compose-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout" }
-androidx-compose-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation" }
 androidx-compose-animation = { module = "androidx.compose.animation:animation" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
 androidx-compose-constraint-layout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "androidx-compose-constraint-layout" }
@@ -67,7 +67,6 @@ androidx-compose-foundation-layout = { module = "androidx.compose.foundation:fou
 androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
-androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-compose-navigation" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui" }
 androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
@@ -84,6 +83,10 @@ androidx-lifecycle-extension = { module = "androidx.lifecycle:lifecycle-extensio
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
+androidx-material3-adaptive-navigation3 = { module = "androidx.compose.material3.adaptive:adaptive-navigation3", version.ref = "material3AdaptiveNav3" }
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
 androidx-test-junit = { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-junit" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test-rules" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
@@ -119,6 +122,7 @@ kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collec
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 kover = { module = "org.jetbrains.kotlinx:kover", version.ref = "kover" }
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
@@ -139,9 +143,6 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 [bundles]
 androidx-compose = [
     "androidx-compose-activity",
-    "androidx-compose-adaptive",
-    "androidx-compose-adaptive-layout",
-    "androidx-compose-adaptive-navigation",
     "androidx-compose-animation",
     "androidx-compose-constraint-layout",
     "androidx-compose-foundation",
@@ -149,7 +150,6 @@ androidx-compose = [
     "androidx-compose-material-icons-core",
     "androidx-compose-material-icons-extended",
     "androidx-compose-material3",
-    "androidx-compose-navigation",
     "androidx-compose-runtime",
     "androidx-compose-ui",
     "androidx-compose-ui-tooling-preview",
