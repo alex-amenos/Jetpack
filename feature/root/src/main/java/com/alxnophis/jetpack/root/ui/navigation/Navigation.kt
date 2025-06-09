@@ -1,6 +1,10 @@
 package com.alxnophis.jetpack.root.ui.navigation
 
 import android.annotation.SuppressLint
+import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
+import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -25,6 +29,7 @@ import com.alxnophis.jetpack.posts.ui.composable.PostDetailFeature
 import com.alxnophis.jetpack.posts.ui.composable.PostsFeature
 import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @SuppressLint("ComposeModifierMissing")
 @Composable
 fun Navigation(
@@ -36,6 +41,7 @@ fun Navigation(
         NavDisplay(
             backStack = backStack,
             modifier = modifier,
+            sceneStrategy = rememberListDetailSceneStrategy(),
             entryDecorators =
                 listOf(
                     rememberSavedStateNavEntryDecorator(),
@@ -107,7 +113,12 @@ fun Navigation(
                             onBack = onBack,
                         )
                     }
-                    entry<Route.Posts> {
+                    entry<Route.Posts>(
+                        metadata =
+                            ListDetailSceneStrategy.listPane {
+                                Text("Choose a post of the list to read it")
+                            },
+                    ) {
                         PostsFeature(
                             onPostSelected = { postId ->
                                 backStack.add(Route.PostDetail(postId))
@@ -115,7 +126,10 @@ fun Navigation(
                             onBack = onBack,
                         )
                     }
-                    entry<Route.PostDetail> { key ->
+                    entry<Route.PostDetail>(
+                        metadata =
+                            ListDetailSceneStrategy.detailPane(),
+                    ) { key ->
                         PostDetailFeature(
                             postId = key.postId,
                             onBack = onBack,
