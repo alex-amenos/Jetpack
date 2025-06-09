@@ -15,4 +15,5 @@ dependencies {
     implementation project(Modules.FEATURE_POSTS)
     implementation project(Modules.FEATURE_SETTINGS)
     implementation project(Modules.FEATURE_FILE_DOWNLOADER)
+    implementation libs.androidx.material3.adaptive.navigation3
 }

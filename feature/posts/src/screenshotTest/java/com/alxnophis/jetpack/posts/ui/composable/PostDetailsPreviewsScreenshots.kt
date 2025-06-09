@@ -11,5 +11,5 @@ import com.alxnophis.jetpack.posts.ui.composable.provider.PostDetailPreviewProvi
 private fun PostDetailScreenTesting(
     @PreviewParameter(PostDetailPreviewProvider::class) post: Post,
 ) {
-    PostDetailScreen(post = post)
+    PostDetailScreen(postId = post)
 }

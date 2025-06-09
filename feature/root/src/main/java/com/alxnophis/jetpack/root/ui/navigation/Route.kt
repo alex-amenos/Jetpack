@@ -1,9 +1,10 @@
 package com.alxnophis.jetpack.root.ui.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class Route {
+sealed class Route : NavKey {
     @Serializable
     data object Authentication : Route()
 
@@ -32,6 +33,11 @@ sealed class Route {
 
     @Serializable
     data object Posts : Route()
+
+    @Serializable
+    data class PostDetail(
+        val postId: Int,
+    ) : Route()
 
     @Serializable
     data object Settings : Route()

@@ -35,7 +35,7 @@ import com.alxnophis.jetpack.posts.ui.composable.provider.PostDetailPreviewProvi
 
 @Composable
 internal fun PostDetailScreen(
-    post: Post,
+    postId: Int,
     onNavigateBack: () -> Unit = {},
 ) {
     AppTheme {
@@ -75,7 +75,7 @@ internal fun PostDetailScreen(
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    text = post.titleCapitalized,
+                    text = postId.toString(),
                     textAlign = TextAlign.Start,
                 )
                 Text(
@@ -85,7 +85,7 @@ internal fun PostDetailScreen(
                             .padding(horizontal = 8.dp, vertical = 24.dp),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge,
-                    text = post.body,
+                    text = postId.toString(),
                     textAlign = TextAlign.Justify,
                 )
             }
@@ -93,16 +93,16 @@ internal fun PostDetailScreen(
     }
 }
 
-@Preview(fontScale = 1f)
-@Preview(fontScale = 1.5f)
-@Preview(fontScale = 2f)
-@Preview(widthDp = 640, heightDp = 360)
-@Composable
-internal fun PostDetailPreview(
-    @PreviewParameter(PostDetailPreviewProvider::class) post: Post,
-) {
-    PostDetailScreen(
-        post = post,
-        onNavigateBack = {},
-    )
-}
+//@Preview(fontScale = 1f)
+//@Preview(fontScale = 1.5f)
+//@Preview(fontScale = 2f)
+//@Preview(widthDp = 640, heightDp = 360)
+//@Composable
+//internal fun PostDetailPreview(
+//    @PreviewParameter(PostDetailPreviewProvider::class) post: Post,
+//) {
+//    PostDetailScreen(
+//        postId = post,
+//        onNavigateBack = {},
+//    )
+//}
