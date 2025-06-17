@@ -1,10 +1,12 @@
 pluginManagement {
     repositories {
         google()
-        maven { url 'https://maven.google.com' }
         mavenCentral()
         gradlePluginPortal()
         maven { url 'https://jitpack.io' }
+        maven {
+            url = uri("https://androidx.dev/snapshots/builds/13508953/artifacts/repository")
+        }
     }
 }
 
@@ -12,9 +14,11 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        maven { url 'https://maven.google.com' }
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            url = uri("https://androidx.dev/snapshots/builds/13508953/artifacts/repository")
+        }
     }
 }
 
