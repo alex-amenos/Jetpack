@@ -114,6 +114,12 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-and
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
 koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-android-work-manager" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-extensions = { module = "io.kotest:kotest-extensions", version.ref = "kotest" }
+kotest-framework-api = { module = "io.kotest:kotest-framework-api", version.ref = "kotest" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
@@ -136,12 +142,6 @@ retrofit-converter-kotlin_serialization = { module = "com.squareup.retrofit2:con
 slack-lint-compose = { module = "com.slack.lint.compose:compose-lint-checks", version.ref = "slack-lint-compose" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-kotest-framework-api = { module = "io.kotest:kotest-framework-api", version.ref = "kotest" }
-kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
-kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
-kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
-kotest-extensions = { module = "io.kotest:kotest-extensions", version.ref = "kotest" }
 
 [bundles]
 androidx-compose = [
@@ -165,11 +165,11 @@ androidx-compose = [
 ]
 kotest = [
     "kotest-assertions",
+    "kotest-extensions",
     "kotest-framework-api",
     "kotest-framework-engine",
-    "kotest-runner",
     "kotest-property",
-    "kotest-extensions",
+    "kotest-runner",
 ]
 mockito = [
     "mockito",
