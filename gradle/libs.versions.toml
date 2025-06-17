@@ -31,6 +31,7 @@ koin-android = "3.4.2"
 koin-android-compose = "3.4.5"
 koin-android-work-manager = "3.3.3"
 koin-test = "3.3.3"
+kotest = "5.8.1"
 kotlin = "2.1.10"
 kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
@@ -116,6 +117,12 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-and
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
 koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-android-work-manager" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-extensions = { module = "io.kotest:kotest-extensions", version.ref = "kotest" }
+kotest-framework-api = { module = "io.kotest:kotest-framework-api", version.ref = "kotest" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
@@ -155,6 +162,14 @@ androidx-compose = [
     "androidx-compose-ui-tooling-preview",
     "androidx-compose-ui-util",
     "androidx-compose-viewmodel",
+]
+kotest = [
+    "kotest-assertions",
+    "kotest-extensions",
+    "kotest-framework-api",
+    "kotest-framework-engine",
+    "kotest-property",
+    "kotest-runner",
 ]
 mockito = [
     "mockito",
