@@ -79,6 +79,7 @@ private fun PostContent(
                     errorMessage =
                         when (error) {
                             PostUiError.Network -> stringResource(R.string.posts_error_network)
+                            PostUiError.NotFound -> stringResource(R.string.posts_error_network)
                             PostUiError.Server -> stringResource(R.string.posts_error_server)
                             PostUiError.Unknown -> stringResource(R.string.posts_error_unknown)
                             PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)

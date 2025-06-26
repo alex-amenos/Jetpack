@@ -1,7 +1,9 @@
 <resources>
     <string name="posts_title">Posts</string>
+    <string name="posts_loading">Loading post…</string>
     <string name="posts_error_unknown">Something goes wrong.</string>
     <string name="posts_error_unexpected">Unexpected error.\nPlease contact to support.</string>
     <string name="posts_error_network">Network error</string>
+    <string name="posts_error_not_found">Post not found</string>
     <string name="posts_error_server">Server error</string>
 </resources>
