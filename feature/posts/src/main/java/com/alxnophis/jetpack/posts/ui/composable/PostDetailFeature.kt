@@ -16,15 +16,16 @@ fun PostDetailFeature(
 ) {
     injectPostDetail()
     val viewModel = getViewModel<PostDetailViewModel>()
+    val handleEvent: PostDetailEvent.() -> Unit = viewModel::handleEvent
     LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-        viewModel.handleEvent(PostDetailEvent.LoadPost(postId))
+        PostDetailEvent.LoadPost(postId).handleEvent()
     }
     PostDetailScreen(
         uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
         handleEvent = { event ->
             when (event) {
                 PostDetailEvent.GoBackRequested -> onBack()
-                else -> viewModel.handleEvent(event)
+                else -> event.handleEvent()
             }
         },
     )

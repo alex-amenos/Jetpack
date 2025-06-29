@@ -1,8 +1,6 @@
 package com.alxnophis.jetpack.posts.ui.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -11,13 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
+import com.alxnophis.jetpack.core.ui.composable.CoreLoadingDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.posts.R
@@ -47,49 +44,11 @@ internal fun PostDetailScreen(
     uiState: PostDetailUiState,
     handleEvent: (PostDetailEvent) -> Unit = {},
 ) {
-    when {
-        uiState.isLoading -> PostDetailLoading()
-        uiState.isSuccess -> PostDetailContent(uiState, handleEvent)
-        uiState.isError -> {
-            PostDetailContent(uiState, handleEvent)
-            PostDetailUiErrors(
-                uiState = uiState,
-                handleEvent = handleEvent,
-            )
-        }
-    }
-}
-
-@Composable
-internal fun PostDetailLoading() {
-    AppTheme {
-        Scaffold(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
-            contentWindowInsets = WindowInsets.safeGestures,
-        ) { paddingValues ->
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                contentAlignment = Alignment.Center,
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(48.dp),
-                        color = MaterialTheme.colorScheme.primary,
-                        strokeWidth = 4.dp,
-                    )
-                }
-            }
-        }
-    }
+    PostDetailContent(uiState, handleEvent)
+    PostDetailUiErrors(
+        uiState = uiState,
+        handleEvent = handleEvent,
+    )
 }
 
 @Composable
@@ -114,7 +73,7 @@ internal fun PostDetailUiErrors(
 
 @Composable
 internal fun PostDetailContent(
-    state: PostDetailUiState,
+    uiState: PostDetailUiState,
     handleEvent: (PostDetailEvent) -> Unit = {},
 ) {
     AppTheme {
@@ -125,6 +84,7 @@ internal fun PostDetailContent(
                     .background(MaterialTheme.colorScheme.surface),
             contentWindowInsets = WindowInsets.safeGestures,
         ) { paddingValues ->
+            CoreLoadingDialog(uiState.isLoading)
             Column(
                 modifier =
                     Modifier
@@ -154,7 +114,7 @@ internal fun PostDetailContent(
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    text = state.postTitle,
+                    text = uiState.postTitle,
                     textAlign = TextAlign.Start,
                 )
                 Text(
@@ -164,7 +124,7 @@ internal fun PostDetailContent(
                             .padding(horizontal = 8.dp, vertical = 24.dp),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge,
-                    text = state.postBody,
+                    text = uiState.postBody,
                     textAlign = TextAlign.Justify,
                 )
                 Spacer(modifier = Modifier.height(16.dp))

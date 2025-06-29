@@ -27,7 +27,7 @@ class PostsRepositoryImpl(
                 .map { posts: List<PostApiModel> ->
                     posts.map { it.mapToPost() }
                 }.mapLeft { error: CallError ->
-                    Timber.d("GET posts error: $error")
+                    Timber.e("GET posts error: $error")
                     when {
                         error is IOError -> PostsError.Unexpected
                         error is UnexpectedCallError -> PostsError.Unexpected
@@ -45,7 +45,7 @@ class PostsRepositoryImpl(
                 .map { post: PostApiModel ->
                     post.mapToPost()
                 }.mapLeft { error: CallError ->
-                    Timber.d("GET post by id error: $error")
+                    Timber.e("GET post by id error: $error")
                     when {
                         error is IOError -> PostDetailError.Unexpected
                         error is UnexpectedCallError -> PostDetailError.Unexpected

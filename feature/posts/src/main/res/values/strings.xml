@@ -6,4 +6,6 @@
     <string name="posts_error_network">Network error</string>
     <string name="posts_error_not_found">Post not found</string>
     <string name="posts_error_server">Server error</string>
+    <string name="posts_post_not_selected_title">Post not selected</string>
+    <string name="posts_post_not_selected_detail">Please pick a post from the list to read it.</string>
 </resources>

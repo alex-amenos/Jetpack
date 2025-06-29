@@ -14,13 +14,14 @@ fun PostsFeature(
 ) {
     injectPosts()
     val viewModel = getViewModel<PostsViewModel>()
+    val handleEvent: PostsEvent.() -> Unit = viewModel::handleEvent
     PostsScreen(
         state = viewModel.uiState.collectAsStateWithLifecycle().value,
         handleEvent = { event ->
             when (event) {
                 PostsEvent.GoBackRequested -> onBack()
                 is PostsEvent.OnPostClicked -> onPostSelected(event.post.id)
-                else -> viewModel.handleEvent(event)
+                else -> event.handleEvent()
             }
         },
     )
