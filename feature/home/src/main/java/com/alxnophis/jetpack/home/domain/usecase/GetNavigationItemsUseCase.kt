@@ -17,11 +17,11 @@ class GetNavigationItemsUseCase(
                 .catch {
                     listOf(
                         myPlayground,
+                        posts,
                         fileDownloader,
                         authentication,
                         settings,
                         notifications,
-                        posts,
                         locationTracker,
                         gameBallClicker,
                     )

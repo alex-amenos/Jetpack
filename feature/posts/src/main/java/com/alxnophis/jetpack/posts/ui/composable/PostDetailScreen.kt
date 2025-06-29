@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.posts.ui.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -9,8 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -22,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
-import com.alxnophis.jetpack.core.ui.composable.CoreLoadingDialog
+import com.alxnophis.jetpack.core.ui.composable.CoreLoadingContent
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.posts.R
@@ -44,11 +48,48 @@ internal fun PostDetailScreen(
     uiState: PostDetailUiState,
     handleEvent: (PostDetailEvent) -> Unit = {},
 ) {
-    PostDetailContent(uiState, handleEvent)
-    PostDetailUiErrors(
-        uiState = uiState,
-        handleEvent = handleEvent,
-    )
+    when {
+        uiState.isLoading -> PostDetailLoading()
+        uiState.isSuccess -> PostDetailContent(uiState, handleEvent)
+        uiState.isError -> {
+            PostDetailContent(uiState, handleEvent)
+            PostDetailUiErrors(
+                uiState = uiState,
+                handleEvent = handleEvent,
+            )
+        }
+    }
+}
+
+@Composable
+internal fun PostDetailLoading() {
+    AppTheme {
+        Scaffold(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
+            contentWindowInsets = WindowInsets.safeGestures,
+        ) { paddingValues ->
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                contentAlignment = Alignment.Center,
+            ) {
+                CoreLoadingContent(
+                    modifier =
+                        Modifier
+                            .size(150.dp)
+                            .background(
+                                color = White,
+                                shape = RoundedCornerShape(50.dp),
+                            ),
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -84,7 +125,6 @@ internal fun PostDetailContent(
                     .background(MaterialTheme.colorScheme.surface),
             contentWindowInsets = WindowInsets.safeGestures,
         ) { paddingValues ->
-            CoreLoadingDialog(uiState.isLoading)
             Column(
                 modifier =
                     Modifier
