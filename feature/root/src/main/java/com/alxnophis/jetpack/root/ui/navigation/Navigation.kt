@@ -124,6 +124,9 @@ fun Navigation(
                     ) {
                         PostsFeature(
                             onPostSelected = { postId ->
+                                if (backStack.last() is Route.PostDetail) {
+                                    backStack.removeLastOrNull()
+                                }
                                 backStack.add(Route.PostDetail(postId))
                             },
                             onBack = onBack,
