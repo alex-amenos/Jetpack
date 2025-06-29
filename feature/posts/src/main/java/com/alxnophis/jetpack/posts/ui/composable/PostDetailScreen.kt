@@ -110,9 +110,10 @@ internal fun PostDetailUiErrors(
                 contentWindowInsets = WindowInsets.safeGestures,
             ) { paddingValues ->
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
                 ) {
                     IconButton(
                         modifier =
@@ -129,10 +130,11 @@ internal fun PostDetailUiErrors(
                         )
                     }
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.Center)
-                            .padding(16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.Center)
+                                .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
