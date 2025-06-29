@@ -25,8 +25,8 @@ import com.alxnophis.jetpack.home.ui.composable.HomeFeature
 import com.alxnophis.jetpack.location.tracker.ui.composable.LocationTrackerFeature
 import com.alxnophis.jetpack.myplayground.ui.composable.MyPlaygroundFeature
 import com.alxnophis.jetpack.notifications.ui.navigation.NotificationsFeature
-import com.alxnophis.jetpack.posts.ui.composable.NoPostSelectedComposable
 import com.alxnophis.jetpack.posts.ui.composable.PostDetailFeature
+import com.alxnophis.jetpack.posts.ui.composable.PostNotSelectedComposable
 import com.alxnophis.jetpack.posts.ui.composable.PostsFeature
 import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 
@@ -117,7 +117,7 @@ fun Navigation(
                     entry<Route.Posts>(
                         metadata =
                             ListDetailSceneStrategy.listPane {
-                                NoPostSelectedComposable(
+                                PostNotSelectedComposable(
                                     modifier = Modifier.fillMaxSize(),
                                 )
                             },

@@ -25,7 +25,7 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.posts.R
 
 @Composable
-fun NoPostSelectedComposable(modifier: Modifier = Modifier) {
+fun PostNotSelectedComposable(modifier: Modifier = Modifier) {
     AppTheme {
         Box(
             modifier = modifier.fillMaxSize(),
@@ -63,5 +63,5 @@ fun NoPostSelectedComposable(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun NoPostSelectedComposablePreview() {
-    NoPostSelectedComposable()
+    PostNotSelectedComposable()
 }
