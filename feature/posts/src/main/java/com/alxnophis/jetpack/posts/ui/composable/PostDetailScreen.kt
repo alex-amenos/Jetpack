@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.posts.ui.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +35,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreLoadingContent
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -51,13 +52,7 @@ internal fun PostDetailScreen(
     when {
         uiState.isLoading -> PostDetailLoading()
         uiState.isSuccess -> PostDetailContent(uiState, handleEvent)
-        uiState.isError -> {
-            PostDetailContent(uiState, handleEvent)
-            PostDetailUiErrors(
-                uiState = uiState,
-                handleEvent = handleEvent,
-            )
-        }
+        uiState.isError -> PostDetailUiErrors(uiState, handleEvent)
     }
 }
 
@@ -95,20 +90,69 @@ internal fun PostDetailLoading() {
 @Composable
 internal fun PostDetailUiErrors(
     uiState: PostDetailUiState,
-    handleEvent: (PostDetailEvent) -> Unit = {},
+    handleEvent: PostDetailEvent.() -> Unit,
 ) {
-    uiState.error?.let { uiError ->
-        CoreErrorDialog(
-            errorMessage =
-                when (uiError) {
-                    PostDetailUiError.Network -> stringResource(R.string.posts_error_network)
-                    PostDetailUiError.NotFound -> stringResource(R.string.posts_error_network)
-                    PostDetailUiError.Server -> stringResource(R.string.posts_error_server)
-                    PostDetailUiError.Unknown -> stringResource(R.string.posts_error_unknown)
-                    PostDetailUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
-                },
-            dismissError = { handleEvent(PostDetailEvent.GoBackRequested) },
-        )
+    uiState.error?.let {
+        val errorMessage =
+            when (uiState.error) {
+                PostDetailUiError.Network -> stringResource(R.string.posts_error_network)
+                PostDetailUiError.NotFound -> stringResource(R.string.posts_error_network)
+                PostDetailUiError.Server -> stringResource(R.string.posts_error_server)
+                PostDetailUiError.Unknown -> stringResource(R.string.posts_error_unknown)
+                PostDetailUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+            }
+        AppTheme {
+            Scaffold(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surface),
+                contentWindowInsets = WindowInsets.safeGestures,
+            ) { paddingValues ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    IconButton(
+                        modifier =
+                            Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.TopEnd)
+                                .testTag(CoreTags.TAG_CORE_BACK),
+                        onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(id = com.alxnophis.jetpack.core.R.string.core_cd_close),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.Center)
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Error,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(48.dp),
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = errorMessage,
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
