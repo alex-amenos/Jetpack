@@ -96,7 +96,7 @@ internal fun PostDetailUiErrors(
         val errorMessage =
             when (uiState.error) {
                 PostDetailUiError.Network -> stringResource(R.string.posts_error_network)
-                PostDetailUiError.NotFound -> stringResource(R.string.posts_error_network)
+                PostDetailUiError.NotFound -> stringResource(R.string.posts_error_not_found)
                 PostDetailUiError.Server -> stringResource(R.string.posts_error_server)
                 PostDetailUiError.Unknown -> stringResource(R.string.posts_error_unknown)
                 PostDetailUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
