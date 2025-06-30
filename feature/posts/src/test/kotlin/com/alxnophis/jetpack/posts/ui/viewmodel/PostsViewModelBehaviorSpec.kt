@@ -12,12 +12,15 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
     private val postsRepositoryMock: PostsRepository = mock()
 
@@ -30,6 +33,8 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
 
                 Then("uiState should reflect success with loaded posts") {
                     runTest {
+                        runCurrent()
+
                         viewModel.uiState.test {
                             awaitItem() shouldBe PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList)
                             expectNoEvents()
@@ -66,6 +71,8 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
 
                     Then("uiState should reflect error with appropriate error type") {
                         runTest {
+                            runCurrent()
+
                             viewModel.uiState.test {
                                 awaitItem() shouldBe
                                     PostsUiState.initialState.copy(
@@ -90,6 +97,8 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
 
                 Then("uiState should clear the error and return to success state") {
                     runTest {
+                        runCurrent()
+
                         viewModel.uiState.test {
                             awaitItem() shouldBe
                                 initialStateWithError.copy(

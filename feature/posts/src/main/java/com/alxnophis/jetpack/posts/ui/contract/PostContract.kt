@@ -48,6 +48,8 @@ internal sealed interface PostsStatus {
 internal sealed interface PostUiError {
     data object Network : PostUiError
 
+    data object NotFound : PostUiError
+
     data object Server : PostUiError
 
     data object Unknown : PostUiError

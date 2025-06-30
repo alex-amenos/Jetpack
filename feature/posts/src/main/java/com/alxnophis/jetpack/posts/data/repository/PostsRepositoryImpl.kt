@@ -9,6 +9,7 @@ import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
 import com.alxnophis.jetpack.posts.data.mapper.mapToPost
 import com.alxnophis.jetpack.posts.data.model.Post
+import com.alxnophis.jetpack.posts.data.model.PostDetailError
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -26,13 +27,31 @@ class PostsRepositoryImpl(
                 .map { posts: List<PostApiModel> ->
                     posts.map { it.mapToPost() }
                 }.mapLeft { error: CallError ->
-                    Timber.d("GET posts error: $error")
+                    Timber.e("GET posts error: $error")
                     when {
                         error is IOError -> PostsError.Unexpected
                         error is UnexpectedCallError -> PostsError.Unexpected
                         error is HttpError && error.code >= 500 -> PostsError.Server
                         error is HttpError -> PostsError.Network
                         else -> PostsError.Unknown
+                    }
+                }
+        }
+
+    override suspend fun getPostById(postId: Int): Either<PostDetailError, Post> =
+        withContext(ioDispatcher) {
+            apiDataSource
+                .getPostById(postId)
+                .map { post: PostApiModel ->
+                    post.mapToPost()
+                }.mapLeft { error: CallError ->
+                    Timber.e("GET post by id error: $error")
+                    when {
+                        error is IOError -> PostDetailError.Unexpected
+                        error is UnexpectedCallError -> PostDetailError.Unexpected
+                        error is HttpError && error.code >= 500 -> PostDetailError.Server
+                        error is HttpError -> PostDetailError.Network
+                        else -> PostDetailError.Unknown
                     }
                 }
         }
