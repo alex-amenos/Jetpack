@@ -33,6 +33,8 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
 
                 Then("uiState should reflect success with loaded posts") {
                     runTest {
+                        runCurrent()
+
                         viewModel.uiState.test {
                             awaitItem() shouldBe PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList)
                             expectNoEvents()
@@ -95,6 +97,8 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
 
                 Then("uiState should clear the error and return to success state") {
                     runTest {
+                        runCurrent()
+
                         viewModel.uiState.test {
                             awaitItem() shouldBe
                                 initialStateWithError.copy(
