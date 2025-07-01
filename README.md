@@ -14,10 +14,6 @@ To learn about the project's architecture, read [here](https://deepwiki.com/alex
 
 ![Jetpack - Main status](https://github.com/alex-amenos/Jetpack/actions/workflows/android_ci.yml/badge.svg?branch=main)
 
-### Develop
-
-![Jetpack - Develop status](https://github.com/alex-amenos/Jetpack/actions/workflows/android_ci.yml/badge.svg?branch=develop)
-
 ## Useful links to develop
 
 - [Kotlin Coding conventions](https://kotlinlang.org/docs/coding-conventions.html)
