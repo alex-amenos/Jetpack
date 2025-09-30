@@ -299,13 +299,15 @@ fun PasswordInput(
                     ) {
                         isPasswordHidden = !isPasswordHidden
                     },
-                painter = painterResource(
-                    id = if (isPasswordHidden) {
-                        R.drawable.ic_visibility
-                    } else {
-                        R.drawable.ic_visibility_off
-                    }
-                ),
+                painter =
+                    painterResource(
+                        id =
+                            if (isPasswordHidden) {
+                                R.drawable.ic_visibility
+                            } else {
+                                R.drawable.ic_visibility_off
+                            },
+                    ),
                 contentDescription = null,
             )
         },
