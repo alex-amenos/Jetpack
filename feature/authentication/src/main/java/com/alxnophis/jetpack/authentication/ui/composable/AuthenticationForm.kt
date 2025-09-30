@@ -20,15 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.sharp.Help
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -51,9 +42,9 @@ import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
@@ -106,13 +97,12 @@ internal fun AuthenticationForm(
                         },
                     ),
                 modifier = Modifier.fillMaxWidth(),
-                navIconImageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 actions = {
                     IconButton(
                         onClick = { handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorizationRequested) },
                     ) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Sharp.Help,
+                            painter = painterResource(id = R.drawable.ic_help),
                             contentDescription = null,
                         )
                     }
@@ -253,7 +243,7 @@ fun EmailInput(
         },
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.Email,
+                painter = painterResource(id = R.drawable.ic_email),
                 contentDescription = null,
             )
         },
@@ -292,7 +282,7 @@ fun PasswordInput(
             },
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.Lock,
+                painter = painterResource(id = R.drawable.ic_lock),
                 contentDescription = null,
             )
         },
@@ -309,12 +299,13 @@ fun PasswordInput(
                     ) {
                         isPasswordHidden = !isPasswordHidden
                     },
-                imageVector =
-                    if (isPasswordHidden) {
-                        Icons.Default.Visibility
+                painter = painterResource(
+                    id = if (isPasswordHidden) {
+                        R.drawable.ic_visibility
                     } else {
-                        Icons.Default.VisibilityOff
-                    },
+                        R.drawable.ic_visibility_off
+                    }
+                ),
                 contentDescription = null,
             )
         },
@@ -342,7 +333,7 @@ fun PasswordInput(
 @Composable
 fun Requirement(
     message: String,
-    icon: ImageVector,
+    icon: Int,
     tint: Color,
     modifier: Modifier = Modifier,
 ) {
@@ -352,7 +343,7 @@ fun Requirement(
     ) {
         Icon(
             modifier = Modifier.size(12.dp),
-            imageVector = icon,
+            painter = painterResource(id = icon),
             contentDescription = null,
             tint = tint,
         )
@@ -385,9 +376,9 @@ fun PasswordRequirementsView(
                 message = requirementStatus,
                 icon =
                     if (satisfied) {
-                        Icons.Default.Check
+                        R.drawable.ic_check
                     } else {
-                        Icons.Default.Close
+                        R.drawable.ic_close
                     },
                 tint =
                     if (satisfied) {

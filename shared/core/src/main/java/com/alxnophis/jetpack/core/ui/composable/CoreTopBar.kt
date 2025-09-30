@@ -2,8 +2,6 @@ package com.alxnophis.jetpack.core.ui.composable
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -13,8 +11,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,7 +26,7 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 fun CoreTopBar(
     title: String,
     modifier: Modifier = Modifier,
-    navIconImageVector: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
+    navIconDrawable: Int = R.drawable.ic_arrow_back,
     actions: @Composable RowScope.() -> Unit = {},
     onBack: () -> Unit,
 ) {
@@ -60,7 +58,7 @@ fun CoreTopBar(
                 onClick = onBack,
             ) {
                 Icon(
-                    imageVector = navIconImageVector,
+                    painter = painterResource(id = navIconDrawable),
                     contentDescription = stringResource(id = R.string.core_cd_go_back),
                     tint = MaterialTheme.colorScheme.onPrimary,
                 )
