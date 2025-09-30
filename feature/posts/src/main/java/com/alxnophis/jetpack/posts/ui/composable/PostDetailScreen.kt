@@ -16,9 +16,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -124,8 +122,8 @@ internal fun PostDetailUiErrors(
                         onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(id = com.alxnophis.jetpack.core.R.string.core_cd_close),
+                            painter = painterResource(R.drawable.ic_close),
+                            contentDescription = stringResource(id = R.string.core_cd_close),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }
@@ -139,7 +137,7 @@ internal fun PostDetailUiErrors(
                         verticalArrangement = Arrangement.Center,
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Error,
+                            painter = painterResource(R.drawable.ic_error),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(48.dp),
@@ -187,8 +185,8 @@ internal fun PostDetailContent(
                     onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(id = com.alxnophis.jetpack.core.R.string.core_cd_close),
+                        painter = painterResource(R.drawable.ic_close),
+                        contentDescription = stringResource(id = R.string.core_cd_close),
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }
