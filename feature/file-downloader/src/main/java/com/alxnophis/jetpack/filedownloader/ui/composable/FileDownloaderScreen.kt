@@ -68,6 +68,9 @@ import kotlinx.coroutines.launch
 
 private typealias HandleFileDownloaderUiEvent = FileDownloaderUiEvent.() -> Unit
 
+// Suppress 'ComposeCompositionLocalUsage' because this CompositionLocal is intentionally used
+// to provide an event handler to composables in this feature module. This pattern is safe and
+// appropriate for dependency injection of event handlers in Compose.
 @SuppressLint("ComposeCompositionLocalUsage")
 internal val LocalFileDownloaderUiEventHandler =
     staticCompositionLocalOf<HandleFileDownloaderUiEvent> {
