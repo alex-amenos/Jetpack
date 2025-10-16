@@ -8,6 +8,7 @@ import androidx.core.net.toUri
 import com.alxnophis.jetpack.core.ui.formatter.BaseDateFormatter
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.kotlin.constants.DOT
+import com.alxnophis.jetpack.kotlin.constants.UNDERSCORE
 import java.net.URL
 import java.net.URLConnection
 import java.util.Date
@@ -24,22 +25,24 @@ internal class AndroidDownloaderDataSourceImpl(
     override fun downloadFile(url: String): Long {
         val mimeType = url.getContentType()
         val fileExtensions = mimeType.getExtension()
+        val prefix = context.getString(R.string.file_downloader_notification_title)
         val filename =
             buildString {
+                append(prefix)
+                append(UNDERSCORE)
                 append(dateFormatter.formatToReadableDateTimeSnakeCase(Date()))
                 fileExtensions?.let {
                     append(DOT)
                     append(fileExtensions)
                 }
             }
-        val title = context.getString(R.string.file_downloader_notification_title)
         val request =
             DownloadManager
                 .Request(url.toUri())
                 .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setMimeType(mimeType)
-                .setTitle(title)
+                .setTitle(filename)
                 .setDescription(url)
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
         return downloadManager.enqueue(request)

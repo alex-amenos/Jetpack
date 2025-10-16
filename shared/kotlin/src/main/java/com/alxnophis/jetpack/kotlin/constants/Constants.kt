@@ -16,6 +16,7 @@ const val PARENTHESES_OPENED = "("
 const val PARENTHESES_CLOSED = ")"
 const val WHITE_SPACE = " "
 const val MINUS = "-"
+const val UNDERSCORE = "_"
 const val ZERO_INT = 0
 const val ZERO_DOUBLE = 0.0
 const val ZERO_FLOAT = 0f
