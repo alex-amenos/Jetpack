@@ -1,5 +1,6 @@
 [versions]
-android-compose-screenshot = "0.0.1-alpha10"
+roborazzi = "1.50.0"
+robolectric = "4.16"
 android-gradle-plugin = "8.11.0"
 android-junit5-plugin = "1.13.1.0"
 androidx-activity = "1.12.0-alpha01"
@@ -54,7 +55,10 @@ turbine = "1.2.1"
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
 android-junit5-plugin = { module = "de.mannodermaus.gradle.plugins:android-junit5", version.ref = "android-junit5-plugin" }
-android-screenshot-validation-api = { module = "com.android.tools.screenshot:screenshot-validation-api", version.ref = "android-compose-screenshot" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
+roborazzi-rule = { module = "io.github.takahirom.roborazzi:roborazzi-junit-rule", version.ref = "roborazzi" }
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -181,11 +185,17 @@ retrofit = [
     "retrofit",
     "retrofit-converter-kotlin_serialization",
 ]
+roborazzi = [
+    "robolectric",
+    "roborazzi",
+    "roborazzi-compose",
+    "roborazzi-rule",
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-android-compose-screenshot = { id = "com.android.compose.screenshot", version.ref = "android-compose-screenshot" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
 google-ksp = "com.google.devtools.ksp:2.1.10-1.0.30"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
