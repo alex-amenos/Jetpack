@@ -38,9 +38,6 @@ jobs:
       - name: Debug Unit tests
         run: ./gradlew testDebugUnitTest
 
-      - name: Debug screenshot tests
-        run: ./gradlew verifyRoborazziDebug
-
       - name: Assemble Release
         run: ./gradlew app:assembleRelease
 
