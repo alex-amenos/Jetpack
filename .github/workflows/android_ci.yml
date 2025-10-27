@@ -51,7 +51,7 @@ jobs:
           keyAlias: ${{ secrets.ALX_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ALX_STORE_PASSWORD }}
           keyPassword: ${{ secrets.ALX_KEY_PASSWORD }}
-          buildToolsVersion: "35.0.1"
+          buildToolsVersion: "36.0.0"
 
       # Example use of `signedReleaseFile` output -- not needed
       - name: Upload Release APK
