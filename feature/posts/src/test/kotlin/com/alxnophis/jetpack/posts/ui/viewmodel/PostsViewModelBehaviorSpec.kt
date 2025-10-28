@@ -68,6 +68,7 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
                 When("requesting posts update fails with ${testCase.description}") {
                     whenever(postsRepositoryMock.getPosts()).thenReturn(testCase.domainError.left())
                     val viewModel = viewModelMother()
+                    viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
                     Then("uiState should reflect error with appropriate error type") {
                         runTest {
