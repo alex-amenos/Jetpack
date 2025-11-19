@@ -6,15 +6,6 @@ composeCompiler {
     includeSourceInformation = true
 }
 
-roborazzi {
-    // Directory for reference images
-    outputDir.set(file("src/screenshots"))
-    // Directory for comparison images (Experimental option)
-    compare {
-        outputDir.set(file("build/outputs/screenshots_comparison"))
-    }
-}
-
 android {
     buildFeatures {
         compose true
