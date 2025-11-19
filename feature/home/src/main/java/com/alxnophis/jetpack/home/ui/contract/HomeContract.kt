@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.home.ui.contract
 
+import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
@@ -21,6 +22,7 @@ internal sealed class HomeEvent : UiEvent {
 }
 
 @optics
+@Immutable
 internal data class HomeState(
     val isLoading: Boolean,
     val data: List<NavigationItem>,

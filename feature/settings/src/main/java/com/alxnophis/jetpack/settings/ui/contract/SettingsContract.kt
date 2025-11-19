@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.settings.ui.contract
 
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
@@ -26,6 +27,7 @@ internal sealed class SettingsUiEvent : UiEvent {
 }
 
 @optics
+@Immutable
 internal data class SettingsUiState(
     val notificationsEnabled: Boolean,
     val hintsEnabled: Boolean,

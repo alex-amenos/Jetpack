@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.authentication.ui.contract
 
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.base.constants.EMPTY
@@ -36,6 +37,7 @@ internal sealed class AuthenticationEvent : UiEvent {
 }
 
 @optics
+@Immutable
 internal data class AuthenticationState(
     val isUserAuthorized: Boolean,
     val authenticationMode: AuthenticationMode,
