@@ -2,7 +2,7 @@ apply from: "$rootDir/buildSystem/gradle/common-android-shared.gradle"
 apply from: "$rootDir/buildSystem/gradle/common-android-compose.gradle"
 
 android {
-    namespace 'com.alxnophis.jetpack.core'
+    namespace = 'com.alxnophis.jetpack.core'
 }
 
 dependencies {
