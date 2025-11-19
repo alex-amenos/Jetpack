@@ -1,8 +1,0 @@
-# Keep the directory structure and documentation
-!README.md
-
-# Optionally ignore generated PNG files (uncomment if you don't want to commit screenshots)
-# *.png
-*_compare.png
-*_actual.png
-
