@@ -6,9 +6,6 @@ import com.github.takahirom.roborazzi.captureRoboImage
 /**
  * Screenshot test utilities for all modules.
  * Provides consistent naming and path management for screenshot tests.
- *
- * Note: Uses relativePathFromRoborazziContextOutputDirectory strategy.
- * Screenshots are saved relative to the outputDir configured in roborazzi block.
  */
 object ScreenshotTestUtils {
     /**
