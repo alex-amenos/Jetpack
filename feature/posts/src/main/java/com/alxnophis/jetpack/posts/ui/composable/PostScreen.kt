@@ -44,7 +44,7 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.data.model.Post
-import com.alxnophis.jetpack.posts.ui.composable.provider.PostStatePreviewProvider
+import com.alxnophis.jetpack.posts.ui.composable.provider.PostsScreenPreviewProvider
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
@@ -190,7 +190,7 @@ private fun CardPostItem(
 @Preview(showBackground = true)
 @Composable
 private fun PostScreenPreview(
-    @PreviewParameter(PostStatePreviewProvider::class) state: PostsUiState,
+    @PreviewParameter(PostsScreenPreviewProvider::class) state: PostsUiState,
 ) {
     PostsScreen(state)
 }

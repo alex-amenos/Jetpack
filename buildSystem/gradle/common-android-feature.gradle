@@ -55,13 +55,4 @@ dependencies {
     testRuntimeOnly libs.junit.platform.launcher
     testRuntimeOnly libs.junit.jupiter.engine
     testRuntimeOnly libs.junit.vintage.engine
-
-    androidTestImplementation project(Modules.SHARED_TESTING)
-    androidTestImplementation libs.androidx.arch.core.testing
-    androidTestImplementation libs.androidx.test.junit
-    androidTestImplementation libs.androidx.test.runner
-    androidTestImplementation libs.androidx.test.rules
-    androidTestImplementation libs.koin.test
-    androidTestImplementation libs.mockito.kotlin
-    androidTestImplementation libs.mockito.android
 }

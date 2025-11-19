@@ -1,5 +1,5 @@
-apply plugin: 'com.android.compose.screenshot'
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+apply plugin: 'io.github.takahirom.roborazzi'
 
 composeCompiler {
     enableStrongSkippingMode = false
@@ -12,11 +12,10 @@ android {
     }
 
     testOptions {
-        screenshotTests {
-            imageDifferenceThreshold = 0.0001f // 0.01%
+        unitTests {
+            includeAndroidResources = true
         }
     }
-    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
 dependencies {
@@ -31,16 +30,12 @@ dependencies {
 
     debugImplementation libs.androidx.compose.ui.tooling
 
-    androidTestImplementation(composeBom)
-    androidTestImplementation project(Modules.SHARED_TESTING)
-    androidTestImplementation libs.androidx.compose.ui.test
-
-    screenshotTestImplementation(platform(libs.junit.bom))
-    screenshotTestImplementation libs.android.screenshot.validation.api
-    screenshotTestImplementation libs.androidx.compose.ui.tooling
-    screenshotTestImplementation libs.junit.platform.launcher
-    screenshotTestImplementation libs.junit.jupiter.engine
-    screenshotTestImplementation libs.junit.vintage.engine
+    testImplementation(platform(libs.junit.bom))
+    testImplementation libs.bundles.roborazzi
+    testImplementation libs.androidx.compose.ui.tooling
+    testImplementation libs.junit.platform.launcher
+    testImplementation libs.junit.jupiter.engine
+    testImplementation libs.junit.vintage.engine
 
     // https://slackhq.github.io/compose-lints/
     lintChecks libs.slack.lint.compose

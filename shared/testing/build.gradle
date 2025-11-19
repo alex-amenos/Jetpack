@@ -10,18 +10,22 @@ dependencies {
     implementation(composeBom)
     implementation project(Modules.SHARED_CORE)
     implementation project(Modules.SHARED_KOTLIN)
+    implementation libs.bundles.roborazzi
     implementation libs.androidx.arch.core.testing
     implementation libs.androidx.compose.ui.test.manifest
     implementation libs.androidx.compose.ui.test
+    implementation libs.androidx.compose.ui.tooling
     implementation libs.androidx.test.junit
     implementation libs.androidx.test.runner
     implementation libs.androidx.test.rules
     implementation libs.kotlinx.coroutines.core
     implementation libs.kotlinx.coroutines.test
     implementation(platform(libs.junit.bom))
-//    implementation libs.junit
+    implementation libs.junit.platform.launcher
     implementation libs.junit.jupiter.api
+    implementation libs.junit.jupiter.engine
     implementation libs.junit.jupiter.params
+    implementation libs.junit.vintage.engine
     implementation libs.koin.test
     implementation libs.turbine
 
