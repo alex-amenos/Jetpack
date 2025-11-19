@@ -20,8 +20,8 @@ internal sealed class FileDownloaderUiEvent : UiEvent {
     ) : FileDownloaderUiEvent()
 }
 
-@Immutable
 @optics
+@Immutable
 internal data class FileDownloaderUiState(
     val url: String,
     val error: Int,

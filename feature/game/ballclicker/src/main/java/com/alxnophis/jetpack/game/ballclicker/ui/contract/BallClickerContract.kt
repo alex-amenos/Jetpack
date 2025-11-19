@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.game.ballclicker.ui.contract
 
+import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
@@ -15,6 +16,7 @@ internal sealed class BallClickerEvent : UiEvent {
 }
 
 @optics
+@Immutable
 internal data class BallClickerState(
     val currentTimeInSeconds: Int,
     val isTimerRunning: Boolean,
