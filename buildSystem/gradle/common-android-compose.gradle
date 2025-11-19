@@ -6,6 +6,15 @@ composeCompiler {
     includeSourceInformation = true
 }
 
+roborazzi {
+    // Directory for reference images
+    outputDir.set(file("src/screenshots"))
+    // Directory for comparison images (Experimental option)
+    compare {
+        outputDir.set(file("build/outputs/screenshots_comparison"))
+    }
+}
+
 android {
     buildFeatures {
         compose true
@@ -30,16 +39,12 @@ dependencies {
 
     debugImplementation libs.androidx.compose.ui.tooling
 
-    testImplementation libs.bundles.roborazzi
     testImplementation(platform(libs.junit.bom))
+    testImplementation libs.bundles.roborazzi
     testImplementation libs.androidx.compose.ui.tooling
     testImplementation libs.junit.platform.launcher
     testImplementation libs.junit.jupiter.engine
     testImplementation libs.junit.vintage.engine
-
-    androidTestImplementation(composeBom)
-    androidTestImplementation project(Modules.SHARED_TESTING)
-    androidTestImplementation libs.androidx.compose.ui.test
 
     // https://slackhq.github.io/compose-lints/
     lintChecks libs.slack.lint.compose

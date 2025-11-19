@@ -3,83 +3,52 @@ package com.alxnophis.jetpack.posts.ui.composable
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
 import com.alxnophis.jetpack.posts.ui.composable.provider.PostDetailPreviewProvider
-import com.github.takahirom.roborazzi.captureRoboImage
+import com.alxnophis.jetpack.testing.screenshot.ScreenshotTestUtils.captureScreenshot
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
+import org.robolectric.ParameterizedRobolectricTestRunner
+import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-@RunWith(RobolectricTestRunner::class)
-internal class PostDetailScreenshotTest {
+@RunWith(ParameterizedRobolectricTestRunner::class)
+@Config(qualifiers = RobolectricDeviceQualifiers.Pixel7)
+internal class PostDetailScreenshotTest(
+    private val index: Int,
+) {
     @get:Rule
     val composeRule = createComposeRule()
-    val previewProvider = PostDetailPreviewProvider()
 
     @Test
-    fun postDetailScreenState0() {
-        val uiState = previewProvider.values.elementAt(0)
+    fun postDetailScreen() {
+        val previewProvider = PostDetailPreviewProvider()
+        val uiState = previewProvider.values.toList()[index]
+
         composeRule.setContent {
             PostDetailScreen(uiState)
         }
+
         composeRule
             .onRoot()
-            .captureRoboImage("postDetailScreen_state_0")
+            .captureScreenshot(
+                screenName = SCREEN_NAME,
+                stateIndex = index,
+            )
     }
 
-    @Test
-    fun postDetailScreenState1() {
-        val uiState = previewProvider.values.elementAt(1)
-        composeRule.setContent {
-            PostDetailScreen(uiState)
-        }
-        composeRule
-            .onRoot()
-            .captureRoboImage("postDetailScreen_state_1")
-    }
+    companion object {
+        private const val SCREEN_NAME = "PostDetailScreen"
 
-    @Test
-    fun postDetailScreenState2() {
-        val uiState = previewProvider.values.elementAt(2)
-        composeRule.setContent {
-            PostDetailScreen(uiState)
+        @JvmStatic
+        @ParameterizedRobolectricTestRunner.Parameters(name = "state_{0}")
+        fun data(): List<Array<Any>> {
+            val previewProvider = PostDetailPreviewProvider()
+            return previewProvider.values
+                .toList()
+                .indices
+                .map { arrayOf<Any>(it) }
         }
-        composeRule
-            .onRoot()
-            .captureRoboImage("postDetailScreen_state_2")
-    }
-
-    @Test
-    fun postDetailScreenState3() {
-        val uiState = previewProvider.values.elementAt(3)
-        composeRule.setContent {
-            PostDetailScreen(uiState)
-        }
-        composeRule
-            .onRoot()
-            .captureRoboImage("postDetailScreen_state_3")
-    }
-
-    @Test
-    fun postDetailScreenState4() {
-        val uiState = previewProvider.values.elementAt(4)
-        composeRule.setContent {
-            PostDetailScreen(uiState)
-        }
-        composeRule
-            .onRoot()
-            .captureRoboImage("postDetailScreen_state_4")
-    }
-
-    @Test
-    fun postDetailScreenState5() {
-        val uiState = previewProvider.values.elementAt(5)
-        composeRule.setContent {
-            PostDetailScreen(uiState)
-        }
-        composeRule
-            .onRoot()
-            .captureRoboImage("postDetailScreen_state_5")
     }
 }
