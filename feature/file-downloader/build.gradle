@@ -1,6 +1,6 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 
 android {
-    resourcePrefix 'file_downloader'
-    namespace 'com.alxnophis.jetpack.filedownloader'
+    resourcePrefix = 'file_downloader'
+    namespace = 'com.alxnophis.jetpack.filedownloader'
 }

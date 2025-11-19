@@ -9,39 +9,39 @@ apply plugin: 'de.mannodermaus.android-junit5'
 apply plugin: 'kover'
 
 android {
-    compileSdkVersion AppConfig.COMPILE_SDK_VERSION
-    buildToolsVersion AppConfig.BUILD_TOOLS_VERSION
+    compileSdkVersion = AppConfig.COMPILE_SDK_VERSION
+    buildToolsVersion = AppConfig.BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion AppConfig.MIN_SDK_VERSION
-        targetSdkVersion AppConfig.TARGET_SDK_VERSION
-        versionCode AppVersion.CODE
-        versionName AppVersion.NAME
+        minSdkVersion = AppConfig.MIN_SDK_VERSION
+        targetSdkVersion = AppConfig.TARGET_SDK_VERSION
+        versionCode = AppVersion.CODE
+        versionName = AppVersion.NAME
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        multiDexEnabled true
+        multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
         consumerProguardFiles 'proguard-rules.pro'
     }
 
     buildTypes {
         debug {
-            debuggable true
-            minifyEnabled false
+            debuggable = true
+            minifyEnabled = false
             buildConfigField 'String', 'APP_PACKAGE_NAME', '"' + AppConfig.APP_PACKAGE_NAME_DEBUG + '"'
             buildConfigField 'String', 'APP_CRYPTO_KEY_ALIAS', '"' + AppConfig.APP_PACKAGE_NAME_DEBUG.hashCode() + '"'
         }
         release {
-            debuggable false
-            minifyEnabled false
+            debuggable = false
+            minifyEnabled = false
             buildConfigField 'String', 'APP_PACKAGE_NAME', '"' + AppConfig.APP_PACKAGE_NAME + '"'
             buildConfigField 'String', 'APP_CRYPTO_KEY_ALIAS', '"' + AppConfig.APP_PACKAGE_NAME.hashCode() + '"'
         }
     }
 
     buildFeatures {
-        buildConfig true
+        buildConfig = true
     }
 
     compileOptions {
@@ -72,12 +72,12 @@ android {
     }
 
     lint {
-        abortOnError false
-        checkDependencies true
-        checkReleaseBuilds false
-        ignoreTestSources true
-        htmlOutput file("$buildDir/reports/lint/lint-results.html")
-        xmlOutput file("$buildDir/reports/lint/lint-results.xml")
+        abortOnError = false
+        checkDependencies = true
+        checkReleaseBuilds = false
+        ignoreTestSources = true
+        htmlOutput = file("$buildDir/reports/lint/lint-results.html")
+        xmlOutput = file("$buildDir/reports/lint/lint-results.xml")
         disable += ['LogNotTimber',
                     'StringFormatInTimber',
                     'ThrowableNotAtBeginning',
