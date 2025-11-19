@@ -8,6 +8,8 @@ import com.github.takahirom.roborazzi.captureRoboImage
  * Provides consistent naming and path management for screenshot tests.
  */
 object ScreenshotTestUtils {
+    private const val SCREENSHOT_TEST_FOLDER = "screenshot/"
+
     /**
      * Captures a screenshot with a consistent naming pattern.
      *
@@ -18,7 +20,7 @@ object ScreenshotTestUtils {
         screenName: String,
         stateIndex: Int,
     ) {
-        captureRoboImage("${screenName}_state_$stateIndex.png")
+        captureRoboImage("$SCREENSHOT_TEST_FOLDER${screenName}_state_$stateIndex.png")
     }
 
     /**
@@ -27,7 +29,7 @@ object ScreenshotTestUtils {
      * @param fileName The custom filename for the screenshot (without extension)
      */
     fun SemanticsNodeInteraction.captureScreenshot(fileName: String) {
-        captureRoboImage("$fileName.png")
+        captureRoboImage("$SCREENSHOT_TEST_FOLDER$fileName.png")
     }
 
     /**
@@ -40,7 +42,7 @@ object ScreenshotTestUtils {
     fun getScreenshotPath(
         screenName: String,
         stateIndex: Int,
-    ): String = "${screenName}_state_$stateIndex.png"
+    ): String = "$SCREENSHOT_TEST_FOLDER${screenName}_state_$stateIndex.png"
 
     /**
      * Generates a screenshot filename with custom suffix.
@@ -52,5 +54,5 @@ object ScreenshotTestUtils {
     fun getScreenshotPath(
         screenName: String,
         suffix: String,
-    ): String = "${screenName}_$suffix.png"
+    ): String = "$SCREENSHOT_TEST_FOLDER${screenName}_$suffix.png"
 }
