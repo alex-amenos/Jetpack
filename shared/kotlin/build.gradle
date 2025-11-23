@@ -1,7 +1,7 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-base.gradle"
 
 android {
-    namespace 'com.alxnophis.jetpack.kotlin'
+    namespace = 'com.alxnophis.jetpack.kotlin'
 }
 
 dependencies {

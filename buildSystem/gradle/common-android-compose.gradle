@@ -8,7 +8,7 @@ composeCompiler {
 
 android {
     buildFeatures {
-        compose true
+        compose = true
     }
 
     testOptions {

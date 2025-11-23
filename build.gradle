@@ -31,9 +31,9 @@ allprojects {
     tasks.withType(Test).tap {
         configureEach {
             testLogging {
-                exceptionFormat 'full'
-                events 'started', 'skipped', 'passed', 'failed'
-                showStandardStreams true
+                exceptionFormat = 'full'
+                events = ['started', 'skipped', 'passed', 'failed']
+                showStandardStreams = true
                 outputs.upToDateWhen { false }
             }
         }
@@ -50,9 +50,11 @@ tasks.register('clean', Delete) {
 }
 
 tasks.register('installGitHook', Copy) {
-    from new File(rootProject.rootDir, 'buildSystem/githooks/prepare-commit-msg')
-    into { new File(rootProject.rootDir, '.git/hooks') }
-    fileMode 0755
+    from(new File(rootProject.rootDir, 'buildSystem/githooks/prepare-commit-msg'))
+    into(new File(rootProject.rootDir, '.git/hooks'))
+    filePermissions {
+        unix(0755)
+    }
 }
 
 afterEvaluate {

@@ -3,35 +3,35 @@ apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion AppConfig.COMPILE_SDK_VERSION
-    buildToolsVersion AppConfig.BUILD_TOOLS_VERSION
+    compileSdkVersion = AppConfig.COMPILE_SDK_VERSION
+    buildToolsVersion = AppConfig.BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId AppConfig.APPLICATION_ID
-        minSdkVersion AppConfig.MIN_SDK_VERSION
-        targetSdkVersion AppConfig.TARGET_SDK_VERSION
-        versionCode AppVersion.CODE
-        versionName AppVersion.NAME
+        applicationId = AppConfig.APPLICATION_ID
+        minSdkVersion = AppConfig.MIN_SDK_VERSION
+        targetSdkVersion = AppConfig.TARGET_SDK_VERSION
+        versionCode = AppVersion.CODE
+        versionName = AppVersion.NAME
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        multiDexEnabled false
+        multiDexEnabled = false
         vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
-            debuggable true
-            enableAndroidTestCoverage false
-            minifyEnabled false
+            applicationIdSuffix = ".debug"
+            debuggable = true
+            enableAndroidTestCoverage = false
+            minifyEnabled = false
             ext.enableCrashlytics = false
         }
         release {
-            debuggable false
-            enableAndroidTestCoverage false
-            minifyEnabled true
-            shrinkResources true
+            debuggable = false
+            enableAndroidTestCoverage = false
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -65,12 +65,12 @@ android {
     }
 
     lint {
-        abortOnError false
-        checkDependencies true
-        checkReleaseBuilds false
-        ignoreTestSources true
-        htmlOutput file("$buildDir/reports/lint/lint-results.html")
-        xmlOutput file("$buildDir/reports/lint/lint-results.xml")
+        abortOnError = false
+        checkDependencies = true
+        checkReleaseBuilds = false
+        ignoreTestSources = true
+        htmlOutput = file("$buildDir/reports/lint/lint-results.html")
+        xmlOutput = file("$buildDir/reports/lint/lint-results.xml")
         disable += ['LogNotTimber',
                     'StringFormatInTimber',
                     'ThrowableNotAtBeginning',
