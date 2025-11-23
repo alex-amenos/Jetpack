@@ -23,6 +23,8 @@ open class BaseApp : Application() {
         initStrictMode()
     }
 
+    protected open fun getFeatureModules(): List<org.koin.core.module.Module> = emptyList()
+
     private fun initKoin() {
         val koinApp =
             startKoin {
@@ -32,7 +34,7 @@ open class BaseApp : Application() {
                     listOf(
                         coreModule,
                         apiModule,
-                    ),
+                    ) + getFeatureModules(),
                 )
             }
         if (BuildConfig.DEBUG) {
