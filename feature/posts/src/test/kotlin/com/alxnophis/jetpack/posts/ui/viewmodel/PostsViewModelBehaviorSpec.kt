@@ -12,6 +12,7 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -36,7 +37,7 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
                         runCurrent()
 
                         viewModel.uiState.test {
-                            awaitItem() shouldBe PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList)
+                            awaitItem() shouldBe PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList.toImmutableList())
                             expectNoEvents()
                         }
                     }

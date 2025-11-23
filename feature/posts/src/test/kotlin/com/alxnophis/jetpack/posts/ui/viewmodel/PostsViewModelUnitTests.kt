@@ -12,6 +12,7 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
@@ -44,7 +45,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
 
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo PostsUiState.initialState
-                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList)
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList.toImmutableList())
                 expectNoEvents()
             }
             verify(postRepositoryMock).getPosts()
@@ -83,7 +84,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 skipItems(2)
                 awaitItem() shouldBeEqualTo PostsUiState.initialState
-                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList)
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList.toImmutableList())
                 expectNoEvents()
             }
             verify(postRepositoryMock, times(2)).getPosts()
