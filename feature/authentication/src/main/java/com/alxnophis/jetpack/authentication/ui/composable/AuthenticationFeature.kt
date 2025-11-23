@@ -5,7 +5,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.authentication.di.injectAuthentication
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AuthenticationFeature(
@@ -13,7 +13,7 @@ fun AuthenticationFeature(
     onBack: () -> Unit,
 ) {
     injectAuthentication()
-    val viewModel = getViewModel<AuthenticationViewModel>()
+    val viewModel = koinViewModel<AuthenticationViewModel>()
     AuthenticationScreen(
         state = viewModel.uiState.collectAsStateWithLifecycle().value,
         onEvent = { event ->

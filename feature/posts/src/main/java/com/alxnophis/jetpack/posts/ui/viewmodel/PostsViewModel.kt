@@ -13,6 +13,7 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 import com.alxnophis.jetpack.posts.ui.contract.error
 import com.alxnophis.jetpack.posts.ui.contract.posts
 import com.alxnophis.jetpack.posts.ui.contract.status
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
@@ -51,7 +52,7 @@ internal class PostsViewModel(
                     { posts: List<Post> ->
                         _uiState.updateCopy {
                             PostsUiState.status set PostsStatus.Success
-                            PostsUiState.posts set posts
+                            PostsUiState.posts set posts.toImmutableList()
                         }
                     },
                 )

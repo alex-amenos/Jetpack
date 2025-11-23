@@ -5,12 +5,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.filedownloader.di.injectFileDownloader
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiEvent
 import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun FileDownloaderFeature(onBack: () -> Unit) {
     injectFileDownloader()
-    val viewModel = getViewModel<FileDownloaderViewModel>()
+    val viewModel = koinViewModel<FileDownloaderViewModel>()
     FileDownloaderScreen(
         uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
         onEvent = { event ->

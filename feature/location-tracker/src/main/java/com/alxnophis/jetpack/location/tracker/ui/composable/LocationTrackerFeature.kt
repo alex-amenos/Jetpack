@@ -10,13 +10,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.location.tracker.di.injectLocationTracker
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LocationTrackerFeature(onBack: () -> Unit) {
     injectLocationTracker()
     val context = LocalContext.current
-    val viewModel = getViewModel<LocationTrackerViewModel>()
+    val viewModel = koinViewModel<LocationTrackerViewModel>()
     LaunchedEffect(Unit) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             viewModel.handleEvent(LocationTrackerUiEvent.FineLocationPermissionGrantedUi)
