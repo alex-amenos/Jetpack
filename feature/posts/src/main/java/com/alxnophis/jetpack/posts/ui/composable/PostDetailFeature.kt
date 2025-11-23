@@ -7,7 +7,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.posts.di.injectPostDetail
 import com.alxnophis.jetpack.posts.ui.contract.PostDetailEvent
 import com.alxnophis.jetpack.posts.ui.viewmodel.PostDetailViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PostDetailFeature(
@@ -15,7 +15,7 @@ fun PostDetailFeature(
     onBack: () -> Unit,
 ) {
     injectPostDetail()
-    val viewModel = getViewModel<PostDetailViewModel>()
+    val viewModel = koinViewModel<PostDetailViewModel>()
     val handleEvent: PostDetailEvent.() -> Unit = viewModel::handleEvent
     LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
         PostDetailEvent.LoadPost(postId).handleEvent()

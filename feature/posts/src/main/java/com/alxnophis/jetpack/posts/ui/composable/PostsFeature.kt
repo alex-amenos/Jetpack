@@ -5,7 +5,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.posts.di.injectPosts
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PostsFeature(
@@ -13,7 +13,7 @@ fun PostsFeature(
     onBack: () -> Unit,
 ) {
     injectPosts()
-    val viewModel = getViewModel<PostsViewModel>()
+    val viewModel = koinViewModel<PostsViewModel>()
     val handleEvent: PostsEvent.() -> Unit = viewModel::handleEvent
     PostsScreen(
         state = viewModel.uiState.collectAsStateWithLifecycle().value,
