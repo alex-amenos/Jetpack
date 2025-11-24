@@ -73,8 +73,6 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
 
                     Then("uiState should reflect error with appropriate error type") {
                         runTest {
-                            runCurrent()
-
                             viewModel.uiState.test {
                                 awaitItem() shouldBe
                                     PostsUiState.initialState.copy(
