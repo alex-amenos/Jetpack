@@ -7,14 +7,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alxnophis.jetpack.location.tracker.di.injectLocationTracker
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LocationTrackerFeature(onBack: () -> Unit) {
-    injectLocationTracker()
     val context = LocalContext.current
     val viewModel = koinViewModel<LocationTrackerViewModel>()
     LaunchedEffect(Unit) {

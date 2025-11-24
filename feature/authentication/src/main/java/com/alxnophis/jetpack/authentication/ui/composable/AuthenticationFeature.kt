@@ -2,7 +2,6 @@ package com.alxnophis.jetpack.authentication.ui.composable
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alxnophis.jetpack.authentication.di.injectAuthentication
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.viewmodel.AuthenticationViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -12,7 +11,6 @@ fun AuthenticationFeature(
     navigateInCaseOfSuccess: (email: String) -> Unit,
     onBack: () -> Unit,
 ) {
-    injectAuthentication()
     val viewModel = koinViewModel<AuthenticationViewModel>()
     AuthenticationScreen(
         state = viewModel.uiState.collectAsStateWithLifecycle().value,

@@ -6,18 +6,11 @@ import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderReposi
 import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepositoryImpl
 import com.alxnophis.jetpack.filedownloader.ui.viewmodel.FileDownloaderViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-fun injectFileDownloader() = loadFileDownloaderModules
-
-private val loadFileDownloaderModules by lazy {
-    loadKoinModules(fileDownloaderModule)
-}
-
-internal val fileDownloaderModule: Module =
+val fileDownloaderModule: Module =
     module {
         factory<DownloaderDataSource> { AndroidDownloaderDataSourceImpl(androidContext(), get()) }
         single<FileDownloaderRepository> { FileDownloaderRepositoryImpl(get()) }

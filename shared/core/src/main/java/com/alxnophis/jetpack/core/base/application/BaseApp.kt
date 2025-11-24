@@ -3,15 +3,15 @@ package com.alxnophis.jetpack.core.base.application
 import android.app.Application
 import android.app.NotificationManager
 import android.os.StrictMode
-import com.alxnophis.jetpack.api.di.apiModule
 import com.alxnophis.jetpack.core.BuildConfig
 import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
 import com.alxnophis.jetpack.core.di.KoinLogger
-import com.alxnophis.jetpack.core.di.coreModule
+import com.alxnophis.jetpack.core.di.coreModules
 import com.alxnophis.jetpack.core.extensions.isDebugBuildType
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 import timber.log.Timber
 
 open class BaseApp : Application() {
@@ -23,16 +23,17 @@ open class BaseApp : Application() {
         initStrictMode()
     }
 
+    protected open fun getFeatureModules(): List<Module> = emptyList()
+
+    protected open fun getCoreModules(): List<Module> = coreModules
+
     private fun initKoin() {
         val koinApp =
             startKoin {
                 androidContext(this@BaseApp)
                 androidLogger()
                 modules(
-                    listOf(
-                        coreModule,
-                        apiModule,
-                    ),
+                    getCoreModules() + getFeatureModules(),
                 )
             }
         if (BuildConfig.DEBUG) {
