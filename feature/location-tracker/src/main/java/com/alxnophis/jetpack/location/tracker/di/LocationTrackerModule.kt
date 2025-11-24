@@ -15,8 +15,8 @@ import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProvide
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.android.gms.location.LocationServices
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val locationTrackerModule: Module =
