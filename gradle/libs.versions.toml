@@ -16,8 +16,8 @@ androidx-test-junit = "1.2.1"
 androidx-test-rules = "1.6.1"
 androidx-test-runner = "1.6.2"
 androidx-work = "2.10.5"
-arrow-stack = "2.1.2"
-chucker = "4.1.0"
+arrow-stack = "2.2.0"
+chucker = "4.2.0"
 coil = "2.2.2"
 com-squareup-okhttp3 = "4.12.0"
 com-squareup-retrofit2 = "3.0.0"
@@ -30,7 +30,7 @@ koin-android = "4.1.1"
 koin-android-compose = "4.1.1"
 koin-android-work-manager = "4.1.1"
 koin-test = "4.1.1"
-kotest = "5.9.1"
+kotest = "6.0.5"
 kotlin = "2.1.10"
 kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
@@ -119,7 +119,6 @@ koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotest-extensions = { module = "io.kotest:kotest-extensions", version.ref = "kotest" }
-kotest-framework-api = { module = "io.kotest:kotest-framework-api", version.ref = "kotest" }
 kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
@@ -168,7 +167,6 @@ androidx-compose = [
 kotest = [
     "kotest-assertions",
     "kotest-extensions",
-    "kotest-framework-api",
     "kotest-framework-engine",
     "kotest-property",
     "kotest-runner",

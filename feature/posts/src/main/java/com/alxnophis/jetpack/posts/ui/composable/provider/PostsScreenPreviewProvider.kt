@@ -5,38 +5,39 @@ import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
+import kotlinx.collections.immutable.toImmutableList
 
 internal class PostsScreenPreviewProvider : PreviewParameterProvider<PostsUiState> {
     override val values =
         sequenceOf(
             PostsUiState(
                 status = PostsStatus.Success,
-                posts = listOf(post1, post2),
+                posts = listOf(post1, post2).toImmutableList(),
                 error = null,
             ),
             PostsUiState(
                 status = PostsStatus.Loading,
-                posts = emptyList(),
+                posts = emptyList<Post>().toImmutableList(),
                 error = null,
             ),
             PostsUiState(
                 status = PostsStatus.Error,
-                posts = emptyList(),
+                posts = emptyList<Post>().toImmutableList(),
                 error = PostUiError.Network,
             ),
             PostsUiState(
                 status = PostsStatus.Error,
-                posts = emptyList(),
+                posts = emptyList<Post>().toImmutableList(),
                 error = PostUiError.Server,
             ),
             PostsUiState(
                 status = PostsStatus.Error,
-                posts = emptyList(),
+                posts = emptyList<Post>().toImmutableList(),
                 error = PostUiError.Unknown,
             ),
             PostsUiState(
                 status = PostsStatus.Error,
-                posts = emptyList(),
+                posts = emptyList<Post>().toImmutableList(),
                 error = PostUiError.Unexpected,
             ),
         )
