@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-parcelize'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.adarshr.test-logger'

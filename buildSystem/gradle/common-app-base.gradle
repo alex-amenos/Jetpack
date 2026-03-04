@@ -33,21 +33,6 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            def project = "jetpack"
-            def apkExtension = ".apk"
-            def SEP = "_"
-            def buildType = name
-            def versionName = variant.versionName
-            def versionCode = versionCode
-            def date = new Date()
-            def formattedDate = date.format('ddMMyy_HHmm')
-            def newApkName = project + SEP + buildType + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
-            outputFileName = new File(newApkName)
-        }
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
@@ -84,6 +69,23 @@ android {
                          'META-INF/licenses/**',
                          'META-INF/AL2.0',
                          'META-INF/LGPL2.1',]
+        }
+    }
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            def projectName = "jetpack"
+            def apkExtension = ".apk"
+            def SEP = "_"
+            def variantName = variant.name
+            def versionName = output.versionName.getOrElse("")
+            def versionCode = output.versionCode.orNull
+            def date = new Date()
+            def formattedDate = date.format('ddMMyy_HHmm')
+            def newApkName = projectName + SEP + variantName + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
+            output.outputFileName.set(newApkName)
         }
     }
 }
