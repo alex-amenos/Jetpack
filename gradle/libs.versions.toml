@@ -1,6 +1,6 @@
 [versions]
-android-gradle-plugin = "8.13.1"
-android-junit5-plugin = "1.14.0.0"
+android-gradle-plugin = "9.0.1"
+android-junit5-plugin = "2.0.1"
 androidx-activity = "1.12.0"
 androidx-annotations = "1.9.1"
 androidx-appcompat = "1.7.1"
@@ -36,7 +36,7 @@ kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization-json = "1.8.1"
 kotlinxSerializationCore = "1.8.1"
-kover = "0.6.1"
+kover = "0.9.7"
 ktlint-gradle = "12.1.1"
 leak-canary = "2.14"
 lifecycleViewmodelNav3 = "2.10.0"
@@ -130,7 +130,6 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
-kover = { module = "org.jetbrains.kotlinx:kover", version.ref = "kover" }
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
 leak-canary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leak-canary" }
 mockito = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
@@ -197,6 +196,6 @@ ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
 google-ksp = "com.google.devtools.ksp:2.1.10-1.0.30"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kover = "org.jetbrains.kotlinx.kover:0.6.1"
+kover = "org.jetbrains.kotlinx.kover:0.9.7"
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"

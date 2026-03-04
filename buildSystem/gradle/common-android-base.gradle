@@ -1,20 +1,18 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.adarshr.test-logger'
-apply plugin: 'de.mannodermaus.android-junit5'
-apply plugin: 'kover'
+apply plugin: 'de.mannodermaus.android-junit'
+apply plugin: 'org.jetbrains.kotlinx.kover'
 
 android {
-    compileSdkVersion = AppConfig.COMPILE_SDK_VERSION
-    buildToolsVersion = AppConfig.BUILD_TOOLS_VERSION
+    compileSdk = AppConfig.COMPILE_SDK_VERSION
 
     defaultConfig {
-        minSdkVersion = AppConfig.MIN_SDK_VERSION
-        targetSdkVersion = AppConfig.TARGET_SDK_VERSION
+        minSdk = AppConfig.MIN_SDK_VERSION
+        targetSdk = AppConfig.TARGET_SDK_VERSION
         versionCode = AppVersion.CODE
         versionName = AppVersion.NAME
 
@@ -60,14 +58,6 @@ android {
     testOptions {
         unitTests.all {
             it.useJUnitPlatform()
-            if (name == "testDebugUnitTest") {
-                kover {
-                    enabled = true
-                    reportFile.set(file("$buildDir/reports/kover/debug-report.bin"))
-                    includes = ['com.alxnophis.jetpack.*']
-                    excludes = []
-                }
-            }
         }
     }
 
@@ -88,7 +78,7 @@ android {
                     'TimberExceptionLogging']
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += ['**/attach_hotspot_windows.dll',
                          'META-INF/licenses/**',

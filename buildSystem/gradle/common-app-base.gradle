@@ -1,15 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion = AppConfig.COMPILE_SDK_VERSION
-    buildToolsVersion = AppConfig.BUILD_TOOLS_VERSION
+    compileSdk = AppConfig.COMPILE_SDK_VERSION
 
     defaultConfig {
         applicationId = AppConfig.APPLICATION_ID
-        minSdkVersion = AppConfig.MIN_SDK_VERSION
-        targetSdkVersion = AppConfig.TARGET_SDK_VERSION
+        minSdk = AppConfig.MIN_SDK_VERSION
+        targetSdk = AppConfig.TARGET_SDK_VERSION
         versionCode = AppVersion.CODE
         versionName = AppVersion.NAME
 
@@ -81,7 +78,7 @@ android {
                     'TimberExceptionLogging']
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += ['**/attach_hotspot_windows.dll',
                          'META-INF/licenses/**',
