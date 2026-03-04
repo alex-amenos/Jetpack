@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-parcelize'
 apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.adarshr.test-logger'
@@ -46,10 +45,6 @@ android {
         targetCompatibility JavaVersion.VERSION_21
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_21.toString()
-    }
-
     kotlin.compilerOptions {
         freeCompilerArgs = ['-Xstring-concat=inline']
     }
@@ -65,8 +60,8 @@ android {
         checkDependencies = true
         checkReleaseBuilds = false
         ignoreTestSources = true
-        htmlOutput = file("$buildDir/reports/lint/lint-results.html")
-        xmlOutput = file("$buildDir/reports/lint/lint-results.xml")
+        htmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.html")
+        xmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.xml")
         disable += ['LogNotTimber',
                     'StringFormatInTimber',
                     'ThrowableNotAtBeginning',

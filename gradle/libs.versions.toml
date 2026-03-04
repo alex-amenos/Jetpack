@@ -46,8 +46,8 @@ mockito-inline = "5.2.0"
 mockito-kotlin = "6.1.0"
 nav3Core = "1.0.0"
 okhttp-profiler = "1.0.8"
-robolectric = "4.16"
-roborazzi = "1.51.0"
+robolectric = "4.16.1"
+roborazzi = "1.59.0"
 slack-lint-compose = "1.4.2"
 timber = "5.0.1"
 turbine = "1.2.1"
@@ -197,4 +197,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"
+version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.0"

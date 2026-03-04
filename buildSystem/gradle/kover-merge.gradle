@@ -15,23 +15,23 @@ dependencies {
     kover(project(':shared:kotlin'))
 }
 
-koverReport {
-    defaults {
+kover {
+    reports {
         filters {
             includes {
                 classes('com.alxnophis.jetpack.*')
             }
             excludes {
                 classes(
-                    'com.alxnophis.jetpack.core.base.*',
-                    'com.alxnophis.jetpack.*.di.*',
-                    'com.alxnophis.jetpack.di.*',
-                    'com.alxnophis.jetpack.router.*',
-                    'com.alxnophis.jetpack.*.ui.navigation.*',
-                    '*Activity',
-                    'BuildConfig',
-                    '*Mother',
-                    '*NavGraph$*',
+                        'com.alxnophis.jetpack.core.base.*',
+                        'com.alxnophis.jetpack.*.di.*',
+                        'com.alxnophis.jetpack.di.*',
+                        'com.alxnophis.jetpack.router.*',
+                        'com.alxnophis.jetpack.*.ui.navigation.*',
+                        '*Activity',
+                        'BuildConfig',
+                        '*Mother',
+                        '*NavGraph$*',
                 )
             }
         }

@@ -29,17 +29,13 @@ android {
             enableAndroidTestCoverage = false
             minifyEnabled = true
             shrinkResources = true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_21.toString()
     }
 
     kotlin.compilerOptions {
@@ -51,8 +47,8 @@ android {
         checkDependencies = true
         checkReleaseBuilds = false
         ignoreTestSources = true
-        htmlOutput = file("$buildDir/reports/lint/lint-results.html")
-        xmlOutput = file("$buildDir/reports/lint/lint-results.xml")
+        htmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.html")
+        xmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.xml")
         disable += ['LogNotTimber',
                     'StringFormatInTimber',
                     'ThrowableNotAtBeginning',
@@ -73,22 +69,22 @@ android {
     }
 }
 
-androidComponents {
-    onVariants { variant ->
-        variant.outputs.forEach { output ->
-            def projectName = "jetpack"
-            def apkExtension = ".apk"
-            def SEP = "_"
-            def variantName = variant.name
-            def versionName = output.versionName.getOrElse("")
-            def versionCode = output.versionCode.orNull
-            def date = new Date()
-            def formattedDate = date.format('ddMMyy_HHmm')
-            def newApkName = projectName + SEP + variantName + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
-            output.outputFileName.set(newApkName)
-        }
-    }
-}
+//androidComponents {
+//    onVariants { variant ->
+//        variant.outputs.forEach { output ->
+//            def projectName = "jetpack"
+//            def apkExtension = ".apk"
+//            def SEP = "_"
+//            def variantName = variant.name
+//            def versionName = output.versionName.getOrElse("")
+//            def versionCode = output.versionCode.orNull
+//            def date = new Date()
+//            def formattedDate = date.format('ddMMyy_HHmm')
+//            def newApkName = projectName + SEP + variantName + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
+//            output.outputFileName.set(newApkName)
+//        }
+//    }
+//}
 
 dependencies {
     implementation project(Modules.SHARED_CORE)

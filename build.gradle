@@ -62,7 +62,7 @@ afterEvaluate {
 
 // Multi-module reports for instrumented tests
 // https://developer.android.com/studio/test/command-line#multi-module-reports-instrumented-tests
-apply plugin: 'android-reporting'
+//apply plugin: 'android-reporting'
 
 // Kover
 apply from: "$rootDir/buildSystem/gradle/kover-merge.gradle"
