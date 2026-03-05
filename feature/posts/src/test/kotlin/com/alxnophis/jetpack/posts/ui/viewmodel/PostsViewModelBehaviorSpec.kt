@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.posts.ui.viewmodel
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
@@ -92,13 +93,12 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
                         status = PostsStatus.Error,
                         error = PostUiError.Network,
                     )
+                whenever(postsRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
                 val viewModel = viewModelMother(initialState = initialStateWithError)
                 viewModel.handleEvent(PostsEvent.DismissErrorRequested)
 
                 Then("uiState should clear the error and return to success state") {
                     runTest {
-                        runCurrent()
-
                         viewModel.uiState.test {
                             awaitItem() shouldBe
                                 initialStateWithError.copy(
