@@ -69,22 +69,22 @@ android {
     }
 }
 
-//androidComponents {
-//    onVariants { variant ->
-//        variant.outputs.forEach { output ->
-//            def projectName = "jetpack"
-//            def apkExtension = ".apk"
-//            def SEP = "_"
-//            def variantName = variant.name
-//            def versionName = output.versionName.getOrElse("")
-//            def versionCode = output.versionCode.orNull
-//            def date = new Date()
-//            def formattedDate = date.format('ddMMyy_HHmm')
-//            def newApkName = projectName + SEP + variantName + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
-//            output.outputFileName.set(newApkName)
-//        }
-//    }
-//}
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            def projectName = "jetpack"
+            def apkExtension = ".apk"
+            def SEP = "_"
+            def variantName = variant.name
+            def versionName = output.versionName.getOrElse("")
+            def versionCode = output.versionCode.orNull
+            def date = new Date()
+            def formattedDate = date.format('ddMMyy_HHmm')
+            def newApkName = projectName + SEP + variantName + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
+            output.outputFileName.set(newApkName)
+        }
+    }
+}
 
 dependencies {
     implementation project(Modules.SHARED_CORE)
