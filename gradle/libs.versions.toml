@@ -17,11 +17,13 @@ androidx-test-rules = "1.6.1"
 androidx-test-runner = "1.6.2"
 androidx-work = "2.10.5"
 arrow-stack = "2.2.0"
+ben-manes-versions = "0.46.0"
 chucker = "4.2.0"
 coil = "2.2.2"
 com-squareup-okhttp3 = "4.12.0"
 com-squareup-retrofit2 = "3.0.0"
 google-android-material = "1.12.0"
+google-ksp = "2.1.10-1.0.30"
 google-play-services-location = "21.3.0"
 gradle-test-logger-plugin = "4.0.0"
 junit_bom = "5.13.2"
@@ -51,6 +53,7 @@ roborazzi = "1.59.0"
 slack-lint-compose = "1.4.2"
 timber = "5.0.1"
 turbine = "1.2.1"
+version-catalog-update = "1.1.0"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
@@ -191,10 +194,10 @@ roborazzi = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
-google-ksp = "com.google.devtools.ksp:2.1.10-1.0.30"
+ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
-version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.0"
+version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
