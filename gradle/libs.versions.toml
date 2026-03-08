@@ -57,7 +57,6 @@ version-catalog-update = "1.1.0"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
-android-junit5-plugin = { module = "de.mannodermaus.gradle.plugins:android-junit5", version.ref = "android-junit5-plugin" }
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -194,6 +193,7 @@ roborazzi = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit5-plugin" }
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
