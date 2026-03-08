@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.authentication.ui.composable
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -24,7 +23,6 @@ internal fun AuthenticationScreen(
             onEvent(AuthenticationEvent.SetUserNotAuthorized)
         }
     }
-    BackHandler { onEvent(AuthenticationEvent.GoBackRequested) }
     AuthenticationContent(state, onEvent)
 }
 

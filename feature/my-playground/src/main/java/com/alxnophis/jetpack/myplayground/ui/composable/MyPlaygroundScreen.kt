@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.myplayground.ui.composable
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,7 +37,6 @@ internal fun MyPlaygroundScreen(
     state: MyPlaygroundState,
     onEvent: (MyPlaygroundEvent) -> Unit = {},
 ) {
-    BackHandler { onEvent(MyPlaygroundEvent.GoBackRequested) }
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),

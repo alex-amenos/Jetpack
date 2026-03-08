@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.home.ui.composable
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -51,9 +50,6 @@ internal fun HomeScreen(
     state: HomeState,
     onEvent: (HomeEvent) -> Unit = {},
 ) {
-    BackHandler {
-        onEvent(HomeEvent.GoBackRequested)
-    }
     LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
         onEvent(HomeEvent.Initialized)
     }
