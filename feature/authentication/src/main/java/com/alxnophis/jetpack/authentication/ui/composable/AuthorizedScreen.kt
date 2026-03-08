@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.authentication.ui.composable
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,8 +19,11 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 @Composable
 internal fun AuthorizedScreen(
     userEmail: String,
-    navigateBack: () -> Unit = {},
+    onBack: () -> Unit,
 ) {
+    BackHandler {
+        onBack()
+    }
     AppTheme {
         Box(
             modifier =
@@ -43,5 +47,6 @@ internal fun AuthorizedScreen(
 private fun AuthorizedScreenPreview() {
     AuthorizedScreen(
         userEmail = "my@email.com",
+        onBack = {},
     )
 }
