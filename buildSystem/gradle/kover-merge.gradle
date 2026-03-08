@@ -1,31 +1,39 @@
-// Helpful example:
-// https://github.com/Kotlin/kotlinx-kover/blob/release/examples/android_groovy/build.gradle
-koverMerged {
-    enable()
+// Kover 0.9.x multi-module coverage aggregation
+// https://kotlin.github.io/kotlinx-kover/gradle-plugin/
+dependencies {
+    kover(project(':feature:authentication'))
+    kover(project(':feature:file-downloader'))
+    kover(project(':feature:game:ballclicker'))
+    kover(project(':feature:home'))
+    kover(project(':feature:location-tracker'))
+    kover(project(':feature:my-playground'))
+    kover(project(':feature:notifications'))
+    kover(project(':feature:posts'))
+    kover(project(':feature:root'))
+    kover(project(':feature:settings'))
+    kover(project(':shared:core'))
+    kover(project(':shared:kotlin'))
+}
 
-    filters {
-        classes {
-            includes.addAll("com.alxnophis.jetpack.*")
-            excludes.addAll(
-                    'com.alxnophis.jetpack.core.base.*',
-                    'com.alxnophis.jetpack.*.di.*',
-                    'com.alxnophis.jetpack.di.*',
-                    'com.alxnophis.jetpack.core.base.*',
-                    'com.alxnophis.jetpack.router.*',
-                    'com.alxnophis.jetpack.*.ui.navigation.*',
-                    "*Activity",
-                    "BuildConfig",
-                    '*Mother',
-                    '*NavGraph\$*',
-            )
-        }
-
-        projects {
-            excludes.addAll(
-                    ":app",
-                    ":shared:api",
-                    ":shared:testing"
-            )
+kover {
+    reports {
+        filters {
+            includes {
+                classes('com.alxnophis.jetpack.*')
+            }
+            excludes {
+                classes(
+                        'com.alxnophis.jetpack.core.base.*',
+                        'com.alxnophis.jetpack.*.di.*',
+                        'com.alxnophis.jetpack.di.*',
+                        'com.alxnophis.jetpack.router.*',
+                        'com.alxnophis.jetpack.*.ui.navigation.*',
+                        '*Activity',
+                        'BuildConfig',
+                        '*Mother',
+                        '*NavGraph$*',
+                )
+            }
         }
     }
 }

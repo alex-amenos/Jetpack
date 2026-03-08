@@ -36,7 +36,6 @@ dependencies {
 
     debugImplementation libs.leak.canary
 
-    kapt libs.androidx.lifecycle.compiler
     ksp libs.arrow.optics.ksp.plugin
 
     testImplementation project(Modules.SHARED_TESTING)

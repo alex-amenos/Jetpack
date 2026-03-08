@@ -1,15 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion = AppConfig.COMPILE_SDK_VERSION
-    buildToolsVersion = AppConfig.BUILD_TOOLS_VERSION
+    compileSdk = AppConfig.COMPILE_SDK_VERSION
 
     defaultConfig {
         applicationId = AppConfig.APPLICATION_ID
-        minSdkVersion = AppConfig.MIN_SDK_VERSION
-        targetSdkVersion = AppConfig.TARGET_SDK_VERSION
+        minSdk = AppConfig.MIN_SDK_VERSION
+        targetSdk = AppConfig.TARGET_SDK_VERSION
         versionCode = AppVersion.CODE
         versionName = AppVersion.NAME
 
@@ -32,32 +29,13 @@ android {
             enableAndroidTestCoverage = false
             minifyEnabled = true
             shrinkResources = true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            def project = "jetpack"
-            def apkExtension = ".apk"
-            def SEP = "_"
-            def buildType = name
-            def versionName = variant.versionName
-            def versionCode = versionCode
-            def date = new Date()
-            def formattedDate = date.format('ddMMyy_HHmm')
-            def newApkName = project + SEP + buildType + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
-            outputFileName = new File(newApkName)
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_21.toString()
     }
 
     kotlin.compilerOptions {
@@ -69,8 +47,8 @@ android {
         checkDependencies = true
         checkReleaseBuilds = false
         ignoreTestSources = true
-        htmlOutput = file("$buildDir/reports/lint/lint-results.html")
-        xmlOutput = file("$buildDir/reports/lint/lint-results.xml")
+        htmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.html")
+        xmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.xml")
         disable += ['LogNotTimber',
                     'StringFormatInTimber',
                     'ThrowableNotAtBeginning',
@@ -81,13 +59,28 @@ android {
                     'TimberExceptionLogging']
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += ['**/attach_hotspot_windows.dll',
                          'META-INF/licenses/**',
                          'META-INF/AL2.0',
                          'META-INF/LGPL2.1',]
         }
+    }
+}
+
+androidComponents.onVariants(androidComponents.selector().all()) { variant ->
+    variant.outputs.forEach { output ->
+        def projectName = "jetpack"
+        def apkExtension = ".apk"
+        def SEP = "_"
+        def variantName = variant.name
+        def versionName = output.versionName.getOrElse("")
+        def versionCode = output.versionCode.orNull
+        def date = new Date()
+        def formattedDate = date.format('ddMMyy_HHmm')
+        def newApkName = projectName + SEP + variantName + SEP + versionCode + SEP + versionName + SEP + formattedDate + apkExtension
+        output.outputFileName.set(newApkName)
     }
 }
 
