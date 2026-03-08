@@ -8,7 +8,6 @@ buildscript {
     dependencies {
         classpath libs.gradle.test.logger.plugin
         classpath libs.android.gradle.plugin
-        classpath libs.android.junit5.plugin
         classpath libs.kotlin.gradle.plugin
         classpath libs.ktlint.gradle
     }
@@ -17,13 +16,14 @@ buildscript {
 plugins {
     alias libs.plugins.kover apply true
     alias libs.plugins.android.application apply false
+    alias libs.plugins.android.junit apply false
+    alias libs.plugins.android.compose.compiler apply false
     alias libs.plugins.kotlin.android apply false
     alias libs.plugins.kotlin.serialization apply false
     alias libs.plugins.ben.manes.versions apply true
-    alias libs.plugins.version.catalog.update apply true
     alias libs.plugins.google.ksp apply false
-    alias libs.plugins.android.compose.compiler apply false
     alias libs.plugins.roborazzi apply false
+    alias libs.plugins.version.catalog.update apply true
 }
 
 allprojects {

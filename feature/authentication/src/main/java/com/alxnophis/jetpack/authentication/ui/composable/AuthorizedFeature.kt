@@ -9,6 +9,6 @@ fun AuthorizedFeature(
 ) {
     AuthorizedScreen(
         userEmail = userEmail,
-        navigateBack = onBack,
+        onBack = onBack,
     )
 }

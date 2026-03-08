@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.filedownloader.ui.composable
 
 import android.annotation.SuppressLint
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -84,9 +83,6 @@ internal fun FileDownloaderScreen(
 ) {
     CompositionLocalProvider(LocalFileDownloaderUiEventHandler provides onEvent) {
         val handleEvent = LocalFileDownloaderUiEventHandler.current
-        BackHandler {
-            FileDownloaderUiEvent.GoBackRequested.handleEvent()
-        }
         LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
             FileDownloaderUiEvent.Initialized.handleEvent()
         }
@@ -262,20 +258,24 @@ private fun FileDownloaderErrors(
         FileDownloaderUiEvent.ErrorDismissRequested.handleEvent()
     }
     when {
-        uiState.error == R.string.file_downloader_generic_error ->
+        uiState.error == R.string.file_downloader_generic_error -> {
             DialogError(
                 error = uiState.error,
                 onDismiss = dismissError,
             )
+        }
 
-        uiState.error != NO_ERROR ->
+        uiState.error != NO_ERROR -> {
             SnackbarError(
                 modifier = Modifier.fillMaxSize(),
                 error = uiState.error,
                 onDismiss = dismissError,
             )
+        }
 
-        else -> doNothing()
+        else -> {
+            doNothing()
+        }
     }
 }
 

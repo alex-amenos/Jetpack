@@ -19,9 +19,11 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 @Composable
 internal fun AuthorizedScreen(
     userEmail: String,
-    navigateBack: () -> Unit = {},
+    onBack: () -> Unit,
 ) {
-    BackHandler { navigateBack() }
+    BackHandler {
+        onBack()
+    }
     AppTheme {
         Box(
             modifier =
@@ -45,5 +47,6 @@ internal fun AuthorizedScreen(
 private fun AuthorizedScreenPreview() {
     AuthorizedScreen(
         userEmail = "my@email.com",
+        onBack = {},
     )
 }

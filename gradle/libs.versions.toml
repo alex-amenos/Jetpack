@@ -1,11 +1,11 @@
 [versions]
-android-gradle-plugin = "9.0.1"
+android-gradle-plugin = "9.1.0"
 android-junit5-plugin = "2.0.1"
-androidx-activity = "1.12.0"
+androidx-activity = "1.12.4"
 androidx-annotations = "1.9.1"
 androidx-appcompat = "1.7.1"
 androidx-arch-core = "2.2.0"
-androidx-compose-bom = "2025.11.01"
+androidx-compose-bom = "2026.02.01"
 androidx-compose-constraint-layout = "1.1.1"
 androidx-compose-viewmodel = "2.10.0"
 androidx-core-ktx = "1.17.0"
@@ -16,14 +16,14 @@ androidx-test-junit = "1.2.1"
 androidx-test-rules = "1.6.1"
 androidx-test-runner = "1.6.2"
 androidx-work = "2.10.5"
-arrow-stack = "2.2.0"
+arrow-stack = "2.2.2"
 ben-manes-versions = "0.46.0"
-chucker = "4.2.0"
+chucker = "4.3.1"
 coil = "2.2.2"
 com-squareup-okhttp3 = "4.12.0"
 com-squareup-retrofit2 = "3.0.0"
 google-android-material = "1.12.0"
-google-ksp = "2.1.10-1.0.30"
+google-ksp = "2.3.2"
 google-play-services-location = "21.3.0"
 gradle-test-logger-plugin = "4.0.0"
 junit_bom = "5.13.2"
@@ -33,7 +33,7 @@ koin-android-compose = "4.1.1"
 koin-android-work-manager = "4.1.1"
 koin-test = "4.1.1"
 kotest = "6.0.5"
-kotlin = "2.1.10"
+kotlin = "2.2.10"
 kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization-json = "1.8.1"
@@ -57,7 +57,6 @@ version-catalog-update = "1.1.0"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
-android-junit5-plugin = { module = "de.mannodermaus.gradle.plugins:android-junit5", version.ref = "android-junit5-plugin" }
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -194,6 +193,7 @@ roborazzi = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit5-plugin" }
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
