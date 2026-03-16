@@ -196,7 +196,6 @@ android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version
 android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit5-plugin" }
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
