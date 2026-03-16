@@ -162,7 +162,7 @@ val postsModule: Module = module {
 
 ## Visibility
 - ViewModels: `internal` | Use cases: `internal class`
-- Repository impls: `public` (for DI) | UI components: `internal`
+- Repository interfaces: `public` (cross-module API) | Repository impls: `internal` when bound via DI in the same module, `public` only if needed across modules | UI components: `internal`
 
 ## Project Structure
 ```
