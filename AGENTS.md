@@ -172,7 +172,7 @@ feature/{name}/
     domain/         # Use cases, domain models, errors
     ui/contract/    # Events, UiState
     ui/viewmodel/   # ViewModels
-    ui/view/        # Compose screens
+    ui/composable/  # Compose screens
 shared/
     api/            # REST API clients
     core/           # Base classes, core UI
