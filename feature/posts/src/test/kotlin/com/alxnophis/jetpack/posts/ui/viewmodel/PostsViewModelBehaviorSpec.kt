@@ -35,7 +35,6 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
                     viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
                     Then("uiState should reflect success with loaded posts") {
-
                         viewModel.uiState.test {
                             awaitItem() shouldBe PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList.toImmutableList())
                             expectNoEvents()
