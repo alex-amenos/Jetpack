@@ -47,7 +47,7 @@ Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture wit
 ```kotlin
 import androidx.compose.runtime.Composable      // 1. Android (android.*, androidx.*)
 import arrow.core.Either                        // 2. Third-party (arrow.*, kotlinx.*, org.koin.*)
-import com.alxnophis.jetpack.core.ui.BaseViewModel  // 3. Project
+import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel  // 3. Project
 ```
 
 ### Naming Conventions
