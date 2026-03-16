@@ -28,10 +28,10 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
     init {
         Given("A PostsViewModel") {
             When("requesting posts update and repository returns successful data") {
-                whenever(postsRepositoryMock.getPosts()).thenReturn(postList.right())
-                val viewModel = viewModelMother()
-
                 runTest {
+                    whenever(postsRepositoryMock.getPosts()).thenReturn(postList.right())
+                    val viewModel = viewModelMother()
+
                     viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
                     Then("uiState should reflect success with loaded posts") {
@@ -67,10 +67,10 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
                 ),
             ).forEach { testCase ->
                 When("requesting posts update fails with ${testCase.description}") {
-                    whenever(postsRepositoryMock.getPosts()).thenReturn(testCase.domainError.left())
-                    val viewModel = viewModelMother()
-
                     runTest {
+                        whenever(postsRepositoryMock.getPosts()).thenReturn(testCase.domainError.left())
+                        val viewModel = viewModelMother()
+
                         viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
                         Then("uiState should reflect error with appropriate error type") {
@@ -88,15 +88,15 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
             }
 
             When("dismissing an error message") {
-                val initialStateWithError =
-                    PostsUiState.initialState.copy(
-                        status = PostsStatus.Error,
-                        error = PostUiError.Network,
-                    )
-                whenever(postsRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
-                val viewModel = viewModelMother(initialState = initialStateWithError)
-
                 runTest {
+                    val initialStateWithError =
+                        PostsUiState.initialState.copy(
+                            status = PostsStatus.Error,
+                            error = PostUiError.Network,
+                        )
+                    whenever(postsRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
+                    val viewModel = viewModelMother(initialState = initialStateWithError)
+
                     viewModel.handleEvent(PostsEvent.DismissErrorRequested)
 
                     Then("uiState should clear the error and return to success state") {
