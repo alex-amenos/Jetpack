@@ -39,7 +39,7 @@ Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture wit
 
 ## Code Style
 
-- Max line length: 150 chars | Final newline required | Trailing commas encouraged
+- Max line length: aim for ~150 chars for readability (not enforced for *.kt/*.kts in .editorconfig) | Final newline required | Trailing commas encouraged
 - No wildcard imports | Imports alphabetically sorted within groups
 - Composable functions exempt from function naming rules
 
