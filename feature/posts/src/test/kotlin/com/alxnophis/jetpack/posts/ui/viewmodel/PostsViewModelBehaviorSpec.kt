@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.posts.ui.viewmodel
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import com.alxnophis.jetpack.posts.data.repository.PostsRepository
@@ -14,7 +15,6 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.mockito.Mockito.mock
@@ -28,14 +28,13 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
     init {
         Given("A PostsViewModel") {
             When("requesting posts update and repository returns successful data") {
-                whenever(postsRepositoryMock.getPosts()).thenReturn(postList.right())
-                val viewModel = viewModelMother()
-                viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
+                runTest {
+                    whenever(postsRepositoryMock.getPosts()).thenReturn(postList.right())
+                    val viewModel = viewModelMother()
 
-                Then("uiState should reflect success with loaded posts") {
-                    runTest {
-                        runCurrent()
+                    viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
+                    Then("uiState should reflect success with loaded posts") {
                         viewModel.uiState.test {
                             awaitItem() shouldBe PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList.toImmutableList())
                             expectNoEvents()
@@ -67,12 +66,13 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
                 ),
             ).forEach { testCase ->
                 When("requesting posts update fails with ${testCase.description}") {
-                    whenever(postsRepositoryMock.getPosts()).thenReturn(testCase.domainError.left())
-                    val viewModel = viewModelMother()
-                    viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
+                    runTest {
+                        whenever(postsRepositoryMock.getPosts()).thenReturn(testCase.domainError.left())
+                        val viewModel = viewModelMother()
 
-                    Then("uiState should reflect error with appropriate error type") {
-                        runTest {
+                        viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
+
+                        Then("uiState should reflect error with appropriate error type") {
                             viewModel.uiState.test {
                                 awaitItem() shouldBe
                                     PostsUiState.initialState.copy(
@@ -87,18 +87,18 @@ internal class PostsViewModelBehaviorSpec : BehaviorSpec() {
             }
 
             When("dismissing an error message") {
-                val initialStateWithError =
-                    PostsUiState.initialState.copy(
-                        status = PostsStatus.Error,
-                        error = PostUiError.Network,
-                    )
-                val viewModel = viewModelMother(initialState = initialStateWithError)
-                viewModel.handleEvent(PostsEvent.DismissErrorRequested)
+                runTest {
+                    val initialStateWithError =
+                        PostsUiState.initialState.copy(
+                            status = PostsStatus.Error,
+                            error = PostUiError.Network,
+                        )
+                    whenever(postsRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
+                    val viewModel = viewModelMother(initialState = initialStateWithError)
 
-                Then("uiState should clear the error and return to success state") {
-                    runTest {
-                        runCurrent()
+                    viewModel.handleEvent(PostsEvent.DismissErrorRequested)
 
+                    Then("uiState should clear the error and return to success state") {
                         viewModel.uiState.test {
                             awaitItem() shouldBe
                                 initialStateWithError.copy(
