@@ -44,6 +44,7 @@ Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture wit
 - Composable functions exempt from function naming rules
 
 ### Import Order
+
 ```kotlin
 import androidx.compose.runtime.Composable      // 1. Android (android.*, androidx.*)
 import arrow.core.Either                        // 2. Third-party (arrow.*, kotlinx.*, org.koin.*)
@@ -51,18 +52,20 @@ import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel  // 3. Project
 ```
 
 ### Naming Conventions
-| Type | Convention | Example |
-|------|------------|---------|
-| ViewModel | `{Feature}ViewModel` | `PostsViewModel` |
-| Repository | `{Feature}Repository` / `{Feature}RepositoryImpl` | `PostsRepository` |
-| UseCase | `{Action}{Entity}UseCase` | `AuthenticateUseCase` |
-| Errors | `{Feature}Error` (sealed) | `PostsError` |
-| UI State/Events | `{Feature}UiState` / `{Feature}Event` | `PostsUiState` |
-| Test Factory | `{Entity}Mother` | `PostMother` |
+
+| Type            | Convention                                        | Example               |
+|-----------------|---------------------------------------------------|-----------------------|
+| ViewModel       | `{Feature}ViewModel`                              | `PostsViewModel`      |
+| Repository      | `{Feature}Repository` / `{Feature}RepositoryImpl` | `PostsRepository`     |
+| UseCase         | `{Action}{Entity}UseCase`                         | `AuthenticateUseCase` |
+| Errors          | `{Feature}Error` (sealed)                         | `PostsError`          |
+| UI State/Events | `{Feature}UiState` / `{Feature}Event`             | `PostsUiState`        |
+| Test Factory    | `{Entity}Mother`                                  | `PostMother`          |
 
 ## Architecture
 
 ### MVI with BaseViewModel
+
 ```kotlin
 internal class PostsViewModel(
     private val postsRepository: PostsRepository,
@@ -78,6 +81,7 @@ internal class PostsViewModel(
 ```
 
 ### Feature/Screen Separation
+
 - `{Feature}Feature.kt` - Entry point, connects ViewModel with Screen
 - `{Feature}Screen.kt` - Stateless composable UI
 - `{Feature}Contract.kt` - Events, UiState, sealed classes
@@ -121,7 +125,9 @@ internal data class PostsUiState(
     val status: PostsStatus,
     val posts: ImmutableList<Post>,
 ) : UiState {
-    internal companion object { val initialState = PostsUiState(...) }
+    internal companion object {
+        val initialState = PostsUiState(...)
+    }
 }
 
 // Updates
@@ -131,12 +137,14 @@ _uiState.updateCopy { PostsUiState.status set PostsStatus.Loading }
 ## Testing
 
 ### BDD Test Naming
+
 ```kotlin
 @Test
 fun `GIVEN get posts succeeds WHEN initialize THEN verify get posts AND update uiState`()
 ```
 
 ### Object Mother Pattern
+
 ```kotlin
 internal object PostMother {
     operator fun invoke(id: Int = 0, title: String = "") = Post(id, title)
@@ -144,6 +152,7 @@ internal object PostMother {
 ```
 
 ### Flow Testing (Turbine)
+
 ```kotlin
 viewModel.uiState.test {
     awaitItem() shouldBeEqualTo PostsUiState.initialState
@@ -161,10 +170,12 @@ val postsModule: Module = module {
 ```
 
 ## Visibility
+
 - ViewModels: `internal` | Use cases: `internal class`
 - Repository interfaces: `public` (cross-module API) | Repository impls: `internal` when bound via DI in the same module, `public` only if needed across modules | UI components: `internal`
 
 ## Project Structure
+
 ```
 feature/{name}/
     data/           # Repository implementations, API models
@@ -181,7 +192,8 @@ shared/
 ```
 
 ## References
+
 - [Kotlin Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html)
 - [Compose Lints by Slack](https://slackhq.github.io/compose-lints/rules/)
-- [Ktlint Rules](https://pinterest.github.io/ktlint/rules/standard/)
+- [Ktlint Rules](https://pinterest.github.io/ktlint/latest/)
 - [Google App Architecture](https://developer.android.com/topic/architecture/intro)
