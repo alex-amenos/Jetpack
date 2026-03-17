@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -41,9 +40,6 @@ import com.alxnophis.jetpack.notifications.R
 
 @Composable
 internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
-    BackHandler {
-        navigateBack()
-    }
     AppTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),

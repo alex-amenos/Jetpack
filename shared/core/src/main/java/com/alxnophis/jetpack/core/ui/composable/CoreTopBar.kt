@@ -33,7 +33,7 @@ fun CoreTopBar(
     TopAppBar(
         modifier = modifier,
         colors =
-            TopAppBarDefaults.mediumTopAppBarColors(
+            TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
                 navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,

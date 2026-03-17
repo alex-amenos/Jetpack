@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.home.ui.composable
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
@@ -51,12 +48,6 @@ internal fun HomeScreen(
     state: HomeState,
     onEvent: (HomeEvent) -> Unit = {},
 ) {
-    BackHandler {
-        onEvent(HomeEvent.GoBackRequested)
-    }
-    LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-        onEvent(HomeEvent.Initialized)
-    }
     AppTheme {
         Scaffold(
             topBar = { HomeTopBar() },
@@ -65,10 +56,7 @@ internal fun HomeScreen(
         ) { paddingValues ->
             SectionsList(
                 state = state,
-                modifier =
-                    Modifier
-                        .background(color = MaterialTheme.colorScheme.surface)
-                        .padding(paddingValues),
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.surface).padding(paddingValues),
                 navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) },
             )
             if (state.error != NO_ERROR) {
@@ -86,7 +74,7 @@ internal fun HomeScreen(
 internal fun HomeTopBar() {
     TopAppBar(
         colors =
-            TopAppBarDefaults.mediumTopAppBarColors(
+            TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
                 navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
@@ -137,11 +125,7 @@ internal fun SectionsList(
                         fontWeight = FontWeight.Medium,
                     )
                     Column(
-                        modifier =
-                            Modifier
-                                .weight(0.9f)
-                                .fillMaxWidth()
-                                .padding(start = mediumPadding),
+                        modifier = Modifier.weight(0.9f).fillMaxWidth().padding(start = mediumPadding),
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -152,10 +136,7 @@ internal fun SectionsList(
                             fontWeight = FontWeight.Medium,
                         )
                         Text(
-                            modifier =
-                                Modifier
-                                    .wrapContentSize()
-                                    .padding(top = extraSmallPadding),
+                            modifier = Modifier.wrapContentSize().padding(top = extraSmallPadding),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             text = item.description,

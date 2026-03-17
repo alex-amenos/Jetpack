@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.settings.ui.composable
 
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -33,7 +32,6 @@ internal fun SettingsScreen(
     onEvent: (SettingsUiEvent) -> Unit = {},
     appVersion: String = LocalContext.current.getVersion(),
 ) {
-    BackHandler { onEvent(SettingsUiEvent.GoBackRequested) }
     AppTheme {
         val context = LocalContext.current
         Scaffold(
@@ -73,9 +71,7 @@ internal fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.settings_option_manage_subscription),
                     onSubscriptionClicked = {
-                        Toast
-                            .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG).show()
                         onEvent(SettingsUiEvent.ManageSubscription)
                     },
                 )

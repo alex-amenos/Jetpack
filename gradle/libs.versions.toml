@@ -1,11 +1,11 @@
 [versions]
-android-gradle-plugin = "8.13.1"
-android-junit5-plugin = "1.14.0.0"
-androidx-activity = "1.12.0"
+android-gradle-plugin = "9.1.0"
+android-junit5-plugin = "2.0.1"
+androidx-activity = "1.12.4"
 androidx-annotations = "1.9.1"
 androidx-appcompat = "1.7.1"
 androidx-arch-core = "2.2.0"
-androidx-compose-bom = "2025.11.01"
+androidx-compose-bom = "2026.02.01"
 androidx-compose-constraint-layout = "1.1.1"
 androidx-compose-viewmodel = "2.10.0"
 androidx-core-ktx = "1.17.0"
@@ -16,14 +16,16 @@ androidx-test-junit = "1.2.1"
 androidx-test-rules = "1.6.1"
 androidx-test-runner = "1.6.2"
 androidx-work = "2.10.5"
-arrow-stack = "2.2.0"
-chucker = "4.2.0"
+arrow-stack = "2.2.2"
+ben-manes-versions = "0.46.0"
+chucker = "4.3.1"
 coil = "2.2.2"
 com-squareup-okhttp3 = "4.12.0"
 com-squareup-retrofit2 = "3.0.0"
 google-android-material = "1.12.0"
+google-ksp = "2.3.6"
 google-play-services-location = "21.3.0"
-gradle-test-logger-plugin = "3.2.0"
+gradle-test-logger-plugin = "4.0.0"
 junit_bom = "5.13.2"
 kluent = "1.73"
 koin-android = "4.1.1"
@@ -31,12 +33,12 @@ koin-android-compose = "4.1.1"
 koin-android-work-manager = "4.1.1"
 koin-test = "4.1.1"
 kotest = "6.0.5"
-kotlin = "2.1.10"
+kotlin = "2.2.10"
 kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization-json = "1.8.1"
 kotlinxSerializationCore = "1.8.1"
-kover = "0.6.1"
+kover = "0.9.7"
 ktlint-gradle = "12.1.1"
 leak-canary = "2.14"
 lifecycleViewmodelNav3 = "2.10.0"
@@ -46,15 +48,15 @@ mockito-inline = "5.2.0"
 mockito-kotlin = "6.1.0"
 nav3Core = "1.0.0"
 okhttp-profiler = "1.0.8"
-robolectric = "4.16"
-roborazzi = "1.51.0"
+robolectric = "4.16.1"
+roborazzi = "1.59.0"
 slack-lint-compose = "1.4.2"
 timber = "5.0.1"
 turbine = "1.2.1"
+version-catalog-update = "1.1.0"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
-android-junit5-plugin = { module = "de.mannodermaus.gradle.plugins:android-junit5", version.ref = "android-junit5-plugin" }
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -79,7 +81,6 @@ androidx-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-extension = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "androidx-lifecycle-extension" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
@@ -130,7 +131,6 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
-kover = { module = "org.jetbrains.kotlinx:kover", version.ref = "kover" }
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
 leak-canary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leak-canary" }
 mockito = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
@@ -193,10 +193,10 @@ roborazzi = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
-google-ksp = "com.google.devtools.ksp:2.1.10-1.0.30"
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit5-plugin" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kover = "org.jetbrains.kotlinx.kover:0.6.1"
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"
+version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }

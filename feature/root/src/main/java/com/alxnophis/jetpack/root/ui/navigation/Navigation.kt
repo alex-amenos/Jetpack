@@ -78,7 +78,9 @@ fun Navigation(
                     entry<Route.Authorized> { key ->
                         AuthorizedFeature(
                             userEmail = key.email,
-                            onBack = onBack,
+                            onBack = {
+                                backStack.removeAll { it is Route.Authentication || it is Route.Authorized }
+                            },
                         )
                     }
                     entry<Route.GameBallClicker> {
@@ -130,8 +132,7 @@ fun Navigation(
                         )
                     }
                     entry<Route.PostDetail>(
-                        metadata =
-                            ListDetailSceneStrategy.detailPane(),
+                        metadata = ListDetailSceneStrategy.detailPane(),
                     ) { key ->
                         PostDetailFeature(
                             postId = key.postId,

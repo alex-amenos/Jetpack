@@ -79,11 +79,13 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
                 .thenReturn(emptyList<Post>().right())
                 .thenReturn(postList.right())
 
-            viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
-
             viewModel.uiState.test {
-                skipItems(2)
                 awaitItem() shouldBeEqualTo PostsUiState.initialState
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Success, posts = emptyList<Post>().toImmutableList())
+
+                viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
+
+                awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Loading, posts = emptyList<Post>().toImmutableList())
                 awaitItem() shouldBeEqualTo PostsUiState.initialState.copy(status = PostsStatus.Success, posts = postList.toImmutableList())
                 expectNoEvents()
             }
@@ -113,7 +115,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
         initialState: PostsUiState = PostsUiState.initialState,
     ) = PostsViewModel(
         postsRepository = postsRepository,
-        initialState = initialState,
+        initialUiState = initialState,
     )
 
     private companion object {

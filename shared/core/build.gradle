@@ -21,7 +21,5 @@ dependencies {
     implementation libs.koin.android
     implementation libs.timber
 
-    kapt libs.androidx.lifecycle.compiler
-
     testImplementation project(Modules.SHARED_TESTING)
 }

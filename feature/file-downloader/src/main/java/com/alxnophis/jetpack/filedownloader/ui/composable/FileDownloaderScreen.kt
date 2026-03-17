@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.filedownloader.ui.composable
 
 import android.annotation.SuppressLint
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,8 +46,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.extensions.isValidUrl
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
@@ -60,7 +57,6 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiState
-import com.alxnophis.jetpack.filedownloader.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
@@ -83,13 +79,6 @@ internal fun FileDownloaderScreen(
     onEvent: (FileDownloaderUiEvent) -> Unit,
 ) {
     CompositionLocalProvider(LocalFileDownloaderUiEventHandler provides onEvent) {
-        val handleEvent = LocalFileDownloaderUiEventHandler.current
-        BackHandler {
-            FileDownloaderUiEvent.GoBackRequested.handleEvent()
-        }
-        LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-            FileDownloaderUiEvent.Initialized.handleEvent()
-        }
         FileDownloaderContainer(uiState)
     }
 }
@@ -262,20 +251,24 @@ private fun FileDownloaderErrors(
         FileDownloaderUiEvent.ErrorDismissRequested.handleEvent()
     }
     when {
-        uiState.error == R.string.file_downloader_generic_error ->
+        uiState.error == R.string.file_downloader_generic_error -> {
             DialogError(
                 error = uiState.error,
                 onDismiss = dismissError,
             )
+        }
 
-        uiState.error != NO_ERROR ->
+        uiState.error != null -> {
             SnackbarError(
                 modifier = Modifier.fillMaxSize(),
                 error = uiState.error,
                 onDismiss = dismissError,
             )
+        }
 
-        else -> doNothing()
+        else -> {
+            doNothing()
+        }
     }
 }
 

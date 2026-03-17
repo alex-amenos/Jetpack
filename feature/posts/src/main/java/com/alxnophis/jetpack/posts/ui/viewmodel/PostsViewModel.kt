@@ -14,15 +14,25 @@ import com.alxnophis.jetpack.posts.ui.contract.error
 import com.alxnophis.jetpack.posts.ui.contract.posts
 import com.alxnophis.jetpack.posts.ui.contract.status
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
     private val postsRepository: PostsRepository,
-    initialState: PostsUiState = PostsUiState.initialState,
-) : BaseViewModel<PostsEvent, PostsUiState>(initialState) {
-    init {
-        updatePosts()
-    }
+    initialUiState: PostsUiState = PostsUiState.initialState,
+) : BaseViewModel<PostsEvent, PostsUiState>(initialUiState) {
+    override val uiState: StateFlow<PostsUiState> =
+        _uiState
+            .onStart {
+                updatePosts()
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = initialUiState,
+            )
 
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
@@ -40,22 +50,20 @@ internal class PostsViewModel(
             PostsUiState.status set PostsStatus.Loading
         }
         viewModelScope.launch {
-            postsRepository
-                .getPosts()
-                .fold(
-                    { error ->
-                        _uiState.updateCopy {
-                            PostsUiState.status set PostsStatus.Error
-                            PostsUiState.error set error.mapToUiError()
-                        }
-                    },
-                    { posts: List<Post> ->
-                        _uiState.updateCopy {
-                            PostsUiState.status set PostsStatus.Success
-                            PostsUiState.posts set posts.toImmutableList()
-                        }
-                    },
-                )
+            postsRepository.getPosts().fold(
+                { error ->
+                    _uiState.updateCopy {
+                        PostsUiState.status set PostsStatus.Error
+                        PostsUiState.error set error.mapToUiError()
+                    }
+                },
+                { posts: List<Post> ->
+                    _uiState.updateCopy {
+                        PostsUiState.status set PostsStatus.Success
+                        PostsUiState.posts set posts.toImmutableList()
+                    }
+                },
+            )
         }
     }
 
