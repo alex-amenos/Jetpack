@@ -100,3 +100,6 @@ gen-external-apklibs
 
 ### Gemfile
 Gemfile.lock
+
+### Opencode
+/.opencode/
