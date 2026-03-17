@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.home.ui.composable
 
 import android.app.Activity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -19,7 +20,7 @@ fun HomeFeature(
     val context = LocalContext.current
     val finish = { ActivityCompat.finishAffinity(context as Activity) }
     val viewModel = koinViewModel<HomeViewModel>()
-    val state: HomeState = viewModel.uiState.collectAsStateWithLifecycle().value
+    val state: HomeState by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreen(
         state = state,
         onEvent = { event ->

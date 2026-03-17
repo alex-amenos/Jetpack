@@ -10,15 +10,15 @@ import com.alxnophis.jetpack.filedownloader.data.model.FileDownloaderError
 import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepository
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiState
-import com.alxnophis.jetpack.filedownloader.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.filedownloader.ui.contract.error
 import com.alxnophis.jetpack.filedownloader.ui.contract.fileStatusList
 import com.alxnophis.jetpack.filedownloader.ui.contract.url
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,6 +28,8 @@ internal class FileDownloaderViewModel(
     private val fileDownloaderRepository: FileDownloaderRepository,
     private val initialState: FileDownloaderUiState = FileDownloaderUiState.initialState,
 ) : BaseViewModel<FileDownloaderUiEvent, FileDownloaderUiState>(initialState) {
+    private var fileDownloaderJob: Job? = null
+
     override fun handleEvent(event: FileDownloaderUiEvent) {
         _uiState
             .onStart {
@@ -49,8 +51,9 @@ internal class FileDownloaderViewModel(
         }
     }
 
-    private fun subscribeToDownloaderFilesStatus() =
-        viewModelScope.launch {
+    private fun subscribeToDownloaderFilesStatus() {
+        if (fileDownloaderJob != null) return
+        fileDownloaderJob =
             fileDownloaderRepository.downloadingFiles
                 .combine(fileDownloaderRepository.downloadedFiles) { downloadingFiles, downloadedFiles ->
                     val downloadingList = downloadingFiles.map { it.mapTo(DOWNLOADING_STATUS) }
@@ -58,8 +61,8 @@ internal class FileDownloaderViewModel(
                     _uiState.updateCopy {
                         FileDownloaderUiState.fileStatusList set (downloadingList + downloadedList)
                     }
-                }.collect()
-        }
+                }.launchIn(this.viewModelScope)
+    }
 
     private fun updateUrl(url: String) {
         viewModelScope.launch {
@@ -97,7 +100,7 @@ internal class FileDownloaderViewModel(
 
     private fun dismissError() {
         _uiState.updateCopy {
-            FileDownloaderUiState.error set NO_ERROR
+            FileDownloaderUiState.error set null
         }
     }
 

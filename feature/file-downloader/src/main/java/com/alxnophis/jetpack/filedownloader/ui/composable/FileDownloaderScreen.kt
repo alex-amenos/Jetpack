@@ -57,7 +57,6 @@ import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiState
-import com.alxnophis.jetpack.filedownloader.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
@@ -259,7 +258,7 @@ private fun FileDownloaderErrors(
             )
         }
 
-        uiState.error != NO_ERROR -> {
+        uiState.error != null -> {
             SnackbarError(
                 modifier = Modifier.fillMaxSize(),
                 error = uiState.error,

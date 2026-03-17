@@ -14,6 +14,7 @@ import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.home.ui.contract.data
 import com.alxnophis.jetpack.home.ui.contract.error
 import com.alxnophis.jetpack.home.ui.contract.isLoading
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
@@ -22,14 +23,19 @@ import kotlinx.coroutines.launch
 
 internal class HomeViewModel(
     private val getNavigationItemsUseCase: GetNavigationItemsUseCase,
-    private val initialState: HomeState = HomeState.initialState,
+    initialState: HomeState = HomeState.initialState,
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
+    private var navigationItemsJob: Job? = null
+
     override val uiState: StateFlow<HomeState> =
-        _uiState.onStart { loadNavigationItems() }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = initialState,
-        )
+        _uiState
+            .onStart {
+                loadNavigationItems()
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = initialState,
+            )
 
     override fun handleEvent(event: HomeEvent) {
         viewModelScope.launch {
@@ -42,25 +48,27 @@ internal class HomeViewModel(
     }
 
     private fun loadNavigationItems() {
-        viewModelScope.launch {
-            _uiState.updateCopy {
-                HomeState.isLoading set true
+        if (navigationItemsJob != null) return
+        navigationItemsJob =
+            viewModelScope.launch {
+                _uiState.updateCopy {
+                    HomeState.isLoading set true
+                }
+                getNavigationItems().fold(
+                    {
+                        _uiState.updateCopy {
+                            HomeState.isLoading set false
+                            HomeState.error set R.string.home_error_loading_navigation_items
+                        }
+                    },
+                    { navigationItems ->
+                        _uiState.updateCopy {
+                            HomeState.isLoading set false
+                            HomeState.data set navigationItems
+                        }
+                    },
+                )
             }
-            getNavigationItems().fold(
-                {
-                    _uiState.updateCopy {
-                        HomeState.isLoading set false
-                        HomeState.error set R.string.home_error_loading_navigation_items
-                    }
-                },
-                { navigationItems ->
-                    _uiState.updateCopy {
-                        HomeState.isLoading set false
-                        HomeState.data set navigationItems
-                    }
-                },
-            )
-        }
     }
 
     private suspend fun getNavigationItems(): Either<NavigationError, List<NavigationItem>> = getNavigationItemsUseCase.invoke()
