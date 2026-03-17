@@ -10,8 +10,6 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 internal const val NO_ERROR = 0
 
 internal sealed class HomeEvent : UiEvent {
-    data object Initialized : HomeEvent()
-
     data object ErrorDismissRequested : HomeEvent()
 
     data object GoBackRequested : HomeEvent()
