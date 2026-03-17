@@ -29,8 +29,13 @@ fun HomeFeature(
                     finish()
                 }
 
-                is HomeEvent.NavigationRequested -> onNavigateTo(event.feature)
-                else -> viewModel.handleEvent(event)
+                is HomeEvent.NavigationRequested -> {
+                    onNavigateTo(event.feature)
+                }
+
+                else -> {
+                    viewModel.handleEvent(event)
+                }
             }
         },
     )

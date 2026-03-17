@@ -149,10 +149,7 @@ private fun FileDownloaderContent(
             },
             trailingIcon = {
                 IconButton(
-                    modifier =
-                        Modifier
-                            .wrapContentSize()
-                            .padding(4.dp),
+                    modifier = Modifier.wrapContentSize().padding(4.dp),
                     onClick = {
                         FileDownloaderUiEvent.UrlChanged(EMPTY).handleEvent()
                     },
