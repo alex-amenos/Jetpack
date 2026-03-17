@@ -46,8 +46,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.extensions.isValidUrl
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
@@ -82,10 +80,6 @@ internal fun FileDownloaderScreen(
     onEvent: (FileDownloaderUiEvent) -> Unit,
 ) {
     CompositionLocalProvider(LocalFileDownloaderUiEventHandler provides onEvent) {
-        val handleEvent = LocalFileDownloaderUiEventHandler.current
-        LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-            FileDownloaderUiEvent.Initialized.handleEvent()
-        }
         FileDownloaderContainer(uiState)
     }
 }
@@ -149,7 +143,10 @@ private fun FileDownloaderContent(
             },
             trailingIcon = {
                 IconButton(
-                    modifier = Modifier.wrapContentSize().padding(4.dp),
+                    modifier =
+                        Modifier
+                            .wrapContentSize()
+                            .padding(4.dp),
                     onClick = {
                         FileDownloaderUiEvent.UrlChanged(EMPTY).handleEvent()
                     },

@@ -14,16 +14,26 @@ import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.home.ui.contract.data
 import com.alxnophis.jetpack.home.ui.contract.error
 import com.alxnophis.jetpack.home.ui.contract.isLoading
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 internal class HomeViewModel(
     private val getNavigationItemsUseCase: GetNavigationItemsUseCase,
-    initialState: HomeState = HomeState.initialState,
+    private val initialState: HomeState = HomeState.initialState,
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
+    override val uiState: StateFlow<HomeState> =
+        _uiState.onStart { loadNavigationItems() }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = initialState,
+        )
+
     override fun handleEvent(event: HomeEvent) {
         viewModelScope.launch {
             when (event) {
-                HomeEvent.Initialized -> loadNavigationItems()
                 HomeEvent.ErrorDismissRequested -> dismissError()
                 HomeEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
                 is HomeEvent.NavigationRequested -> throw IllegalStateException("Navigation not implemented")

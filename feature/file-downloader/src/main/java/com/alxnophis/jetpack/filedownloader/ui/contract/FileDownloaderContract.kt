@@ -7,8 +7,6 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 
 internal sealed class FileDownloaderUiEvent : UiEvent {
-    data object Initialized : FileDownloaderUiEvent()
-
     data object GoBackRequested : FileDownloaderUiEvent()
 
     data object DownloadFileRequested : FileDownloaderUiEvent()
