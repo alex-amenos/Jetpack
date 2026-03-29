@@ -3,7 +3,6 @@ package com.alxnophis.jetpack.core.ui.composable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -27,29 +27,31 @@ fun CoreErrorDialog(
 ) {
     AlertDialog(
         modifier = modifier,
-        onDismissRequest = { dismissError() },
+        onDismissRequest = dismissError,
         title = {
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.core_error_title),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
             )
         },
         text = {
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = errorMessage,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Start,
             )
         },
         confirmButton = {
             Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = extraSmallPadding, end = smallPadding),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = extraSmallPadding, end = smallPadding),
                 contentAlignment = Alignment.CenterEnd,
             ) {
                 TextButton(
@@ -68,11 +70,10 @@ fun CoreErrorDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun CoreErrorDialogPreview() {
+private fun CoreErrorDialogLongMessagePreview() {
     AppTheme {
         CoreErrorDialog(
-            modifier = Modifier.wrapContentSize(),
-            errorMessage = "Error message",
+            errorMessage = "Unable to connect to the server. Please check your internet connection and try again. If the problem persists, contact support.",
             dismissError = {},
         )
     }
