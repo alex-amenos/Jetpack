@@ -24,113 +24,102 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class PostsViewModelBehaviorSpec :
-    BehaviorSpec(
-        {
-            val postsRepositoryMock: PostsRepository = mock()
-            val testDispatcher = UnconfinedTestDispatcher()
+internal class PostsViewModelBehaviorSpec : BehaviorSpec(
+    {
+        val postsRepositoryMock: PostsRepository = mock()
+        val testDispatcher = UnconfinedTestDispatcher()
 
-            beforeSpec {
-                Dispatchers.setMain(testDispatcher)
+        beforeSpec {
+            Dispatchers.setMain(testDispatcher)
+        }
+
+        afterSpec {
+            Dispatchers.resetMain()
+        }
+
+        afterTest {
+            reset(postsRepositoryMock)
+        }
+
+        Given("A PostsViewModel") {
+            When("requesting posts update and repository returns successful data") {
+                whenever(postsRepositoryMock.getPosts()).thenReturn(postList.right())
+                val viewModel = PostsViewModel(postsRepository = postsRepositoryMock)
+
+                viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
+
+                Then("uiState should reflect success with loaded posts") {
+                    viewModel.uiState.test {
+                        awaitItem() shouldBe PostsUiState.initialState.copy(
+                            status = PostsStatus.Success,
+                            posts = postList.toImmutableList(),
+                        )
+                        expectNoEvents()
+                    }
+                }
             }
 
-            afterSpec {
-                Dispatchers.resetMain()
-            }
-
-            afterTest {
-                reset(postsRepositoryMock)
-            }
-
-            Given("A PostsViewModel") {
-                When("requesting posts update and repository returns successful data") {
-                    whenever(postsRepositoryMock.getPosts()).thenReturn(postList.right())
+            listOf(
+                ErrorTestCase(
+                    domainError = PostsError.Network,
+                    uiError = PostUiError.Network,
+                    description = "Network error",
+                ),
+                ErrorTestCase(
+                    domainError = PostsError.Server,
+                    uiError = PostUiError.Server,
+                    description = "Server error",
+                ),
+                ErrorTestCase(
+                    domainError = PostsError.Unexpected,
+                    uiError = PostUiError.Unexpected,
+                    description = "Unexpected error",
+                ),
+            ).forEach { testCase ->
+                When("requesting posts update fails with ${testCase.description}") {
+                    whenever(postsRepositoryMock.getPosts()).thenReturn(testCase.domainError.left())
                     val viewModel = PostsViewModel(postsRepository = postsRepositoryMock)
 
                     viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
-                    Then("uiState should reflect success with loaded posts") {
+                    Then("uiState should reflect error with appropriate error type") {
                         viewModel.uiState.test {
-                            awaitItem() shouldBe
-                                PostsUiState.initialState.copy(
-                                    status = PostsStatus.Success,
-                                    posts = postList.toImmutableList(),
-                                )
-                            expectNoEvents()
-                        }
-                    }
-                }
-
-                listOf(
-                    ErrorTestCase(
-                        domainError = PostsError.Network,
-                        uiError = PostUiError.Network,
-                        description = "Network error",
-                    ),
-                    ErrorTestCase(
-                        domainError = PostsError.Server,
-                        uiError = PostUiError.Server,
-                        description = "Server error",
-                    ),
-                    ErrorTestCase(
-                        domainError = PostsError.Unknown,
-                        uiError = PostUiError.Unknown,
-                        description = "Unknown error",
-                    ),
-                    ErrorTestCase(
-                        domainError = PostsError.Unexpected,
-                        uiError = PostUiError.Unexpected,
-                        description = "Unexpected error",
-                    ),
-                ).forEach { testCase ->
-                    When("requesting posts update fails with ${testCase.description}") {
-                        whenever(postsRepositoryMock.getPosts()).thenReturn(testCase.domainError.left())
-                        val viewModel = PostsViewModel(postsRepository = postsRepositoryMock)
-
-                        viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
-
-                        Then("uiState should reflect error with appropriate error type") {
-                            viewModel.uiState.test {
-                                awaitItem() shouldBe
-                                    PostsUiState.initialState.copy(
-                                        status = PostsStatus.Error,
-                                        error = testCase.uiError,
-                                    )
-                                expectNoEvents()
-                            }
-                        }
-                    }
-                }
-
-                When("dismissing an error message") {
-                    val initialStateWithError =
-                        PostsUiState.initialState.copy(
-                            status = PostsStatus.Error,
-                            error = PostUiError.Network,
-                        )
-                    whenever(postsRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
-                    val viewModel =
-                        PostsViewModel(
-                            postsRepository = postsRepositoryMock,
-                            initialUiState = initialStateWithError,
-                        )
-
-                    viewModel.handleEvent(PostsEvent.DismissErrorRequested)
-
-                    Then("uiState should clear the error and return to success state") {
-                        viewModel.uiState.test {
-                            awaitItem() shouldBe
-                                initialStateWithError.copy(
-                                    status = PostsStatus.Success,
-                                    error = null,
-                                )
+                            awaitItem() shouldBe PostsUiState.initialState.copy(
+                                status = PostsStatus.Error,
+                                error = testCase.uiError,
+                            )
                             expectNoEvents()
                         }
                     }
                 }
             }
-        },
-    ) {
+
+            When("dismissing an error message") {
+                val initialStateWithError = PostsUiState.initialState.copy(
+                    status = PostsStatus.Error,
+                    error = PostUiError.Network,
+                )
+                whenever(postsRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
+                val viewModel = PostsViewModel(
+                    postsRepository = postsRepositoryMock,
+                    initialUiState = initialStateWithError,
+                )
+
+                viewModel.handleEvent(PostsEvent.DismissErrorRequested)
+
+                Then("uiState should clear the error and return to success state") {
+                    viewModel.uiState.test {
+                        awaitItem() shouldBe initialStateWithError.copy(
+                            status = PostsStatus.Success,
+                            error = null,
+                        )
+                        expectNoEvents()
+                    }
+                }
+            }
+        }
+    },
+) {
     private companion object {
         val post1 = PostMother(id = 1, userId = 1, title = "title1", body = "body1")
         val post2 = PostMother(id = 2, userId = 2, title = "title2", body = "body2")

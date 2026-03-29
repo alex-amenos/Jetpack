@@ -33,11 +33,6 @@ internal class PostsScreenPreviewProvider : PreviewParameterProvider<PostsUiStat
             PostsUiState(
                 status = PostsStatus.Error,
                 posts = emptyList<Post>().toImmutableList(),
-                error = PostUiError.Unknown,
-            ),
-            PostsUiState(
-                status = PostsStatus.Error,
-                posts = emptyList<Post>().toImmutableList(),
                 error = PostUiError.Unexpected,
             ),
         )
@@ -57,7 +52,7 @@ internal class PostsScreenPreviewProvider : PreviewParameterProvider<PostsUiStat
                 title = "Title 2",
                 body =
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             )
     }
 }

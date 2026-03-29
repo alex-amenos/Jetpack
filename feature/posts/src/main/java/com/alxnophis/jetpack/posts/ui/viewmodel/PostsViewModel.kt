@@ -26,19 +26,18 @@ internal class PostsViewModel(
 ) : BaseViewModel<PostsEvent, PostsUiState>(initialUiState) {
     private var hasLoadedInitialData = false
 
-    override val uiState: StateFlow<PostsUiState> =
-        _uiState
-            .onSubscription {
-                if (!hasLoadedInitialData) {
-                    hasLoadedInitialData = true
-                    updatePosts()
-                }
+    override val uiState: StateFlow<PostsUiState> = _uiState
+        .onSubscription {
+            if (!hasLoadedInitialData) {
+                hasLoadedInitialData = true
+                updatePosts()
             }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = initialUiState,
-            )
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = initialUiState,
+        )
 
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
@@ -75,13 +74,11 @@ internal class PostsViewModel(
         }
     }
 
-    private fun PostsError.mapToUiError(): PostUiError =
-        when (this) {
-            PostsError.Network -> PostUiError.Network
-            PostsError.Server -> PostUiError.Server
-            PostsError.Unknown -> PostUiError.Unknown
-            PostsError.Unexpected -> PostUiError.Unexpected
-        }
+    private fun PostsError.mapToUiError(): PostUiError = when (this) {
+        PostsError.Network -> PostUiError.Network
+        PostsError.Server -> PostUiError.Server
+        PostsError.Unexpected -> PostUiError.Unexpected
+    }
 
     private fun dismissError() {
         _uiState.updateCopy {

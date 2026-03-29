@@ -56,7 +56,5 @@ internal sealed interface PostUiError {
 
     data object Server : PostUiError
 
-    data object Unknown : PostUiError
-
     data object Unexpected : PostUiError
 }

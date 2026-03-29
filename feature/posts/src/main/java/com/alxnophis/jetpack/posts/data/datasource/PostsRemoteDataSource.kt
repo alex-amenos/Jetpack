@@ -27,8 +27,7 @@ internal class PostsRemoteDataSource(
                 is IOError -> PostsError.Unexpected
                 is UnexpectedCallError -> PostsError.Unexpected
                 is HttpError if error.code >= 500 -> PostsError.Server
-                is HttpError -> PostsError.Network
-                else -> PostsError.Unknown
+                else -> PostsError.Network
             }
         }
 
@@ -43,8 +42,7 @@ internal class PostsRemoteDataSource(
                 is IOError -> PostDetailError.Unexpected
                 is UnexpectedCallError -> PostDetailError.Unexpected
                 is HttpError if error.code >= 500 -> PostDetailError.Server
-                is HttpError -> PostDetailError.Network
-                else -> PostDetailError.Unknown
+                else -> PostDetailError.Network
             }
         }
 }
