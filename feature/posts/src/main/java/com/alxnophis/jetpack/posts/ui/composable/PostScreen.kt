@@ -75,41 +75,46 @@ private fun PostContent(
             contentWindowInsets = WindowInsets.statusBars,
         ) { padding ->
             uiState.error?.let { error: PostUiError ->
-                CoreErrorDialog(
-                    errorMessage =
-                        when (error) {
-                            PostUiError.Network -> stringResource(R.string.posts_error_network)
-                            PostUiError.NotFound -> stringResource(R.string.posts_error_not_found)
-                            PostUiError.Server -> stringResource(R.string.posts_error_server)
-                            PostUiError.Unknown -> stringResource(R.string.posts_error_unknown)
-                            PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
-                        },
-                    dismissError = { PostsEvent.DismissErrorRequested.handleEvent() },
-                )
+                PostErrors(error, handleEvent)
             }
             PullToRefreshBox(
                 isRefreshing = uiState.isLoading,
                 onRefresh = {
                     PostsEvent.OnUpdatePostsRequested.handleEvent()
                 },
-                modifier =
-                    Modifier
-                        .padding(padding)
-                        .fillMaxWidth(),
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxWidth(),
             ) {
                 val lazyListState = rememberLazyListState()
                 PostList(
                     uiState = uiState,
                     handleEvent = handleEvent,
                     lazyListState = lazyListState,
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .drawVerticalScrollbar(lazyListState),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .drawVerticalScrollbar(lazyListState),
                 )
             }
         }
     }
+}
+
+@Composable
+private fun PostErrors(
+    error: PostUiError,
+    handleEvent: PostsEvent.() -> Unit = {},
+) {
+    CoreErrorDialog(
+        errorMessage = when (error) {
+            PostUiError.Network -> stringResource(R.string.posts_error_network)
+            PostUiError.NotFound -> stringResource(R.string.posts_error_not_found)
+            PostUiError.Server -> stringResource(R.string.posts_error_server)
+            PostUiError.Unknown -> stringResource(R.string.posts_error_unknown)
+            PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+        },
+        dismissError = { PostsEvent.DismissErrorRequested.handleEvent() },
+    )
 }
 
 @Composable
@@ -122,11 +127,12 @@ private fun PostList(
     LazyColumn(
         state = lazyListState,
         modifier = modifier,
-        contentPadding =
-            PaddingValues(
-                start = WindowInsets.safeDrawing.asPaddingValues().calculateStartPadding(LocalLayoutDirection.current) + mediumPadding,
-                end = mediumPadding,
-            ),
+        contentPadding = PaddingValues(
+            start = WindowInsets.safeDrawing
+                .asPaddingValues()
+                .calculateStartPadding(LocalLayoutDirection.current) + mediumPadding,
+            end = mediumPadding,
+        ),
     ) {
         items(
             items = uiState.posts,
@@ -134,12 +140,15 @@ private fun PostList(
             itemContent = { item: Post ->
                 CardPostItem(
                     item = item,
-                    modifier =
-                        Modifier
-                            .padding(vertical = mediumPadding)
-                            .shadow(1.dp, shape = RoundedCornerShape(8.dp))
-                            .clickable { PostsEvent.OnPostClicked(item).handleEvent() }
-                            .fillParentMaxWidth(),
+                    modifier = Modifier
+                        .padding(vertical = mediumPadding)
+                        .shadow(1.dp, shape = RoundedCornerShape(8.dp))
+                        .clickable {
+                            PostsEvent
+                                .OnPostClicked(item)
+                                .handleEvent()
+                        }
+                        .fillParentMaxWidth(),
                 )
             },
         )
@@ -156,26 +165,22 @@ private fun CardPostItem(
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(mediumPadding),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(mediumPadding),
         ) {
             Text(
-                modifier =
-                    Modifier
-                        .wrapContentSize(),
+                modifier = Modifier.wrapContentSize(),
                 text = item.titleCapitalized,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.SemiBold,
             )
             Text(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = mediumPadding, bottom = mediumPadding),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = mediumPadding, bottom = mediumPadding),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 5,

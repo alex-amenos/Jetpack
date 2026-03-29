@@ -39,6 +39,7 @@ internal data class PostsUiState(
     }
 }
 
+@Immutable
 internal sealed interface PostsStatus {
     data object Loading : PostsStatus
 
@@ -47,6 +48,7 @@ internal sealed interface PostsStatus {
     data object Error : PostsStatus
 }
 
+@Immutable
 internal sealed interface PostUiError {
     data object Network : PostUiError
 
