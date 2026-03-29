@@ -6,6 +6,8 @@ import arrow.retrofit.adapter.either.networkhandling.CallError
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
 import com.alxnophis.jetpack.api.jsonplaceholder.model.CallErrorMother
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModelMother
+import com.alxnophis.jetpack.posts.data.datasource.PostsDataSource
+import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteDataSource
 import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,11 +25,12 @@ import java.util.stream.Stream
 @ExperimentalCoroutinesApi
 internal class PostsRepositoryIntegrationTests {
     private val apiDataSourceMock: JsonPlaceholderRetrofitService = mock()
+    private val postsRemoteDataSource: PostsDataSource = PostsRemoteDataSource(apiDataSourceMock)
     private lateinit var repository: PostsRepository
 
     @BeforeEach
     fun setUp() {
-        repository = PostsRepositoryImpl(apiDataSource = apiDataSourceMock)
+        repository = PostsRepositoryImpl(postsRemoteDataSource)
     }
 
     @Test
@@ -54,22 +57,21 @@ internal class PostsRepositoryIntegrationTests {
         result shouldBeEqualTo expectedError.left()
     }
 
-    companion object {
-        private val postApi1 = PostApiModelMother(id = 1, userId = 1, title = "title1", body = "body1")
-        private val postApi2 = PostApiModelMother(id = 2, userId = 2, title = "title2", body = "body2")
-        private val postApiList = listOf(postApi1, postApi2)
-        private val post1 = PostMother(id = 1, userId = 1, title = "title1", body = "body1")
-        private val post2 = PostMother(id = 2, userId = 2, title = "title2", body = "body2")
-        private val postList = listOf(post1, post2)
+    private companion object {
+        val postApi1 = PostApiModelMother(id = 1, userId = 1, title = "title1", body = "body1")
+        val postApi2 = PostApiModelMother(id = 2, userId = 2, title = "title2", body = "body2")
+        val postApiList = listOf(postApi1, postApi2)
+        val post1 = PostMother(id = 1, userId = 1, title = "title1", body = "body1")
+        val post2 = PostMother(id = 2, userId = 2, title = "title2", body = "body2")
+        val postList = listOf(post1, post2)
 
         @JvmStatic
-        fun provideErrorCases(): Stream<Arguments> =
-            Stream.of(
-                Arguments.of(CallErrorMother.ioError(), PostsError.Unexpected),
-                Arguments.of(CallErrorMother.unexpectedCallError(), PostsError.Unexpected),
-                Arguments.of(CallErrorMother.httpError(code = 300), PostsError.Network),
-                Arguments.of(CallErrorMother.httpError(code = 400), PostsError.Network),
-                Arguments.of(CallErrorMother.httpError(code = 500), PostsError.Server),
-            )
+        fun provideErrorCases(): Stream<Arguments> = Stream.of(
+            Arguments.of(CallErrorMother.ioError(), PostsError.Unexpected),
+            Arguments.of(CallErrorMother.unexpectedCallError(), PostsError.Unexpected),
+            Arguments.of(CallErrorMother.httpError(code = 300), PostsError.Network),
+            Arguments.of(CallErrorMother.httpError(code = 400), PostsError.Network),
+            Arguments.of(CallErrorMother.httpError(code = 500), PostsError.Server),
+        )
     }
 }

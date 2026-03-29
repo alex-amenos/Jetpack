@@ -2,7 +2,7 @@
 
 Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture with Arrow for functional programming.
 
-**Tech Stack:** Kotlin 2.1.10 | Compose BOM 2025.11.01 | Koin DI | Arrow-kt | Retrofit | JUnit 5
+**Tech Stack:** Kotlin 2.2.10 | Compose BOM 2026.02.01 | Koin 4.1.1 | Arrow-kt 2.2.2 | Retrofit | JUnit 5
 
 ## Build Commands
 
@@ -21,12 +21,13 @@ Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture wit
 # Single test class
 ./gradlew :feature:posts:testDebugUnitTest --tests "com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModelUnitTests"
 
-# Single test method
+# Single test method (use wildcard for BDD names)
 ./gradlew :feature:posts:testDebugUnitTest --tests "*.PostsViewModelUnitTests.GIVEN get posts succeeds*"
 
-# Screenshot tests (Roborazzi)
-./gradlew verifyRoborazziDebug             # Verify
-./gradlew recordRoborazziDebug             # Record baselines
+# Coverage and screenshot tests
+./gradlew koverHtmlReportDebug             # Coverage report
+./gradlew verifyRoborazziDebug             # Verify screenshots
+./gradlew recordRoborazziDebug             # Record new baselines
 ```
 
 ## Lint/Format Commands
@@ -39,9 +40,9 @@ Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture wit
 
 ## Code Style
 
-- Max line length: aim for ~150 chars for readability (not enforced for *.kt/*.kts in .editorconfig) | Final newline required | Trailing commas encouraged
+- ~150 char line length (not enforced for *.kt/*.kts) | Final newline | Trailing commas
 - No wildcard imports | Imports alphabetically sorted within groups
-- Composable functions exempt from function naming rules
+- `ktlint_function_naming_ignore_when_annotated_with = Composable`
 
 ### Import Order
 
@@ -58,13 +59,13 @@ import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel  // 3. Project
 | ViewModel       | `{Feature}ViewModel`                              | `PostsViewModel`      |
 | Repository      | `{Feature}Repository` / `{Feature}RepositoryImpl` | `PostsRepository`     |
 | UseCase         | `{Action}{Entity}UseCase`                         | `AuthenticateUseCase` |
-| Errors          | `{Feature}Error` (sealed)                         | `PostsError`          |
+| Errors          | `{Feature}Error` (sealed interface)               | `PostsError`          |
 | UI State/Events | `{Feature}UiState` / `{Feature}Event`             | `PostsUiState`        |
 | Test Factory    | `{Entity}Mother`                                  | `PostMother`          |
 
-## Architecture
+## Architecture (MVI)
 
-### MVI with BaseViewModel
+### BaseViewModel Pattern
 
 ```kotlin
 internal class PostsViewModel(
@@ -80,40 +81,24 @@ internal class PostsViewModel(
 }
 ```
 
-### Feature/Screen Separation
-
-- `{Feature}Feature.kt` - Entry point, connects ViewModel with Screen
-- `{Feature}Screen.kt` - Stateless composable UI
-- `{Feature}Contract.kt` - Events, UiState, sealed classes
+**Feature files:** `{Feature}Feature.kt` (entry point), `{Feature}Screen.kt` (stateless UI), `{Feature}Contract.kt` (events/state)
 
 ## Error Handling (Arrow Either)
 
 ```kotlin
-// Repository returns Either
-suspend fun getPosts(): Either<PostsError, List<Post>>
+suspend fun getPosts(): Either<PostsError, List<Post>>  // Repository signature
 
-// Transform errors with mapLeft
+// Transform and handle
 apiDataSource.getPosts()
     .map { posts -> posts.map { it.mapToPost() } }
-    .mapLeft { error: CallError ->
+    .mapLeft { error ->
         when {
-            error is IOError -> PostsError.Unexpected
-            error is HttpError && error.code >= 500 -> PostsError.Server
+            error is IOError -> PostsError.Unexpected;
             else -> PostsError.Network
         }
     }
 
-// Handle with fold
-postsRepository.getPosts().fold(
-    { error -> /* handle error */ },
-    { posts -> /* handle success */ },
-)
-
-// Sealed class for errors
-sealed class PostsError {
-    data object Network : PostsError()
-    data object Server : PostsError()
-}
+postsRepository.getPosts().fold({ error -> /**/ }, { posts -> /**/ })  // Handle with fold
 ```
 
 ## State Management (Arrow Optics)
@@ -130,30 +115,26 @@ internal data class PostsUiState(
     }
 }
 
-// Updates
-_uiState.updateCopy { PostsUiState.status set PostsStatus.Loading }
+// State updates using Arrow Optics (preferred over BaseViewModel's updateUiState methods)
+_uiState.updateCopy {
+    PostsUiState.status set PostsStatus.Loading
+    PostsUiState.posts set posts.toImmutableList()
+}
 ```
 
 ## Testing
 
-### BDD Test Naming
-
 ```kotlin
+// BDD naming
 @Test
 fun `GIVEN get posts succeeds WHEN initialize THEN verify get posts AND update uiState`()
-```
 
-### Object Mother Pattern
-
-```kotlin
+// Object Mother pattern
 internal object PostMother {
     operator fun invoke(id: Int = 0, title: String = "") = Post(id, title)
 }
-```
 
-### Flow Testing (Turbine)
-
-```kotlin
+// Flow testing (Turbine)
 viewModel.uiState.test {
     awaitItem() shouldBeEqualTo PostsUiState.initialState
     awaitItem() shouldBeEqualTo expectedState
@@ -171,24 +152,14 @@ val postsModule: Module = module {
 
 ## Visibility
 
-- ViewModels: `internal` | Use cases: `internal class`
-- Repository interfaces: `public` (cross-module API) | Repository impls: `internal` when bound via DI in the same module, `public` only if needed across modules | UI components: `internal`
+- ViewModels: `internal` | Use cases: `internal class` | UI components: `internal`
+- Repository interfaces: `public` (cross-module API) | Repository impls: `internal`
 
 ## Project Structure
 
 ```
-feature/{name}/
-    data/           # Repository implementations, API models
-    di/             # Koin modules
-    domain/         # Use cases, domain models, errors
-    ui/contract/    # Events, UiState
-    ui/viewmodel/   # ViewModels
-    ui/composable/  # Compose screens
-shared/
-    api/            # REST API clients
-    core/           # Base classes, core UI
-    kotlin/         # Utilities
-    testing/        # Test utilities
+feature/{name}/   data/, di/, domain/, ui/contract/, ui/viewmodel/, ui/composable/
+shared/           api/, core/, kotlin/, testing/
 ```
 
 ## References

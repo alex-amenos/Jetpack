@@ -38,13 +38,12 @@ internal data class PostDetailUiState(
         get() = post?.body ?: EMPTY
 
     internal companion object {
-        val initialState =
-            PostDetailUiState(
-                status = PostDetailStatus.Loading,
-                post = null,
-                postId = null,
-                error = null,
-            )
+        val initialState = PostDetailUiState(
+            status = PostDetailStatus.Loading,
+            post = null,
+            postId = null,
+            error = null,
+        )
     }
 }
 
@@ -62,8 +61,6 @@ internal sealed interface PostDetailUiError {
     data object Server : PostDetailUiError
 
     data object NotFound : PostDetailUiError
-
-    data object Unknown : PostDetailUiError
 
     data object Unexpected : PostDetailUiError
 }

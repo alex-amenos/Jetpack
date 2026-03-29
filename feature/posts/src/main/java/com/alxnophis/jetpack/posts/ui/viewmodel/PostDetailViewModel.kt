@@ -46,7 +46,9 @@ internal class PostDetailViewModel(
             ensureNotNull(currentState.postId) {
                 PostDetailError.NotFound
             }
-            postsRepository.getPostById(currentState.postId!!).bind()
+            postsRepository
+                .getPostById(currentState.postId!!)
+                .bind()
         }.fold(
             { error ->
                 _uiState.updateCopy {
@@ -71,12 +73,10 @@ internal class PostDetailViewModel(
         }
     }
 
-    private fun mapPostsErrorToUiError(error: PostDetailError): PostDetailUiError =
-        when (error) {
-            PostDetailError.Network -> PostDetailUiError.Network
-            PostDetailError.NotFound -> PostDetailUiError.NotFound
-            PostDetailError.Server -> PostDetailUiError.Server
-            PostDetailError.Unknown -> PostDetailUiError.Unknown
-            PostDetailError.Unexpected -> PostDetailUiError.Unexpected
-        }
+    private fun mapPostsErrorToUiError(error: PostDetailError): PostDetailUiError = when (error) {
+        PostDetailError.Network -> PostDetailUiError.Network
+        PostDetailError.NotFound -> PostDetailUiError.NotFound
+        PostDetailError.Server -> PostDetailUiError.Server
+        PostDetailError.Unexpected -> PostDetailUiError.Unexpected
+    }
 }

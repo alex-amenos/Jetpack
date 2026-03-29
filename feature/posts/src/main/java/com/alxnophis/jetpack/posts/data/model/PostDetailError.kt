@@ -7,7 +7,5 @@ sealed class PostDetailError {
 
     data object Server : PostDetailError()
 
-    data object Unknown : PostDetailError()
-
     data object Unexpected : PostDetailError()
 }

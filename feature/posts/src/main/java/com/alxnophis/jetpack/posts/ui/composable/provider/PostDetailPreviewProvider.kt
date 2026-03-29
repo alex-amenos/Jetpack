@@ -33,12 +33,6 @@ internal class PostDetailPreviewProvider : PreviewParameterProvider<PostDetailUi
                     status = PostDetailStatus.Error,
                     post = null,
                     postId = post.id,
-                    error = PostDetailUiError.Unknown,
-                ),
-                PostDetailUiState(
-                    status = PostDetailStatus.Error,
-                    post = null,
-                    postId = post.id,
                     error = PostDetailUiError.Server,
                 ),
                 PostDetailUiState(

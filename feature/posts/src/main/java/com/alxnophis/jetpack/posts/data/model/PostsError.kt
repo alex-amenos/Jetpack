@@ -5,7 +5,5 @@ sealed class PostsError {
 
     data object Server : PostsError()
 
-    data object Unknown : PostsError()
-
     data object Unexpected : PostsError()
 }

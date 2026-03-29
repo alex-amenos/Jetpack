@@ -16,7 +16,9 @@ fun PostDetailFeature(
     val viewModel = koinViewModel<PostDetailViewModel>()
     val handleEvent: PostDetailEvent.() -> Unit = viewModel::handleEvent
     LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-        PostDetailEvent.LoadPost(postId).handleEvent()
+        PostDetailEvent
+            .LoadPost(postId)
+            .handleEvent()
     }
     PostDetailScreen(
         uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
