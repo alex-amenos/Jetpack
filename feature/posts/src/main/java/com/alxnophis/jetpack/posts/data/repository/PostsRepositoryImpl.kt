@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class PostsRepositoryImpl(
+internal class PostsRepositoryImpl(
     private val remoteDataSource: PostsDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : PostsRepository {
