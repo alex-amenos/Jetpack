@@ -70,7 +70,7 @@ class JsonPlaceholderRetrofitFactory(
         const val TIMEOUT_CONNECT = 5L
         const val TIMEOUT_READ = 8L
         const val TIMEOUT_WRITE = 5L
-        private val contentType = "application/json; charset=UTF8".toMediaType()
+        private val contentType = "application/json; charset=UTF-8".toMediaType()
         private val jsonConfiguration = Json { ignoreUnknownKeys = true }
         private val jsonConverter = jsonConfiguration.asConverterFactory(contentType)
     }
