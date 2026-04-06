@@ -9,7 +9,6 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
-import okhttp3.CertificatePinner
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -36,13 +35,16 @@ class JsonPlaceholderRetrofitFactory(
         .addInterceptor(NetworkStatusInterceptor(context))
         .addInterceptor(loggingInterceptor())
         .addInterceptor(ChuckerInterceptor(context))
-        .apply { certificatePinner(certificatePinner) }
         .also { okHttpClientBuilder ->
             if (BuildConfig.DEBUG) {
                 okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
             }
         }
         .build()
+        // Note: Certificate pinning is not implemented for jsonplaceholder.typicode.com
+        // because it's a public demo API without sensitive data. Standard HTTPS with
+        // system certificate validation is sufficient for this use case.
+        // For production APIs with sensitive data, consider Android Network Security Config.
 
     operator fun invoke(): JsonPlaceholderRetrofitService = Retrofit
         .Builder()
@@ -62,7 +64,6 @@ class JsonPlaceholderRetrofitFactory(
 
     private companion object {
         const val BASE_URL = "https://jsonplaceholder.typicode.com"
-        const val BASE_URL_PATTERN = "jsonplaceholder.typicode.com"
         const val HTTP_CACHE_DIR = "http_cache"
         const val HTTP_CACHE_SIZE = 10L * 1024L * 1024L // 10 MB
         const val TIMEOUT_CALL = 15L
@@ -72,18 +73,5 @@ class JsonPlaceholderRetrofitFactory(
         private val contentType = "application/json; charset=UTF8".toMediaType()
         private val jsonConfiguration = Json { ignoreUnknownKeys = true }
         private val jsonConverter = jsonConfiguration.asConverterFactory(contentType)
-
-        /**
-         * Hard-coding certificate pins for jsonplaceholder.typicode.com introduces a significant risk of production outages when the server rotates/renews
-         * certificates (pin mismatch will fail all calls).
-         * Unless you have an explicit pin-rotation process, consider removing pinning for this public/demo API or gating it behind a build
-         * flag/remote config and ensuring multiple backup pins (and an update path) are in place.
-         */
-        private val certificatePinner = CertificatePinner
-            .Builder()
-            .add(BASE_URL_PATTERN, "sha256/e89QAFJvkB7Tn3QGfsNheN8fgTxZgLECjap1xSq628w=")
-            .add(BASE_URL_PATTERN, "sha256/kIdp6NNEd8wsugYyyIYFsi1ylMCED3hZbSR8ZFsa/A4=")
-            .add(BASE_URL_PATTERN, "sha256/mEflZT5enoR1FuXLgYYGqnVEoZvmf9c2bVBpiOjYQ0c=")
-            .build()
     }
 }
