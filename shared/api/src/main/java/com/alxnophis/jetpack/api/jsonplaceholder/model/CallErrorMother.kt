@@ -4,13 +4,12 @@ import arrow.retrofit.adapter.either.networkhandling.HttpError
 import arrow.retrofit.adapter.either.networkhandling.IOError
 import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
+import org.jetbrains.annotations.TestOnly
 import java.io.IOException
 
+@TestOnly
 object CallErrorMother {
-    fun ioError(cause: IOException = IOException()) =
-        IOError(
-            cause = cause,
-        )
+    fun ioError(cause: IOException = IOException()) = IOError(cause = cause)
 
     fun httpError(
         code: Int,
@@ -22,8 +21,5 @@ object CallErrorMother {
         body = body,
     )
 
-    fun unexpectedCallError(cause: Throwable = Throwable()) =
-        UnexpectedCallError(
-            cause = cause,
-        )
+    fun unexpectedCallError(cause: Throwable = Throwable()) = UnexpectedCallError(cause = cause)
 }

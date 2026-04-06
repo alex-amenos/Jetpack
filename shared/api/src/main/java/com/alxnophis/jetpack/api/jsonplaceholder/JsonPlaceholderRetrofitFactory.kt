@@ -17,48 +17,45 @@ import java.util.concurrent.TimeUnit
 class JsonPlaceholderRetrofitFactory(
     context: Context,
 ) {
-    private val okHttpClient: OkHttpClient =
-        OkHttpClient
-            .Builder()
-            .callTimeout(TIMEOUT_CALL, TimeUnit.SECONDS)
-            .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
-            .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
-            .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
-            .addInterceptor(loggingInterceptor())
-            .addInterceptor(ChuckerInterceptor(context))
-            .also { okHttpClientBuilder ->
-                if (BuildConfig.DEBUG) {
-                    okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
-                }
-            }.build()
-
-    operator fun invoke(): JsonPlaceholderRetrofitService =
-        Retrofit
-            .Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addCallAdapterFactory(EitherCallAdapterFactory())
-            .addConverterFactory(jsonConverter)
-            .build()
-            .create(JsonPlaceholderRetrofitService::class.java)
-
-    private fun loggingInterceptor() =
-        HttpLoggingInterceptor().apply {
-            level =
-                when {
-                    isDebugBuildType() -> HttpLoggingInterceptor.Level.BODY
-                    else -> HttpLoggingInterceptor.Level.NONE
-                }
+    private val okHttpClient: OkHttpClient = OkHttpClient
+        .Builder()
+        .callTimeout(TIMEOUT_CALL, TimeUnit.SECONDS)
+        .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
+        .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
+        .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
+        .addInterceptor(loggingInterceptor())
+        .addInterceptor(ChuckerInterceptor(context))
+        .also { okHttpClientBuilder ->
+            if (BuildConfig.DEBUG) {
+                okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
+            }
         }
+        .build()
 
-    companion object {
-        private const val BASE_URL = "https://jsonplaceholder.typicode.com"
-        private const val TIMEOUT_CALL = 15L
-        private const val TIMEOUT_CONNECT = 10L
-        private const val TIMEOUT_READ = 10L
-        private const val TIMEOUT_WRITE = 10L
-        private val contentType = "application/json; charset=UTF8".toMediaType()
-        private val jsonConfiguration = Json { ignoreUnknownKeys = true }
-        private val jsonConverter = jsonConfiguration.asConverterFactory(contentType)
+    operator fun invoke(): JsonPlaceholderRetrofitService = Retrofit
+        .Builder()
+        .baseUrl(BASE_URL)
+        .client(okHttpClient)
+        .addCallAdapterFactory(EitherCallAdapterFactory())
+        .addConverterFactory(jsonConverter)
+        .build()
+        .create(JsonPlaceholderRetrofitService::class.java)
+
+    private fun loggingInterceptor() = HttpLoggingInterceptor().apply {
+        level = when {
+            isDebugBuildType() -> HttpLoggingInterceptor.Level.BODY
+            else -> HttpLoggingInterceptor.Level.NONE
+        }
+    }
+
+    private companion object {
+        const val BASE_URL = "https://jsonplaceholder.typicode.com"
+        const val TIMEOUT_CALL = 15L
+        const val TIMEOUT_CONNECT = 10L
+        const val TIMEOUT_READ = 10L
+        const val TIMEOUT_WRITE = 10L
+        val contentType = "application/json; charset=UTF8".toMediaType()
+        val jsonConfiguration = Json { ignoreUnknownKeys = true }
+        val jsonConverter = jsonConfiguration.asConverterFactory(contentType)
     }
 }
