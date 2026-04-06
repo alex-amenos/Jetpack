@@ -23,20 +23,13 @@ internal class PostsRemoteDataSource(
         }
         .mapLeft { error ->
             Timber.e("GET posts error: $error")
-            error.mapToPostsError()
+            error.mapToError(
+                noConnectivity = PostsError.NoConnectivity,
+                unexpected = PostsError.Unexpected,
+                server = PostsError.Server,
+                network = PostsError.Network,
+            )
         }
-
-    private fun CallError.mapToPostsError(): PostsError = when (this) {
-        is IOError -> if (cause is NoConnectivityException) {
-            PostsError.NoConnectivity
-        } else {
-            PostsError.Unexpected
-        }
-
-        is UnexpectedCallError -> PostsError.Unexpected
-        is HttpError if (code >= 500) -> PostsError.Server
-        else -> PostsError.Network
-    }
 
     override suspend fun getPostById(postId: Int): Either<PostDetailError, Post> = apiDataSource
         .getPostById(postId)
@@ -45,18 +38,22 @@ internal class PostsRemoteDataSource(
         }
         .mapLeft { error ->
             Timber.e("GET post by id error: $error")
-            error.mapToPostDetailError()
+            error.mapToError(
+                noConnectivity = PostDetailError.NoConnectivity,
+                unexpected = PostDetailError.Unexpected,
+                server = PostDetailError.Server,
+                network = PostDetailError.Network,
+            )
         }
 
-    private fun CallError.mapToPostDetailError(): PostDetailError = when (this) {
-        is IOError -> if (cause is NoConnectivityException) {
-            PostDetailError.NoConnectivity
-        } else {
-            PostDetailError.Unexpected
-        }
-
-        is UnexpectedCallError -> PostDetailError.Unexpected
-        is HttpError if (code >= 500) -> PostDetailError.Server
-        else -> PostDetailError.Network
+    private fun <T> CallError.mapToError(
+        noConnectivity: T,
+        unexpected: T,
+        server: T,
+        network: T,
+    ): T = when (this) {
+        is IOError -> if (cause is NoConnectivityException) noConnectivity else unexpected
+        is UnexpectedCallError -> unexpected
+        is HttpError -> if (code >= 500) server else network
     }
 }
