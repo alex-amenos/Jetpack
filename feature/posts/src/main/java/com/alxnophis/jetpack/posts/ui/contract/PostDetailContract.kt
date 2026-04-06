@@ -56,6 +56,8 @@ internal sealed interface PostDetailStatus {
 }
 
 internal sealed interface PostDetailUiError {
+    data object NoConnectivity : PostDetailUiError
+
     data object Network : PostDetailUiError
 
     data object Server : PostDetailUiError

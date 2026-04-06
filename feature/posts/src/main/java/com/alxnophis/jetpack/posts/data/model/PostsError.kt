@@ -1,6 +1,8 @@
 package com.alxnophis.jetpack.posts.data.model
 
 sealed class PostsError {
+    data object NoConnectivity : PostsError()
+
     data object Network : PostsError()
 
     data object Server : PostsError()

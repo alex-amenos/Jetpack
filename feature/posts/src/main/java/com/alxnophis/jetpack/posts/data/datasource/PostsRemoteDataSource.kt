@@ -5,6 +5,7 @@ import arrow.retrofit.adapter.either.networkhandling.CallError
 import arrow.retrofit.adapter.either.networkhandling.HttpError
 import arrow.retrofit.adapter.either.networkhandling.IOError
 import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
+import com.alxnophis.jetpack.api.exception.NoConnectivityException
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
 import com.alxnophis.jetpack.posts.data.mapper.mapToPost
@@ -24,7 +25,11 @@ internal class PostsRemoteDataSource(
         .mapLeft { error: CallError ->
             Timber.e("GET posts error: $error")
             when (error) {
-                is IOError -> PostsError.Unexpected
+                is IOError -> when (error.cause) {
+                    is NoConnectivityException -> PostsError.NoConnectivity
+                    else -> PostsError.Unexpected
+                }
+
                 is UnexpectedCallError -> PostsError.Unexpected
                 is HttpError if error.code >= 500 -> PostsError.Server
                 else -> PostsError.Network
@@ -39,10 +44,15 @@ internal class PostsRemoteDataSource(
         .mapLeft { error: CallError ->
             Timber.e("GET post by id error: $error")
             when (error) {
-                is IOError -> PostDetailError.Unexpected
+                is IOError -> when (error.cause) {
+                    is NoConnectivityException -> PostDetailError.NoConnectivity
+                    else -> PostDetailError.Unexpected
+                }
+
                 is UnexpectedCallError -> PostDetailError.Unexpected
                 is HttpError if error.code >= 500 -> PostDetailError.Server
                 else -> PostDetailError.Network
             }
         }
 }
+

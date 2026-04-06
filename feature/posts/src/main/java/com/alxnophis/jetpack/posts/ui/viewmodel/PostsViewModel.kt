@@ -75,6 +75,7 @@ internal class PostsViewModel(
     }
 
     private fun PostsError.mapToUiError(): PostUiError = when (this) {
+        PostsError.NoConnectivity -> PostUiError.NoConnectivity
         PostsError.Network -> PostUiError.Network
         PostsError.Server -> PostUiError.Server
         PostsError.Unexpected -> PostUiError.Unexpected

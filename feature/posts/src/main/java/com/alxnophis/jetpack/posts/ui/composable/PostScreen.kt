@@ -107,6 +107,7 @@ private fun PostErrors(
 ) {
     CoreErrorDialog(
         errorMessage = when (error) {
+            PostUiError.NoConnectivity -> stringResource(R.string.posts_error_no_connectivity)
             PostUiError.Network -> stringResource(R.string.posts_error_network)
             PostUiError.NotFound -> stringResource(R.string.posts_error_not_found)
             PostUiError.Server -> stringResource(R.string.posts_error_server)
