@@ -7,18 +7,26 @@ import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import kotlinx.serialization.json.Json
+import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 class JsonPlaceholderRetrofitFactory(
     context: Context,
 ) {
+    private val cache: Cache = Cache(
+        directory = File(context.cacheDir, HTTP_CACHE_DIR),
+        maxSize = HTTP_CACHE_SIZE,
+    )
+
     private val okHttpClient: OkHttpClient = OkHttpClient
         .Builder()
+        .cache(cache)
         .callTimeout(TIMEOUT_CALL, TimeUnit.SECONDS)
         .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
         .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
@@ -50,6 +58,8 @@ class JsonPlaceholderRetrofitFactory(
 
     private companion object {
         const val BASE_URL = "https://jsonplaceholder.typicode.com"
+        const val HTTP_CACHE_DIR = "http_cache"
+        const val HTTP_CACHE_SIZE = 10L * 1024L * 1024L // 10 MB
         const val TIMEOUT_CALL = 15L
         const val TIMEOUT_CONNECT = 10L
         const val TIMEOUT_READ = 10L
