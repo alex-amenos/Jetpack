@@ -45,10 +45,10 @@ class RetryInterceptor(
                 }
 
                 lastResponse = response
-                Timber.w("Retry attempt ${attempt + 1}/$maxRetries for ${request.url} - HTTP ${response.code}")
+                Timber.w("Retry attempt ${attempt + 1}/${maxRetries + 1} for ${request.url} - HTTP ${response.code}")
             } catch (e: IOException) {
                 lastException = e
-                Timber.w(e, "Retry attempt ${attempt + 1}/$maxRetries for ${request.url}")
+                Timber.w(e, "Retry attempt ${attempt + 1}/${maxRetries + 1} for ${request.url}")
             }
 
             if (attempt < maxRetries) {
