@@ -13,34 +13,34 @@ import retrofit2.http.Query
 
 @Suppress("unused")
 interface JsonPlaceholderRetrofitService {
-    @GET("/posts")
+    @GET("posts")
     suspend fun getPosts(): Either<CallError, List<PostApiModel>>
 
-    @GET("/posts/{id}")
+    @GET("posts/{id}")
     suspend fun getPostById(
         @Path("id") id: Int,
     ): Either<CallError, PostApiModel>
 
-    @GET("/comments")
+    @GET("comments")
     suspend fun getCommentsByPostId(
         @Query("postId") postId: Int,
     ): Either<CallError, List<CommentApiModel>>
 
-    @GET("/users")
+    @GET("users")
     suspend fun getUsers(): Either<CallError, List<UserApiModel>>
 
-    @GET("/users/{id}")
+    @GET("users/{id}")
     suspend fun getUsersBy(
         @Path("id") userId: Int,
     ): Either<CallError, UserApiModel>
 
-    @GET("/albums")
+    @GET("albums")
     suspend fun getAlbums(): Either<CallError, List<AlbumApiModel>>
 
-    @GET("/photos")
+    @GET("photos")
     suspend fun getPhotos(): Either<CallError, List<PhotoApiModel>>
 
-    @GET("/photos")
+    @GET("photos")
     suspend fun getPhotosByAlbumId(
         @Query("albumId") albumId: Int,
     ): Either<CallError, List<PhotoApiModel>>
