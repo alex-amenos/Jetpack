@@ -5,7 +5,6 @@ import arrow.retrofit.adapter.either.EitherCallAdapterFactory
 import com.alxnophis.jetpack.api.BuildConfig
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
 import com.alxnophis.jetpack.api.interceptor.NetworkStatusInterceptor
-import com.alxnophis.jetpack.api.interceptor.RetryInterceptor
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import kotlinx.serialization.json.Json
@@ -35,7 +34,6 @@ class JsonPlaceholderRetrofitFactory(
         .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
         .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
         .addInterceptor(NetworkStatusInterceptor(context))
-        .addInterceptor(retryInterceptor)
         .addInterceptor(loggingInterceptor())
         .addInterceptor(ChuckerInterceptor(context))
         .apply { certificatePinner(certificatePinner) }
@@ -74,12 +72,6 @@ class JsonPlaceholderRetrofitFactory(
         private val contentType = "application/json; charset=UTF8".toMediaType()
         private val jsonConfiguration = Json { ignoreUnknownKeys = true }
         private val jsonConverter = jsonConfiguration.asConverterFactory(contentType)
-        private val retryInterceptor: RetryInterceptor = RetryInterceptor(
-            maxRetries = 2,
-            initialDelayMs = 500,
-            maxDelayMs = 2000,
-            backoffMultiplier = 1.5,
-        )
 
         /**
          * Hard-coding certificate pins for jsonplaceholder.typicode.com introduces a significant risk of production outages when the server rotates/renews
