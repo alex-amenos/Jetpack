@@ -3,6 +3,7 @@
     <string name="posts_loading">Loading post…</string>
     <string name="posts_error_unknown">Something goes wrong.</string>
     <string name="posts_error_unexpected">Check your device network and try again</string>
+    <string name="posts_error_no_connectivity">No internet connection available</string>
     <string name="posts_error_network">Network error</string>
     <string name="posts_error_not_found">Post not found</string>
     <string name="posts_error_server">Server error</string>

@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.posts.ui.composable
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
@@ -22,9 +24,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -63,6 +70,8 @@ private fun PostContent(
     uiState: PostsUiState,
     handleEvent: PostsEvent.() -> Unit = {},
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
     AppTheme {
         Scaffold(
             topBar = {
@@ -71,42 +80,80 @@ private fun PostContent(
                     onBack = { PostsEvent.GoBackRequested.handleEvent() },
                 )
             },
+            snackbarHost = {
+                val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
+                SnackbarHost(
+                    hostState = snackbarHostState,
+                    modifier = Modifier.padding(navigationBarsPadding),
+                )
+            },
             modifier = Modifier.nestedScroll(rememberNestedScrollInteropConnection()),
             contentWindowInsets = WindowInsets.statusBars,
         ) { padding ->
-            uiState.error?.let { error: PostUiError ->
-                PostErrors(error, handleEvent)
-            }
-            PullToRefreshBox(
-                isRefreshing = uiState.isLoading,
-                onRefresh = {
-                    PostsEvent.OnUpdatePostsRequested.handleEvent()
-                },
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxWidth(),
-            ) {
-                val lazyListState = rememberLazyListState()
-                PostList(
-                    uiState = uiState,
-                    handleEvent = handleEvent,
-                    lazyListState = lazyListState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .drawVerticalScrollbar(lazyListState),
-                )
+            Box(modifier = Modifier.padding(padding)) {
+                uiState.error?.let { error: PostUiError ->
+                    when (error) {
+                        PostUiError.NoConnectivity -> {
+                            PostSnackbarError(
+                                errorMessage = stringResource(R.string.posts_error_no_connectivity),
+                                snackbarHostState = snackbarHostState,
+                                onDismiss = { PostsEvent.DismissErrorRequested.handleEvent() },
+                            )
+                        }
+
+                        else -> {
+                            PostDialogErrors(error, handleEvent)
+                        }
+                    }
+                }
+                PullToRefreshBox(
+                    isRefreshing = uiState.isLoading,
+                    onRefresh = {
+                        PostsEvent.OnUpdatePostsRequested.handleEvent()
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    val lazyListState = rememberLazyListState()
+                    PostList(
+                        uiState = uiState,
+                        handleEvent = handleEvent,
+                        lazyListState = lazyListState,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .drawVerticalScrollbar(lazyListState),
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun PostErrors(
+private fun PostSnackbarError(
+    errorMessage: String,
+    snackbarHostState: SnackbarHostState,
+    onDismiss: () -> Unit,
+) {
+    LaunchedEffect(errorMessage) {
+        val result = snackbarHostState.showSnackbar(
+            message = errorMessage,
+            actionLabel = null,
+        )
+        when (result) {
+            SnackbarResult.Dismissed -> onDismiss()
+            SnackbarResult.ActionPerformed -> onDismiss()
+        }
+    }
+}
+
+@Composable
+private fun PostDialogErrors(
     error: PostUiError,
     handleEvent: PostsEvent.() -> Unit = {},
 ) {
     CoreErrorDialog(
         errorMessage = when (error) {
+            PostUiError.NoConnectivity -> stringResource(R.string.posts_error_no_connectivity)
             PostUiError.Network -> stringResource(R.string.posts_error_network)
             PostUiError.NotFound -> stringResource(R.string.posts_error_not_found)
             PostUiError.Server -> stringResource(R.string.posts_error_server)

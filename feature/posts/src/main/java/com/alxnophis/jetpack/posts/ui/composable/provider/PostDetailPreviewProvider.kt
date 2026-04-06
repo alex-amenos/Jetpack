@@ -41,6 +41,12 @@ internal class PostDetailPreviewProvider : PreviewParameterProvider<PostDetailUi
                     postId = post.id,
                     error = PostDetailUiError.Unexpected,
                 ),
+                PostDetailUiState(
+                    status = PostDetailStatus.Error,
+                    post = null,
+                    postId = post.id,
+                    error = PostDetailUiError.NoConnectivity,
+                ),
             )
 
     companion object {

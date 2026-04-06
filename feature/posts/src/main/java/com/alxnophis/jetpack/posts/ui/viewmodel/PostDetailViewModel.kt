@@ -74,6 +74,7 @@ internal class PostDetailViewModel(
     }
 
     private fun mapPostsErrorToUiError(error: PostDetailError): PostDetailUiError = when (error) {
+        PostDetailError.NoConnectivity -> PostDetailUiError.NoConnectivity
         PostDetailError.Network -> PostDetailUiError.Network
         PostDetailError.NotFound -> PostDetailUiError.NotFound
         PostDetailError.Server -> PostDetailUiError.Server

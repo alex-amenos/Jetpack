@@ -50,6 +50,8 @@ internal sealed interface PostsStatus {
 
 @Immutable
 internal sealed interface PostUiError {
+    data object NoConnectivity : PostUiError
+
     data object Network : PostUiError
 
     data object NotFound : PostUiError

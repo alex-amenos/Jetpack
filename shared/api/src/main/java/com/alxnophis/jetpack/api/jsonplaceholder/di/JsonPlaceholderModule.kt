@@ -5,7 +5,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-internal val jsonPlaceholderApiModule: Module =
-    module {
-        single { JsonPlaceholderRetrofitFactory(androidContext()).invoke() }
-    }
+internal val jsonPlaceholderApiModule: Module = module {
+    single { JsonPlaceholderRetrofitFactory(androidContext()).invoke() }
+}

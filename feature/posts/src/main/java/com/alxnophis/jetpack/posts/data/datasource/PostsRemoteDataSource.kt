@@ -5,8 +5,8 @@ import arrow.retrofit.adapter.either.networkhandling.CallError
 import arrow.retrofit.adapter.either.networkhandling.HttpError
 import arrow.retrofit.adapter.either.networkhandling.IOError
 import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
+import com.alxnophis.jetpack.api.exception.NoConnectivityException
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
-import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
 import com.alxnophis.jetpack.posts.data.mapper.mapToPost
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostDetailError
@@ -18,31 +18,42 @@ internal class PostsRemoteDataSource(
 ) : PostsDataSource {
     override suspend fun getPosts(): Either<PostsError, List<Post>> = apiDataSource
         .getPosts()
-        .map { posts: List<PostApiModel> ->
+        .map { posts ->
             posts.map { it.mapToPost() }
         }
-        .mapLeft { error: CallError ->
+        .mapLeft { error ->
             Timber.e("GET posts error: $error")
-            when (error) {
-                is IOError -> PostsError.Unexpected
-                is UnexpectedCallError -> PostsError.Unexpected
-                is HttpError if error.code >= 500 -> PostsError.Server
-                else -> PostsError.Network
-            }
+            error.mapToError(
+                noConnectivity = PostsError.NoConnectivity,
+                unexpected = PostsError.Unexpected,
+                server = PostsError.Server,
+                network = PostsError.Network,
+            )
         }
 
     override suspend fun getPostById(postId: Int): Either<PostDetailError, Post> = apiDataSource
         .getPostById(postId)
-        .map { post: PostApiModel ->
+        .map { post ->
             post.mapToPost()
         }
-        .mapLeft { error: CallError ->
+        .mapLeft { error ->
             Timber.e("GET post by id error: $error")
-            when (error) {
-                is IOError -> PostDetailError.Unexpected
-                is UnexpectedCallError -> PostDetailError.Unexpected
-                is HttpError if error.code >= 500 -> PostDetailError.Server
-                else -> PostDetailError.Network
-            }
+            error.mapToError(
+                noConnectivity = PostDetailError.NoConnectivity,
+                unexpected = PostDetailError.Unexpected,
+                server = PostDetailError.Server,
+                network = PostDetailError.Network,
+            )
         }
+
+    private fun <T> CallError.mapToError(
+        noConnectivity: T,
+        unexpected: T,
+        server: T,
+        network: T,
+    ): T = when (this) {
+        is IOError -> if (cause is NoConnectivityException) noConnectivity else unexpected
+        is UnexpectedCallError -> unexpected
+        is HttpError -> if (code >= 500) server else network
+    }
 }

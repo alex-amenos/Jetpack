@@ -1,6 +1,8 @@
 package com.alxnophis.jetpack.posts.data.model
 
 sealed class PostDetailError {
+    data object NoConnectivity : PostDetailError()
+
     data object Network : PostDetailError()
 
     data object NotFound : PostDetailError()

@@ -89,6 +89,7 @@ internal fun PostDetailUiErrors(
 ) {
     uiState.error?.let {
         val errorMessage = when (uiState.error) {
+            PostDetailUiError.NoConnectivity -> stringResource(R.string.posts_error_no_connectivity)
             PostDetailUiError.Network -> stringResource(R.string.posts_error_network)
             PostDetailUiError.NotFound -> stringResource(R.string.posts_error_not_found)
             PostDetailUiError.Server -> stringResource(R.string.posts_error_server)
@@ -181,7 +182,7 @@ internal fun PostDetailContent(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 8.dp),
+                        .padding(vertical = 8.dp),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
@@ -191,7 +192,7 @@ internal fun PostDetailContent(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 24.dp),
+                        .padding(vertical = 24.dp),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge,
                     text = uiState.postBody,
