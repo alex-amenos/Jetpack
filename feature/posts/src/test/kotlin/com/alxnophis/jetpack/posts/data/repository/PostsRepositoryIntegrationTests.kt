@@ -8,12 +8,14 @@ import com.alxnophis.jetpack.api.jsonplaceholder.model.CallErrorMother
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModelMother
 import com.alxnophis.jetpack.posts.data.datasource.PostsDataSource
 import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteDataSource
+import com.alxnophis.jetpack.posts.data.model.PostDetailError
 import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -33,28 +35,59 @@ internal class PostsRepositoryIntegrationTests {
         repository = PostsRepositoryImpl(postsRemoteDataSource)
     }
 
-    @Test
-    fun `GIVEN get posts from use case succeed WHEN getPosts THEN the result should be a list of posts`() {
-        runTest {
-            whenever(apiDataSourceMock.getPosts()).thenReturn(postApiList.right())
+    @Nested
+    inner class GetPosts {
+        @Test
+        fun `GIVEN get posts from use case succeed WHEN getPosts THEN the result should be a list of posts`() {
+            runTest {
+                whenever(apiDataSourceMock.getPosts()).thenReturn(postApiList.right())
+
+                val result = repository.getPosts()
+
+                result shouldBeEqualTo postList.right()
+            }
+        }
+
+        @ParameterizedTest
+        @MethodSource("com.alxnophis.jetpack.posts.data.repository.PostsRepositoryIntegrationTests#provideErrorCases")
+        fun `GIVEN get posts from API fails WHEN getPosts THEN the result should be the expected error`(
+            apiError: CallError,
+            expectedError: PostsError,
+        ) = runTest {
+            whenever(apiDataSourceMock.getPosts()).thenReturn(apiError.left())
 
             val result = repository.getPosts()
 
-            result shouldBeEqualTo postList.right()
+            result shouldBeEqualTo expectedError.left()
         }
+
     }
 
-    @ParameterizedTest
-    @MethodSource("provideErrorCases")
-    fun `GIVEN get posts from API fails WHEN getPosts THEN the result should be the expected error`(
-        apiError: CallError,
-        expectedError: PostsError,
-    ) = runTest {
-        whenever(apiDataSourceMock.getPosts()).thenReturn(apiError.left())
+    @Nested
+    inner class GetPostsById {
+        @Test
+        fun `GIVEN get post by id from API succeed WHEN getPostById THEN the result should be a post`() {
+            runTest {
+                whenever(apiDataSourceMock.getPostById(id = 1)).thenReturn(postApi1.right())
 
-        val result = repository.getPosts()
+                val result = repository.getPostById(postId = 1)
 
-        result shouldBeEqualTo expectedError.left()
+                result shouldBeEqualTo post1.right()
+            }
+        }
+
+        @ParameterizedTest
+        @MethodSource("com.alxnophis.jetpack.posts.data.repository.PostsRepositoryIntegrationTests#providePostDetailErrorCases")
+        fun `GIVEN get post by id from API fails WHEN getPostById THEN the result should be the expected error`(
+            apiError: CallError,
+            expectedError: PostDetailError,
+        ) = runTest {
+            whenever(apiDataSourceMock.getPostById(id = 1)).thenReturn(apiError.left())
+
+            val result = repository.getPostById(postId = 1)
+
+            result shouldBeEqualTo expectedError.left()
+        }
     }
 
     private companion object {
@@ -67,11 +100,22 @@ internal class PostsRepositoryIntegrationTests {
 
         @JvmStatic
         fun provideErrorCases(): Stream<Arguments> = Stream.of(
+            Arguments.of(CallErrorMother.noConnectivityError(), PostsError.NoConnectivity),
             Arguments.of(CallErrorMother.ioError(), PostsError.Unexpected),
             Arguments.of(CallErrorMother.unexpectedCallError(), PostsError.Unexpected),
             Arguments.of(CallErrorMother.httpError(code = 300), PostsError.Network),
             Arguments.of(CallErrorMother.httpError(code = 400), PostsError.Network),
             Arguments.of(CallErrorMother.httpError(code = 500), PostsError.Server),
+        )
+
+        @JvmStatic
+        fun providePostDetailErrorCases(): Stream<Arguments> = Stream.of(
+            Arguments.of(CallErrorMother.noConnectivityError(), PostDetailError.NoConnectivity),
+            Arguments.of(CallErrorMother.ioError(), PostDetailError.Unexpected),
+            Arguments.of(CallErrorMother.unexpectedCallError(), PostDetailError.Unexpected),
+            Arguments.of(CallErrorMother.httpError(code = 300), PostDetailError.Network),
+            Arguments.of(CallErrorMother.httpError(code = 400), PostDetailError.Network),
+            Arguments.of(CallErrorMother.httpError(code = 500), PostDetailError.Server),
         )
     }
 }
