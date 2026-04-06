@@ -35,6 +35,11 @@ internal class PostsScreenPreviewProvider : PreviewParameterProvider<PostsUiStat
                 posts = emptyList<Post>().toImmutableList(),
                 error = PostUiError.Unexpected,
             ),
+            PostsUiState(
+                status = PostsStatus.Error,
+                posts = emptyList<Post>().toImmutableList(),
+                error = PostUiError.NoConnectivity,
+            ),
         )
 
     companion object {
