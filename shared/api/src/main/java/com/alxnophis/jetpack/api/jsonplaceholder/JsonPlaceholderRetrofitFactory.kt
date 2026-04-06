@@ -4,6 +4,8 @@ import android.content.Context
 import arrow.retrofit.adapter.either.EitherCallAdapterFactory
 import com.alxnophis.jetpack.api.BuildConfig
 import com.alxnophis.jetpack.api.extensions.isDebugBuildType
+import com.alxnophis.jetpack.api.interceptor.CacheInterceptor
+import com.alxnophis.jetpack.api.interceptor.ForceCacheInterceptor
 import com.alxnophis.jetpack.api.interceptor.NetworkStatusInterceptor
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
@@ -32,9 +34,13 @@ class JsonPlaceholderRetrofitFactory(
         .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
         .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
         .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
+        // Application interceptors (run before cache, can modify requests)
         .addInterceptor(NetworkStatusInterceptor(context))
+        .addInterceptor(CacheInterceptor())
         .addInterceptor(loggingInterceptor())
         .addInterceptor(ChuckerInterceptor(context))
+        // Network interceptors (run after cache, can modify responses)
+        .addNetworkInterceptor(ForceCacheInterceptor())
         .also { okHttpClientBuilder ->
             if (BuildConfig.DEBUG) {
                 okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
