@@ -38,6 +38,7 @@ class RetryInterceptor(
         repeat(maxRetries + 1) { attempt ->
             try {
                 lastResponse?.close()
+                lastResponse = null
                 val response = chain.proceed(request)
 
                 if (response.isSuccessful || !shouldRetry(response.code)) {
