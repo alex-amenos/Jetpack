@@ -7,7 +7,6 @@ import arrow.retrofit.adapter.either.networkhandling.IOError
 import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
 import com.alxnophis.jetpack.api.exception.NoConnectivityException
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
-import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
 import com.alxnophis.jetpack.posts.data.mapper.mapToPost
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostDetailError
@@ -19,40 +18,45 @@ internal class PostsRemoteDataSource(
 ) : PostsDataSource {
     override suspend fun getPosts(): Either<PostsError, List<Post>> = apiDataSource
         .getPosts()
-        .map { posts: List<PostApiModel> ->
+        .map { posts ->
             posts.map { it.mapToPost() }
         }
-        .mapLeft { error: CallError ->
+        .mapLeft { error ->
             Timber.e("GET posts error: $error")
-            when (error) {
-                is IOError -> when (error.cause) {
-                    is NoConnectivityException -> PostsError.NoConnectivity
-                    else -> PostsError.Unexpected
-                }
-
-                is UnexpectedCallError -> PostsError.Unexpected
-                is HttpError if error.code >= 500 -> PostsError.Server
-                else -> PostsError.Network
-            }
+            error.mapToPostsError()
         }
+
+    private fun CallError.mapToPostsError(): PostsError = when (this) {
+        is IOError -> if (cause is NoConnectivityException) {
+            PostsError.NoConnectivity
+        } else {
+            PostsError.Unexpected
+        }
+
+        is UnexpectedCallError -> PostsError.Unexpected
+        is HttpError if (code >= 500) -> PostsError.Server
+        else -> PostsError.Network
+    }
 
     override suspend fun getPostById(postId: Int): Either<PostDetailError, Post> = apiDataSource
         .getPostById(postId)
-        .map { post: PostApiModel ->
+        .map { post ->
             post.mapToPost()
         }
-        .mapLeft { error: CallError ->
+        .mapLeft { error ->
             Timber.e("GET post by id error: $error")
-            when (error) {
-                is IOError -> when (error.cause) {
-                    is NoConnectivityException -> PostDetailError.NoConnectivity
-                    else -> PostDetailError.Unexpected
-                }
-
-                is UnexpectedCallError -> PostDetailError.Unexpected
-                is HttpError if error.code >= 500 -> PostDetailError.Server
-                else -> PostDetailError.Network
-            }
+            error.mapToPostDetailError()
         }
-}
 
+    private fun CallError.mapToPostDetailError(): PostDetailError = when (this) {
+        is IOError -> if (cause is NoConnectivityException) {
+            PostDetailError.NoConnectivity
+        } else {
+            PostDetailError.Unexpected
+        }
+
+        is UnexpectedCallError -> PostDetailError.Unexpected
+        is HttpError if (code >= 500) -> PostDetailError.Server
+        else -> PostDetailError.Network
+    }
+}
