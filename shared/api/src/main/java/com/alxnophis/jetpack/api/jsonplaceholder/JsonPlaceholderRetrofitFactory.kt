@@ -9,6 +9,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
+import okhttp3.CertificatePinner
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -35,6 +36,7 @@ class JsonPlaceholderRetrofitFactory(
         .addInterceptor(retryInterceptor)
         .addInterceptor(loggingInterceptor())
         .addInterceptor(ChuckerInterceptor(context))
+        .apply { certificatePinner(certificatePinner) }
         .also { okHttpClientBuilder ->
             if (BuildConfig.DEBUG) {
                 okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
@@ -60,6 +62,7 @@ class JsonPlaceholderRetrofitFactory(
 
     private companion object {
         const val BASE_URL = "https://jsonplaceholder.typicode.com"
+        const val BASE_URL_PATTERN = "jsonplaceholder.typicode.com"
         const val HTTP_CACHE_DIR = "http_cache"
         const val HTTP_CACHE_SIZE = 10L * 1024L * 1024L // 10 MB
         const val TIMEOUT_CALL = 15L
@@ -75,5 +78,11 @@ class JsonPlaceholderRetrofitFactory(
             maxDelayMs = 2000,
             backoffMultiplier = 1.5,
         )
+        private val certificatePinner = CertificatePinner
+            .Builder()
+            .add(BASE_URL_PATTERN, "sha256/e89QAFJvkB7Tn3QGfsNheN8fgTxZgLECjap1xSq628w=")
+            .add(BASE_URL_PATTERN, "sha256/kIdp6NNEd8wsugYyyIYFsi1ylMCED3hZbSR8ZFsa/A4=")
+            .add(BASE_URL_PATTERN, "sha256/mEflZT5enoR1FuXLgYYGqnVEoZvmf9c2bVBpiOjYQ0c=")
+            .build()
     }
 }
