@@ -49,15 +49,21 @@ internal class NetworkStatusInterceptor(
      * Checks if network connectivity is available.
      *
      * - Uses NetworkCapabilities to check for internet capability
-     * - Validates the network connection is working
      * - Supports all transport types (WIFI, CELLULAR, ETHERNET, VPN, etc.)
+     * - Does not require network validation to support VPN kill-switch scenarios
+     *   where the VPN may block all traffic when disconnected
      *
-     * @return true if network is available and validated, false otherwise
+     * @return true if network has internet capability and a valid transport, false otherwise
      */
     private fun isNetworkAvailable(): Boolean {
         val network = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+        val hasInternet = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        val hasTransport = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+
+        return hasInternet && hasTransport
     }
 }
