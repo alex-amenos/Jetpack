@@ -9,6 +9,7 @@ import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModel
 import com.alxnophis.jetpack.api.jsonplaceholder.model.UserApiModel
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 @Suppress("unused")
 interface JsonPlaceholderRetrofitService {
@@ -20,9 +21,9 @@ interface JsonPlaceholderRetrofitService {
         @Path("id") id: Int,
     ): Either<CallError, PostApiModel>
 
-    @GET("/comments?postId={id}")
+    @GET("/comments")
     suspend fun getCommentsByPostId(
-        @Path("id") postId: Int,
+        @Query("postId") postId: Int,
     ): Either<CallError, List<CommentApiModel>>
 
     @GET("/users")
@@ -39,8 +40,8 @@ interface JsonPlaceholderRetrofitService {
     @GET("/photos")
     suspend fun getPhotos(): Either<CallError, List<PhotoApiModel>>
 
-    @GET("/photos?album={id}")
+    @GET("/photos")
     suspend fun getPhotosByAlbumId(
-        @Path("id") albumId: Int,
+        @Query("albumId") albumId: Int,
     ): Either<CallError, List<PhotoApiModel>>
 }
