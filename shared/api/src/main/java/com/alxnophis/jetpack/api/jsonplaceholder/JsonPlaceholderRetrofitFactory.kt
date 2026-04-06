@@ -63,7 +63,7 @@ class JsonPlaceholderRetrofitFactory(
     }
 
     private companion object {
-        const val BASE_URL = "https://jsonplaceholder.typicode.com"
+        const val BASE_URL = "https://jsonplaceholder.typicode.com/"
         const val HTTP_CACHE_DIR = "http_cache"
         const val HTTP_CACHE_SIZE = 10L * 1024L * 1024L // 10 MB
         const val TIMEOUT_CALL = 15L
