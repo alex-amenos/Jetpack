@@ -80,6 +80,13 @@ class JsonPlaceholderRetrofitFactory(
             maxDelayMs = 2000,
             backoffMultiplier = 1.5,
         )
+
+        /**
+         * Hard-coding certificate pins for jsonplaceholder.typicode.com introduces a significant risk of production outages when the server rotates/renews
+         * certificates (pin mismatch will fail all calls).
+         * Unless you have an explicit pin-rotation process, consider removing pinning for this public/demo API or gating it behind a build
+         * flag/remote config and ensuring multiple backup pins (and an update path) are in place.
+         */
         private val certificatePinner = CertificatePinner
             .Builder()
             .add(BASE_URL_PATTERN, "sha256/e89QAFJvkB7Tn3QGfsNheN8fgTxZgLECjap1xSq628w=")
