@@ -12,7 +12,7 @@ internal interface PostDao {
     suspend fun getAllPosts(): List<PostEntity>
 
     @Query("SELECT * FROM posts WHERE id = :postId")
-    suspend fun getPostById(postId: Int): PostEntity?
+    suspend fun getPostById(postId: Long): PostEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPosts(posts: List<PostEntity>)

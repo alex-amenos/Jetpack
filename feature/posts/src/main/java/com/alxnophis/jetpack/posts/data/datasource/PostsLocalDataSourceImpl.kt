@@ -17,15 +17,21 @@ internal class PostsLocalDataSourceImpl(
 ) : PostsLocalDataSource {
     override suspend fun getPosts(): Either<PostsError, List<Post>> =
         try {
-            postDao.getAllPosts().mapToPosts().right()
+            postDao
+                .getAllPosts()
+                .mapToPosts()
+                .right()
         } catch (e: Exception) {
             Timber.e(e, "Error getting posts from local database")
             PostsError.Unexpected.left()
         }
 
-    override suspend fun getPostById(postId: Int): Either<PostDetailError, Post> =
+    override suspend fun getPostById(postId: Long): Either<PostDetailError, Post> =
         try {
-            postDao.getPostById(postId)?.mapToPost()?.right()
+            postDao
+                .getPostById(postId)
+                ?.mapToPost()
+                ?.right()
                 ?: PostDetailError.NotFound.left()
         } catch (e: Exception) {
             Timber.e(e, "Error getting post by id from local database")

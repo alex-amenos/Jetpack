@@ -8,7 +8,7 @@ import com.alxnophis.jetpack.posts.data.model.PostsError
 internal interface PostsLocalDataSource {
     suspend fun getPosts(): Either<PostsError, List<Post>>
 
-    suspend fun getPostById(postId: Int): Either<PostDetailError, Post>
+    suspend fun getPostById(postId: Long): Either<PostDetailError, Post>
 
     suspend fun savePosts(posts: List<Post>): Either<PostsError, Unit>
 
