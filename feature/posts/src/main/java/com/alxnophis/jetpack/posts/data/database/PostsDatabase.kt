@@ -8,7 +8,7 @@ import com.alxnophis.jetpack.posts.data.database.entity.PostsMetadataEntity
 @Database(
     entities = [PostEntity::class, PostsMetadataEntity::class],
     version = 2,
-    exportSchema = false,
+    exportSchema = true,
 )
 internal abstract class PostsDatabase : RoomDatabase() {
     abstract fun postDao(): PostDao
