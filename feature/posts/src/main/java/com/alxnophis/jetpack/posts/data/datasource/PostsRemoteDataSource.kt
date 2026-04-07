@@ -8,6 +8,7 @@ import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
 import com.alxnophis.jetpack.api.exception.NoConnectivityException
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
 import com.alxnophis.jetpack.posts.data.mapper.mapToPost
+import com.alxnophis.jetpack.posts.data.mapper.mapToPosts
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostDetailError
 import com.alxnophis.jetpack.posts.data.model.PostsError
@@ -18,9 +19,7 @@ internal class PostsRemoteDataSource(
 ) : PostsDataSource {
     override suspend fun getPosts(): Either<PostsError, List<Post>> = apiDataSource
         .getPosts()
-        .map { posts ->
-            posts.map { it.mapToPost() }
-        }
+        .map { posts -> posts.mapToPosts() }
         .mapLeft { error ->
             Timber.e("GET posts error: $error")
             error.mapToError(
@@ -33,9 +32,7 @@ internal class PostsRemoteDataSource(
 
     override suspend fun getPostById(postId: Int): Either<PostDetailError, Post> = apiDataSource
         .getPostById(postId)
-        .map { post ->
-            post.mapToPost()
-        }
+        .map { post -> post.mapToPost() }
         .mapLeft { error ->
             Timber.e("GET post by id error: $error")
             error.mapToError(
