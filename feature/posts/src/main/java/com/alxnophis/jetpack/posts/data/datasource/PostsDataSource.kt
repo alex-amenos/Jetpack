@@ -8,5 +8,5 @@ import com.alxnophis.jetpack.posts.data.model.PostsError
 internal interface PostsDataSource {
     suspend fun getPosts(): Either<PostsError, List<Post>>
 
-    suspend fun getPostById(postId: Int): Either<PostDetailError, Post>
+    suspend fun getPostById(postId: Long): Either<PostDetailError, Post>
 }

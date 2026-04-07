@@ -8,7 +8,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PostsFeature(
-    onPostSelected: (Int) -> Unit,
+    onPostSelected: (Long) -> Unit,
     onBack: () -> Unit,
 ) {
     val viewModel = koinViewModel<PostsViewModel>()

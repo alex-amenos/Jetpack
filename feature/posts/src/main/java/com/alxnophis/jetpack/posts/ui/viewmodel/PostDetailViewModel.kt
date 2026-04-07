@@ -32,7 +32,7 @@ internal class PostDetailViewModel(
         }
     }
 
-    private suspend fun loadPost(postId: Int) {
+    private suspend fun loadPost(postId: Long) {
         _uiState.updateCopy {
             PostDetailUiState.status set PostDetailStatus.Loading
             PostDetailUiState.error set null
@@ -73,11 +73,12 @@ internal class PostDetailViewModel(
         }
     }
 
-    private fun mapPostsErrorToUiError(error: PostDetailError): PostDetailUiError = when (error) {
-        PostDetailError.NoConnectivity -> PostDetailUiError.NoConnectivity
-        PostDetailError.Network -> PostDetailUiError.Network
-        PostDetailError.NotFound -> PostDetailUiError.NotFound
-        PostDetailError.Server -> PostDetailUiError.Server
-        PostDetailError.Unexpected -> PostDetailUiError.Unexpected
-    }
+    private fun mapPostsErrorToUiError(error: PostDetailError): PostDetailUiError =
+        when (error) {
+            PostDetailError.NoConnectivity -> PostDetailUiError.NoConnectivity
+            PostDetailError.Network -> PostDetailUiError.Network
+            PostDetailError.NotFound -> PostDetailUiError.NotFound
+            PostDetailError.Server -> PostDetailUiError.Server
+            PostDetailError.Unexpected -> PostDetailUiError.Unexpected
+        }
 }

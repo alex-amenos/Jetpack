@@ -18,12 +18,12 @@ interface JsonPlaceholderRetrofitService {
 
     @GET("posts/{id}")
     suspend fun getPostById(
-        @Path("id") id: Int,
+        @Path("id") id: Long,
     ): Either<CallError, PostApiModel>
 
     @GET("comments")
     suspend fun getCommentsByPostId(
-        @Query("postId") postId: Int,
+        @Query("postId") postId: Long,
     ): Either<CallError, List<CommentApiModel>>
 
     @GET("users")
@@ -31,7 +31,7 @@ interface JsonPlaceholderRetrofitService {
 
     @GET("users/{id}")
     suspend fun getUsersBy(
-        @Path("id") userId: Int,
+        @Path("id") userId: Long,
     ): Either<CallError, UserApiModel>
 
     @GET("albums")

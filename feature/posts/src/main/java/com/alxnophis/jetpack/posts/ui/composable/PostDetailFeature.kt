@@ -10,7 +10,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PostDetailFeature(
-    postId: Int,
+    postId: Long,
     onBack: () -> Unit,
 ) {
     val viewModel = koinViewModel<PostDetailViewModel>()

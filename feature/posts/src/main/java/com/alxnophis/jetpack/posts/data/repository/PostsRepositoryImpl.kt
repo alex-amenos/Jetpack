@@ -13,11 +13,13 @@ internal class PostsRepositoryImpl(
     private val remoteDataSource: PostsDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : PostsRepository {
-    override suspend fun getPosts(): Either<PostsError, List<Post>> = withContext(ioDispatcher) {
-        remoteDataSource.getPosts()
-    }
+    override suspend fun getPosts(): Either<PostsError, List<Post>> =
+        withContext(ioDispatcher) {
+            remoteDataSource.getPosts()
+        }
 
-    override suspend fun getPostById(postId: Int): Either<PostDetailError, Post> = withContext(ioDispatcher) {
-        remoteDataSource.getPostById(postId)
-    }
+    override suspend fun getPostById(postId: Long): Either<PostDetailError, Post> =
+        withContext(ioDispatcher) {
+            remoteDataSource.getPostById(postId)
+        }
 }
