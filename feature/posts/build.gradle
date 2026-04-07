@@ -7,6 +7,16 @@ apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 android {
     resourcePrefix = 'posts'
     namespace = 'com.alxnophis.jetpack.posts'
+
+    defaultConfig {
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+    }
+
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
 }
 
 dependencies {
