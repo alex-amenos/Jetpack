@@ -1,3 +1,7 @@
+plugins {
+    alias(libs.plugins.google.ksp)
+}
+
 apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 
 android {
@@ -8,5 +12,8 @@ android {
 dependencies {
     implementation project(Modules.SHARED_API)
     implementation libs.retrofit
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.ktx
+    ksp libs.androidx.room.compiler
     testImplementation(libs.bundles.kotest)
 }
