@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.posts.di
 import androidx.room.Room
 import com.alxnophis.jetpack.posts.data.database.PostDao
 import com.alxnophis.jetpack.posts.data.database.PostsDatabase
+import com.alxnophis.jetpack.posts.data.database.PostsMetadataDao
 import com.alxnophis.jetpack.posts.data.datasource.PostsLocalDataSource
 import com.alxnophis.jetpack.posts.data.datasource.PostsLocalDataSourceImpl
 import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteDataSource
@@ -27,12 +28,13 @@ val postsModule: Module =
             ).build()
         }
 
-        // DAO
+        // DAOs
         single<PostDao> { get<PostsDatabase>().postDao() }
+        single<PostsMetadataDao> { get<PostsDatabase>().postsMetadataDao() }
 
         // Data Sources
         factory<PostsRemoteDataSource> { PostsRemoteRemoteDataSourceImp(get()) }
-        factory<PostsLocalDataSource> { PostsLocalDataSourceImpl(get()) }
+        factory<PostsLocalDataSource> { PostsLocalDataSourceImpl(get(), get()) }
 
         // Repository
         factory<PostsRepository> { PostsRepositoryImpl(get(), get()) }

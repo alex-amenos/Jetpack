@@ -15,4 +15,8 @@ internal interface PostsLocalDataSource {
     suspend fun savePost(post: Post): Either<PostDetailLocalError, Unit>
 
     suspend fun clearAllPosts(): Either<PostsLocalError, Unit>
+
+    suspend fun getLastUpdateTimestamp(): Either<PostsLocalError, Long?>
+
+    suspend fun saveLastUpdateTimestamp(timestamp: Long): Either<PostsLocalError, Unit>
 }

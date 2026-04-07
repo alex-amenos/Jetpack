@@ -9,6 +9,7 @@ import com.alxnophis.jetpack.posts.data.model.PostsLocalError
 
 internal class FakePostsLocalDataSource : PostsLocalDataSource {
     private val cachedPosts = mutableListOf<Post>()
+    private var lastUpdateTimestamp: Long? = null
     private var shouldReturnError = false
     private var errorToReturn: PostsLocalError = PostsLocalError.DatabaseError
 
@@ -23,9 +24,14 @@ internal class FakePostsLocalDataSource : PostsLocalDataSource {
 
     fun clearCache() {
         cachedPosts.clear()
+        lastUpdateTimestamp = null
     }
 
     fun getCachedPosts(): List<Post> = cachedPosts.toList()
+
+    fun setLastUpdateTimestamp(timestamp: Long?) {
+        lastUpdateTimestamp = timestamp
+    }
 
     override suspend fun getPosts(): Either<PostsLocalError, List<Post>> =
         if (shouldReturnError) {
@@ -74,6 +80,21 @@ internal class FakePostsLocalDataSource : PostsLocalDataSource {
             errorToReturn.left()
         } else {
             cachedPosts.clear()
+            Unit.right()
+        }
+
+    override suspend fun getLastUpdateTimestamp(): Either<PostsLocalError, Long?> =
+        if (shouldReturnError) {
+            errorToReturn.left()
+        } else {
+            lastUpdateTimestamp.right()
+        }
+
+    override suspend fun saveLastUpdateTimestamp(timestamp: Long): Either<PostsLocalError, Unit> =
+        if (shouldReturnError) {
+            errorToReturn.left()
+        } else {
+            lastUpdateTimestamp = timestamp
             Unit.right()
         }
 }

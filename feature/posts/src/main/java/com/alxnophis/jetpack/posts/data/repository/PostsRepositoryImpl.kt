@@ -8,7 +8,10 @@ import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostDetailError
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -17,6 +20,8 @@ internal class PostsRepositoryImpl(
     private val localDataSource: PostsLocalDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : PostsRepository {
+    private val backgroundScope = CoroutineScope(ioDispatcher + SupervisorJob())
+
     override suspend fun getPosts(): Either<PostsError, List<Post>> =
         withContext(ioDispatcher) {
             // Try to get from cache first
@@ -30,16 +35,59 @@ internal class PostsRepositoryImpl(
                     },
                     { cachedPosts ->
                         Timber.d("Cache hit: ${cachedPosts.size} posts")
-                        // Return cached data and refresh in background
-                        cachedPosts
-                            .right()
-                            .also {
-                                // Optionally trigger background refresh
-                                // This is a simple implementation - you could add timestamp logic here
-                            }
+                        // Check if refresh is needed (24 hours = 86400000 ms)
+                        triggerBackgroundRefreshIfNeeded()
+                        // Return cached data immediately
+                        cachedPosts.right()
                     },
                 )
         }
+
+    private fun triggerBackgroundRefreshIfNeeded() {
+        backgroundScope.launch {
+            localDataSource
+                .getLastUpdateTimestamp()
+                .fold(
+                    { error ->
+                        Timber.e("Error getting last update timestamp: $error")
+                    },
+                    { lastUpdateTimestamp ->
+                        val currentTime = System.currentTimeMillis()
+                        if (lastUpdateTimestamp == null) {
+                            Timber.d("No timestamp found, triggering background refresh")
+                            refreshPostsInBackground()
+                        } else {
+                            val timeSinceLastUpdate = currentTime - lastUpdateTimestamp
+                            val shouldRefresh = timeSinceLastUpdate >= CACHE_EXPIRATION_MS
+
+                            if (shouldRefresh) {
+                                Timber.d("Cache expired, triggering background refresh")
+                                refreshPostsInBackground()
+                            } else {
+                                Timber.d(
+                                    "Cache still fresh, time since last update: ${timeSinceLastUpdate}ms",
+                                )
+                            }
+                        }
+                    },
+                )
+        }
+    }
+
+    private suspend fun refreshPostsInBackground() {
+        remoteDataSource
+            .getPosts()
+            .fold(
+                { error ->
+                    Timber.e("Background refresh failed: $error")
+                },
+                { posts ->
+                    Timber.d("Background refresh successful, updating cache")
+                    localDataSource.savePosts(posts)
+                    localDataSource.saveLastUpdateTimestamp(System.currentTimeMillis())
+                },
+            )
+    }
 
     private suspend fun fetchAndCachePosts(): Either<PostsError, List<Post>> =
         remoteDataSource
@@ -50,6 +98,12 @@ internal class PostsRepositoryImpl(
                     .savePosts(posts)
                     .onLeft { cacheError ->
                         Timber.e("Failed to cache posts: $cacheError")
+                    }
+                // Save timestamp
+                localDataSource
+                    .saveLastUpdateTimestamp(System.currentTimeMillis())
+                    .onLeft { timestampError ->
+                        Timber.e("Failed to save timestamp: $timestampError")
                     }
             }
 
@@ -82,4 +136,8 @@ internal class PostsRepositoryImpl(
                         Timber.e("Failed to cache post $postId: $cacheError")
                     }
             }
+
+    private companion object {
+        const val CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000L // 24 hours in milliseconds
+    }
 }

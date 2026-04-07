@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.posts.data.model
+package com.alxnophis.jetpack.posts.data.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

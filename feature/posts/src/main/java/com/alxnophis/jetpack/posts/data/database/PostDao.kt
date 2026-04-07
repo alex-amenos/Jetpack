@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.alxnophis.jetpack.posts.data.model.PostEntity
+import com.alxnophis.jetpack.posts.data.database.entity.PostEntity
 
 @Dao
 internal interface PostDao {

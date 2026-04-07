@@ -43,6 +43,9 @@ internal class PostsRepositoryOfflineFirstTests {
         fun `GIVEN cache has posts WHEN getPosts THEN return cached posts without network call`() =
             runTest {
                 localDataSource.savePosts(listOf(post1, post2))
+                localDataSource.setLastUpdateTimestamp(System.currentTimeMillis()) // Fresh cache
+                // Mock for background refresh (even though it won't trigger with fresh cache)
+                whenever(remoteDataSourceMock.getPosts()).thenReturn(postList.right())
 
                 val result = repository.getPosts()
 

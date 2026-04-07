@@ -1,6 +1,6 @@
 package com.alxnophis.jetpack.posts.data.database
 
-import com.alxnophis.jetpack.posts.data.model.PostEntity
+import com.alxnophis.jetpack.posts.data.database.entity.PostEntity
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContain
