@@ -14,10 +14,10 @@ internal interface PostDao {
     @Query("SELECT * FROM posts WHERE id = :postId")
     suspend fun getPostById(postId: Long): PostEntity?
 
-    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPosts(posts: List<PostEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPost(post: PostEntity)
 
     @Query("DELETE FROM posts")
