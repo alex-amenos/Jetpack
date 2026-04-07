@@ -6,6 +6,7 @@ import arrow.retrofit.adapter.either.networkhandling.CallError
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
 import com.alxnophis.jetpack.api.jsonplaceholder.model.CallErrorMother
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModelMother
+import com.alxnophis.jetpack.posts.data.datasource.FakePostsLocalDataSource
 import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteDataSource
 import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteRemoteDataSourceImp
 import com.alxnophis.jetpack.posts.data.model.PostDetailError
@@ -28,11 +29,18 @@ import java.util.stream.Stream
 internal class PostsRepositoryIntegrationTests {
     private val apiDataSourceMock: JsonPlaceholderRetrofitService = mock()
     private val postsRemoteDataSourceImp: PostsRemoteDataSource = PostsRemoteRemoteDataSourceImp(apiDataSourceMock)
+    private val localDataSource = FakePostsLocalDataSource()
     private lateinit var repository: PostsRepository
 
     @BeforeEach
     fun setUp() {
-        repository = PostsRepositoryImpl(postsRemoteDataSourceImp)
+        localDataSource.clearCache()
+        localDataSource.clearError()
+        repository =
+            PostsRepositoryImpl(
+                remoteDataSource = postsRemoteDataSourceImp,
+                localDataSource = localDataSource,
+            )
     }
 
     @Nested
