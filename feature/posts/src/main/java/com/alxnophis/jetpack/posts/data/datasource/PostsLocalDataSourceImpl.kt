@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.posts.data.datasource
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.alxnophis.jetpack.posts.data.database.PostDao
 import com.alxnophis.jetpack.posts.data.mapper.mapToPost
 import com.alxnophis.jetpack.posts.data.mapper.mapToPostEntities
 import com.alxnophis.jetpack.posts.data.mapper.mapToPostEntity

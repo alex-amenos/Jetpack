@@ -2,7 +2,6 @@ package com.alxnophis.jetpack.posts.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.alxnophis.jetpack.posts.data.datasource.PostDao
 import com.alxnophis.jetpack.posts.data.model.PostEntity
 
 @Database(

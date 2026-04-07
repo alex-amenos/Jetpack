@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.posts.data.datasource
+package com.alxnophis.jetpack.posts.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -14,10 +14,10 @@ internal interface PostDao {
     @Query("SELECT * FROM posts WHERE id = :postId")
     suspend fun getPostById(postId: Long): PostEntity?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertPosts(posts: List<PostEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertPost(post: PostEntity)
 
     @Query("DELETE FROM posts")
