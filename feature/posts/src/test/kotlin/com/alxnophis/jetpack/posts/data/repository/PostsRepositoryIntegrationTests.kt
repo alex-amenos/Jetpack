@@ -6,12 +6,16 @@ import arrow.retrofit.adapter.either.networkhandling.CallError
 import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
 import com.alxnophis.jetpack.api.jsonplaceholder.model.CallErrorMother
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModelMother
-import com.alxnophis.jetpack.posts.data.datasource.PostsDataSource
+import com.alxnophis.jetpack.posts.data.datasource.FakePostsLocalDataSource
 import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteDataSource
+import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteDataSourceImp
 import com.alxnophis.jetpack.posts.data.model.PostDetailError
 import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.BeforeEach
@@ -27,12 +31,24 @@ import java.util.stream.Stream
 @ExperimentalCoroutinesApi
 internal class PostsRepositoryIntegrationTests {
     private val apiDataSourceMock: JsonPlaceholderRetrofitService = mock()
-    private val postsRemoteDataSource: PostsDataSource = PostsRemoteDataSource(apiDataSourceMock)
+    private val postsRemoteDataSourceImp: PostsRemoteDataSource = PostsRemoteDataSourceImp(apiDataSourceMock)
+    private val localDataSource = FakePostsLocalDataSource()
     private lateinit var repository: PostsRepository
+    val testScheduler = TestCoroutineScheduler()
+    private val testDispatcher = UnconfinedTestDispatcher(testScheduler)
+    private val testScope = TestScope(testDispatcher)
 
     @BeforeEach
     fun setUp() {
-        repository = PostsRepositoryImpl(postsRemoteDataSource)
+        localDataSource.clearCache()
+        localDataSource.clearError()
+        repository =
+            PostsRepositoryImpl(
+                remoteDataSource = postsRemoteDataSourceImp,
+                localDataSource = localDataSource,
+                backgroundRefreshScope = testScope,
+                ioDispatcher = testDispatcher,
+            )
     }
 
     @Nested
@@ -60,7 +76,6 @@ internal class PostsRepositoryIntegrationTests {
 
             result shouldBeEqualTo expectedError.left()
         }
-
     }
 
     @Nested
@@ -99,23 +114,25 @@ internal class PostsRepositoryIntegrationTests {
         val postList = listOf(post1, post2)
 
         @JvmStatic
-        fun provideErrorCases(): Stream<Arguments> = Stream.of(
-            Arguments.of(CallErrorMother.noConnectivityError(), PostsError.NoConnectivity),
-            Arguments.of(CallErrorMother.ioError(), PostsError.Unexpected),
-            Arguments.of(CallErrorMother.unexpectedCallError(), PostsError.Unexpected),
-            Arguments.of(CallErrorMother.httpError(code = 300), PostsError.Network),
-            Arguments.of(CallErrorMother.httpError(code = 400), PostsError.Network),
-            Arguments.of(CallErrorMother.httpError(code = 500), PostsError.Server),
-        )
+        fun provideErrorCases(): Stream<Arguments> =
+            Stream.of(
+                Arguments.of(CallErrorMother.noConnectivityError(), PostsError.NoConnectivity),
+                Arguments.of(CallErrorMother.ioError(), PostsError.Unexpected),
+                Arguments.of(CallErrorMother.unexpectedCallError(), PostsError.Unexpected),
+                Arguments.of(CallErrorMother.httpError(code = 300), PostsError.Network),
+                Arguments.of(CallErrorMother.httpError(code = 400), PostsError.Network),
+                Arguments.of(CallErrorMother.httpError(code = 500), PostsError.Server),
+            )
 
         @JvmStatic
-        fun providePostDetailErrorCases(): Stream<Arguments> = Stream.of(
-            Arguments.of(CallErrorMother.noConnectivityError(), PostDetailError.NoConnectivity),
-            Arguments.of(CallErrorMother.ioError(), PostDetailError.Unexpected),
-            Arguments.of(CallErrorMother.unexpectedCallError(), PostDetailError.Unexpected),
-            Arguments.of(CallErrorMother.httpError(code = 300), PostDetailError.Network),
-            Arguments.of(CallErrorMother.httpError(code = 400), PostDetailError.Network),
-            Arguments.of(CallErrorMother.httpError(code = 500), PostDetailError.Server),
-        )
+        fun providePostDetailErrorCases(): Stream<Arguments> =
+            Stream.of(
+                Arguments.of(CallErrorMother.noConnectivityError(), PostDetailError.NoConnectivity),
+                Arguments.of(CallErrorMother.ioError(), PostDetailError.Unexpected),
+                Arguments.of(CallErrorMother.unexpectedCallError(), PostDetailError.Unexpected),
+                Arguments.of(CallErrorMother.httpError(code = 300), PostDetailError.Network),
+                Arguments.of(CallErrorMother.httpError(code = 400), PostDetailError.Network),
+                Arguments.of(CallErrorMother.httpError(code = 500), PostDetailError.Server),
+            )
     }
 }

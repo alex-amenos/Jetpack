@@ -36,7 +36,7 @@ sealed class Route : NavKey {
 
     @Serializable
     data class PostDetail(
-        val postId: Int,
+        val postId: Long,
     ) : Route()
 
     @Serializable

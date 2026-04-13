@@ -44,7 +44,11 @@ Load posts from JsonPlaceholder Rest API<br><br>
 Uses adaptive layouts<br><br>
 More experiment info:<br>
 
-- Experiment with testing: unit test, snapshot tests.
+- Experiment with testing: unit test, snapshot tests
+- Offline-first architecture with Room database persistence
+- Automatic background refresh every 24 hours
+- Cache-first strategy with network fallback
+- Functional error handling with Arrow Either
 
 <img alt="Posts screen 1" src="./images/posts_screen.png" width="300" />
 <img alt="Posts screen 2" src="./images/posts_screen_detail.png" width="300" />
