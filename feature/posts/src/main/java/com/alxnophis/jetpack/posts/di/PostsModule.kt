@@ -38,7 +38,7 @@ val postsModule: Module =
         factory<PostsLocalDataSource> { PostsLocalDataSourceImpl(get(), get()) }
 
         // Repository
-        factory<PostsRepository> { PostsRepositoryImpl(get(), get()) }
+        single<PostsRepository> { PostsRepositoryImpl(get(), get()) }
 
         // ViewModels
         viewModel { PostsViewModel(get()) }
