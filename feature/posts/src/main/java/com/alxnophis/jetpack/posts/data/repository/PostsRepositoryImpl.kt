@@ -10,18 +10,22 @@ import com.alxnophis.jetpack.posts.data.model.PostsError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
+/**
+ * Implementation of PostsRepository.
+ * @param backgroundRefreshScope Scope for background refresh operations.
+ *        Should be an application-level scope to avoid leaking coroutines.
+ */
 internal class PostsRepositoryImpl(
     private val remoteDataSource: PostsRemoteDataSource,
     private val localDataSource: PostsLocalDataSource,
+    private val backgroundRefreshScope: CoroutineScope,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : PostsRepository {
-    private val backgroundScope = CoroutineScope(ioDispatcher + SupervisorJob())
     private val refreshMutex = Mutex()
 
     override suspend fun getPosts(): Either<PostsError, List<Post>> =
@@ -53,7 +57,7 @@ internal class PostsRepositoryImpl(
             return
         }
 
-        backgroundScope.launch {
+        backgroundRefreshScope.launch {
             try {
                 localDataSource
                     .getLastUpdateTimestamp()
@@ -61,7 +65,7 @@ internal class PostsRepositoryImpl(
                         { error ->
                             Timber.e("Error getting last update timestamp: $error")
                         },
-                        { lastUpdateTimestamp ->
+                        { lastUpdateTimestamp: Long? ->
                             val currentTime = System.currentTimeMillis()
                             if (lastUpdateTimestamp == null) {
                                 Timber.d("No timestamp found, triggering background refresh")

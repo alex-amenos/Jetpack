@@ -15,6 +15,7 @@ import com.alxnophis.jetpack.posts.ui.viewmodel.PostsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val postsModule: Module =
@@ -38,7 +39,14 @@ val postsModule: Module =
         factory<PostsLocalDataSource> { PostsLocalDataSourceImpl(get(), get()) }
 
         // Repository
-        single<PostsRepository> { PostsRepositoryImpl(get(), get()) }
+        // Uses application-level scope for background refresh to prevent coroutine leaks
+        single<PostsRepository> {
+            PostsRepositoryImpl(
+                remoteDataSource = get(),
+                localDataSource = get(),
+                backgroundRefreshScope = get(named("applicationScope")),
+            )
+        }
 
         // ViewModels
         viewModel { PostsViewModel(get()) }

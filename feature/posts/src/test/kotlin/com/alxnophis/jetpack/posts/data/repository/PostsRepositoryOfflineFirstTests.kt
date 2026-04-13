@@ -9,6 +9,7 @@ import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import com.alxnophis.jetpack.posts.data.model.PostsLocalError
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
@@ -23,6 +24,7 @@ internal class PostsRepositoryOfflineFirstTests {
     private val remoteDataSourceMock: PostsRemoteDataSource = mock()
     private val localDataSource = FakePostsLocalDataSource()
     private val testDispatcher = UnconfinedTestDispatcher()
+    private val testScope = TestScope(testDispatcher)
     private lateinit var repository: PostsRepository
 
     @BeforeEach
@@ -33,6 +35,7 @@ internal class PostsRepositoryOfflineFirstTests {
             PostsRepositoryImpl(
                 remoteDataSource = remoteDataSourceMock,
                 localDataSource = localDataSource,
+                backgroundRefreshScope = testScope,
                 ioDispatcher = testDispatcher,
             )
     }

@@ -14,6 +14,7 @@ import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
@@ -34,6 +35,8 @@ internal class PostsRepositoryIntegrationTests {
     private val localDataSource = FakePostsLocalDataSource()
     private lateinit var repository: PostsRepository
     val testScheduler = TestCoroutineScheduler()
+    private val testDispatcher = UnconfinedTestDispatcher(testScheduler)
+    private val testScope = TestScope(testDispatcher)
 
     @BeforeEach
     fun setUp() {
@@ -43,7 +46,8 @@ internal class PostsRepositoryIntegrationTests {
             PostsRepositoryImpl(
                 remoteDataSource = postsRemoteDataSourceImp,
                 localDataSource = localDataSource,
-                ioDispatcher = UnconfinedTestDispatcher(testScheduler),
+                backgroundRefreshScope = testScope,
+                ioDispatcher = testDispatcher,
             )
     }
 
