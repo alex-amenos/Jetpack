@@ -32,7 +32,6 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -56,7 +55,6 @@ import com.alxnophis.jetpack.posts.ui.composable.provider.PostsScreenPreviewProv
 import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
-import kotlinx.coroutines.launch
 
 @Composable
 internal fun PostsScreen(
@@ -136,17 +134,14 @@ private fun PostSnackbarError(
     snackbarHostState: SnackbarHostState,
     onDismiss: () -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
     LaunchedEffect(errorMessage) {
-        scope.launch {
-            val result = snackbarHostState.showSnackbar(
-                message = errorMessage,
-                actionLabel = null,
-            )
-            when (result) {
-                SnackbarResult.Dismissed -> onDismiss()
-                SnackbarResult.ActionPerformed -> onDismiss()
-            }
+        val result = snackbarHostState.showSnackbar(
+            message = errorMessage,
+            actionLabel = null,
+        )
+        when (result) {
+            SnackbarResult.Dismissed -> onDismiss()
+            SnackbarResult.ActionPerformed -> onDismiss()
         }
     }
 }

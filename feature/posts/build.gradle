@@ -3,10 +3,25 @@ apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 android {
     resourcePrefix = 'posts'
     namespace = 'com.alxnophis.jetpack.posts'
+
+    defaultConfig {
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+    }
+
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
 }
 
 dependencies {
     implementation project(Modules.SHARED_API)
     implementation libs.retrofit
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.ktx
+    ksp libs.androidx.room.compiler
     testImplementation(libs.bundles.kotest)
+    testImplementation libs.androidx.room.testing
+    testImplementation libs.robolectric
 }

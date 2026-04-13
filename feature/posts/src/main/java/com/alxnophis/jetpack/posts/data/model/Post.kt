@@ -1,8 +1,8 @@
 package com.alxnophis.jetpack.posts.data.model
 
 data class Post(
-    val id: Int,
-    val userId: Int,
+    val id: Long,
+    val userId: Long,
     val title: String,
     val body: String,
 ) {

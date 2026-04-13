@@ -9,7 +9,7 @@ import com.alxnophis.jetpack.posts.data.model.Post
 
 internal sealed interface PostDetailEvent : UiEvent {
     data class LoadPost(
-        val postId: Int,
+        val postId: Long,
     ) : PostDetailEvent
 
     data object UpdatePost : PostDetailEvent
@@ -24,7 +24,7 @@ internal sealed interface PostDetailEvent : UiEvent {
 internal data class PostDetailUiState(
     val status: PostDetailStatus,
     val post: Post?,
-    val postId: Int?,
+    val postId: Long?,
     val error: PostDetailUiError?,
 ) : UiState {
     val isLoading: Boolean = status == PostDetailStatus.Loading
@@ -38,12 +38,13 @@ internal data class PostDetailUiState(
         get() = post?.body ?: EMPTY
 
     internal companion object {
-        val initialState = PostDetailUiState(
-            status = PostDetailStatus.Loading,
-            post = null,
-            postId = null,
-            error = null,
-        )
+        val initialState =
+            PostDetailUiState(
+                status = PostDetailStatus.Loading,
+                post = null,
+                postId = null,
+                error = null,
+            )
     }
 }
 
