@@ -14,7 +14,7 @@ import com.alxnophis.jetpack.posts.data.model.PostDetailError
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import timber.log.Timber
 
-internal class PostsRemoteRemoteDataSourceImp(
+internal class PostsRemoteDataSourceImp(
     private val apiDataSource: JsonPlaceholderRetrofitService,
 ) : PostsRemoteDataSource {
     override suspend fun getPosts(): Either<PostsError, List<Post>> =

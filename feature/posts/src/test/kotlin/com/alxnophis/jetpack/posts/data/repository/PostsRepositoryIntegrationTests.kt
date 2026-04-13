@@ -8,7 +8,7 @@ import com.alxnophis.jetpack.api.jsonplaceholder.model.CallErrorMother
 import com.alxnophis.jetpack.api.jsonplaceholder.model.PostApiModelMother
 import com.alxnophis.jetpack.posts.data.datasource.FakePostsLocalDataSource
 import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteDataSource
-import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteRemoteDataSourceImp
+import com.alxnophis.jetpack.posts.data.datasource.PostsRemoteDataSourceImp
 import com.alxnophis.jetpack.posts.data.model.PostDetailError
 import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
@@ -28,7 +28,7 @@ import java.util.stream.Stream
 @ExperimentalCoroutinesApi
 internal class PostsRepositoryIntegrationTests {
     private val apiDataSourceMock: JsonPlaceholderRetrofitService = mock()
-    private val postsRemoteDataSourceImp: PostsRemoteDataSource = PostsRemoteRemoteDataSourceImp(apiDataSourceMock)
+    private val postsRemoteDataSourceImp: PostsRemoteDataSource = PostsRemoteDataSourceImp(apiDataSourceMock)
     private val localDataSource = FakePostsLocalDataSource()
     private lateinit var repository: PostsRepository
 
