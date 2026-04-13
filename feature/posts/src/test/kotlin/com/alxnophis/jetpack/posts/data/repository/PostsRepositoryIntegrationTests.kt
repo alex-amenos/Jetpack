@@ -13,6 +13,8 @@ import com.alxnophis.jetpack.posts.data.model.PostDetailError
 import com.alxnophis.jetpack.posts.data.model.PostMother
 import com.alxnophis.jetpack.posts.data.model.PostsError
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.BeforeEach
@@ -31,6 +33,7 @@ internal class PostsRepositoryIntegrationTests {
     private val postsRemoteDataSourceImp: PostsRemoteDataSource = PostsRemoteDataSourceImp(apiDataSourceMock)
     private val localDataSource = FakePostsLocalDataSource()
     private lateinit var repository: PostsRepository
+    val testScheduler = TestCoroutineScheduler()
 
     @BeforeEach
     fun setUp() {
@@ -40,6 +43,7 @@ internal class PostsRepositoryIntegrationTests {
             PostsRepositoryImpl(
                 remoteDataSource = postsRemoteDataSourceImp,
                 localDataSource = localDataSource,
+                ioDispatcher = UnconfinedTestDispatcher(testScheduler),
             )
     }
 
