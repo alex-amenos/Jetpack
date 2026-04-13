@@ -48,7 +48,6 @@ internal class PostsLocalDataSourceImpl(
 
     override suspend fun savePosts(posts: List<Post>): Either<PostsLocalError, Unit> =
         try {
-            postDao.deleteAllPosts()
             postDao.insertPosts(posts.mapToPostEntities())
             Unit.right()
         } catch (e: Exception) {
