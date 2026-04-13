@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -21,6 +22,7 @@ internal class PostsRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : PostsRepository {
     private val backgroundScope = CoroutineScope(ioDispatcher + SupervisorJob())
+    private val refreshMutex = Mutex()
 
     override suspend fun getPosts(): Either<PostsError, List<Post>> =
         withContext(ioDispatcher) {
@@ -44,33 +46,44 @@ internal class PostsRepositoryImpl(
         }
 
     private fun triggerBackgroundRefreshIfNeeded() {
-        backgroundScope.launch {
-            localDataSource
-                .getLastUpdateTimestamp()
-                .fold(
-                    { error ->
-                        Timber.e("Error getting last update timestamp: $error")
-                    },
-                    { lastUpdateTimestamp ->
-                        val currentTime = System.currentTimeMillis()
-                        if (lastUpdateTimestamp == null) {
-                            Timber.d("No timestamp found, triggering background refresh")
-                            refreshPostsInBackground()
-                        } else {
-                            val timeSinceLastUpdate = currentTime - lastUpdateTimestamp
-                            val shouldRefresh = timeSinceLastUpdate >= CACHE_EXPIRATION_MS
+        // Use tryLock to avoid queueing multiple refresh checks
+        // If a refresh is already in progress, skip this request
+        if (!refreshMutex.tryLock()) {
+            Timber.d("Background refresh already in progress, skipping")
+            return
+        }
 
-                            if (shouldRefresh) {
-                                Timber.d("Cache expired, triggering background refresh")
+        backgroundScope.launch {
+            try {
+                localDataSource
+                    .getLastUpdateTimestamp()
+                    .fold(
+                        { error ->
+                            Timber.e("Error getting last update timestamp: $error")
+                        },
+                        { lastUpdateTimestamp ->
+                            val currentTime = System.currentTimeMillis()
+                            if (lastUpdateTimestamp == null) {
+                                Timber.d("No timestamp found, triggering background refresh")
                                 refreshPostsInBackground()
                             } else {
-                                Timber.d(
-                                    "Cache still fresh, time since last update: ${timeSinceLastUpdate}ms",
-                                )
+                                val timeSinceLastUpdate = currentTime - lastUpdateTimestamp
+                                val shouldRefresh = timeSinceLastUpdate >= CACHE_EXPIRATION_MS
+
+                                if (shouldRefresh) {
+                                    Timber.d("Cache expired, triggering background refresh")
+                                    refreshPostsInBackground()
+                                } else {
+                                    Timber.d(
+                                        "Cache still fresh, time since last update: ${timeSinceLastUpdate}ms",
+                                    )
+                                }
                             }
-                        }
-                    },
-                )
+                        },
+                    )
+            } finally {
+                refreshMutex.unlock()
+            }
         }
     }
 
