@@ -25,7 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
@@ -74,7 +74,9 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
         }
     }
     val showMissingNotificationPermission: () -> Unit = {
-        Toast.makeText(context, R.string.notifications_missing_permissions, Toast.LENGTH_SHORT).show()
+        Toast
+            .makeText(context, R.string.notifications_missing_permissions, Toast.LENGTH_SHORT)
+            .show()
     }
     val permissionLauncher =
         rememberLauncherForActivityResult(
@@ -123,7 +125,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun NotificationsContentPreview() {
     NotificationsScreen()

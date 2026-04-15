@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
@@ -56,7 +56,10 @@ internal fun HomeScreen(
         ) { paddingValues ->
             SectionsList(
                 state = state,
-                modifier = Modifier.background(color = MaterialTheme.colorScheme.surface).padding(paddingValues),
+                modifier =
+                    Modifier
+                        .background(color = MaterialTheme.colorScheme.surface)
+                        .padding(paddingValues),
                 navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) },
             )
             if (state.error != NO_ERROR) {
@@ -125,7 +128,11 @@ internal fun SectionsList(
                         fontWeight = FontWeight.Medium,
                     )
                     Column(
-                        modifier = Modifier.weight(0.9f).fillMaxWidth().padding(start = mediumPadding),
+                        modifier =
+                            Modifier
+                                .weight(0.9f)
+                                .fillMaxWidth()
+                                .padding(start = mediumPadding),
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
@@ -136,7 +143,10 @@ internal fun SectionsList(
                             fontWeight = FontWeight.Medium,
                         )
                         Text(
-                            modifier = Modifier.wrapContentSize().padding(top = extraSmallPadding),
+                            modifier =
+                                Modifier
+                                    .wrapContentSize()
+                                    .padding(top = extraSmallPadding),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             text = item.description,
@@ -150,7 +160,7 @@ internal fun SectionsList(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun HomeScreenPreview(
     @PreviewParameter(HomePreviewProvider::class) uiState: HomeState,

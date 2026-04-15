@@ -38,7 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -47,6 +47,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
@@ -57,7 +58,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.authentication.R
@@ -67,12 +68,13 @@ import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
-import com.alxnophis.jetpack.core.ui.composable.autofill
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
 import com.alxnophis.jetpack.core.ui.theme.extraLargePadding
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @ExperimentalComposeUiApi
 @Composable
@@ -81,7 +83,7 @@ internal fun AuthenticationForm(
     email: String,
     password: String,
     authenticationMode: AuthenticationMode,
-    completedPasswordRequirements: List<PasswordRequirements>,
+    completedPasswordRequirements: ImmutableList<PasswordRequirements>,
     enableAuthentication: Boolean,
     handleEvent: AuthenticationEvent.() -> Unit,
 ) {
@@ -136,7 +138,7 @@ internal fun AuthenticationForm(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            val passwordFocusRequester = FocusRequester()
+            val passwordFocusRequester = remember { FocusRequester() }
             Card(
                 modifier =
                     Modifier
@@ -163,10 +165,7 @@ internal fun AuthenticationForm(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
-                                .autofill(
-                                    autofillTypes = listOf(AutofillType.EmailAddress),
-                                    onFill = onEmailChanged,
-                                ),
+                                .semantics { contentType = ContentType.EmailAddress },
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -182,10 +181,7 @@ internal fun AuthenticationForm(
                             Modifier
                                 .fillMaxWidth()
                                 .focusRequester(passwordFocusRequester)
-                                .autofill(
-                                    autofillTypes = listOf(AutofillType.Password),
-                                    onFill = onPasswordChanged,
-                                ),
+                                .semantics { contentType = ContentType.Password },
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -361,11 +357,11 @@ fun Requirement(
 
 @Composable
 fun PasswordRequirementsView(
-    satisfiedRequirements: List<PasswordRequirements>,
+    satisfiedRequirements: ImmutableList<PasswordRequirements>,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        PasswordRequirements.values().forEach { requirement ->
+        PasswordRequirements.entries.forEach { requirement ->
             val satisfied = satisfiedRequirements.contains(requirement)
             val message = stringResource(requirement.label)
             val requirementStatus =
@@ -463,7 +459,7 @@ fun ToggleAuthenticationMode(
 }
 
 @ExperimentalComposeUiApi
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun AuthenticationSighInFormPreview() {
     AppTheme {
@@ -472,7 +468,7 @@ private fun AuthenticationSighInFormPreview() {
             isLoading = true,
             email = EMPTY,
             password = EMPTY,
-            completedPasswordRequirements = emptyList(),
+            completedPasswordRequirements = persistentListOf(),
             enableAuthentication = true,
             handleEvent = {},
         )
@@ -480,7 +476,7 @@ private fun AuthenticationSighInFormPreview() {
 }
 
 @ExperimentalComposeUiApi
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun AuthenticationSignUpFormPreview() {
     AppTheme {
@@ -490,7 +486,7 @@ private fun AuthenticationSignUpFormPreview() {
             email = EMPTY,
             password = EMPTY,
             completedPasswordRequirements =
-                listOf(
+                persistentListOf(
                     PasswordRequirements.CAPITAL_LETTER,
                     PasswordRequirements.EIGHT_CHARACTERS,
                     PasswordRequirements.NUMBER,

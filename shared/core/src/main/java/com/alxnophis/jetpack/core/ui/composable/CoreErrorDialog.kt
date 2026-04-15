@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.alxnophis.jetpack.core.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
@@ -49,9 +49,10 @@ fun CoreErrorDialog(
         },
         confirmButton = {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = extraSmallPadding, end = smallPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = extraSmallPadding, end = smallPadding),
                 contentAlignment = Alignment.CenterEnd,
             ) {
                 TextButton(
@@ -68,7 +69,7 @@ fun CoreErrorDialog(
     )
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun CoreErrorDialogLongMessagePreview() {
     AppTheme {

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
@@ -56,7 +56,7 @@ internal fun AuthenticationContent(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @ExperimentalComposeUiApi
 @Composable
 private fun AuthenticationFormPreview() {

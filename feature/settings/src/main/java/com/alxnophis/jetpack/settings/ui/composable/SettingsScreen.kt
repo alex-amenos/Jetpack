@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.alxnophis.jetpack.core.extensions.getVersion
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
@@ -71,7 +71,9 @@ internal fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.settings_option_manage_subscription),
                     onSubscriptionClicked = {
-                        Toast.makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG).show()
+                        Toast
+                            .makeText(context, R.string.settings_option_manage_subscription, Toast.LENGTH_LONG)
+                            .show()
                         onEvent(SettingsUiEvent.ManageSubscription)
                     },
                 )
@@ -107,7 +109,7 @@ internal fun SettingsScreen(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun SettingsScreenPreview(
     @PreviewParameter(SettingsPreviewProvider::class) uiState: SettingsUiState,

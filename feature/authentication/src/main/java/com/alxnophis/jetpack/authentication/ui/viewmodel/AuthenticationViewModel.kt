@@ -22,6 +22,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.password
 import com.alxnophis.jetpack.authentication.ui.contract.passwordRequirements
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
 internal class AuthenticationViewModel(
@@ -66,7 +67,7 @@ internal class AuthenticationViewModel(
             }
             _uiState.updateCopy {
                 AuthenticationState.password set newPassword
-                AuthenticationState.passwordRequirements set requirements.toList()
+                AuthenticationState.passwordRequirements set requirements.toImmutableList()
             }
         }
     }
