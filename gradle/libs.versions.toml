@@ -1,5 +1,5 @@
 [versions]
-android-gradle-plugin = "9.1.0"
+android-gradle-plugin = "9.1.1"
 android-junit5-plugin = "2.0.1"
 androidx-activity = "1.12.4"
 androidx-annotations = "1.9.1"
