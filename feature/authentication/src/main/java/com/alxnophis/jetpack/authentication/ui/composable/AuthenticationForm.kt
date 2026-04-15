@@ -73,6 +73,8 @@ import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
 import com.alxnophis.jetpack.core.ui.theme.extraLargePadding
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @ExperimentalComposeUiApi
 @Composable
@@ -81,7 +83,7 @@ internal fun AuthenticationForm(
     email: String,
     password: String,
     authenticationMode: AuthenticationMode,
-    completedPasswordRequirements: List<PasswordRequirements>,
+    completedPasswordRequirements: ImmutableList<PasswordRequirements>,
     enableAuthentication: Boolean,
     handleEvent: AuthenticationEvent.() -> Unit,
 ) {
@@ -355,7 +357,7 @@ fun Requirement(
 
 @Composable
 fun PasswordRequirementsView(
-    satisfiedRequirements: List<PasswordRequirements>,
+    satisfiedRequirements: ImmutableList<PasswordRequirements>,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -466,7 +468,7 @@ private fun AuthenticationSighInFormPreview() {
             isLoading = true,
             email = EMPTY,
             password = EMPTY,
-            completedPasswordRequirements = emptyList(),
+            completedPasswordRequirements = persistentListOf(),
             enableAuthentication = true,
             handleEvent = {},
         )
@@ -484,7 +486,7 @@ private fun AuthenticationSignUpFormPreview() {
             email = EMPTY,
             password = EMPTY,
             completedPasswordRequirements =
-                listOf(
+                persistentListOf(
                     PasswordRequirements.CAPITAL_LETTER,
                     PasswordRequirements.EIGHT_CHARACTERS,
                     PasswordRequirements.NUMBER,

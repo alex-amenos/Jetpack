@@ -7,6 +7,8 @@ import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 internal const val NO_ERROR = 0
 
@@ -43,7 +45,7 @@ internal data class AuthenticationState(
     val authenticationMode: AuthenticationMode,
     val email: String,
     val password: String,
-    val passwordRequirements: List<PasswordRequirements>,
+    val passwordRequirements: ImmutableList<PasswordRequirements>,
     val isLoading: Boolean,
     val error: Int,
 ) : UiState {
@@ -59,7 +61,7 @@ internal data class AuthenticationState(
                 authenticationMode = AuthenticationMode.SIGN_IN,
                 email = EMPTY,
                 password = EMPTY,
-                passwordRequirements = emptyList(),
+                passwordRequirements = emptyList<PasswordRequirements>().toImmutableList(),
                 isLoading = false,
                 error = NO_ERROR,
             )
