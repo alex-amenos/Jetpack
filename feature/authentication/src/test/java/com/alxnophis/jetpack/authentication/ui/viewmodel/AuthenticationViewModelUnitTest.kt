@@ -12,6 +12,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
@@ -107,7 +108,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
                     AuthenticationState.initialState.copy(
                         password = PASSWORD,
                         passwordRequirements =
-                            listOf(
+                            persistentListOf(
                                 PasswordRequirements.EIGHT_CHARACTERS,
                                 PasswordRequirements.CAPITAL_LETTER,
                                 PasswordRequirements.NUMBER,
