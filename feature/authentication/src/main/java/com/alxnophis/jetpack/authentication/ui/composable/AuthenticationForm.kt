@@ -38,7 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -47,6 +47,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
@@ -57,7 +58,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.authentication.R
@@ -67,7 +68,6 @@ import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
-import com.alxnophis.jetpack.core.ui.composable.autofill
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
 import com.alxnophis.jetpack.core.ui.theme.extraLargePadding
@@ -136,7 +136,7 @@ internal fun AuthenticationForm(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            val passwordFocusRequester = FocusRequester()
+            val passwordFocusRequester = remember { FocusRequester() }
             Card(
                 modifier =
                     Modifier
@@ -163,10 +163,7 @@ internal fun AuthenticationForm(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
-                                .autofill(
-                                    autofillTypes = listOf(AutofillType.EmailAddress),
-                                    onFill = onEmailChanged,
-                                ),
+                                .semantics { contentType = ContentType.EmailAddress },
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -182,10 +179,7 @@ internal fun AuthenticationForm(
                             Modifier
                                 .fillMaxWidth()
                                 .focusRequester(passwordFocusRequester)
-                                .autofill(
-                                    autofillTypes = listOf(AutofillType.Password),
-                                    onFill = onPasswordChanged,
-                                ),
+                                .semantics { contentType = ContentType.Password },
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -365,37 +359,39 @@ fun PasswordRequirementsView(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        PasswordRequirements.values().forEach { requirement ->
-            val satisfied = satisfiedRequirements.contains(requirement)
-            val message = stringResource(requirement.label)
-            val requirementStatus =
-                if (satisfied) {
-                    stringResource(R.string.authentication_password_requirement_satisfied, message)
-                } else {
-                    stringResource(R.string.authentication_password_requirement_not_satisfied, message)
-                }
-            Requirement(
-                message = requirementStatus,
-                icon =
+        PasswordRequirements
+            .values()
+            .forEach { requirement ->
+                val satisfied = satisfiedRequirements.contains(requirement)
+                val message = stringResource(requirement.label)
+                val requirementStatus =
                     if (satisfied) {
-                        R.drawable.ic_check
+                        stringResource(R.string.authentication_password_requirement_satisfied, message)
                     } else {
-                        R.drawable.ic_close
-                    },
-                tint =
-                    if (satisfied) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                    },
-                modifier =
-                    Modifier
-                        .padding(extraSmallPadding)
-                        .semantics(mergeDescendants = true) {
-                            text = AnnotatedString(requirementStatus)
+                        stringResource(R.string.authentication_password_requirement_not_satisfied, message)
+                    }
+                Requirement(
+                    message = requirementStatus,
+                    icon =
+                        if (satisfied) {
+                            R.drawable.ic_check
+                        } else {
+                            R.drawable.ic_close
                         },
-            )
-        }
+                    tint =
+                        if (satisfied) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        },
+                    modifier =
+                        Modifier
+                            .padding(extraSmallPadding)
+                            .semantics(mergeDescendants = true) {
+                                text = AnnotatedString(requirementStatus)
+                            },
+                )
+            }
     }
 }
 
@@ -463,7 +459,7 @@ fun ToggleAuthenticationMode(
 }
 
 @ExperimentalComposeUiApi
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun AuthenticationSighInFormPreview() {
     AppTheme {
@@ -480,7 +476,7 @@ private fun AuthenticationSighInFormPreview() {
 }
 
 @ExperimentalComposeUiApi
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun AuthenticationSignUpFormPreview() {
     AppTheme {
