@@ -69,7 +69,7 @@ internal data class AuthenticationState(
 }
 
 enum class PasswordRequirements(
-    @StringRes val label: Int,
+    @param:StringRes val label: Int,
 ) {
     CAPITAL_LETTER(R.string.authentication_requirement_capital),
     NUMBER(R.string.authentication_requirement_digit),
