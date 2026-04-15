@@ -50,7 +50,7 @@ internal data class AuthenticationState(
     fun isFormValid(): Boolean =
         password.isNotEmpty() &&
             email.isNotEmpty() &&
-            (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.values().toList()))
+            (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.entries.toList()))
 
     internal companion object {
         val initialState =

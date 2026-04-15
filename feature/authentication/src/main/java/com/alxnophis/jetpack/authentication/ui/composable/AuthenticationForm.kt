@@ -359,39 +359,37 @@ fun PasswordRequirementsView(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        PasswordRequirements
-            .values()
-            .forEach { requirement ->
-                val satisfied = satisfiedRequirements.contains(requirement)
-                val message = stringResource(requirement.label)
-                val requirementStatus =
+        PasswordRequirements.entries.forEach { requirement ->
+            val satisfied = satisfiedRequirements.contains(requirement)
+            val message = stringResource(requirement.label)
+            val requirementStatus =
+                if (satisfied) {
+                    stringResource(R.string.authentication_password_requirement_satisfied, message)
+                } else {
+                    stringResource(R.string.authentication_password_requirement_not_satisfied, message)
+                }
+            Requirement(
+                message = requirementStatus,
+                icon =
                     if (satisfied) {
-                        stringResource(R.string.authentication_password_requirement_satisfied, message)
+                        R.drawable.ic_check
                     } else {
-                        stringResource(R.string.authentication_password_requirement_not_satisfied, message)
-                    }
-                Requirement(
-                    message = requirementStatus,
-                    icon =
-                        if (satisfied) {
-                            R.drawable.ic_check
-                        } else {
-                            R.drawable.ic_close
+                        R.drawable.ic_close
+                    },
+                tint =
+                    if (satisfied) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    },
+                modifier =
+                    Modifier
+                        .padding(extraSmallPadding)
+                        .semantics(mergeDescendants = true) {
+                            text = AnnotatedString(requirementStatus)
                         },
-                    tint =
-                        if (satisfied) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                        },
-                    modifier =
-                        Modifier
-                            .padding(extraSmallPadding)
-                            .semantics(mergeDescendants = true) {
-                                text = AnnotatedString(requirementStatus)
-                            },
-                )
-            }
+            )
+        }
     }
 }
 

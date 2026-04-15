@@ -57,18 +57,16 @@ internal fun SettingsThemeItem(
             offset = DpOffset(x = 16.dp, y = 0.dp),
             properties = PopupProperties(usePlatformDefaultWidth = true),
         ) {
-            Theme
-                .values()
-                .forEach { theme ->
-                    DropdownMenuItem(
-                        onClick = {
-                            onOptionSelected(theme)
-                            expanded = false
-                        },
-                        modifier = Modifier.testTag(SettingsTags.TAG_THEME_OPTION + theme),
-                        text = { Text(text = stringResource(theme.label)) },
-                    )
-                }
+            Theme.entries.forEach { theme ->
+                DropdownMenuItem(
+                    onClick = {
+                        onOptionSelected(theme)
+                        expanded = false
+                    },
+                    modifier = Modifier.testTag(SettingsTags.TAG_THEME_OPTION + theme),
+                    text = { Text(text = stringResource(theme.label)) },
+                )
+            }
         }
     }
 }
