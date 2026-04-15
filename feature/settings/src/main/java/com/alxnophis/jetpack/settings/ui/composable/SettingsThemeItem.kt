@@ -16,7 +16,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
@@ -57,21 +57,23 @@ internal fun SettingsThemeItem(
             offset = DpOffset(x = 16.dp, y = 0.dp),
             properties = PopupProperties(usePlatformDefaultWidth = true),
         ) {
-            Theme.values().forEach { theme ->
-                DropdownMenuItem(
-                    onClick = {
-                        onOptionSelected(theme)
-                        expanded = false
-                    },
-                    modifier = Modifier.testTag(SettingsTags.TAG_THEME_OPTION + theme),
-                    text = { Text(text = stringResource(theme.label)) },
-                )
-            }
+            Theme
+                .values()
+                .forEach { theme ->
+                    DropdownMenuItem(
+                        onClick = {
+                            onOptionSelected(theme)
+                            expanded = false
+                        },
+                        modifier = Modifier.testTag(SettingsTags.TAG_THEME_OPTION + theme),
+                        text = { Text(text = stringResource(theme.label)) },
+                    )
+                }
         }
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @ExperimentalComposeUiApi
 @Composable
 private fun SettingsThemeItemPreview() {

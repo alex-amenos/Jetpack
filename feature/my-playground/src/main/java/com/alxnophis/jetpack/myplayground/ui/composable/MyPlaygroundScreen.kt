@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -92,7 +92,7 @@ internal fun MyPlaygroundContent(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun MyPlaygroundScaffoldPreview() {
     val state = MyPlaygroundState.initialState

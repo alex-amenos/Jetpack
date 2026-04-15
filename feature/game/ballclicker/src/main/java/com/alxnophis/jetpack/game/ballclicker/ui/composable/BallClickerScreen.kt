@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -197,11 +197,17 @@ private fun randomOffset(
     width: Int,
     height: Int,
 ) = Offset(
-    x = Random.nextInt(radius.roundToInt(), width - radius.roundToInt()).toFloat(),
-    y = Random.nextInt(radius.roundToInt(), height - radius.roundToInt()).toFloat(),
+    x =
+        Random
+            .nextInt(radius.roundToInt(), width - radius.roundToInt())
+            .toFloat(),
+    y =
+        Random
+            .nextInt(radius.roundToInt(), height - radius.roundToInt())
+            .toFloat(),
 )
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun BallClickerPreview() {
     val state =

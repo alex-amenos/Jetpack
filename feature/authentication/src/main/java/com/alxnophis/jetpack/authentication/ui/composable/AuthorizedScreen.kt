@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
@@ -37,12 +37,13 @@ internal fun AuthorizedScreen(
                 text = stringResource(R.string.authentication_authorized, userEmail),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun AuthorizedScreenPreview() {
     AuthorizedScreen(

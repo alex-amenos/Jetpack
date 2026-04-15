@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.DISABLED_CONTENT
@@ -63,12 +63,14 @@ fun CoreButtonMinor(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun CoreButtonMinorPreview() {
     val context = LocalContext.current
     val clicked: (() -> Unit) = {
-        Toast.makeText(context, "Clicked", Toast.LENGTH_LONG).show()
+        Toast
+            .makeText(context, "Clicked", Toast.LENGTH_LONG)
+            .show()
     }
     AppTheme {
         Column(

@@ -44,7 +44,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.extensions.doNothing
 import com.alxnophis.jetpack.core.extensions.isValidUrl
@@ -84,9 +84,7 @@ internal fun FileDownloaderScreen(
 }
 
 @Composable
-private fun FileDownloaderContainer(
-    uiState: FileDownloaderUiState,
-) {
+private fun FileDownloaderContainer(uiState: FileDownloaderUiState) {
     val handleEvent = LocalFileDownloaderUiEventHandler.current
     AppTheme {
         Scaffold(
@@ -132,7 +130,9 @@ private fun FileDownloaderContent(
             value = uiState.url,
             singleLine = true,
             onValueChange = { urlValueChanged ->
-                FileDownloaderUiEvent.UrlChanged(urlValueChanged).handleEvent()
+                FileDownloaderUiEvent
+                    .UrlChanged(urlValueChanged)
+                    .handleEvent()
             },
             label = {
                 Text(
@@ -147,7 +147,9 @@ private fun FileDownloaderContent(
                             .wrapContentSize()
                             .padding(4.dp),
                     onClick = {
-                        FileDownloaderUiEvent.UrlChanged(EMPTY).handleEvent()
+                        FileDownloaderUiEvent
+                            .UrlChanged(EMPTY)
+                            .handleEvent()
                     },
                 ) {
                     Icon(
@@ -202,9 +204,7 @@ private fun FileDownloaderDivider() {
 }
 
 @Composable
-private fun FileDownloaderList(
-    uiState: FileDownloaderUiState,
-) {
+private fun FileDownloaderList(uiState: FileDownloaderUiState) {
     LazyColumn(
         state = rememberLazyListState(),
         userScrollEnabled = true,
@@ -243,9 +243,7 @@ private fun EllipsizedMiddleText(text: String) {
 }
 
 @Composable
-private fun FileDownloaderErrors(
-    uiState: FileDownloaderUiState,
-) {
+private fun FileDownloaderErrors(uiState: FileDownloaderUiState) {
     val handleEvent = LocalFileDownloaderUiEventHandler.current
     val dismissError: () -> Unit = {
         FileDownloaderUiEvent.ErrorDismissRequested.handleEvent()
@@ -321,7 +319,7 @@ private fun SnackbarError(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun FileDownloaderScaffoldPreview() {
     val uiState =

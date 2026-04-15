@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.settings.R
@@ -59,7 +59,7 @@ fun SettingsHintItem(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @ExperimentalComposeUiApi
 @Composable
 private fun SettingsHintItemPreview() {
