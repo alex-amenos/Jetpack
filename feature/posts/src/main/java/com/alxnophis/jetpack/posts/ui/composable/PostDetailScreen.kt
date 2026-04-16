@@ -28,6 +28,8 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -164,7 +166,8 @@ internal fun PostDetailContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(paddingValues)
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .semantics { contentDescription = "Post detail" },
             ) {
                 IconButton(
                     modifier = Modifier
@@ -175,7 +178,7 @@ internal fun PostDetailContent(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_close),
-                        contentDescription = stringResource(id = R.string.core_cd_close),
+                        contentDescription = "Navigate back",
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }

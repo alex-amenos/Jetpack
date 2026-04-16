@@ -21,6 +21,7 @@ dependencies {
     implementation libs.androidx.room.runtime
     implementation libs.androidx.room.ktx
     ksp libs.androidx.room.compiler
+    
     testImplementation(libs.bundles.kotest)
     testImplementation libs.androidx.room.testing
     testImplementation libs.robolectric

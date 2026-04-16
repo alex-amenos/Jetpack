@@ -38,6 +38,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -172,7 +174,7 @@ private fun PostList(
 ) {
     LazyColumn(
         state = lazyListState,
-        modifier = modifier,
+        modifier = modifier.semantics { contentDescription = "Posts list" },
         contentPadding = PaddingValues(
             start = WindowInsets.safeDrawing
                 .asPaddingValues()
@@ -194,6 +196,7 @@ private fun PostList(
                                 .OnPostClicked(item)
                                 .handleEvent()
                         }
+                        .semantics { contentDescription = "Post item" }
                         .fillParentMaxWidth(),
                 )
             },
