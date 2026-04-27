@@ -2,10 +2,10 @@ package com.alxnophis.jetpack.e2e
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.alxnophis.jetpack.robot.homeScreen
+import com.alxnophis.jetpack.robot.postDetailScreen
+import com.alxnophis.jetpack.robot.postsScreen
 import com.alxnophis.jetpack.root.ui.RootActivity
-import com.alxnophis.jetpack.utils.homeScreen
-import com.alxnophis.jetpack.utils.postDetailScreen
-import com.alxnophis.jetpack.utils.postsScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
