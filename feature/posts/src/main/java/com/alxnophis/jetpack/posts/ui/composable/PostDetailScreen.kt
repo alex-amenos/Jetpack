@@ -58,24 +58,27 @@ internal fun PostDetailScreen(
 internal fun PostDetailLoading() {
     AppTheme {
         Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
             contentWindowInsets = WindowInsets.safeGestures,
         ) { paddingValues ->
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
                 contentAlignment = Alignment.Center,
             ) {
                 CoreLoadingContent(
-                    modifier = Modifier
-                        .size(150.dp)
-                        .background(
-                            color = White,
-                            shape = RoundedCornerShape(50.dp),
-                        ),
+                    modifier =
+                        Modifier
+                            .size(150.dp)
+                            .background(
+                                color = White,
+                                shape = RoundedCornerShape(50.dp),
+                            ),
                 )
             }
         }
@@ -88,30 +91,34 @@ internal fun PostDetailUiErrors(
     handleEvent: PostDetailEvent.() -> Unit,
 ) {
     uiState.error?.let {
-        val errorMessage = when (uiState.error) {
-            PostDetailUiError.NoConnectivity -> stringResource(R.string.posts_error_no_connectivity)
-            PostDetailUiError.Network -> stringResource(R.string.posts_error_network)
-            PostDetailUiError.NotFound -> stringResource(R.string.posts_error_not_found)
-            PostDetailUiError.Server -> stringResource(R.string.posts_error_server)
-            PostDetailUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
-        }
+        val errorMessage =
+            when (uiState.error) {
+                PostDetailUiError.NoConnectivity -> stringResource(R.string.posts_error_no_connectivity)
+                PostDetailUiError.Network -> stringResource(R.string.posts_error_network)
+                PostDetailUiError.NotFound -> stringResource(R.string.posts_error_not_found)
+                PostDetailUiError.Server -> stringResource(R.string.posts_error_server)
+                PostDetailUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+            }
         AppTheme {
             Scaffold(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surface),
                 contentWindowInsets = WindowInsets.safeGestures,
             ) { paddingValues ->
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
                 ) {
                     IconButton(
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .align(Alignment.TopEnd)
-                            .testTag(CoreTags.TAG_CORE_BACK),
+                        modifier =
+                            Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.TopEnd)
+                                .testTag(CoreTags.TAG_CORE_BACK),
                         onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
                     ) {
                         Icon(
@@ -121,10 +128,11 @@ internal fun PostDetailUiErrors(
                         )
                     }
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.Center)
-                            .padding(16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.Center)
+                                .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
@@ -155,34 +163,39 @@ internal fun PostDetailContent(
 ) {
     AppTheme {
         Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
             contentWindowInsets = WindowInsets.safeGestures,
         ) { paddingValues ->
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues)
-                    .verticalScroll(rememberScrollState()),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(paddingValues)
+                        .verticalScroll(rememberScrollState())
+                        .testTag(CoreTags.TAG_POST_DETAIL),
             ) {
                 IconButton(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .align(Alignment.End)
-                        .testTag(CoreTags.TAG_CORE_BACK),
+                    modifier =
+                        Modifier
+                            .wrapContentWidth()
+                            .align(Alignment.End)
+                            .testTag(CoreTags.TAG_CORE_BACK),
                     onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_close),
-                        contentDescription = stringResource(id = R.string.core_cd_close),
+                        contentDescription = stringResource(R.string.core_cd_close),
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }
                 Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
@@ -190,9 +203,10 @@ internal fun PostDetailContent(
                     textAlign = TextAlign.Start,
                 )
                 Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 24.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 24.dp),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge,
                     text = uiState.postBody,

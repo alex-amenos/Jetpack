@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,6 +46,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
+import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -118,9 +120,11 @@ private fun PostContent(
                         uiState = uiState,
                         handleEvent = handleEvent,
                         lazyListState = lazyListState,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .drawVerticalScrollbar(lazyListState),
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .drawVerticalScrollbar(lazyListState)
+                                .testTag(CoreTags.TAG_POSTS_LIST),
                     )
                 }
             }
@@ -135,10 +139,11 @@ private fun PostSnackbarError(
     onDismiss: () -> Unit,
 ) {
     LaunchedEffect(errorMessage) {
-        val result = snackbarHostState.showSnackbar(
-            message = errorMessage,
-            actionLabel = null,
-        )
+        val result =
+            snackbarHostState.showSnackbar(
+                message = errorMessage,
+                actionLabel = null,
+            )
         when (result) {
             SnackbarResult.Dismissed -> onDismiss()
             SnackbarResult.ActionPerformed -> onDismiss()
@@ -152,13 +157,14 @@ private fun PostDialogErrors(
     handleEvent: PostsEvent.() -> Unit = {},
 ) {
     CoreErrorDialog(
-        errorMessage = when (error) {
-            PostUiError.NoConnectivity -> stringResource(R.string.posts_error_no_connectivity)
-            PostUiError.Network -> stringResource(R.string.posts_error_network)
-            PostUiError.NotFound -> stringResource(R.string.posts_error_not_found)
-            PostUiError.Server -> stringResource(R.string.posts_error_server)
-            PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
-        },
+        errorMessage =
+            when (error) {
+                PostUiError.NoConnectivity -> stringResource(R.string.posts_error_no_connectivity)
+                PostUiError.Network -> stringResource(R.string.posts_error_network)
+                PostUiError.NotFound -> stringResource(R.string.posts_error_not_found)
+                PostUiError.Server -> stringResource(R.string.posts_error_server)
+                PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+            },
         dismissError = { PostsEvent.DismissErrorRequested.handleEvent() },
     )
 }
@@ -173,12 +179,14 @@ private fun PostList(
     LazyColumn(
         state = lazyListState,
         modifier = modifier,
-        contentPadding = PaddingValues(
-            start = WindowInsets.safeDrawing
-                .asPaddingValues()
-                .calculateStartPadding(LocalLayoutDirection.current) + mediumPadding,
-            end = mediumPadding,
-        ),
+        contentPadding =
+            PaddingValues(
+                start =
+                    WindowInsets.safeDrawing
+                        .asPaddingValues()
+                        .calculateStartPadding(LocalLayoutDirection.current) + mediumPadding,
+                end = mediumPadding,
+            ),
     ) {
         items(
             items = uiState.posts,
@@ -186,15 +194,16 @@ private fun PostList(
             itemContent = { item: Post ->
                 CardPostItem(
                     item = item,
-                    modifier = Modifier
-                        .padding(vertical = mediumPadding)
-                        .shadow(1.dp, shape = RoundedCornerShape(8.dp))
-                        .clickable {
-                            PostsEvent
-                                .OnPostClicked(item)
-                                .handleEvent()
-                        }
-                        .fillParentMaxWidth(),
+                    modifier =
+                        Modifier
+                            .padding(vertical = mediumPadding)
+                            .shadow(1.dp, shape = RoundedCornerShape(8.dp))
+                            .clickable {
+                                PostsEvent
+                                    .OnPostClicked(item)
+                                    .handleEvent()
+                            }.testTag(CoreTags.TAG_POST_ITEM)
+                            .fillParentMaxWidth(),
                 )
             },
         )
@@ -211,10 +220,11 @@ private fun CardPostItem(
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(mediumPadding),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(mediumPadding),
         ) {
             Text(
                 modifier = Modifier.wrapContentSize(),
@@ -224,9 +234,10 @@ private fun CardPostItem(
                 fontWeight = FontWeight.SemiBold,
             )
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = mediumPadding, bottom = mediumPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = mediumPadding, bottom = mediumPadding),
                 text = item.body.replaceFirstChar { it.uppercase() },
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 5,

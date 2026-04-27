@@ -104,4 +104,10 @@ dependencies {
     androidTestImplementation libs.androidx.test.runner
     androidTestImplementation libs.androidx.test.rules
     androidTestImplementation libs.androidx.arch.core.testing
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation libs.androidx.compose.ui.test
+    androidTestImplementation libs.koin.test
+    
+    debugImplementation(platform(libs.androidx.compose.bom))
+    debugImplementation libs.androidx.compose.ui.test.manifest
 }
