@@ -41,11 +41,12 @@ app/src/androidTest/java/com/alxnophis/jetpack/
 
 1. **Device/Emulator**: You need a running Android device or emulator
    ```bash
-   # List available devices
-   adb devices
-   
-   # Or start an emulator using android CLI
-   android emulator start
+    # List connected devices
+    adb devices
+    
+    # Or list and start an Android Virtual Device (AVD)
+    emulator -list-avds
+    emulator -avd <name>
    ```
 
 2. **Dependencies**: All required dependencies are configured in `buildSystem/gradle/common-app-base.gradle`
@@ -78,11 +79,11 @@ open app/build/reports/androidTests/connected/debug/index.html
   --tests "com.alxnophis.jetpack.e2e.PostsJourneyRobotTest.GIVEN_app_launches_WHEN_navigate_to_posts_THEN_posts_are_displayed"
 ```
 
-### Run with Android CLI
+### Run with adb
 
 ```bash
-# Using android CLI (if available)
-android run --type=INSTRUMENTATION_TEST --device=<device-serial>
+# Run instrumentation tests directly with adb
+adb shell am instrument -w com.alxnophis.jetpack.test/androidx.test.runner.AndroidJUnitRunner
 ```
 
 ## Test Patterns
