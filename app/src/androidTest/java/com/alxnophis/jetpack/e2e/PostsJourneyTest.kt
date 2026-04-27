@@ -2,15 +2,16 @@ package com.alxnophis.jetpack.e2e
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
-import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.root.ui.RootActivity
 import org.junit.Rule
 import org.junit.Test
@@ -74,9 +75,8 @@ class PostsJourneyTest {
         // Wait for loading to complete and posts to be displayed
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             // Check if we have any post items loaded
-            // This assumes posts have titles that are displayed
             composeTestRule
-                .onAllNodesWithContentDescription("Post item")
+                .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
@@ -90,7 +90,7 @@ class PostsJourneyTest {
         // Wait for posts to load
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post item")
+                .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
@@ -98,7 +98,7 @@ class PostsJourneyTest {
         // WHEN: User scrolls down the list
         // Note: Scrolling requires the list to have sufficient items
         composeTestRule
-            .onNodeWithContentDescription("Posts list")
+            .onNodeWithTag(CoreTags.TAG_POSTS_LIST)
             .performScrollToIndex(5)
 
         // THEN: List scrolls successfully (implicit assertion - no exception thrown)
@@ -112,26 +112,26 @@ class PostsJourneyTest {
         // Wait for posts to load
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post item")
+                .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
 
         // WHEN: User clicks on the first post
         composeTestRule
-            .onAllNodesWithContentDescription("Post item")[0]
+            .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)[0]
             .performClick()
 
         // THEN: Post detail screen is displayed
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post detail")
+                .onAllNodesWithTag(CoreTags.TAG_POST_DETAIL)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
 
         composeTestRule
-            .onNodeWithContentDescription("Post detail")
+            .onNodeWithTag(CoreTags.TAG_POST_DETAIL)
             .assertIsDisplayed()
     }
 
@@ -142,37 +142,37 @@ class PostsJourneyTest {
         
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post item")
+                .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
 
         composeTestRule
-            .onAllNodesWithContentDescription("Post item")[0]
+            .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)[0]
             .performClick()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post detail")
+                .onAllNodesWithTag(CoreTags.TAG_POST_DETAIL)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
 
         // WHEN: User clicks the back button
         composeTestRule
-            .onNodeWithContentDescription("Navigate back")
+            .onNodeWithTag(CoreTags.TAG_CORE_BACK)
             .performClick()
 
         // THEN: Returns to posts list
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post item")
+                .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
 
         composeTestRule
-            .onNodeWithContentDescription("Posts list")
+            .onNodeWithTag(CoreTags.TAG_POSTS_LIST)
             .assertIsDisplayed()
     }
 
@@ -184,7 +184,7 @@ class PostsJourneyTest {
         // Wait for posts to load
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post item")
+                .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
@@ -192,7 +192,7 @@ class PostsJourneyTest {
         // WHEN: User performs pull-to-refresh gesture
         // Note: Pull-to-refresh might require specific gesture implementation
         composeTestRule
-            .onNodeWithContentDescription("Posts list")
+            .onNodeWithTag(CoreTags.TAG_POSTS_LIST)
             .performTouchInput {
                 swipeDown()
             }
@@ -201,7 +201,7 @@ class PostsJourneyTest {
         // This is a visual confirmation that refresh was triggered
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post item")
+                .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }

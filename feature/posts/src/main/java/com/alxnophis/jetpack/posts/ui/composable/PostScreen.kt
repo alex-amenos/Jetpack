@@ -39,8 +39,6 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -48,6 +46,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
+import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -125,7 +124,7 @@ private fun PostContent(
                             Modifier
                                 .fillMaxSize()
                                 .drawVerticalScrollbar(lazyListState)
-                                .testTag("Posts list"),
+                                .testTag(CoreTags.TAG_POSTS_LIST),
                     )
                 }
             }
@@ -203,7 +202,7 @@ private fun PostList(
                                 PostsEvent
                                     .OnPostClicked(item)
                                     .handleEvent()
-                            }.semantics { contentDescription = "Post item" }
+                            }.testTag(CoreTags.TAG_POST_ITEM)
                             .fillParentMaxWidth(),
                 )
             },

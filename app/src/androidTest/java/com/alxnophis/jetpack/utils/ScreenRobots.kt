@@ -2,14 +2,15 @@ package com.alxnophis.jetpack.utils
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeTestRule
-import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
-import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
+import com.alxnophis.jetpack.core.ui.composable.CoreTags
 
 /**
  * Screen Robot pattern for Posts screen
@@ -20,7 +21,7 @@ class PostsScreenRobot(private val composeTestRule: ComposeTestRule) {
     fun waitForPostsToLoad(timeoutMillis: Long = 15000): PostsScreenRobot {
         composeTestRule.waitUntil(timeoutMillis) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post item")
+                .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
@@ -29,21 +30,21 @@ class PostsScreenRobot(private val composeTestRule: ComposeTestRule) {
 
     fun clickPostAtIndex(index: Int): PostsScreenRobot {
         composeTestRule
-            .onAllNodesWithContentDescription("Post item")[index]
+            .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)[index]
             .performClick()
         return this
     }
 
     fun scrollToIndex(index: Int): PostsScreenRobot {
         composeTestRule
-            .onNodeWithContentDescription("Posts list")
+            .onNodeWithTag(CoreTags.TAG_POSTS_LIST)
             .performScrollToIndex(index)
         return this
     }
 
     fun performPullToRefresh(): PostsScreenRobot {
         composeTestRule
-            .onNodeWithContentDescription("Posts list")
+            .onNodeWithTag(CoreTags.TAG_POSTS_LIST)
             .performTouchInput {
                 swipeDown()
             }
@@ -59,7 +60,7 @@ class PostsScreenRobot(private val composeTestRule: ComposeTestRule) {
 
     fun assertPostItemsVisible(): PostsScreenRobot {
         composeTestRule
-            .onNodeWithContentDescription("Posts list")
+            .onNodeWithTag(CoreTags.TAG_POSTS_LIST)
             .assertIsDisplayed()
         return this
     }
@@ -73,7 +74,7 @@ class PostDetailScreenRobot(private val composeTestRule: ComposeTestRule) {
     fun waitForDetailToLoad(timeoutMillis: Long = 5000): PostDetailScreenRobot {
         composeTestRule.waitUntil(timeoutMillis) {
             composeTestRule
-                .onAllNodesWithContentDescription("Post detail")
+                .onAllNodesWithTag(CoreTags.TAG_POST_DETAIL)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
@@ -82,14 +83,14 @@ class PostDetailScreenRobot(private val composeTestRule: ComposeTestRule) {
 
     fun clickBack(): PostDetailScreenRobot {
         composeTestRule
-            .onNodeWithContentDescription("Navigate back")
+            .onNodeWithTag(CoreTags.TAG_CORE_BACK)
             .performClick()
         return this
     }
 
     fun assertDetailDisplayed(): PostDetailScreenRobot {
         composeTestRule
-            .onNodeWithContentDescription("Post detail")
+            .onNodeWithTag(CoreTags.TAG_POST_DETAIL)
             .assertIsDisplayed()
         return this
     }
