@@ -11,12 +11,13 @@ The E2E tests validate complete user journeys through the application, ensuring 
 **E2E tests are located in the `:app` module** because they test complete user journeys that span multiple features and require `RootActivity`:
 
 - **Application-Level E2E Tests** (`:app` module)
-  - Complete user journeys across multiple features
-  - Example: Home → Posts → Detail navigation
-  - Located in: `app/src/androidTest/`
-  - Uses `RootActivity` as entry point
+    - Complete user journeys across multiple features
+    - Example: Home → Posts → Detail navigation
+    - Located in: `app/src/androidTest/`
+    - Uses `RootActivity` as entry point
 
 This approach ensures:
+
 - ✅ No circular or incorrect module dependencies
 - ✅ Tests can access the full application context
 - ✅ Proper separation: E2E tests in `:app`, unit tests in feature modules
@@ -101,7 +102,7 @@ fun GIVEN_app_WHEN_complete_user_journey_THEN_all_screens_work() {
         .navigateToPosts()
         .waitForPostsToLoad()
         .clickPostAtIndex(0)
-    
+
     composeTestRule
         .postDetailScreen()
         .waitForDetailToLoad()
@@ -110,6 +111,7 @@ fun GIVEN_app_WHEN_complete_user_journey_THEN_all_screens_work() {
 ```
 
 **Advantages:**
+
 - ✅ Readable and maintainable
 - ✅ Reusable screen interactions
 - ✅ Fluent API
@@ -130,12 +132,16 @@ fun GIVEN_app_launches_WHEN_navigate_to_posts_THEN_posts_are_displayed() {
             .fetchSemanticsNodes()
             .isNotEmpty()
     }
-    
+
     // WHEN
-    composeTestRule.onNodeWithText("Posts").performClick()
-    
+    composeTestRule
+        .onNodeWithText("Posts")
+        .performClick()
+
     // THEN
-    composeTestRule.onNodeWithText("Posts").assertIsDisplayed()
+    composeTestRule
+        .onNodeWithText("Posts")
+        .assertIsDisplayed()
 }
 ```
 
@@ -162,7 +168,7 @@ import org.junit.runner.RunWith
 class YourFeatureJourneyTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<RootActivity>()
-    
+
     @Test
     fun GIVEN_app_WHEN_action_THEN_result() {
         // Your test here
@@ -185,7 +191,7 @@ class YourFeatureScreenRobot(private val composeTestRule: ComposeTestRule) {
         }
         return this
     }
-    
+
     fun performAction(): YourFeatureScreenRobot {
         composeTestRule
             .onNodeWithText("Button")
@@ -206,6 +212,7 @@ GIVEN_<initial_state>_WHEN_<action>_THEN_<expected_result>
 ```
 
 Examples:
+
 - `GIVEN_app_launches_WHEN_navigate_to_posts_THEN_posts_are_displayed`
 - `GIVEN_posts_screen_WHEN_user_clicks_post_THEN_detail_screen_appears`
 - `GIVEN_post_detail_screen_WHEN_user_clicks_back_THEN_returns_to_posts_list`
@@ -222,7 +229,7 @@ fun PostItem(post: Post, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .clickable(onClick = onClick)
-            .semantics { contentDescription = "Post item" }
+            .testTag("Post item"),
     ) {
         // Content
     }
@@ -249,6 +256,7 @@ Thread.sleep(5000)
 ### 3. Idempotency
 
 Tests should be independent and repeatable:
+
 - Clean state before each test
 - Don't rely on test execution order
 - Use `@Before` and `@After` for setup/teardown if needed
@@ -256,6 +264,7 @@ Tests should be independent and repeatable:
 ### 4. Test Data
 
 For tests requiring specific data:
+
 - Use mock data sources when possible
 - Consider creating test-specific flavors
 - Use dependency injection to swap implementations
@@ -269,8 +278,8 @@ For tests requiring specific data:
 **Solution:** Add semantic content descriptions to your composables:
 
 ```kotlin
-Modifier.semantics { 
-    contentDescription = "Description here" 
+Modifier.semantics {
+    contentDescription = "Description here"
 }
 ```
 
@@ -279,6 +288,7 @@ Modifier.semantics {
 **Problem:** `waitUntil` times out
 
 **Solutions:**
+
 1. Increase timeout: `waitUntil(timeoutMillis = 15000)`
 2. Check if the UI element actually appears
 3. Verify network calls are working (check backend connectivity)
@@ -289,6 +299,7 @@ Modifier.semantics {
 **Problem:** `No connected devices!`
 
 **Solutions:**
+
 ```bash
 # Check devices
 adb devices
@@ -303,6 +314,7 @@ adb -s <device-serial> shell
 ### Tests Pass Locally But Fail on CI
 
 **Solutions:**
+
 1. Ensure emulator is properly configured in CI
 2. Add longer timeouts for CI environment
 3. Disable animations: `adb shell settings put global window_animation_scale 0`
@@ -338,7 +350,7 @@ Example GitHub Actions workflow:
 - name: Run E2E Tests
   run: |
     ./gradlew connectedDebugAndroidTest
-    
+
 - name: Upload Test Results
   uses: actions/upload-artifact@v3
   if: always()

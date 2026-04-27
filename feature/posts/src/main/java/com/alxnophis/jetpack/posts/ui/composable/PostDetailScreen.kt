@@ -178,7 +178,7 @@ internal fun PostDetailContent(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_close),
-                        contentDescription = "Navigate back",
+                        contentDescription = stringResource(R.string.core_cd_close),
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }
