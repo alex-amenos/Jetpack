@@ -28,12 +28,20 @@ This approach ensures:
 ```
 app/src/androidTest/java/com/alxnophis/jetpack/
 ├── e2e/
-│   ├── PostsJourneyTest.kt              # Basic E2E tests for Posts feature
 │   └── PostsJourneyRobotTest.kt         # ⭐ E2E with Robot pattern (recommended)
+├── robot/
+│   ├── HomeScreenRobot.kt               # Home screen interactions
+│   ├── PostsScreenRobot.kt              # Posts list interactions
+│   └── PostDetailScreenRobot.kt         # Post detail interactions
 └── utils/
-    ├── ComposeTestRuleExtensions.kt     # Utility extensions
-    └── ScreenRobots.kt                  # Screen Robot pattern implementations
+    └── ComposeTestRuleExtensions.kt     # Utility extensions (waitUntil)
 ```
+
+**Key Design Decisions:**
+- Screen Robots are separated into individual files per screen for better maintainability
+- Each robot provides a fluent API that encapsulates UI interactions
+- Tests use `testTag()` instead of `contentDescription` for stable test identifiers
+- All test tags are centralized in `CoreTags` for consistency
 
 ## Running E2E Tests
 
@@ -64,9 +72,6 @@ open app/build/reports/androidTests/connected/debug/index.html
 ### Run Specific Test Class
 
 ```bash
-# Run PostsJourneyTest
-./gradlew :app:connectedDebugAndroidTest --tests "com.alxnophis.jetpack.e2e.PostsJourneyTest"
-
 # Run PostsJourneyRobotTest (recommended)
 ./gradlew :app:connectedDebugAndroidTest --tests "com.alxnophis.jetpack.e2e.PostsJourneyRobotTest"
 ```
@@ -88,9 +93,23 @@ adb shell am instrument -w com.alxnophis.jetpack.test/androidx.test.runner.Andro
 
 ## Test Patterns
 
-### E2E Tests with Screen Robot Pattern (Recommended)
+### Screen Robot Pattern (Recommended)
 
-Located in `app/src/androidTest/java/com/alxnophis/jetpack/e2e/`, these tests validate complete user journeys across features:
+The **Screen Robot Pattern** (also known as Page Object Model) is the recommended approach for E2E testing. It encapsulates UI interactions into reusable, maintainable robot classes.
+
+**Benefits:**
+- ✅ **Readable**: Tests read like user stories with fluent API
+- ✅ **Maintainable**: UI changes only require updating the robot
+- ✅ **Reusable**: Robots are shared across multiple test cases
+- ✅ **Encapsulated**: Implementation details hidden from tests
+- ✅ **Scalable**: Easy to add new screens and interactions
+
+**Architecture:**
+```
+Test Class → Screen Robot → Compose Test API → Production UI
+```
+
+Located in `app/src/androidTest/java/com/alxnophis/jetpack/`:
 
 ```kotlin
 // PostsJourneyRobotTest.kt - E2E test with Robot pattern
@@ -98,55 +117,108 @@ Located in `app/src/androidTest/java/com/alxnophis/jetpack/e2e/`, these tests va
 fun GIVEN_app_WHEN_complete_user_journey_THEN_all_screens_work() {
     // Tests navigation: Home → Posts → Detail → Back
     composeTestRule
-        .homeScreen()
+        .homeScreen()                    // HomeScreenRobot
         .waitForHomeScreen()
-        .navigateToPosts()
+        .assertHomeDisplayed()
+        .navigateToPosts()               // Returns PostsScreenRobot
+
+    composeTestRule
+        .postsScreen()
         .waitForPostsToLoad()
-        .clickPostAtIndex(0)
+        .assertPostsDisplayed()
+        .clickPostAtIndex(0)             // Navigate to detail
 
     composeTestRule
-        .postDetailScreen()
+        .postDetailScreen()              // PostDetailScreenRobot
         .waitForDetailToLoad()
-        .clickBack()
+        .assertDetailDisplayed()
+        .clickBack()                     // Returns to posts
+
+    composeTestRule
+        .postsScreen()
+        .assertPostItemsVisible()
 }
 ```
 
-**Advantages:**
+**Available Screen Robots:**
 
-- ✅ Readable and maintainable
-- ✅ Reusable screen interactions
-- ✅ Fluent API
-- ✅ Easy to update when UI changes
-- ✅ Located in `:app` where complete journeys belong
-
-### Basic E2E Test Pattern
-
-Simple, straightforward tests using Compose Test APIs directly:
-
+#### HomeScreenRobot
 ```kotlin
-@Test
-fun GIVEN_app_launches_WHEN_navigate_to_posts_THEN_posts_are_displayed() {
-    // GIVEN
-    composeTestRule.waitUntil(timeoutMillis = 5000) {
-        composeTestRule
-            .onAllNodesWithText("Jetpack")
-            .fetchSemanticsNodes()
-            .isNotEmpty()
+composeTestRule.homeScreen()
+    .waitForHomeScreen()              // Wait for home to load
+    .assertHomeDisplayed()            // Verify home is visible
+    .navigateToPosts()                // Navigate to posts (returns PostsScreenRobot)
+```
+
+#### PostsScreenRobot
+```kotlin
+composeTestRule.postsScreen()
+    .waitForPostsToLoad()             // Wait for posts (15s timeout)
+    .assertPostsDisplayed()           // Verify posts screen title
+    .assertPostItemsVisible()         // Verify posts list visible
+    .scrollToIndex(5)                 // Scroll to specific post
+    .clickPostAtIndex(0)              // Click on a post
+    .performPullToRefresh()           // Pull-to-refresh gesture
+```
+
+#### PostDetailScreenRobot
+```kotlin
+composeTestRule.postDetailScreen()
+    .waitForDetailToLoad()            // Wait for detail (5s timeout)
+    .assertDetailDisplayed()          // Verify detail content visible
+    .clickBack()                      // Navigate back (returns PostsScreenRobot)
+```
+
+### Test Tag Strategy
+
+Tests use `testTag()` instead of `contentDescription` for element identification.
+
+**Why testTag?**
+- Decouples tests from accessibility strings
+- Allows `contentDescription` to remain user-focused and localized
+- Provides stable test identifiers independent of UI text changes
+
+**CoreTags Reference:**
+
+All test tags are centralized in `CoreTags`:
+
+| Tag | Purpose | Production Location |
+|-----|---------|-------------------|
+| `TAG_POST_ITEM` | Individual post in list | `PostScreen.kt:207` |
+| `TAG_POSTS_LIST` | Posts list container | `PostScreen.kt:128` |
+| `TAG_POST_DETAIL` | Post detail content | `PostDetailScreen.kt:170` |
+| `TAG_CORE_BACK` | Back navigation button | Multiple screens |
+
+**Production Code Example:**
+```kotlin
+// PostScreen.kt
+LazyColumn(
+    modifier = Modifier.testTag(CoreTags.TAG_POSTS_LIST)  // ✅ testTag for tests
+) {
+    items(posts) { post ->
+        PostCard(
+            post = post,
+            modifier = Modifier
+                .testTag(CoreTags.TAG_POST_ITEM)          // ✅ testTag for tests
+                .semantics {
+                    contentDescription = "Post by ${post.author}"  // ✅ For accessibility
+                }
+        )
     }
-
-    // WHEN
-    composeTestRule
-        .onNodeWithText("Posts")
-        .performClick()
-
-    // THEN
-    composeTestRule
-        .onNodeWithText("Posts")
-        .assertIsDisplayed()
 }
 ```
 
-**Key Point:** All E2E tests use `createAndroidComposeRule<RootActivity>()` to test the full app context and live in the `:app` module.
+**Test Code Example:**
+```kotlin
+// PostsScreenRobot.kt
+composeTestRule
+    .onNodeWithTag(CoreTags.TAG_POSTS_LIST)  // ✅ Using testTag
+    .performScrollToIndex(5)
+
+composeTestRule
+    .onAllNodesWithTag(CoreTags.TAG_POST_ITEM)[0]  // ✅ Using testTag
+    .performClick()
+```
 
 ## Writing New E2E Tests
 
@@ -159,8 +231,8 @@ package com.alxnophis.jetpack.e2e
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.alxnophis.jetpack.robot.homeScreen
 import com.alxnophis.jetpack.root.ui.RootActivity
-import com.alxnophis.jetpack.utils.homeScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -171,37 +243,134 @@ class YourFeatureJourneyTest {
     val composeTestRule = createAndroidComposeRule<RootActivity>()
 
     @Test
-    fun GIVEN_app_WHEN_action_THEN_result() {
-        // Your test here
+    fun GIVEN_initial_state_WHEN_action_THEN_expected_result() {
+        composeTestRule
+            .homeScreen()
+            .waitForHomeScreen()
+            .navigateToYourFeature()
+            // ... continue test
     }
 }
 ```
 
-### 2. Add Screen Robots if Needed
+### 2. Create Screen Robot
 
-Create reusable screen interactions in `app/src/androidTest/java/com/alxnophis/jetpack/utils/ScreenRobots.kt`:
+Create a new robot in `app/src/androidTest/java/com/alxnophis/jetpack/robot/`:
 
 ```kotlin
-class YourFeatureScreenRobot(private val composeTestRule: ComposeTestRule) {
-    fun waitForScreen(): YourFeatureScreenRobot {
-        composeTestRule.waitUntil(5000) {
+package com.alxnophis.jetpack.robot
+
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import com.alxnophis.jetpack.core.ui.composable.CoreTags
+
+/**
+ * Screen Robot for Your Feature Screen
+ *
+ * Provides fluent API for testing your feature.
+ */
+class YourFeatureScreenRobot(
+    private val composeTestRule: ComposeTestRule,
+) {
+    /**
+     * Waits for the screen to load.
+     */
+    fun waitForScreen(timeoutMillis: Long = 5000): YourFeatureScreenRobot {
+        composeTestRule.waitUntil(timeoutMillis) {
             composeTestRule
-                .onAllNodesWithText("YourFeature")
+                .onAllNodesWithTag(CoreTags.TAG_YOUR_FEATURE)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
         return this
     }
 
+    /**
+     * Performs an action on the screen.
+     */
     fun performAction(): YourFeatureScreenRobot {
         composeTestRule
-            .onNodeWithText("Button")
+            .onNodeWithTag(CoreTags.TAG_YOUR_FEATURE_BUTTON)
             .performClick()
+        return this
+    }
+
+    /**
+     * Asserts the screen is displayed.
+     */
+    fun assertScreenDisplayed(): YourFeatureScreenRobot {
+        composeTestRule
+            .onNodeWithTag(CoreTags.TAG_YOUR_FEATURE)
+            .assertIsDisplayed()
         return this
     }
 }
 
-fun ComposeTestRule.yourFeatureScreen() = YourFeatureScreenRobot(this)
+/**
+ * Extension function to create a YourFeatureScreenRobot.
+ */
+fun ComposeTestRule.yourFeatureScreen(): YourFeatureScreenRobot = 
+    YourFeatureScreenRobot(this)
+```
+
+### 3. Add Test Tags to Production Code
+
+In your feature's composable (e.g., `feature/yourfeature/src/main/java/.../YourFeatureScreen.kt`):
+
+```kotlin
+import com.alxnophis.jetpack.core.ui.composable.CoreTags
+
+@Composable
+internal fun YourFeatureScreen() {
+    Column(
+        modifier = Modifier
+            .testTag(CoreTags.TAG_YOUR_FEATURE)  // ✅ Add testTag
+    ) {
+        Button(
+            modifier = Modifier.testTag(CoreTags.TAG_YOUR_FEATURE_BUTTON),
+            onClick = { /* ... */ }
+        ) {
+            Text("Action")
+        }
+    }
+}
+```
+
+### 4. Define Tags in CoreTags
+
+In `shared/core/src/main/java/.../CoreTags.kt`:
+
+```kotlin
+object CoreTags {
+    // Existing tags...
+    const val TAG_CORE_BACK = "core_back"
+    const val TAG_POSTS_LIST = "posts_list"
+    
+    // Your new feature tags
+    const val TAG_YOUR_FEATURE = "your_feature"
+    const val TAG_YOUR_FEATURE_BUTTON = "your_feature_button"
+}
+```
+
+### 5. Use in Tests
+
+```kotlin
+@Test
+fun GIVEN_app_WHEN_user_performs_action_THEN_result_displayed() {
+    composeTestRule
+        .homeScreen()
+        .waitForHomeScreen()
+        .navigateToYourFeature()
+    
+    composeTestRule
+        .yourFeatureScreen()
+        .waitForScreen()
+        .assertScreenDisplayed()
+        .performAction()
+}
 ```
 
 ## Test Naming Convention
@@ -220,22 +389,44 @@ Examples:
 
 ## Important Testing Guidelines
 
-### 1. Content Descriptions
+### 1. Use Test Tags (Not Content Descriptions)
 
-Add semantic content descriptions to your composables for testing:
-
+**✅ Recommended: Use testTag for test identification**
 ```kotlin
 @Composable
 fun PostItem(post: Post, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .clickable(onClick = onClick)
-            .testTag("Post item"),
+            .testTag(CoreTags.TAG_POST_ITEM)  // ✅ For tests
+            .semantics {
+                contentDescription = "Post by ${post.author}"  // ✅ For accessibility
+            }
     ) {
         // Content
     }
 }
 ```
+
+**❌ Avoid: Using contentDescription for tests**
+```kotlin
+// Don't do this - couples tests to accessibility strings
+Card(
+    modifier = Modifier.semantics {
+        contentDescription = "Post item"  // ❌ Hard to localize, couples test to a11y
+    }
+)
+
+// Test code becomes fragile
+composeTestRule
+    .onNodeWithContentDescription("Post item")  // ❌ Breaks if text changes or is localized
+```
+
+**Why testTag?**
+- Separates testing concerns from accessibility
+- Allows localization of accessibility strings
+- Provides stable identifiers independent of UI text
+- Centralized in `CoreTags` for consistency
 
 ### 2. Wait Strategies
 
@@ -272,17 +463,37 @@ For tests requiring specific data:
 
 ## Troubleshooting
 
-### Tests Fail Due to Missing Content Descriptions
+### Tests Fail to Find UI Elements
 
-**Problem:** `onNodeWithContentDescription` fails to find nodes
+**Problem:** `onNodeWithTag` or `onNodeWithText` fails to find nodes
 
-**Solution:** Add semantic content descriptions to your composables:
+**Solutions:**
 
-```kotlin
-Modifier.semantics {
-    contentDescription = "Description here"
-}
-```
+1. **Verify testTag is added to production code:**
+   ```kotlin
+   // Check your composable has testTag
+   Modifier.testTag(CoreTags.TAG_YOUR_ELEMENT)
+   ```
+
+2. **Check CoreTags definition:**
+   ```kotlin
+   // Ensure tag is defined in CoreTags
+   object CoreTags {
+       const val TAG_YOUR_ELEMENT = "your_element"
+   }
+   ```
+
+3. **Use correct test API:**
+   ```kotlin
+   // ✅ For testTag
+   composeTestRule.onNodeWithTag(CoreTags.TAG_YOUR_ELEMENT)
+   
+   // ✅ For text content
+   composeTestRule.onNodeWithText("Button Text")
+   
+   // ❌ Don't use contentDescription for tests
+   composeTestRule.onNodeWithContentDescription("...") // Avoid
+   ```
 
 ### Tests Timeout Waiting for UI
 
@@ -362,15 +573,53 @@ Example GitHub Actions workflow:
 
 ## Resources
 
+### Official Documentation
 - [Compose Testing Guide](https://developer.android.com/jetpack/compose/testing)
 - [Testing Navigation](https://developer.android.com/guide/navigation/navigation-testing)
-- [Espresso Documentation](https://developer.android.com/training/testing/espresso)
 - [Testing Best Practices](https://developer.android.com/training/testing/fundamentals)
+- [Semantics in Compose](https://developer.android.com/jetpack/compose/semantics)
+
+### Testing Patterns
+- [Screen Robot Pattern by Jake Wharton](https://jakewharton.com/testing-robots/)
+- [Page Object Model](https://martinfowler.com/bliki/PageObject.html)
+- [BDD Test Naming](https://dannorth.net/introducing-bdd/)
+
+### Project Documentation
+- `app/src/androidTest/README.md` - Detailed E2E testing guide
+- `AGENTS.md` - Project conventions and test commands
+- `CoreTags.kt` - Centralized test tag definitions
 
 ## Next Steps
 
-1. Add content descriptions to all interactive UI elements
-2. Expand test coverage to other features (Authentication, Settings, etc.)
-3. Set up CI/CD pipeline for automated E2E testing
-4. Consider screenshot testing with Roborazzi for visual regression
-5. Add performance benchmarks using Macrobenchmark
+### Immediate Actions
+1. ✅ **Screen Robot Pattern** - All E2E tests now use Screen Robot pattern
+2. ✅ **testTag Strategy** - Tests use `CoreTags` for stable identifiers
+3. ✅ **Separated Robots** - Each screen has its own robot file
+4. ✅ **Comprehensive Documentation** - KDoc and README in place
+
+### Future Improvements
+1. **Expand Coverage**: Add E2E tests for other features
+   - Authentication journey
+   - Settings configuration
+   - File downloader flows
+   - Location tracker scenarios
+
+2. **CI/CD Integration**: Set up automated E2E testing
+   - Configure GitHub Actions / CI pipeline
+   - Add test result reporting
+   - Set up test failure notifications
+
+3. **Visual Testing**: Add screenshot testing
+   - Integrate Roborazzi for visual regression
+   - Generate screenshot baselines
+   - Compare UI changes automatically
+
+4. **Performance**: Add benchmarking
+   - Use Macrobenchmark for startup metrics
+   - Measure frame rendering performance
+   - Track memory usage during journeys
+
+5. **Test Data Management**:
+   - Create test-specific data factories
+   - Implement mock data repositories
+   - Add database seeding for consistent tests

@@ -11,15 +11,60 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * End-to-End Journey Test using Screen Robot Pattern
+ * End-to-End Journey Tests for Posts Feature using Screen Robot Pattern
  *
- * This test demonstrates a cleaner, more maintainable approach to E2E testing
- * using the Screen Robot pattern for the Posts feature.
+ * ## Architecture
+ * These tests validate complete user journeys using the Screen Robot Pattern (Page Object Model).
+ * Screen Robots provide a fluent API that encapsulates UI interactions and assertions,
+ * making tests more readable, maintainable, and reusable.
  *
- * To run this test:
+ * ## Test Structure
+ * ```
+ * app/src/androidTest/
+ * ├── e2e/                     End-to-end journey tests
+ * ├── robot/                   Screen Robot implementations
+ * │   ├── HomeScreenRobot
+ * │   ├── PostsScreenRobot
+ * │   └── PostDetailScreenRobot
+ * └── utils/                   Test utilities and helpers
+ * ```
+ *
+ * ## Screen Robots
+ * - [HomeScreenRobot]: Interacts with home screen (navigation, assertions)
+ * - [PostsScreenRobot]: Interacts with posts list (scroll, click, refresh)
+ * - [PostDetailScreenRobot]: Interacts with post detail (display, back navigation)
+ *
+ * ## Test Identification Strategy
+ * Uses [CoreTags] for stable test identifiers via `testTag()` instead of `contentDescription`.
+ * This decouples tests from accessibility strings, allowing:
+ * - Localized accessibility labels for real users
+ * - Stable test selectors independent of UI text changes
+ *
+ * ## Running Tests
+ * ```bash
+ * # Run all E2E tests
  * ./gradlew :app:connectedDebugAndroidTest
- * or
+ *
+ * # Run this specific test class
  * ./gradlew :app:connectedDebugAndroidTest --tests "com.alxnophis.jetpack.e2e.PostsJourneyRobotTest"
+ *
+ * # Run single test method
+ * ./gradlew :app:connectedDebugAndroidTest --tests "*.PostsJourneyRobotTest.GIVEN_app_launches*"
+ * ```
+ *
+ * ## Test Coverage
+ * - App launch and navigation flow
+ * - Posts loading and display
+ * - Scrolling through long lists
+ * - Navigation to post details
+ * - Back navigation to posts list
+ * - Pull-to-refresh functionality
+ * - Complete user journey scenarios
+ *
+ * @see com.alxnophis.jetpack.robot.HomeScreenRobot
+ * @see com.alxnophis.jetpack.robot.PostsScreenRobot
+ * @see com.alxnophis.jetpack.robot.PostDetailScreenRobot
+ * @see com.alxnophis.jetpack.core.ui.composable.CoreTags
  */
 @RunWith(AndroidJUnit4::class)
 class PostsJourneyRobotTest {
