@@ -3,14 +3,12 @@ package com.alxnophis.jetpack.utils
 import androidx.compose.ui.test.junit4.ComposeTestRule
 
 /**
- * Extension functions and utilities for E2E testing
- */
-
-/**
- * Waits for a specific amount of time (use sparingly, prefer waitUntil when possible)
+ * Advances the Compose test clock by a specific amount of time.
+ * Prefer condition-based waiting when possible.
  */
 fun ComposeTestRule.waitForMillis(millis: Long) {
-    Thread.sleep(millis)
+    mainClock.advanceTimeBy(millis)
+    waitForIdle()
 }
 
 /**

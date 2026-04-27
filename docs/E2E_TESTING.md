@@ -57,7 +57,7 @@ app/src/androidTest/java/com/alxnophis/jetpack/
 ./gradlew :app:connectedDebugAndroidTest
 
 # View results in browser
-open app/build/reports/androidTests/connected/index.html
+open app/build/reports/androidTests/connected/debug/index.html
 ```
 
 ### Run Specific Test Class
