@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.authentication.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -185,6 +186,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
         authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock,
     ) = AuthenticationViewModel(
         authenticateUseCase,
+        SavedStateHandle(),
         initialState,
     )
 
