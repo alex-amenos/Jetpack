@@ -63,8 +63,11 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
                 catch {
                     savedStateHandle?.set(SAVED_STATE_HANDLE_UI_STATE_KEY, newState)
                 }.fold(
-                    { _ ->
-                        Timber.w("## Failed to persist state to savedStateHandle, state may not be Parcelable")
+                    { throwable ->
+                        Timber.w(
+                            throwable,
+                            "## Failed to persist state to SavedStateHandle [key=$SAVED_STATE_HANDLE_UI_STATE_KEY, type=${newState::class.qualifiedName}]",
+                        )
                     },
                     {
                         Timber.d("## Set new state: $newState")
