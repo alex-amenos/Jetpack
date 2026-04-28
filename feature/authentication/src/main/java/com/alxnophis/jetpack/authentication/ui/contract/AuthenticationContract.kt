@@ -16,7 +16,7 @@ import kotlinx.parcelize.TypeParceler
 
 internal const val NO_ERROR = 0
 
-internal object ImmutablePasswordRequirementsListParceler : Parceler<ImmutableList<PasswordRequirements>> by immutableListParceler()
+private object ImmutablePasswordRequirementsListParceler : Parceler<ImmutableList<PasswordRequirements>> by immutableListParceler()
 
 internal sealed class AuthenticationEvent : UiEvent {
     data object Authenticated : AuthenticationEvent()

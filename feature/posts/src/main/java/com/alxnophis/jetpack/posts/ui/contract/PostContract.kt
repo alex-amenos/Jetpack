@@ -12,7 +12,7 @@ import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
 
-internal object ImmutablePostListParceler : Parceler<ImmutableList<Post>> by immutableListParceler()
+private object ImmutablePostListParceler : Parceler<ImmutableList<Post>> by immutableListParceler()
 
 internal sealed interface PostsEvent : UiEvent {
     data object OnUpdatePostsRequested : PostsEvent
