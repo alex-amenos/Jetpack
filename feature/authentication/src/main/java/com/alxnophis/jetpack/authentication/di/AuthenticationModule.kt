@@ -9,5 +9,5 @@ import org.koin.dsl.module
 val authenticationModule: Module =
     module {
         factory { AuthenticateUseCase() }
-        viewModel { AuthenticationViewModel(get()) }
+        viewModel { AuthenticationViewModel(get(), get()) }
     }

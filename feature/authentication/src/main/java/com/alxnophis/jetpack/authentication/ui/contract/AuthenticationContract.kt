@@ -1,14 +1,15 @@
 package com.alxnophis.jetpack.authentication.ui.contract
 
+import android.os.Parcelable
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
-import arrow.optics.optics
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.parcelize.Parcelize
 
 internal const val NO_ERROR = 0
 
@@ -38,7 +39,7 @@ internal sealed class AuthenticationEvent : UiEvent {
     ) : AuthenticationEvent()
 }
 
-@optics
+@Parcelize
 @Immutable
 internal data class AuthenticationState(
     val isUserAuthorized: Boolean,
@@ -48,11 +49,15 @@ internal data class AuthenticationState(
     val passwordRequirements: ImmutableList<PasswordRequirements>,
     val isLoading: Boolean,
     val error: Int,
-) : UiState {
+) : UiState,
+    Parcelable {
     fun isFormValid(): Boolean =
-        password.isNotEmpty() &&
-            email.isNotEmpty() &&
-            (authenticationMode == AuthenticationMode.SIGN_IN || passwordRequirements.containsAll(PasswordRequirements.entries.toList()))
+        password.isNotEmpty() && email.isNotEmpty() && (
+            authenticationMode == AuthenticationMode.SIGN_IN ||
+                passwordRequirements.containsAll(
+                    PasswordRequirements.entries.toList(),
+                )
+        )
 
     internal companion object {
         val initialState =
@@ -68,15 +73,17 @@ internal data class AuthenticationState(
     }
 }
 
+@Parcelize
 enum class PasswordRequirements(
     @param:StringRes val label: Int,
-) {
+) : Parcelable {
     CAPITAL_LETTER(R.string.authentication_requirement_capital),
     NUMBER(R.string.authentication_requirement_digit),
     EIGHT_CHARACTERS(R.string.authentication_requirement_characters),
 }
 
-enum class AuthenticationMode {
+@Parcelize
+enum class AuthenticationMode : Parcelable {
     SIGN_UP,
     SIGN_IN,
 }

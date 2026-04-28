@@ -1,8 +1,8 @@
 package com.alxnophis.jetpack.authentication.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
-import arrow.optics.updateCopy
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.authentication.domain.model.AuthenticationError
 import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
@@ -13,13 +13,6 @@ import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
 import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
-import com.alxnophis.jetpack.authentication.ui.contract.authenticationMode
-import com.alxnophis.jetpack.authentication.ui.contract.email
-import com.alxnophis.jetpack.authentication.ui.contract.error
-import com.alxnophis.jetpack.authentication.ui.contract.isLoading
-import com.alxnophis.jetpack.authentication.ui.contract.isUserAuthorized
-import com.alxnophis.jetpack.authentication.ui.contract.password
-import com.alxnophis.jetpack.authentication.ui.contract.passwordRequirements
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import kotlinx.collections.immutable.toImmutableList
@@ -27,8 +20,11 @@ import kotlinx.coroutines.launch
 
 internal class AuthenticationViewModel(
     private val authenticateUseCase: AuthenticateUseCase,
-    initialState: AuthenticationState = AuthenticationState.initialState,
-) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState) {
+    savedStateHandle: SavedStateHandle,
+    initialState: AuthenticationState =
+        savedStateHandle.get<AuthenticationState>(SAVED_STATE_HANDLE_UI_STATE_KEY)
+            ?: AuthenticationState.initialState.copy(isLoading = false),
+) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState, savedStateHandle) {
     override fun handleEvent(event: AuthenticationEvent) {
         viewModelScope.launch {
             when (event) {
@@ -47,8 +43,8 @@ internal class AuthenticationViewModel(
 
     private fun updateEmail(email: String) {
         viewModelScope.launch {
-            _uiState.updateCopy {
-                AuthenticationState.email set email
+            updateAndPersistUiState {
+                copy(email = email)
             }
         }
     }
@@ -65,29 +61,35 @@ internal class AuthenticationViewModel(
             if (newPassword.any { it.isDigit() }) {
                 requirements.add(PasswordRequirements.NUMBER)
             }
-            _uiState.updateCopy {
-                AuthenticationState.password set newPassword
-                AuthenticationState.passwordRequirements set requirements.toImmutableList()
+            updateAndPersistUiState {
+                copy(
+                    password = newPassword,
+                    passwordRequirements = requirements.toImmutableList(),
+                )
             }
         }
     }
 
     private fun authenticate() {
         viewModelScope.launch {
-            _uiState.updateCopy {
-                AuthenticationState.isLoading set true
+            updateAndPersistUiState {
+                copy(isLoading = true)
             }
             authenticateUser(currentState.email, currentState.password).fold(
                 {
-                    _uiState.updateCopy {
-                        AuthenticationState.isLoading set false
-                        AuthenticationState.error set R.string.authentication_auth_error
+                    updateAndPersistUiState {
+                        copy(
+                            isLoading = false,
+                            error = R.string.authentication_auth_error,
+                        )
                     }
                 },
                 {
-                    _uiState.updateCopy {
-                        AuthenticationState.isLoading set false
-                        AuthenticationState.isUserAuthorized set true
+                    updateAndPersistUiState {
+                        copy(
+                            isLoading = false,
+                            isUserAuthorized = true,
+                        )
                     }
                 },
             )
@@ -95,10 +97,8 @@ internal class AuthenticationViewModel(
     }
 
     private fun dismissError() {
-        viewModelScope.launch {
-            _uiState.updateCopy {
-                AuthenticationState.error set NO_ERROR
-            }
+        updateAndPersistUiState {
+            copy(error = NO_ERROR)
         }
     }
 
@@ -108,26 +108,30 @@ internal class AuthenticationViewModel(
                 AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
                 else -> AuthenticationMode.SIGN_IN
             }
-        _uiState.updateCopy {
-            AuthenticationState.authenticationMode set newAuthenticationMode
-            AuthenticationState.email set EMPTY
-            AuthenticationState.password set EMPTY
+        updateAndPersistUiState {
+            copy(
+                authenticationMode = newAuthenticationMode,
+                email = EMPTY,
+                password = EMPTY,
+            )
         }
     }
 
     private fun setUserNotAuthorized() {
         viewModelScope.launch {
-            _uiState.updateCopy {
-                AuthenticationState.isUserAuthorized set false
+            updateAndPersistUiState {
+                copy(isUserAuthorized = false)
             }
         }
     }
 
     private fun autoCompleteAuthorization() {
         viewModelScope.launch {
-            _uiState.updateCopy {
-                AuthenticationState.email set AUTHORIZED_EMAIL
-                AuthenticationState.password set AUTHORIZED_PASSWORD
+            updateAndPersistUiState {
+                copy(
+                    email = AUTHORIZED_EMAIL,
+                    password = AUTHORIZED_PASSWORD,
+                )
             }
         }
     }

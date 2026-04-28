@@ -1,6 +1,8 @@
 package com.alxnophis.jetpack.core.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import arrow.core.Either.Companion.catch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
@@ -11,6 +13,7 @@ import timber.log.Timber
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     initialState: State,
+    private val savedStateHandle: SavedStateHandle? = null,
 ) : ViewModel() {
     val currentState: State
         get() = uiState.value
@@ -48,4 +51,29 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
         _uiState
             .updateAndGet { it.reduce() }
             .also { newState -> Timber.d("## Set new state: $newState") }
+
+    /**
+     * Update and persist a new State in SavedStateHandle
+     * Note: State must implement Parcelable or be a primitive type to be saved
+     */
+    protected fun updateAndPersistUiState(reduce: State.() -> State) {
+        _uiState
+            .updateAndGet { it.reduce() }
+            .also { newState ->
+                catch {
+                    savedStateHandle?.set(SAVED_STATE_HANDLE_UI_STATE_KEY, newState)
+                }.fold(
+                    { _ ->
+                        Timber.w("## Failed to persist state to savedStateHandle, state may not be Parcelable")
+                    },
+                    {
+                        Timber.d("## Set new state: $newState")
+                    },
+                )
+            }
+    }
+
+    companion object {
+        const val SAVED_STATE_HANDLE_UI_STATE_KEY = "savedStateHandleUiStateKey"
+    }
 }
