@@ -10,6 +10,7 @@ import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +24,8 @@ internal class PostsViewModel(
     initialUiState: PostsUiState = savedStateHandle.get<PostsUiState>(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: PostsUiState.initialState,
 ) : BaseViewModel<PostsEvent, PostsUiState>(initialUiState, savedStateHandle) {
     private var hasLoadedInitialData = false
+
+    override fun sanitizeForSavedState(state: PostsUiState): PostsUiState = state.copy(posts = persistentListOf())
 
     override val uiState: StateFlow<PostsUiState> =
         _uiState
