@@ -21,7 +21,7 @@ internal class PostsViewModel(
     private val postsRepository: PostsRepository,
     savedStateHandle: SavedStateHandle,
     initialUiState: PostsUiState = savedStateHandle.get<PostsUiState>(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: PostsUiState.initialState,
-) : BaseViewModel<PostsEvent, PostsUiState>(initialUiState) {
+) : BaseViewModel<PostsEvent, PostsUiState>(initialUiState, savedStateHandle) {
     private var hasLoadedInitialData = false
 
     override val uiState: StateFlow<PostsUiState> =
