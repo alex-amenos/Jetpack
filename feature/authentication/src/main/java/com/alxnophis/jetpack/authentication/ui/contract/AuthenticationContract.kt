@@ -9,7 +9,7 @@ import com.alxnophis.jetpack.core.ui.parceler.immutableListParceler
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
@@ -72,7 +72,7 @@ internal data class AuthenticationState(
                 authenticationMode = AuthenticationMode.SIGN_IN,
                 email = EMPTY,
                 password = EMPTY,
-                passwordRequirements = emptyList<PasswordRequirements>().toImmutableList(),
+                passwordRequirements = persistentListOf(),
                 isLoading = false,
                 error = NO_ERROR,
             )

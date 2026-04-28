@@ -15,6 +15,7 @@ import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
@@ -29,7 +30,8 @@ internal class AuthenticationViewModel(
      * Never persist the password field — clear it before writing to SavedStateHandle
      * so that sensitive credentials are not stored across process recreation.
      */
-    override fun sanitizeForSavedState(state: AuthenticationState): AuthenticationState = state.copy(password = EMPTY, isLoading = false)
+    override fun sanitizeForSavedState(state: AuthenticationState): AuthenticationState =
+        state.copy(password = EMPTY, passwordRequirements = persistentListOf(), isLoading = false)
 
     override fun handleEvent(event: AuthenticationEvent) {
         viewModelScope.launch {
