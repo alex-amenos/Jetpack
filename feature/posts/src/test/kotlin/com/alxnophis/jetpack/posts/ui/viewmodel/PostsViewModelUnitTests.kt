@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.posts.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -115,6 +116,7 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
         initialState: PostsUiState = PostsUiState.initialState,
     ) = PostsViewModel(
         postsRepository = postsRepository,
+        savedStateHandle = SavedStateHandle(),
         initialUiState = initialState,
     )
 
@@ -124,10 +126,11 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
         val postList = listOf(post1, post2)
 
         @JvmStatic
-        private fun postErrorsTestCases() = Stream.of(
-            Arguments.of(PostsError.Network, PostUiError.Network),
-            Arguments.of(PostsError.Server, PostUiError.Server),
-            Arguments.of(PostsError.Unexpected, PostUiError.Unexpected),
-        )
+        private fun postErrorsTestCases() =
+            Stream.of(
+                Arguments.of(PostsError.Network, PostUiError.Network),
+                Arguments.of(PostsError.Server, PostUiError.Server),
+                Arguments.of(PostsError.Unexpected, PostUiError.Unexpected),
+            )
     }
 }

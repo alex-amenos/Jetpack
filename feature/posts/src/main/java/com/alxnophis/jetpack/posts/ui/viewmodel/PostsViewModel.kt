@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.posts.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostsError
@@ -10,9 +10,6 @@ import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
-import com.alxnophis.jetpack.posts.ui.contract.error
-import com.alxnophis.jetpack.posts.ui.contract.posts
-import com.alxnophis.jetpack.posts.ui.contract.status
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,22 +19,23 @@ import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
     private val postsRepository: PostsRepository,
-    initialUiState: PostsUiState = PostsUiState.initialState,
+    savedStateHandle: SavedStateHandle,
+    initialUiState: PostsUiState = savedStateHandle.get<PostsUiState>(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: PostsUiState.initialState,
 ) : BaseViewModel<PostsEvent, PostsUiState>(initialUiState) {
     private var hasLoadedInitialData = false
 
-    override val uiState: StateFlow<PostsUiState> = _uiState
-        .onSubscription {
-            if (!hasLoadedInitialData) {
-                hasLoadedInitialData = true
-                updatePosts()
-            }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = initialUiState,
-        )
+    override val uiState: StateFlow<PostsUiState> =
+        _uiState
+            .onSubscription {
+                if (!hasLoadedInitialData) {
+                    hasLoadedInitialData = true
+                    updatePosts()
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = initialUiState,
+            )
 
     override fun handleEvent(event: PostsEvent) {
         viewModelScope.launch {
@@ -51,40 +49,47 @@ internal class PostsViewModel(
     }
 
     private fun updatePosts() {
-        _uiState.updateCopy {
-            PostsUiState.status set PostsStatus.Loading
+        updateAndPersistUiState {
+            copy(status = PostsStatus.Loading)
         }
         viewModelScope.launch {
             postsRepository
                 .getPosts()
                 .fold(
                     { error ->
-                        _uiState.updateCopy {
-                            PostsUiState.status set PostsStatus.Error
-                            PostsUiState.error set error.mapToUiError()
+                        updateAndPersistUiState {
+                            copy(
+                                status = PostsStatus.Error,
+                                error = error.mapToUiError(),
+                            )
                         }
                     },
                     { posts: List<Post> ->
-                        _uiState.updateCopy {
-                            PostsUiState.status set PostsStatus.Success
-                            PostsUiState.posts set posts.toImmutableList()
+                        updateAndPersistUiState {
+                            copy(
+                                status = PostsStatus.Success,
+                                posts = posts.toImmutableList(),
+                            )
                         }
                     },
                 )
         }
     }
 
-    private fun PostsError.mapToUiError(): PostUiError = when (this) {
-        PostsError.NoConnectivity -> PostUiError.NoConnectivity
-        PostsError.Network -> PostUiError.Network
-        PostsError.Server -> PostUiError.Server
-        PostsError.Unexpected -> PostUiError.Unexpected
-    }
+    private fun PostsError.mapToUiError(): PostUiError =
+        when (this) {
+            PostsError.NoConnectivity -> PostUiError.NoConnectivity
+            PostsError.Network -> PostUiError.Network
+            PostsError.Server -> PostUiError.Server
+            PostsError.Unexpected -> PostUiError.Unexpected
+        }
 
     private fun dismissError() {
-        _uiState.updateCopy {
-            PostsUiState.status set PostsStatus.Success
-            PostsUiState.error set null
+        updateAndPersistUiState {
+            copy(
+                status = PostsStatus.Success,
+                error = null,
+            )
         }
     }
 }

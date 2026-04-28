@@ -49,6 +49,6 @@ val postsModule: Module =
         }
 
         // ViewModels
-        viewModel { PostsViewModel(get()) }
+        viewModel { PostsViewModel(get(), get()) }
         viewModel { PostDetailViewModel(get()) }
     }
