@@ -53,6 +53,13 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
             .also { newState -> Timber.d("## Set new state: $newState") }
 
     /**
+     * Strip sensitive fields before the state is written to [SavedStateHandle].
+     * Override in subclasses to return a sanitized copy (e.g. with passwords cleared).
+     * The default implementation returns the state unchanged.
+     */
+    protected open fun sanitizeForSavedState(state: State): State = state
+
+    /**
      * Update and persist a new State in SavedStateHandle
      * Note: State must implement Parcelable or be a primitive type to be saved
      */
@@ -61,7 +68,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
             .updateAndGet { it.reduce() }
             .also { newState ->
                 catch {
-                    savedStateHandle?.set(SAVED_STATE_HANDLE_UI_STATE_KEY, newState)
+                    savedStateHandle?.set(SAVED_STATE_HANDLE_UI_STATE_KEY, sanitizeForSavedState(newState))
                 }.fold(
                     { throwable ->
                         Timber.w(

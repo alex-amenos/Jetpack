@@ -22,9 +22,16 @@ internal class AuthenticationViewModel(
     private val authenticateUseCase: AuthenticateUseCase,
     savedStateHandle: SavedStateHandle,
     initialState: AuthenticationState =
-        savedStateHandle.get<AuthenticationState>(SAVED_STATE_HANDLE_UI_STATE_KEY)
-            ?: AuthenticationState.initialState.copy(isLoading = false),
+        savedStateHandle
+            .get<AuthenticationState>(SAVED_STATE_HANDLE_UI_STATE_KEY)
+            ?.copy(password = EMPTY) ?: AuthenticationState.initialState.copy(isLoading = false),
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState, savedStateHandle) {
+    /**
+     * Never persist the password field — clear it before writing to SavedStateHandle
+     * so that sensitive credentials are not stored across process recreation.
+     */
+    override fun sanitizeForSavedState(state: AuthenticationState): AuthenticationState = state.copy(password = EMPTY)
+
     override fun handleEvent(event: AuthenticationEvent) {
         viewModelScope.launch {
             when (event) {
