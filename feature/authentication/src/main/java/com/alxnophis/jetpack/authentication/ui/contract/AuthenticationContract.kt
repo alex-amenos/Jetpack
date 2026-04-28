@@ -46,7 +46,7 @@ internal sealed class AuthenticationEvent : UiEvent {
 
 @Parcelize
 @Immutable
-@TypeParceler<ImmutableList<PasswordRequirements>, ImmutablePasswordRequirementsListParceler>
+@TypeParceler<ImmutableList<PasswordRequirements>, ImmutablePasswordRequirementsListParceler>()
 internal data class AuthenticationState(
     val isUserAuthorized: Boolean,
     val authenticationMode: AuthenticationMode,

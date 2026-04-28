@@ -28,7 +28,7 @@ internal sealed interface PostsEvent : UiEvent {
 
 @Parcelize
 @Immutable
-@TypeParceler<ImmutableList<Post>, ImmutablePostListParceler>
+@TypeParceler<ImmutableList<Post>, ImmutablePostListParceler>()
 internal data class PostsUiState(
     val status: PostsStatus,
     val posts: ImmutableList<Post>,
