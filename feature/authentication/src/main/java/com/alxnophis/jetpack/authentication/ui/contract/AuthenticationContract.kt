@@ -5,13 +5,18 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 import com.alxnophis.jetpack.authentication.R
 import com.alxnophis.jetpack.core.base.constants.EMPTY
+import com.alxnophis.jetpack.core.ui.parceler.immutableListParceler
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.TypeParceler
 
 internal const val NO_ERROR = 0
+
+internal object ImmutablePasswordRequirementsListParceler : Parceler<ImmutableList<PasswordRequirements>> by immutableListParceler()
 
 internal sealed class AuthenticationEvent : UiEvent {
     data object Authenticated : AuthenticationEvent()
@@ -41,6 +46,7 @@ internal sealed class AuthenticationEvent : UiEvent {
 
 @Parcelize
 @Immutable
+@TypeParceler<ImmutableList<PasswordRequirements>, ImmutablePasswordRequirementsListParceler>
 internal data class AuthenticationState(
     val isUserAuthorized: Boolean,
     val authenticationMode: AuthenticationMode,
