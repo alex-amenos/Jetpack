@@ -70,19 +70,15 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
                 Timber.d("## Set new state: $newState")
                 catch {
                     val sanitizedState = sanitizeForSavedState(newState)
-                    savedStateHandle?.set(SAVED_STATE_HANDLE_UI_STATE_KEY, sanitizedState)
-                    sanitizedState
-                }.fold(
-                    { throwable ->
-                        Timber.w(
-                            throwable,
-                            "## Failed to persist state to SavedStateHandle [key=$SAVED_STATE_HANDLE_UI_STATE_KEY, type=${newState::class.qualifiedName}]",
-                        )
-                    },
-                    { sanitizedState ->
-                        Timber.d("## Persisted new state at savedStateHandle: $sanitizedState")
-                    },
-                )
+                    savedStateHandle
+                        ?.set(SAVED_STATE_HANDLE_UI_STATE_KEY, sanitizedState)
+                        ?.let { Timber.d("## Persisted new state at savedStateHandle: $sanitizedState") }
+                }.onLeft { throwable ->
+                    Timber.w(
+                        throwable,
+                        "## Failed to persist state to SavedStateHandle [key=$SAVED_STATE_HANDLE_UI_STATE_KEY, type=${newState::class.qualifiedName}]",
+                    )
+                }
             }
     }
 
