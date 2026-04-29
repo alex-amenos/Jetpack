@@ -313,7 +313,7 @@ private fun SnackbarError(
                 modifier = Modifier.padding(10.dp),
                 action = {},
             ) {
-                Text(snackbarData.toString())
+                Text(snackbarData.visuals.message)
             }
         }
     }
