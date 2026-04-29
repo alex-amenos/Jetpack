@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.posts.ui.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.posts.data.model.Post
@@ -10,7 +9,6 @@ import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,12 +18,9 @@ import kotlinx.coroutines.launch
 
 internal class PostsViewModel(
     private val postsRepository: PostsRepository,
-    savedStateHandle: SavedStateHandle,
-    initialUiState: PostsUiState = savedStateHandle.get<PostsUiState>(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: PostsUiState.initialState,
-) : BaseViewModel<PostsEvent, PostsUiState>(initialUiState, savedStateHandle) {
+    initialUiState: PostsUiState = PostsUiState.initialState,
+) : BaseViewModel<PostsEvent, PostsUiState>(initialUiState) {
     private var hasLoadedInitialData = false
-
-    override fun sanitizeForSavedState(state: PostsUiState): PostsUiState = state.copy(posts = persistentListOf())
 
     override val uiState: StateFlow<PostsUiState> =
         _uiState
@@ -52,7 +47,7 @@ internal class PostsViewModel(
     }
 
     private fun updatePosts() {
-        updateAndPersistUiState {
+        updateUiState {
             copy(status = PostsStatus.Loading)
         }
         viewModelScope.launch {
@@ -60,7 +55,7 @@ internal class PostsViewModel(
                 .getPosts()
                 .fold(
                     { error ->
-                        updateAndPersistUiState {
+                        updateUiState {
                             copy(
                                 status = PostsStatus.Error,
                                 error = error.mapToUiError(),
@@ -68,7 +63,7 @@ internal class PostsViewModel(
                         }
                     },
                     { posts: List<Post> ->
-                        updateAndPersistUiState {
+                        updateUiState {
                             copy(
                                 status = PostsStatus.Success,
                                 posts = posts.toImmutableList(),
@@ -88,7 +83,7 @@ internal class PostsViewModel(
         }
 
     private fun dismissError() {
-        updateAndPersistUiState {
+        updateUiState {
             copy(
                 status = PostsStatus.Success,
                 error = null,

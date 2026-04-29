@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.posts.ui.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -116,7 +115,6 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
         initialState: PostsUiState = PostsUiState.initialState,
     ) = PostsViewModel(
         postsRepository = postsRepository,
-        savedStateHandle = SavedStateHandle(),
         initialUiState = initialState,
     )
 

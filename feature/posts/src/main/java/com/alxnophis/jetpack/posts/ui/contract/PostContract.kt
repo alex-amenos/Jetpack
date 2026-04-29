@@ -1,18 +1,11 @@
 package com.alxnophis.jetpack.posts.ui.contract
 
-import android.os.Parcelable
 import androidx.compose.runtime.Immutable
-import com.alxnophis.jetpack.core.ui.parceler.immutableListParceler
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.posts.data.model.Post
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.parcelize.Parceler
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.TypeParceler
-
-private object ImmutablePostListParceler : Parceler<ImmutableList<Post>> by immutableListParceler()
 
 internal sealed interface PostsEvent : UiEvent {
     data object OnUpdatePostsRequested : PostsEvent
@@ -26,15 +19,12 @@ internal sealed interface PostsEvent : UiEvent {
     ) : PostsEvent
 }
 
-@Parcelize
 @Immutable
-@TypeParceler<ImmutableList<Post>, ImmutablePostListParceler>()
 internal data class PostsUiState(
     val status: PostsStatus,
     val posts: ImmutableList<Post>,
     val error: PostUiError?,
-) : UiState,
-    Parcelable {
+) : UiState {
     val isLoading: Boolean = status == PostsStatus.Loading
 
     internal companion object {
@@ -47,9 +37,8 @@ internal data class PostsUiState(
     }
 }
 
-@Parcelize
 @Immutable
-internal sealed interface PostsStatus : Parcelable {
+internal sealed interface PostsStatus {
     data object Loading : PostsStatus
 
     data object Success : PostsStatus
@@ -57,9 +46,8 @@ internal sealed interface PostsStatus : Parcelable {
     data object Error : PostsStatus
 }
 
-@Parcelize
 @Immutable
-internal sealed interface PostUiError : Parcelable {
+internal sealed interface PostUiError {
     data object NoConnectivity : PostUiError
 
     data object Network : PostUiError

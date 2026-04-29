@@ -1,6 +1,5 @@
 package com.alxnophis.jetpack.posts.ui.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -46,7 +45,7 @@ internal class PostsViewModelBehaviorSpec :
             Given("A PostsViewModel") {
                 When("requesting posts update and repository returns successful data") {
                     whenever(postsRepositoryMock.getPosts()).thenReturn(postList.right())
-                    val viewModel = PostsViewModel(postsRepository = postsRepositoryMock, savedStateHandle = SavedStateHandle())
+                    val viewModel = PostsViewModel(postsRepository = postsRepositoryMock)
 
                     viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
@@ -81,7 +80,7 @@ internal class PostsViewModelBehaviorSpec :
                 ).forEach { testCase ->
                     When("requesting posts update fails with ${testCase.description}") {
                         whenever(postsRepositoryMock.getPosts()).thenReturn(testCase.domainError.left())
-                        val viewModel = PostsViewModel(postsRepository = postsRepositoryMock, savedStateHandle = SavedStateHandle())
+                        val viewModel = PostsViewModel(postsRepository = postsRepositoryMock)
 
                         viewModel.handleEvent(PostsEvent.OnUpdatePostsRequested)
 
@@ -108,7 +107,6 @@ internal class PostsViewModelBehaviorSpec :
                     val viewModel =
                         PostsViewModel(
                             postsRepository = postsRepositoryMock,
-                            savedStateHandle = SavedStateHandle(),
                             initialUiState = initialStateWithError,
                         )
 
