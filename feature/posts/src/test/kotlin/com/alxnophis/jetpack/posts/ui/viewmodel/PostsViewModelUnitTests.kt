@@ -124,10 +124,11 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
         val postList = listOf(post1, post2)
 
         @JvmStatic
-        private fun postErrorsTestCases() = Stream.of(
-            Arguments.of(PostsError.Network, PostUiError.Network),
-            Arguments.of(PostsError.Server, PostUiError.Server),
-            Arguments.of(PostsError.Unexpected, PostUiError.Unexpected),
-        )
+        private fun postErrorsTestCases() =
+            Stream.of(
+                Arguments.of(PostsError.Network, PostUiError.Network),
+                Arguments.of(PostsError.Server, PostUiError.Server),
+                Arguments.of(PostsError.Unexpected, PostUiError.Unexpected),
+            )
     }
 }

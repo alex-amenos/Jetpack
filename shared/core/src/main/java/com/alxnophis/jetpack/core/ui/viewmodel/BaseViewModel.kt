@@ -1,6 +1,8 @@
 package com.alxnophis.jetpack.core.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import arrow.core.Either.Companion.catch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
@@ -11,6 +13,7 @@ import timber.log.Timber
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     initialState: State,
+    private val savedStateHandle: SavedStateHandle? = null,
 ) : ViewModel() {
     val currentState: State
         get() = uiState.value
@@ -48,4 +51,38 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
         _uiState
             .updateAndGet { it.reduce() }
             .also { newState -> Timber.d("## Set new state: $newState") }
+
+    /**
+     * Strip sensitive fields before the state is written to [SavedStateHandle].
+     * Override in subclasses to return a sanitized copy (e.g. with passwords cleared).
+     * The default implementation returns the state unchanged.
+     */
+    protected open fun sanitizeForSavedState(state: State): State = state
+
+    /**
+     * Update and persist a new State in SavedStateHandle
+     * Note: State must implement Parcelable or be a primitive type to be saved
+     */
+    protected fun updateAndPersistUiState(reduce: State.() -> State) {
+        _uiState
+            .updateAndGet { it.reduce() }
+            .also { newState ->
+                Timber.d("## Set new state: $newState")
+                catch {
+                    val sanitizedState = sanitizeForSavedState(newState)
+                    savedStateHandle
+                        ?.set(SAVED_STATE_HANDLE_UI_STATE_KEY, sanitizedState)
+                        ?.let { Timber.d("## Persisted new state at savedStateHandle: $sanitizedState") }
+                }.onLeft { throwable ->
+                    Timber.w(
+                        throwable,
+                        "## Failed to persist state to SavedStateHandle [key=$SAVED_STATE_HANDLE_UI_STATE_KEY, type=${newState::class.qualifiedName}]",
+                    )
+                }
+            }
+    }
+
+    companion object {
+        const val SAVED_STATE_HANDLE_UI_STATE_KEY = "savedStateHandleUiStateKey"
+    }
 }

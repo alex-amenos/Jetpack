@@ -27,6 +27,7 @@ dependencies {
     implementation libs.androidx.lifecycle.runtime.compose
     implementation libs.bundles.androidx.compose
     implementation libs.koin.android.compose
+    implementation libs.koin.android.compose.viewmodel
 
     debugImplementation libs.androidx.compose.ui.tooling
 

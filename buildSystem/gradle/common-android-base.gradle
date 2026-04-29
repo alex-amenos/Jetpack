@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
+apply plugin: 'org.jetbrains.kotlin.plugin.parcelize'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.adarshr.test-logger'
 apply plugin: 'de.mannodermaus.android-junit'
@@ -80,4 +81,8 @@ android {
                          'META-INF/LGPL2.1',]
         }
     }
+}
+
+dependencies {
+    implementation libs.kotlin.parcelize.runtime
 }

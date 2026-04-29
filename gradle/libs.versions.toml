@@ -17,7 +17,7 @@ androidx-test-junit = "1.2.1"
 androidx-test-rules = "1.6.1"
 androidx-test-runner = "1.6.2"
 androidx-work = "2.10.5"
-arrow-stack = "2.2.2"
+arrow-stack = "2.2.2.1"
 ben-manes-versions = "0.46.0"
 chucker = "4.3.1"
 coil = "2.2.2"
@@ -29,12 +29,12 @@ google-play-services-location = "21.3.0"
 gradle-test-logger-plugin = "4.0.0"
 junit_bom = "5.13.2"
 kluent = "1.73"
-koin-android = "4.1.1"
-koin-android-compose = "4.1.1"
-koin-android-work-manager = "4.1.1"
-koin-test = "4.1.1"
+koin-android = "4.2.1"
+koin-android-compose = "4.2.1"
+koin-android-work-manager = "4.2.1"
+koin-test = "4.2.1"
 kotest = "6.0.5"
-kotlin = "2.2.10"
+kotlin = "2.2.21"
 kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization-json = "1.8.1"
@@ -121,6 +121,7 @@ kluent = { module = "org.amshove.kluent:kluent-android", version.ref = "kluent" 
 kluent-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
+koin-android-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin-android-compose" }
 koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-android-work-manager" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
@@ -129,6 +130,7 @@ kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", versio
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-parcelize-runtime = { module = "org.jetbrains.kotlin:kotlin-parcelize-runtime", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
@@ -201,6 +203,8 @@ android-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version
 android-junit = { id = "de.mannodermaus.android-junit", version.ref = "android-junit5-plugin" }
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
