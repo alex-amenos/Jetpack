@@ -17,6 +17,7 @@ import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
@@ -30,16 +31,16 @@ internal class FileDownloaderViewModel(
 ) : BaseViewModel<FileDownloaderUiEvent, FileDownloaderUiState>(initialState) {
     private var fileDownloaderJob: Job? = null
 
-    override fun handleEvent(event: FileDownloaderUiEvent) {
+    override val uiState: StateFlow<FileDownloaderUiState> =
         _uiState
-            .onStart {
-                subscribeToDownloaderFilesStatus()
-            }.stateIn(
+            .onStart { subscribeToDownloaderFilesStatus() }
+            .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = initialState,
             )
 
+    override fun handleEvent(event: FileDownloaderUiEvent) {
         Timber.d("## FileDownloaderViewModel processing event: $event")
         viewModelScope.launch {
             when (event) {
@@ -76,24 +77,26 @@ internal class FileDownloaderViewModel(
         viewModelScope.launch {
             val urlFile = currentState.url
             if (urlFile.isValidUrl()) {
-                fileDownloaderRepository.downloadFile(urlFile).fold(
-                    { error ->
-                        val errorResId =
-                            when (error) {
-                                FileDownloaderError.FileDownloaded -> R.string.file_downloader_file_downloaded
-                                FileDownloaderError.FileDownloading -> R.string.file_downloader_file_downloading
-                                FileDownloaderError.Unknown -> R.string.file_downloader_generic_error
+                fileDownloaderRepository
+                    .downloadFile(urlFile)
+                    .fold(
+                        { error ->
+                            val errorResId =
+                                when (error) {
+                                    FileDownloaderError.FileDownloaded -> R.string.file_downloader_file_downloaded
+                                    FileDownloaderError.FileDownloading -> R.string.file_downloader_file_downloading
+                                    FileDownloaderError.Unknown -> R.string.file_downloader_generic_error
+                                }
+                            _uiState.updateCopy {
+                                FileDownloaderUiState.error set errorResId
                             }
-                        _uiState.updateCopy {
-                            FileDownloaderUiState.error set errorResId
-                        }
-                    },
-                    {
-                        _uiState.updateCopy {
-                            FileDownloaderUiState.url set EMPTY
-                        }
-                    },
-                )
+                        },
+                        {
+                            _uiState.updateCopy {
+                                FileDownloaderUiState.url set EMPTY
+                            }
+                        },
+                    )
             }
         }
     }

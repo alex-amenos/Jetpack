@@ -62,7 +62,7 @@ internal class FileDownloaderRepositoryImpl(
     }
 
     private fun isFileDownloading(fileUrl: String): Boolean =
-        _downloadedFiles
+        _downloadingFiles
             .value
             .firstOrNull { downloadingFile -> downloadingFile.url == fileUrl }
             ?.let { true }
