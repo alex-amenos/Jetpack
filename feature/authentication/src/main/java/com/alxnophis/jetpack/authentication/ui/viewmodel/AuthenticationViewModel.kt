@@ -22,9 +22,7 @@ import kotlinx.coroutines.launch
 internal class AuthenticationViewModel(
     private val authenticateUseCase: AuthenticateUseCase,
     savedStateHandle: SavedStateHandle,
-    initialState: AuthenticationState =
-        savedStateHandle.get<AuthenticationState>(SAVED_STATE_HANDLE_UI_STATE_KEY)
-            ?: AuthenticationState.initialState,
+    initialState: AuthenticationState = AuthenticationState.initialState,
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState, savedStateHandle) {
     /**
      * Never persist the password field — clear it before writing to SavedStateHandle
