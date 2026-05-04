@@ -16,7 +16,12 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
         get() = uiState.value
 
     @Suppress("PropertyName")
-    protected val _uiState: MutableStateFlow<State> = MutableStateFlow(savedStateHandle?.get(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: initialUiState)
+    protected val _uiState: MutableStateFlow<State> =
+        MutableStateFlow(
+            runCatching { savedStateHandle?.get<State>(SAVED_STATE_HANDLE_UI_STATE_KEY) }
+                .onFailure { Timber.w(it, "## Failed to restore state from SavedStateHandle — falling back to initial state") }
+                .getOrNull() ?: initialUiState,
+        )
 
     open val uiState = _uiState.asStateFlow()
 
