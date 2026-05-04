@@ -17,7 +17,8 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
         get() = uiState.value
 
     @Suppress("PropertyName")
-    protected val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
+    protected val _uiState: MutableStateFlow<State> =
+        MutableStateFlow(savedStateHandle?.get(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: initialState)
     open val uiState = _uiState.asStateFlow()
 
     /**
