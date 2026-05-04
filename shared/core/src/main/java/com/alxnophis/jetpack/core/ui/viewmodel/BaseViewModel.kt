@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.updateAndGet
 import timber.log.Timber
 
+@Suppress("unused")
 abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     initialUiState: State,
     private val savedStateHandle: SavedStateHandle? = null,
