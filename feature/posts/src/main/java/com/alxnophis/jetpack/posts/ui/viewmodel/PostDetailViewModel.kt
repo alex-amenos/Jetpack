@@ -43,11 +43,11 @@ internal class PostDetailViewModel(
 
     private suspend fun updatePost() {
         either {
-            ensureNotNull(currentState.postId) {
+            ensureNotNull(currentUiState.postId) {
                 PostDetailError.NotFound
             }
             postsRepository
-                .getPostById(currentState.postId!!)
+                .getPostById(currentUiState.postId!!)
                 .bind()
         }.fold(
             { error ->

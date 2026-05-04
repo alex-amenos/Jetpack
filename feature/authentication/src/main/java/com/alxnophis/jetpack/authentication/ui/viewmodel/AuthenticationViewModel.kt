@@ -22,10 +22,8 @@ import kotlinx.coroutines.launch
 internal class AuthenticationViewModel(
     private val authenticateUseCase: AuthenticateUseCase,
     savedStateHandle: SavedStateHandle,
-    initialState: AuthenticationState =
-        savedStateHandle.get<AuthenticationState>(SAVED_STATE_HANDLE_UI_STATE_KEY)
-            ?: AuthenticationState.initialState,
-) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialState, savedStateHandle) {
+    initialUiState: AuthenticationState = AuthenticationState.initialState,
+) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialUiState, savedStateHandle) {
     /**
      * Never persist the password field — clear it before writing to SavedStateHandle
      * so that sensitive credentials are not stored across process recreation.
@@ -51,7 +49,7 @@ internal class AuthenticationViewModel(
 
     private fun updateEmail(email: String) {
         viewModelScope.launch {
-            updateAndPersistUiState {
+            updateUiState {
                 copy(email = email)
             }
         }
@@ -69,7 +67,7 @@ internal class AuthenticationViewModel(
             if (newPassword.any { it.isDigit() }) {
                 requirements.add(PasswordRequirements.NUMBER)
             }
-            updateAndPersistUiState {
+            updateUiState {
                 copy(
                     password = newPassword,
                     passwordRequirements = requirements.toImmutableList(),
@@ -80,12 +78,12 @@ internal class AuthenticationViewModel(
 
     private fun authenticate() {
         viewModelScope.launch {
-            updateAndPersistUiState {
+            updateUiState {
                 copy(isLoading = true)
             }
-            authenticateUser(currentState.email, currentState.password).fold(
+            authenticateUser(currentUiState.email, currentUiState.password).fold(
                 {
-                    updateAndPersistUiState {
+                    updateUiState {
                         copy(
                             isLoading = false,
                             error = R.string.authentication_auth_error,
@@ -93,7 +91,7 @@ internal class AuthenticationViewModel(
                     }
                 },
                 {
-                    updateAndPersistUiState {
+                    updateUiState {
                         copy(
                             isLoading = false,
                             isUserAuthorized = true,
@@ -105,18 +103,18 @@ internal class AuthenticationViewModel(
     }
 
     private fun dismissError() {
-        updateAndPersistUiState {
+        updateUiState {
             copy(error = NO_ERROR)
         }
     }
 
     private fun toggleAuthenticationMode() {
         val newAuthenticationMode =
-            when (currentState.authenticationMode) {
+            when (currentUiState.authenticationMode) {
                 AuthenticationMode.SIGN_IN -> AuthenticationMode.SIGN_UP
                 else -> AuthenticationMode.SIGN_IN
             }
-        updateAndPersistUiState {
+        updateUiState {
             copy(
                 authenticationMode = newAuthenticationMode,
                 email = EMPTY,
@@ -127,7 +125,7 @@ internal class AuthenticationViewModel(
 
     private fun setUserNotAuthorized() {
         viewModelScope.launch {
-            updateAndPersistUiState {
+            updateUiState {
                 copy(isUserAuthorized = false)
             }
         }
@@ -135,7 +133,7 @@ internal class AuthenticationViewModel(
 
     private fun autoCompleteAuthorization() {
         viewModelScope.launch {
-            updateAndPersistUiState {
+            updateUiState {
                 copy(
                     email = AUTHORIZED_EMAIL,
                     password = AUTHORIZED_PASSWORD,

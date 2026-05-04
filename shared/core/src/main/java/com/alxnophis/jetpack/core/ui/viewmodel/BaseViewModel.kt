@@ -2,84 +2,91 @@ package com.alxnophis.jetpack.core.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import arrow.core.Either.Companion.catch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import timber.log.Timber
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
+@Suppress("unused")
 abstract class BaseViewModel<Event : UiEvent, State : UiState>(
-    initialState: State,
+    initialUiState: State,
     private val savedStateHandle: SavedStateHandle? = null,
 ) : ViewModel() {
-    val currentState: State
+    val currentUiState: State
         get() = uiState.value
 
     @Suppress("PropertyName")
-    protected val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
+    protected val _uiState: MutableStateFlow<State> =
+        MutableStateFlow(
+            runCatching { savedStateHandle?.get<State>(SAVED_STATE_HANDLE_UI_STATE_KEY) }
+                .onFailure { Timber.w(it, "## Failed to restore state from SavedStateHandle — falling back to initial state") }
+                .getOrNull() ?: initialUiState,
+        )
+
     open val uiState = _uiState.asStateFlow()
 
     /**
-     * Handle each Event
+     * Handles each Event.
      */
     abstract fun handleEvent(event: Event)
 
     /**
-     * Update a new State
+     * Atomically updates state using [reduce].
      */
-    protected fun updateUiState(reduce: State.() -> State) {
+    protected fun updateUiState(reduce: State.() -> State) =
         _uiState
-            .update { it.reduce() }
-            .also { Timber.d("## Set new state: $currentState") }
-    }
+            .updateAndGet { it.reduce() }
+            .also { newState ->
+                Timber.d("## Set new state: $newState")
+                persistUiState(newState)
+            }
 
     /**
-     * Update a new State and get prior State
-     */
-    protected fun getPriorUiStateAndUpdate(reduce: State.() -> State): State =
-        _uiState
-            .getAndUpdate { it.reduce() }
-            .also { Timber.d("## Set new state: $currentState") }
-
-    /**
-     * Update and get a new State
+     * Atomically updates state using [reduce] and returns the new state.
      */
     protected fun updateAndGetUiState(reduce: State.() -> State): State =
         _uiState
             .updateAndGet { it.reduce() }
-            .also { newState -> Timber.d("## Set new state: $newState") }
+            .also { newState ->
+                Timber.d("## Set new state: $newState")
+                persistUiState(newState)
+            }
 
     /**
-     * Strip sensitive fields before the state is written to [SavedStateHandle].
+     * Atomically updates state using [reduce] and returns the prior state.
+     * The new state is logged and persisted to [SavedStateHandle] after the update.
+     */
+    protected fun getPriorUiStateAndUpdate(reduce: State.() -> State): State {
+        var oldState: State = _uiState.value
+        val newState =
+            _uiState.updateAndGet {
+                oldState = it
+                it.reduce()
+            }
+        Timber.d("## Set new state: $newState")
+        persistUiState(newState)
+        return oldState
+    }
+
+    /**
+     * Strip sensitive or desired fields before the state is written to [SavedStateHandle].
      * Override in subclasses to return a sanitized copy (e.g. with passwords cleared).
      * The default implementation returns the state unchanged.
      */
     protected open fun sanitizeForSavedState(state: State): State = state
 
-    /**
-     * Update and persist a new State in SavedStateHandle
-     * Note: State must implement Parcelable or be a primitive type to be saved
-     */
-    protected fun updateAndPersistUiState(reduce: State.() -> State) {
-        _uiState
-            .updateAndGet { it.reduce() }
-            .also { newState ->
-                Timber.d("## Set new state: $newState")
-                catch {
-                    val sanitizedState = sanitizeForSavedState(newState)
-                    savedStateHandle
-                        ?.set(SAVED_STATE_HANDLE_UI_STATE_KEY, sanitizedState)
-                        ?.let { Timber.d("## Persisted new state at savedStateHandle: $sanitizedState") }
-                }.onLeft { throwable ->
-                    Timber.w(
-                        throwable,
-                        "## Failed to persist state to SavedStateHandle [key=$SAVED_STATE_HANDLE_UI_STATE_KEY, type=${newState::class.qualifiedName}]",
-                    )
-                }
-            }
+    private fun persistUiState(newState: State) {
+        val handle = savedStateHandle ?: return
+        runCatching {
+            val sanitizedState: State = sanitizeForSavedState(newState)
+            handle[SAVED_STATE_HANDLE_UI_STATE_KEY] = sanitizedState
+            Timber.d("## Persisted state at savedStateHandle: $sanitizedState")
+        }.onFailure { throwable ->
+            Timber.w(
+                throwable,
+                "## Failed to persist state to SavedStateHandle [key=${SAVED_STATE_HANDLE_UI_STATE_KEY}, type=${newState::class.qualifiedName}]",
+            )
+        }
     }
 
     companion object {
