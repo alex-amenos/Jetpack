@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.updateAndGet
 import timber.log.Timber
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
 abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     initialUiState: State,
     private val savedStateHandle: SavedStateHandle? = null,
 ) : ViewModel() {
+
     val currentUiState: State
         get() = uiState.value
 
@@ -26,36 +26,35 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     open val uiState = _uiState.asStateFlow()
 
     /**
-     * Handles each Event
+     * Handles each Event.
      */
     abstract fun handleEvent(event: Event)
 
     /**
-     * Updates a new State
+     * Atomically updates state using [reduce] and returns the new state.
      */
-    protected fun updateUiState(reduce: State.() -> State) {
-        updateAndGetUiState(reduce)
-    }
-
-    /**
-     * Updates a new State and get prior State
-     */
-    protected fun getPriorUiStateAndUpdate(reduce: State.() -> State): State {
-        val oldState: State = currentUiState
-        updateUiState(reduce)
-        return oldState
-    }
-
-    /**
-     * Updates and get a new State
-     */
-    protected fun updateAndGetUiState(reduce: State.() -> State): State =
+    protected fun updateUiState(reduce: State.() -> State): State =
         _uiState
             .updateAndGet { it.reduce() }
             .also { newState ->
                 Timber.d("## Set new state: $newState")
                 persistUiState(newState)
             }
+
+    /**
+     * Atomically updates state using [reduce] and returns the prior state.
+     * The new state is logged and persisted to [SavedStateHandle] after the update.
+     */
+    protected fun getPriorUiStateAndUpdate(reduce: State.() -> State): State {
+        var oldState: State = _uiState.value
+        val newState = _uiState.updateAndGet {
+            oldState = it
+            it.reduce()
+        }
+        Timber.d("## Set new state: $newState")
+        persistUiState(newState)
+        return oldState
+    }
 
     /**
      * Strip sensitive or desired fields before the state is written to [SavedStateHandle].
