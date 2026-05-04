@@ -10,7 +10,7 @@ import timber.log.Timber
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 abstract class BaseViewModel<Event : UiEvent, State : UiState>(
-    initialState: State,
+    initialUiState: State,
     private val savedStateHandle: SavedStateHandle? = null,
 ) : ViewModel() {
     val currentUiState: State
@@ -18,7 +18,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
 
     @Suppress("PropertyName")
     protected val _uiState: MutableStateFlow<State> =
-        MutableStateFlow(savedStateHandle?.get(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: initialState)
+        MutableStateFlow(savedStateHandle?.get(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: initialUiState)
     open val uiState = _uiState.asStateFlow()
 
     /**
