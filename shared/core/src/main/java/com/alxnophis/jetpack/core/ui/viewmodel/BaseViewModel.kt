@@ -2,7 +2,6 @@ package com.alxnophis.jetpack.core.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import arrow.core.Either.Companion.catch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.updateAndGet
@@ -17,8 +16,8 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
         get() = uiState.value
 
     @Suppress("PropertyName")
-    protected val _uiState: MutableStateFlow<State> =
-        MutableStateFlow(savedStateHandle?.get(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: initialUiState)
+    protected val _uiState: MutableStateFlow<State> = MutableStateFlow(savedStateHandle?.get(SAVED_STATE_HANDLE_UI_STATE_KEY) ?: initialUiState)
+
     open val uiState = _uiState.asStateFlow()
 
     /**
@@ -61,12 +60,12 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     protected open fun sanitizeForSavedState(state: State): State = state
 
     private fun persistUiState(newState: State) {
-        if (savedStateHandle == null) return
-        catch {
+        val handle = savedStateHandle ?: return
+        runCatching {
             val sanitizedState: State = sanitizeForSavedState(newState)
-            savedStateHandle[SAVED_STATE_HANDLE_UI_STATE_KEY] = sanitizedState
+            handle[SAVED_STATE_HANDLE_UI_STATE_KEY] = sanitizedState
             Timber.d("## Persisted state at savedStateHandle: $sanitizedState")
-        }.onLeft { throwable ->
+        }.onFailure { throwable ->
             Timber.w(
                 throwable,
                 "## Failed to persist state to SavedStateHandle [key=${SAVED_STATE_HANDLE_UI_STATE_KEY}, type=${newState::class.qualifiedName}]",
