@@ -11,7 +11,6 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     initialUiState: State,
     private val savedStateHandle: SavedStateHandle? = null,
 ) : ViewModel() {
-
     val currentUiState: State
         get() = uiState.value
 
@@ -31,9 +30,20 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     abstract fun handleEvent(event: Event)
 
     /**
+     * Atomically updates state using [reduce].
+     */
+    protected fun updateUiState(reduce: State.() -> State) =
+        _uiState
+            .updateAndGet { it.reduce() }
+            .also { newState ->
+                Timber.d("## Set new state: $newState")
+                persistUiState(newState)
+            }
+
+    /**
      * Atomically updates state using [reduce] and returns the new state.
      */
-    protected fun updateUiState(reduce: State.() -> State): State =
+    protected fun updateAndGetUiState(reduce: State.() -> State): State =
         _uiState
             .updateAndGet { it.reduce() }
             .also { newState ->
@@ -47,10 +57,11 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
      */
     protected fun getPriorUiStateAndUpdate(reduce: State.() -> State): State {
         var oldState: State = _uiState.value
-        val newState = _uiState.updateAndGet {
-            oldState = it
-            it.reduce()
-        }
+        val newState =
+            _uiState.updateAndGet {
+                oldState = it
+                it.reduce()
+            }
         Timber.d("## Set new state: $newState")
         persistUiState(newState)
         return oldState
