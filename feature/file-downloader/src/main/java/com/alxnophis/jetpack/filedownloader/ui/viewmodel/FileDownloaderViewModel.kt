@@ -75,7 +75,7 @@ internal class FileDownloaderViewModel(
 
     private fun downloadFile() {
         viewModelScope.launch {
-            val urlFile = currentState.url
+            val urlFile = currentUiState.url
             if (urlFile.isValidUrl()) {
                 fileDownloaderRepository
                     .downloadFile(urlFile)

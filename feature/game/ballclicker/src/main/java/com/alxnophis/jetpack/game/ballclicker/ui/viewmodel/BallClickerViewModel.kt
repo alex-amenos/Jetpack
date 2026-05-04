@@ -45,7 +45,7 @@ internal class BallClickerViewModel(
 
     private fun ballClicked() {
         _uiState.updateCopy {
-            BallClickerState.points set (currentState.points + 1)
+            BallClickerState.points set (currentUiState.points + 1)
         }
     }
 
