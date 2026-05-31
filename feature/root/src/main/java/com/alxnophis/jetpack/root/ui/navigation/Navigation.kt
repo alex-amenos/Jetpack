@@ -31,9 +31,7 @@ import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @SuppressLint("ComposeModifierMissing")
 @Composable
-fun Navigation(
-    modifier: Modifier = Modifier,
-) {
+fun Navigation(modifier: Modifier = Modifier) {
     AppTheme {
         val backStack = rememberNavBackStack(Route.Home)
         val onBack: () -> Unit = { backStack.removeLastOrNull() }
