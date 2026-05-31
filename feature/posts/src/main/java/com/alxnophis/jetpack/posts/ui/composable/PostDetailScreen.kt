@@ -138,7 +138,7 @@ internal fun PostDetailUiErrors(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_error),
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.posts_cd_error_icon),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(48.dp),
                         )

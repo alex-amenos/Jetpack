@@ -39,7 +39,7 @@ fun PostNotSelectedComposable(modifier: Modifier = Modifier) {
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_error),
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.posts_cd_error_icon),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(48.dp),
                 )

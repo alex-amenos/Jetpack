@@ -9,4 +9,5 @@
     <string name="posts_error_server">Server error</string>
     <string name="posts_post_not_selected_title">Post not selected</string>
     <string name="posts_post_not_selected_detail">Please pick a post from the list to read it.</string>
+    <string name="posts_cd_error_icon">Error icon</string>
 </resources>
