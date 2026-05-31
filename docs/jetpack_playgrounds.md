@@ -24,9 +24,14 @@ This module is the most complete in the project and demonstrates modern Android 
 - **Error Handling**: Functional error handling using Arrow `Either` and typed errors.
 - **Testing**: Highly covered with JUnit 5 unit tests, Kotest `BehaviorSpec` BDD tests, and Compose snapshot testing using Roborazzi.
 
-<img alt="Posts screen 1" src="./images/posts_screen.png" width="300" />
-<img alt="Posts screen 2" src="./images/posts_screen_detail.png" width="300" />
-<img alt="Posts screen 3" src="./images/posts_screen_landscape.png" width="500" />
+<img alt="Posts list 1" src="./images/posts_screen_list_1.png" width="300" />
+<img alt="Posts list 2" src="./images/posts_screen_list_2.png" width="300" />
+<img alt="Posts list in landscape 1" src="./images/posts_screen_list_landscape_1.png" width="300" />
+<img alt="Posts list in landscape 2" src="./images/posts_screen_list_landscape_2.png" width="300" />
+<img alt="Posts list and detail in landscape 1" src="./images/posts_screen_detail_landscape_1.png" width="300" />
+<img alt="Posts list and detail in landscape 2" src="./images/posts_screen_detail_landscape_2.png" width="300" />
+<img alt="Posts detail 1" src="./images/posts_screen_detail_1.png" width="300" />
+<img alt="Posts detail 2" src="./images/posts_screen_detail_2.png" width="300" />
 
 ## Authentication
 
