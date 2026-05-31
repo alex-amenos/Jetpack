@@ -10,6 +10,24 @@ It is the home screen where you can select some of experiments of this project.
 
 <img alt="Home screen" src="./images/home_screen.png" width="300" />
 
+## Posts
+
+Load posts from JsonPlaceholder Rest API.<br>
+Uses adaptive layouts to support both phone and tablet form factors.<br><br>
+
+This module is the most complete in the project and demonstrates modern Android architecture and robust testing practices:<br>
+
+- **Architecture**: MVI (Model-View-Intent) pattern.
+- **UI**: Built entirely with Jetpack Compose.
+- **Data Layer**: Offline-first architecture with Room database persistence. Cache-first strategy with network fallback.
+- **Background work**: Automatic background refresh every 24 hours.
+- **Error Handling**: Functional error handling using Arrow `Either` and typed errors.
+- **Testing**: Highly covered with JUnit 5 unit tests, Kotest `BehaviorSpec` BDD tests, and Compose snapshot testing using Roborazzi.
+
+<img alt="Posts screen 1" src="./images/posts_screen.png" width="300" />
+<img alt="Posts screen 2" src="./images/posts_screen_detail.png" width="300" />
+<img alt="Posts screen 3" src="./images/posts_screen_landscape.png" width="500" />
+
 ## Authentication
 
 Authentication form with SignUp and SignIn.<br><br>
@@ -38,23 +56,6 @@ More experiment info:<br>
 
 <img alt="Notifications screen" src="./images/notifications_screen.png" width="300" />
 
-## Posts
-
-Load posts from JsonPlaceholder Rest API<br><br>
-Uses adaptive layouts<br><br>
-More experiment info:<br>
-
-- Experiment with testing: unit test, snapshot tests
-- Offline-first architecture with Room database persistence
-- Automatic background refresh every 24 hours
-- Cache-first strategy with network fallback
-- Functional error handling with Arrow Either
-
-<img alt="Posts screen 1" src="./images/posts_screen.png" width="300" />
-<img alt="Posts screen 2" src="./images/posts_screen_detail.png" width="300" />
-
-<img alt="Posts screen 3" src="./images/posts_screen_landscape.png" width="500" />
-
 ## Location tracker
 
 User location tracking<br><br>
@@ -73,7 +74,7 @@ More experiment info:<br>
 
 <img alt="Ball clicker game" src="./images/game_ball_clicker_screen.png" width="300" />
 
-# File downloader
+## File downloader
 
 Download files using a [DownloadManager](https://developer.android.com/reference/android/app/DownloadManager)<br><br>
 More experiment info:<br>
