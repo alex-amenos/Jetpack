@@ -1,6 +1,6 @@
 package com.alxnophis.jetpack.posts.ui.composable
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onRoot
 import com.alxnophis.jetpack.posts.ui.composable.provider.PostsScreenPreviewProvider
 import com.alxnophis.jetpack.testing.screenshot.ScreenshotTestUtils.captureScreenshot
