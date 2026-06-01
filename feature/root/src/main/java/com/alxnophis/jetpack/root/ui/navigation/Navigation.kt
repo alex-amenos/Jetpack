@@ -38,7 +38,8 @@ fun Navigation(modifier: Modifier = Modifier) {
         NavDisplay(
             backStack = backStack,
             modifier = modifier,
-            sceneStrategy = rememberListDetailSceneStrategy(),
+            onBack = onBack,
+            sceneStrategies = listOf(rememberListDetailSceneStrategy()),
             entryDecorators =
                 listOf(
                     rememberSaveableStateHolderNavEntryDecorator(),
