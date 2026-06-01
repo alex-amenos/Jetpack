@@ -15,7 +15,6 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.alxnophis.jetpack.authentication.ui.composable.AuthenticationFeature
 import com.alxnophis.jetpack.authentication.ui.composable.AuthorizedFeature
-import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.filedownloader.ui.composable.FileDownloaderFeature
 import com.alxnophis.jetpack.game.ballclicker.ui.composable.BallClickerFeature
 import com.alxnophis.jetpack.home.domain.model.Feature
@@ -32,13 +31,12 @@ import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 @SuppressLint("ComposeModifierMissing")
 @Composable
 fun Navigation(modifier: Modifier = Modifier) {
-    AppTheme {
-        val backStack = rememberNavBackStack(Route.Home)
-        val onBack: () -> Unit = { backStack.removeLastOrNull() }
-        NavDisplay(
-            backStack = backStack,
-            modifier = modifier,
-            onBack = onBack,
+    val backStack = rememberNavBackStack(Route.Home)
+    val onBack: () -> Unit = { backStack.removeLastOrNull() }
+    NavDisplay(
+        backStack = backStack,
+        modifier = modifier,
+        onBack = onBack,
             sceneStrategies = listOf(rememberListDetailSceneStrategy()),
             entryDecorators =
                 listOf(
@@ -139,6 +137,5 @@ fun Navigation(modifier: Modifier = Modifier) {
                         )
                     }
                 },
-        )
-    }
+    )
 }
