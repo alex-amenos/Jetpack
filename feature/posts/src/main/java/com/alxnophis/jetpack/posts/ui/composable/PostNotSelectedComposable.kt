@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.posts.ui.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +27,9 @@ import com.alxnophis.jetpack.posts.R
 fun PostNotSelectedComposable(modifier: Modifier = Modifier) {
     AppTheme {
         Box(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
             contentAlignment = Alignment.Center,
         ) {
             Column(
@@ -36,7 +39,7 @@ fun PostNotSelectedComposable(modifier: Modifier = Modifier) {
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_error),
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.posts_cd_error_icon),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(48.dp),
                 )
