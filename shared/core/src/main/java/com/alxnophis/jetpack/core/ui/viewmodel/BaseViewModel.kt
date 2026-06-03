@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.core.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.updateAndGet
 import timber.log.Timber
@@ -13,7 +14,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     private val savedStateHandle: SavedStateHandle? = null,
 ) : ViewModel() {
     val currentUiState: State
-        get() = uiState.value
+        get() = _uiState.value
 
     @Suppress("PropertyName")
     protected val _uiState: MutableStateFlow<State> =
@@ -23,7 +24,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
                 .getOrNull() ?: initialUiState,
         )
 
-    open val uiState = _uiState.asStateFlow()
+    open val uiState: StateFlow<State> = _uiState.asStateFlow()
 
     /**
      * Handles each Event.
@@ -33,24 +34,14 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
     /**
      * Atomically updates state using [reduce].
      */
-    protected fun updateUiState(reduce: State.() -> State) =
-        _uiState
-            .updateAndGet { it.reduce() }
-            .also { newState ->
-                Timber.d("## Set new state: $newState")
-                persistUiState(newState)
-            }
+    protected fun updateUiState(reduce: State.() -> State) {
+        updateAndPersistState(reduce)
+    }
 
     /**
      * Atomically updates state using [reduce] and returns the new state.
      */
-    protected fun updateAndGetUiState(reduce: State.() -> State): State =
-        _uiState
-            .updateAndGet { it.reduce() }
-            .also { newState ->
-                Timber.d("## Set new state: $newState")
-                persistUiState(newState)
-            }
+    protected fun updateAndGetUiState(reduce: State.() -> State): State = updateAndPersistState(reduce)
 
     /**
      * Atomically updates state using [reduce] and returns the prior state.
@@ -58,13 +49,10 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
      */
     protected fun getPriorUiStateAndUpdate(reduce: State.() -> State): State {
         var oldState: State = _uiState.value
-        val newState =
-            _uiState.updateAndGet {
-                oldState = it
-                it.reduce()
-            }
-        Timber.d("## Set new state: $newState")
-        persistUiState(newState)
+        updateAndPersistState {
+            oldState = this
+            reduce()
+        }
         return oldState
     }
 
@@ -88,6 +76,14 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState>(
             )
         }
     }
+
+    private fun updateAndPersistState(reduce: State.() -> State): State =
+        _uiState
+            .updateAndGet { it.reduce() }
+            .also { newState ->
+                Timber.d("## Set new state: $newState")
+                persistUiState(newState)
+            }
 
     companion object {
         const val SAVED_STATE_HANDLE_UI_STATE_KEY = "savedStateHandleUiStateKey"

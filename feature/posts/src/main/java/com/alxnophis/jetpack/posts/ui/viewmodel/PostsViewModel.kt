@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.posts.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import arrow.optics.copy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostsError
@@ -9,6 +10,9 @@ import com.alxnophis.jetpack.posts.ui.contract.PostUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
 import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
+import com.alxnophis.jetpack.posts.ui.contract.error
+import com.alxnophis.jetpack.posts.ui.contract.posts
+import com.alxnophis.jetpack.posts.ui.contract.status
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -48,7 +52,9 @@ internal class PostsViewModel(
 
     private fun updatePosts() {
         updateUiState {
-            copy(status = PostsStatus.Loading)
+            copy {
+                PostsUiState.status set PostsStatus.Loading
+            }
         }
         viewModelScope.launch {
             postsRepository
@@ -56,18 +62,18 @@ internal class PostsViewModel(
                 .fold(
                     { error ->
                         updateUiState {
-                            copy(
-                                status = PostsStatus.Error,
-                                error = error.mapToUiError(),
-                            )
+                            copy {
+                                PostsUiState.status set PostsStatus.Error
+                                PostsUiState.error set error.mapToUiError()
+                            }
                         }
                     },
                     { posts: List<Post> ->
                         updateUiState {
-                            copy(
-                                status = PostsStatus.Success,
-                                posts = posts.toImmutableList(),
-                            )
+                            copy {
+                                PostsUiState.status set PostsStatus.Success
+                                PostsUiState.posts set posts.toImmutableList()
+                            }
                         }
                     },
                 )
@@ -84,10 +90,10 @@ internal class PostsViewModel(
 
     private fun dismissError() {
         updateUiState {
-            copy(
-                status = PostsStatus.Success,
-                error = null,
-            )
+            copy {
+                PostsUiState.status set PostsStatus.Success
+                PostsUiState.error set null
+            }
         }
     }
 }
