@@ -11,7 +11,7 @@ permissions:
 
 jobs:
 
-  quality_and_build_release:
+  build_and_sign_release:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Workflow Runs
