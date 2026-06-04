@@ -38,24 +38,3 @@ jobs:
       - name: Debug Unit tests
         run: ./gradlew koverHtmlReportDebug
 
-      - name: Assemble Release
-        env:
-          JETPACK_GOOGLE_MAPS_API_KEY: ${{ secrets.JETPACK_GOOGLE_MAPS_API_KEY }}
-        run: ./gradlew app:assembleRelease
-
-      - name: Sign Release APK
-        uses: ilharp/sign-android-release@v2
-        id: sign_app
-        with:
-          releaseDir: app/build/outputs/apk/release
-          signingKey: ${{ secrets.ALX_STORE_FILE }}
-          keyAlias: ${{ secrets.ALX_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.ALX_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.ALX_KEY_PASSWORD }}
-          buildToolsVersion: "36.1.0"
-
-      - name: Upload Release APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Signed Release APK
-          path: ${{steps.sign_app.outputs.signedFile}}
