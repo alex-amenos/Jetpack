@@ -67,7 +67,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 private fun rememberIsLocationEnabled(): Boolean {
-    val context = LocalContext.current
+    val context = LocalContext.current.applicationContext
     var isEnabled by remember {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         mutableStateOf(LocationManagerCompat.isLocationEnabled(locationManager))
@@ -117,8 +117,12 @@ internal fun LocationTrackerScreen(
             ),
         )
     }
-    LaunchedEffect(Unit) {
-        requestLocationPermissions()
+    var hasRequestedPermissions by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(hasRequestedPermissions) {
+        if (!hasRequestedPermissions) {
+            requestLocationPermissions()
+            hasRequestedPermissions = true
+        }
     }
     BackHandler {
         onEvent(LocationTrackerUiEvent.StopTrackingRequested)
