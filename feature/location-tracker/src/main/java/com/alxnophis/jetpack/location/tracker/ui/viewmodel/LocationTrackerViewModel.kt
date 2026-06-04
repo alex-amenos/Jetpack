@@ -3,15 +3,13 @@ package com.alxnophis.jetpack.location.tracker.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
-import com.alxnophis.jetpack.kotlin.constants.ZERO_DOUBLE
-import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
-import com.alxnophis.jetpack.kotlin.constants.ZERO_LONG
-import com.alxnophis.jetpack.location.tracker.data.model.Location
 import com.alxnophis.jetpack.location.tracker.data.model.LocationParameters
 import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
+import com.alxnophis.jetpack.location.tracker.ui.contract.hasRequestedPermissions
 import com.alxnophis.jetpack.location.tracker.ui.contract.isFineLocationPermissionGranted
+import com.alxnophis.jetpack.location.tracker.ui.contract.isFollowingUser
 import com.alxnophis.jetpack.location.tracker.ui.contract.lastKnownLocationData
 import com.alxnophis.jetpack.location.tracker.ui.contract.userLocationData
 import kotlinx.coroutines.flow.collectLatest
@@ -37,6 +35,24 @@ internal class LocationTrackerViewModel(
 
                 LocationTrackerUiEvent.GoBackRequested -> {
                     throw IllegalStateException("GoBackRequested not implemented")
+                }
+
+                LocationTrackerUiEvent.MapDraggedByGesture -> {
+                    _uiState.updateCopy {
+                        LocationTrackerUiState.isFollowingUser set false
+                    }
+                }
+
+                LocationTrackerUiEvent.FollowUserClicked -> {
+                    _uiState.updateCopy {
+                        LocationTrackerUiState.isFollowingUser set true
+                    }
+                }
+
+                LocationTrackerUiEvent.PermissionRequested -> {
+                    _uiState.updateCopy {
+                        LocationTrackerUiState.hasRequestedPermissions set true
+                    }
                 }
             }
         }
@@ -69,28 +85,17 @@ internal class LocationTrackerViewModel(
 
     private fun subscribeToLastKnownLocation() =
         viewModelScope.launch {
-            locationRepository.provideLastKnownLocationFlow().collectLatest { lastKnownLocation ->
-                _uiState.updateCopy {
-                    LocationTrackerUiState.lastKnownLocationData set lastKnownLocation
+            locationRepository
+                .provideLastKnownLocationFlow()
+                .collectLatest { lastKnownLocation ->
+                    _uiState.updateCopy {
+                        LocationTrackerUiState.lastKnownLocationData set lastKnownLocation
+                    }
                 }
-            }
         }
 
     override fun onCleared() {
         stopTrackUserLocation()
         super.onCleared()
-    }
-
-    private companion object {
-        val DEFAULT_LOCATION =
-            Location(
-                latitude = ZERO_DOUBLE,
-                longitude = ZERO_DOUBLE,
-                accuracy = ZERO_FLOAT,
-                altitude = ZERO_DOUBLE,
-                speed = ZERO_FLOAT,
-                bearing = ZERO_FLOAT,
-                time = ZERO_LONG,
-            )
     }
 }

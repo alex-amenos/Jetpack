@@ -12,21 +12,31 @@ internal sealed class LocationTrackerUiEvent : UiEvent {
     data object StopTrackingRequested : LocationTrackerUiEvent()
 
     data object GoBackRequested : LocationTrackerUiEvent()
+
+    data object MapDraggedByGesture : LocationTrackerUiEvent()
+
+    data object FollowUserClicked : LocationTrackerUiEvent()
+
+    data object PermissionRequested : LocationTrackerUiEvent()
 }
 
 @optics
 @Immutable
 internal data class LocationTrackerUiState(
     val isFineLocationPermissionGranted: Boolean,
-    val userLocationData: Location?,
+    val isFollowingUser: Boolean,
+    val hasRequestedPermissions: Boolean,
     val lastKnownLocationData: Location?,
+    val userLocationData: Location?,
 ) : UiState {
     internal companion object {
         val initialState =
             LocationTrackerUiState(
                 isFineLocationPermissionGranted = false,
-                userLocationData = null,
+                isFollowingUser = true,
+                hasRequestedPermissions = false,
                 lastKnownLocationData = null,
+                userLocationData = null,
             )
     }
 }
