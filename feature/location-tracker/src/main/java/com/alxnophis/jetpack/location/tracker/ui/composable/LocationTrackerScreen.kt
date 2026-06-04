@@ -1,6 +1,11 @@
 package com.alxnophis.jetpack.location.tracker.ui.composable
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.location.LocationManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,12 +37,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.core.location.LocationManagerCompat
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_DOUBLE
@@ -53,6 +61,36 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+
+@Composable
+private fun rememberIsLocationEnabled(): Boolean {
+    val context = LocalContext.current
+    var isEnabled by remember {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        mutableStateOf(LocationManagerCompat.isLocationEnabled(locationManager))
+    }
+    DisposableEffect(context) {
+        val receiver =
+            object : BroadcastReceiver() {
+                override fun onReceive(
+                    context: Context?,
+                    intent: Intent?,
+                ) {
+                    if (intent?.action == LocationManager.PROVIDERS_CHANGED_ACTION) {
+                        val locationManager = context?.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+                        if (locationManager != null) {
+                            isEnabled = LocationManagerCompat.isLocationEnabled(locationManager)
+                        }
+                    }
+                }
+            }
+        context.registerReceiver(receiver, IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION))
+        onDispose {
+            context.unregisterReceiver(receiver)
+        }
+    }
+    return isEnabled
+}
 
 @Composable
 internal fun LocationTrackerScreen(
@@ -86,6 +124,7 @@ internal fun LocationTrackerScreen(
     AppTheme {
         MapComposable(
             state = uiState,
+            isDeviceLocationEnabled = rememberIsLocationEnabled(),
             onEvent = onEvent,
             modifier = Modifier.fillMaxSize(),
         )
@@ -95,6 +134,7 @@ internal fun LocationTrackerScreen(
 @Composable
 private fun MapComposable(
     state: LocationTrackerUiState,
+    isDeviceLocationEnabled: Boolean,
     onEvent: (LocationTrackerUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -171,7 +211,7 @@ private fun MapComposable(
                 onEvent(LocationTrackerUiEvent.GoBackRequested)
             },
         )
-        if (state.isFineLocationPermissionGranted) {
+        if (state.isFineLocationPermissionGranted && isDeviceLocationEnabled) {
             FollowUserIconButton(
                 modifier =
                     Modifier
