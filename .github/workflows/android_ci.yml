@@ -38,10 +38,9 @@ jobs:
       - name: Debug Unit tests
         run: ./gradlew koverHtmlReportDebug
 
-      - name: Create gradle.properties with API key
-        run: echo "JETPACK_GOOGLE_MAPS_API_KEY=${{ secrets.JETPACK_GOOGLE_MAPS_API_KEY }}" >> gradle.properties
-
       - name: Assemble Release
+        env:
+          JETPACK_GOOGLE_MAPS_API_KEY: ${{ secrets.JETPACK_GOOGLE_MAPS_API_KEY }}
         run: ./gradlew app:assembleRelease
 
       - name: Sign Release APK
