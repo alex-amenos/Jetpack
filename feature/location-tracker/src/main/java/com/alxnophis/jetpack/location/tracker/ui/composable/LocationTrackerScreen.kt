@@ -154,7 +154,9 @@ private fun MapComposable(
         remember(state.userLocationData, state.lastKnownLocationData) {
             state.userLocationData ?: state.lastKnownLocationData
         }
-    val position = locationData?.let { LatLng(it.latitude, it.longitude) } ?: LatLng(ZERO_DOUBLE, ZERO_DOUBLE)
+    val position = remember(locationData) {
+        locationData?.let { LatLng(it.latitude, it.longitude) } ?: LatLng(ZERO_DOUBLE, ZERO_DOUBLE)
+    }
     val cameraPositionState =
         rememberCameraPositionState {
             this.position = CameraPosition.fromLatLngZoom(position, 15f)
@@ -175,10 +177,13 @@ private fun MapComposable(
         }
     }
     // Update camera position when location changes
-    LaunchedEffect(position) {
+    LaunchedEffect(position, state.isFollowingUser) {
         if (state.isFollowingUser) {
-            val zoom = if (cameraPositionState.position.zoom != 0f) cameraPositionState.position.zoom else 15f
-            cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(position, zoom))
+            val currentLatLng = cameraPositionState.position.target
+            if (currentLatLng.latitude != position.latitude || currentLatLng.longitude != position.longitude) {
+                val zoom = if (cameraPositionState.position.zoom != 0f) cameraPositionState.position.zoom else 15f
+                cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(position, zoom))
+            }
         }
     }
     val coroutineScope = rememberCoroutineScope()
