@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.LocationSearching
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -159,7 +160,12 @@ private fun MapComposable(
             }
         }
         GoBackIconButton(
-            modifier = Modifier.align(Alignment.TopStart),
+            modifier =
+                Modifier
+                    .align(Alignment.TopStart)
+                    .padding(mediumPadding)
+                    .padding(WindowInsets.safeDrawing.asPaddingValues())
+                    .size(48.dp),
             onGoBack = {
                 onEvent(LocationTrackerUiEvent.StopTrackingRequested)
                 onEvent(LocationTrackerUiEvent.GoBackRequested)
@@ -167,7 +173,12 @@ private fun MapComposable(
         )
         if (state.isFineLocationPermissionGranted) {
             FollowUserIconButton(
-                modifier = Modifier.align(Alignment.BottomEnd),
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(mediumPadding)
+                        .padding(WindowInsets.safeDrawing.asPaddingValues())
+                        .size(48.dp),
                 isFollowingUser = isFollowingUser,
                 onClick = {
                     isFollowingUser = true
@@ -201,17 +212,15 @@ private fun GoBackIconButton(
     modifier: Modifier = Modifier,
 ) {
     IconButton(
-        modifier =
-            modifier
-                .padding(mediumPadding)
-                .padding(WindowInsets.safeDrawing.asPaddingValues())
-                .background(color = Color.White, shape = CircleShape),
+        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.White),
+        modifier = modifier,
         onClick = onGoBack,
     ) {
         Icon(
             painter = painterResource(id = com.alxnophis.jetpack.core.R.drawable.ic_arrow_back),
             contentDescription = stringResource(id = R.string.location_tracker_cd_go_back),
             tint = Color.Black,
+            modifier = Modifier.size(28.dp),
         )
     }
 }
@@ -223,15 +232,9 @@ private fun FollowUserIconButton(
     modifier: Modifier = Modifier,
 ) {
     IconButton(
+        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.White),
         onClick = onClick,
-        modifier =
-            modifier
-                .padding(mediumPadding)
-                .padding(WindowInsets.safeDrawing.asPaddingValues())
-                .background(
-                    color = Color.White,
-                    shape = CircleShape,
-                ),
+        modifier = modifier,
     ) {
         Icon(
             imageVector =
@@ -242,6 +245,7 @@ private fun FollowUserIconButton(
                 },
             contentDescription = stringResource(id = R.string.location_tracker_current_location),
             tint = if (isFollowingUser) MaterialTheme.colorScheme.primary else Color.Black,
+            modifier = Modifier.size(28.dp),
         )
     }
 }
