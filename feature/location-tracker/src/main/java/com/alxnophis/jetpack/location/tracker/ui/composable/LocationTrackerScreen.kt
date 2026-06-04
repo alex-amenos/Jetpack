@@ -32,6 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,6 +53,7 @@ import com.alxnophis.jetpack.location.tracker.R
 import com.alxnophis.jetpack.location.tracker.ui.composable.provider.UserLocationPreviewProvider
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraMoveStartedReason
@@ -59,8 +61,9 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerComposable
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
+import kotlinx.coroutines.launch
 
 @Composable
 private fun rememberIsLocationEnabled(): Boolean {
@@ -149,6 +152,15 @@ private fun MapComposable(
             this.position = CameraPosition.fromLatLngZoom(position, 15f)
         }
     var isFollowingUser by rememberSaveable { mutableStateOf(true) }
+    val mapProperties = remember { MapProperties(isMyLocationEnabled = false) }
+    val mapUiSettings =
+        remember {
+            MapUiSettings(
+                myLocationButtonEnabled = false,
+                mapToolbarEnabled = false,
+                zoomControlsEnabled = false,
+            )
+        }
     // Stop following if user drags map
     LaunchedEffect(cameraPositionState.isMoving) {
         if (cameraPositionState.isMoving && cameraPositionState.cameraMoveStartedReason == CameraMoveStartedReason.GESTURE) {
@@ -158,9 +170,11 @@ private fun MapComposable(
     // Update camera position when location changes
     LaunchedEffect(position) {
         if (isFollowingUser) {
-            cameraPositionState.position = CameraPosition.fromLatLngZoom(position, 15f)
+            val zoom = if (cameraPositionState.position.zoom != 0f) cameraPositionState.position.zoom else 15f
+            cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(position, zoom))
         }
     }
+    val coroutineScope = rememberCoroutineScope()
     Box(modifier) {
         if (isInspectionMode) {
             Box(
@@ -179,18 +193,15 @@ private fun MapComposable(
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState,
-                properties = MapProperties(isMyLocationEnabled = false),
-                uiSettings =
-                    MapUiSettings(
-                        myLocationButtonEnabled = false,
-                        mapToolbarEnabled = false,
-                        zoomControlsEnabled = false,
-                    ),
+                properties = mapProperties,
+                uiSettings = mapUiSettings,
                 contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
             ) {
                 if (locationData != null) {
+                    val markerState = rememberMarkerState(position = position)
+                    markerState.position = position
                     MarkerComposable(
-                        state = MarkerState(position = position),
+                        state = markerState,
                         title = stringResource(id = R.string.location_tracker_current_location),
                         snippet = "${locationData.latitude}, ${locationData.longitude}",
                     ) {
@@ -222,7 +233,10 @@ private fun MapComposable(
                 isFollowingUser = isFollowingUser,
                 onClick = {
                     isFollowingUser = true
-                    cameraPositionState.position = CameraPosition.fromLatLngZoom(position, 15f)
+                    coroutineScope.launch {
+                        val zoom = if (cameraPositionState.position.zoom != 0f) cameraPositionState.position.zoom else 15f
+                        cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(position, zoom))
+                    }
                 },
             )
         }
