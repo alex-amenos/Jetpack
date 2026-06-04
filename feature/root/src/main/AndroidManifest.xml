@@ -3,6 +3,7 @@
     <application>
         <activity
             android:name=".ui.RootActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true"
             android:launchMode="singleInstance"
             android:theme="@style/CoreTheme"

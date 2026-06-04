@@ -10,4 +10,10 @@
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         tools:node="replace" />
 
+    <application>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${JETPACK_GOOGLE_MAPS_API_KEY}" />
+    </application>
+
 </manifest>

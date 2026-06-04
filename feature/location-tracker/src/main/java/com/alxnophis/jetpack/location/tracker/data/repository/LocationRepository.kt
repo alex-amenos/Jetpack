@@ -1,8 +1,8 @@
 package com.alxnophis.jetpack.location.tracker.data.repository
 
 import arrow.core.Either
-import com.alxnophis.jetpack.location.tracker.domain.model.Location
-import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
+import com.alxnophis.jetpack.location.tracker.data.model.Location
+import com.alxnophis.jetpack.location.tracker.data.model.LocationParameters
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 

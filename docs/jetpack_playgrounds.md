@@ -73,10 +73,16 @@ More experiment info:<br>
 
 ## Location tracker
 
-User location tracking<br><br>
-More experiment info:<br>
+User location tracking with an integrated Google Maps UI, custom UI overlays, and automatic camera framing.
 
-- Experiment without testing.
+More experiment info:
+
+- **Architecture**: MVI (Model-View-Intent) pattern with `LocationRepository` abstraction.
+- **UI**: Jetpack Compose map rendering via `maps-compose`. Edge-to-edge support with safe padding.
+- **Location**: Tracks user fine/coarse location dynamically utilizing `FusedLocationProviderClient`.
+- **Map Interaction**: Auto-follows the user, smoothly animating the camera. Panning the map manually suspends the auto-follow mode until the user clicks the track button.
+- **State Handling**: Uses Arrow Optics for MVI immutable state manipulation. Uses `BroadcastReceiver` inside a `DisposableEffect` to seamlessly handle external system location toggle changes without memory leaks.
+- **Testing**: Experiment without testing.
 
 <img alt="Location permissions" src="./images/location_tracker_screen_1.png" width="300" /> <img alt="Location permissions" src="./images/location_tracker_screen_2.png" width="300" />
 

@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.location.tracker.domain.model
+package com.alxnophis.jetpack.location.tracker.data.model
 
 data class Location(
     val latitude: Double,

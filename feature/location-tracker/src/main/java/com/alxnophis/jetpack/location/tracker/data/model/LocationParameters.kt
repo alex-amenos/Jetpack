@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.location.tracker.domain.model
+package com.alxnophis.jetpack.location.tracker.data.model
 
 private const val MINIMUM_DISTANCE_IN_METERS = 50F
 private const val MINIMUM_TIME_IN_MILLISECONDS = 1000L

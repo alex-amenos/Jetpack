@@ -6,12 +6,6 @@ import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSource
 import com.alxnophis.jetpack.location.tracker.data.data.LocationDataSourceImpl
 import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
 import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepositoryImpl
-import com.alxnophis.jetpack.location.tracker.domain.usecase.LastKnownLocationFlowUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationAvailableUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationFlowUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationProviderUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProviderUseCase
 import com.alxnophis.jetpack.location.tracker.ui.viewmodel.LocationTrackerViewModel
 import com.google.android.gms.location.LocationServices
 import org.koin.android.ext.koin.androidContext
@@ -29,11 +23,5 @@ val locationTrackerModule: Module =
             )
         }
         factory<LocationRepository> { LocationRepositoryImpl(get()) }
-        factory { LocationAvailableUseCase(get()) }
-        factory { LocationFlowUseCase(get()) }
-        factory { LastKnownLocationFlowUseCase(get()) }
-        factory { ProvideLastKnownLocationUseCase(get()) }
-        factory { StartLocationProviderUseCase(get()) }
-        factory { StopLocationProviderUseCase(get()) }
-        viewModel { LocationTrackerViewModel(get(), get(), get(), get()) }
+        viewModel { LocationTrackerViewModel(get()) }
     }

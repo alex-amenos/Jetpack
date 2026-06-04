@@ -2,30 +2,21 @@ package com.alxnophis.jetpack.location.tracker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.optics.updateCopy
-import com.alxnophis.jetpack.core.base.constants.BREAK_LINE
-import com.alxnophis.jetpack.core.base.constants.COMA
-import com.alxnophis.jetpack.core.base.constants.PARENTHESES_CLOSED
-import com.alxnophis.jetpack.core.base.constants.PARENTHESES_OPENED
-import com.alxnophis.jetpack.core.base.constants.WHITE_SPACE
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
-import com.alxnophis.jetpack.location.tracker.domain.model.Location
-import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationFlowUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationProviderUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProviderUseCase
+import com.alxnophis.jetpack.location.tracker.data.model.LocationParameters
+import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
+import com.alxnophis.jetpack.location.tracker.ui.contract.hasRequestedPermissions
 import com.alxnophis.jetpack.location.tracker.ui.contract.isFineLocationPermissionGranted
-import com.alxnophis.jetpack.location.tracker.ui.contract.lastKnownLocation
-import com.alxnophis.jetpack.location.tracker.ui.contract.userLocation
+import com.alxnophis.jetpack.location.tracker.ui.contract.isFollowingUser
+import com.alxnophis.jetpack.location.tracker.ui.contract.lastKnownLocationData
+import com.alxnophis.jetpack.location.tracker.ui.contract.userLocationData
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 internal class LocationTrackerViewModel(
-    private val startLocationProviderUseCase: StartLocationProviderUseCase,
-    private val stopLocationProviderUseCase: StopLocationProviderUseCase,
-    private val locationStateUseCase: LocationFlowUseCase,
-    private val lastKnownLocationUseCase: ProvideLastKnownLocationUseCase,
+    private val locationRepository: LocationRepository,
     initialState: LocationTrackerUiState = LocationTrackerUiState.initialState,
 ) : BaseViewModel<LocationTrackerUiEvent, LocationTrackerUiState>(initialState) {
     override fun handleEvent(event: LocationTrackerUiEvent) {
@@ -42,7 +33,27 @@ internal class LocationTrackerViewModel(
                     stopTrackUserLocation()
                 }
 
-                LocationTrackerUiEvent.GoBackRequested -> throw IllegalStateException("GoBackRequested not implemented")
+                LocationTrackerUiEvent.GoBackRequested -> {
+                    throw IllegalStateException("GoBackRequested not implemented")
+                }
+
+                LocationTrackerUiEvent.MapDraggedByGesture -> {
+                    _uiState.updateCopy {
+                        LocationTrackerUiState.isFollowingUser set false
+                    }
+                }
+
+                LocationTrackerUiEvent.FollowUserClicked -> {
+                    _uiState.updateCopy {
+                        LocationTrackerUiState.isFollowingUser set true
+                    }
+                }
+
+                LocationTrackerUiEvent.PermissionRequested -> {
+                    _uiState.updateCopy {
+                        LocationTrackerUiState.hasRequestedPermissions set true
+                    }
+                }
             }
         }
     }
@@ -55,40 +66,33 @@ internal class LocationTrackerViewModel(
 
     private fun startTrackingUserLocation() =
         viewModelScope.launch {
-            startLocationProviderUseCase()
+            locationRepository.startLocationProvider(LocationParameters())
         }
 
     private fun stopTrackUserLocation() =
         viewModelScope.launch {
-            stopLocationProviderUseCase()
+            locationRepository.stopLocationProvider()
         }
 
     private fun subscribeToUserLocation() =
         viewModelScope.launch {
-            locationStateUseCase().collectLatest { locationState ->
+            locationRepository.locationSharedFlow.collectLatest { locationState ->
                 _uiState.updateCopy {
-                    LocationTrackerUiState.userLocation set locationState.parseToString()
+                    LocationTrackerUiState.userLocationData set locationState
                 }
             }
         }
 
     private fun subscribeToLastKnownLocation() =
         viewModelScope.launch {
-            lastKnownLocationUseCase().collectLatest { lastKnownLocation ->
-                lastKnownLocation?.let { location ->
+            locationRepository
+                .provideLastKnownLocationFlow()
+                .collectLatest { lastKnownLocation ->
                     _uiState.updateCopy {
-                        LocationTrackerUiState.lastKnownLocation set location.parseToString()
+                        LocationTrackerUiState.lastKnownLocationData set lastKnownLocation
                     }
                 }
-            }
         }
-
-    private fun Location.parseToString() =
-        this
-            .toString()
-            .replace(PARENTHESES_OPENED, "($BREAK_LINE$WHITE_SPACE")
-            .replace(PARENTHESES_CLOSED, "$BREAK_LINE$PARENTHESES_CLOSED")
-            .replace(COMA, "$COMA$BREAK_LINE")
 
     override fun onCleared() {
         stopTrackUserLocation()

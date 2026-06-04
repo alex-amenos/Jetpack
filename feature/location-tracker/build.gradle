@@ -1,12 +1,20 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 
+def googleMapsApiKey = (project.findProperty("JETPACK_GOOGLE_MAPS_API_KEY") ?: "").toString()
+
 android {
     resourcePrefix = 'location_tracker'
     namespace = 'com.alxnophis.jetpack.location.tracker'
+
+    defaultConfig {
+        manifestPlaceholders = [JETPACK_GOOGLE_MAPS_API_KEY: googleMapsApiKey,]
+    }
 }
 
 dependencies {
     implementation libs.androidx.work
     implementation libs.google.play.services.location
+    implementation libs.google.play.services.maps
+    implementation libs.google.maps.compose
     implementation libs.koin.android.work.manager
 }
