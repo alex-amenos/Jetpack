@@ -26,6 +26,8 @@ com-squareup-retrofit2 = "3.0.0"
 google-android-material = "1.12.0"
 google-ksp = "2.3.6"
 google-play-services-location = "21.3.0"
+google-play-services-maps = "19.0.0"
+google-maps-compose = "4.4.1"
 gradle-test-logger-plugin = "4.0.0"
 junit_bom = "5.13.2"
 kluent = "1.73"
@@ -110,6 +112,8 @@ chucker-release = { module = "com.github.chuckerteam.chucker:library-no-op", ver
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 google-android-material = { module = "com.google.android.material:material", version.ref = "google-android-material" }
 google-play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "google-play-services-location" }
+google-play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-play-services-maps" }
+google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 gradle-test-logger-plugin = { module = "com.adarshr:gradle-test-logger-plugin", version.ref = "gradle-test-logger-plugin" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit_bom" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }

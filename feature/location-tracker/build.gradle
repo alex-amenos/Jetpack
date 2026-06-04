@@ -1,12 +1,28 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { instr ->
+        localProperties.load(instr)
+    }
+}
+
 android {
     resourcePrefix = 'location_tracker'
     namespace = 'com.alxnophis.jetpack.location.tracker'
+    
+    defaultConfig {
+        manifestPlaceholders = [
+            JETPACK_GOOGLE_MAPS_API_KEY: localProperties.getProperty("JETPACK_GOOGLE_MAPS_API_KEY", "")
+        ]
+    }
 }
 
 dependencies {
     implementation libs.androidx.work
     implementation libs.google.play.services.location
+    implementation libs.google.play.services.maps
+    implementation libs.google.maps.compose
     implementation libs.koin.android.work.manager
 }

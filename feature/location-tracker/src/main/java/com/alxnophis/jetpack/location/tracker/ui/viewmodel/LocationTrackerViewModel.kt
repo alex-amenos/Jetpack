@@ -2,12 +2,10 @@ package com.alxnophis.jetpack.location.tracker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import arrow.optics.updateCopy
-import com.alxnophis.jetpack.core.base.constants.BREAK_LINE
-import com.alxnophis.jetpack.core.base.constants.COMA
-import com.alxnophis.jetpack.core.base.constants.PARENTHESES_CLOSED
-import com.alxnophis.jetpack.core.base.constants.PARENTHESES_OPENED
-import com.alxnophis.jetpack.core.base.constants.WHITE_SPACE
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.kotlin.constants.ZERO_DOUBLE
+import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
+import com.alxnophis.jetpack.kotlin.constants.ZERO_LONG
 import com.alxnophis.jetpack.location.tracker.domain.model.Location
 import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationFlowUseCase
 import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
@@ -16,8 +14,8 @@ import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProvide
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
 import com.alxnophis.jetpack.location.tracker.ui.contract.isFineLocationPermissionGranted
-import com.alxnophis.jetpack.location.tracker.ui.contract.lastKnownLocation
-import com.alxnophis.jetpack.location.tracker.ui.contract.userLocation
+import com.alxnophis.jetpack.location.tracker.ui.contract.lastKnownLocationData
+import com.alxnophis.jetpack.location.tracker.ui.contract.userLocationData
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -42,7 +40,9 @@ internal class LocationTrackerViewModel(
                     stopTrackUserLocation()
                 }
 
-                LocationTrackerUiEvent.GoBackRequested -> throw IllegalStateException("GoBackRequested not implemented")
+                LocationTrackerUiEvent.GoBackRequested -> {
+                    throw IllegalStateException("GoBackRequested not implemented")
+                }
             }
         }
     }
@@ -67,7 +67,7 @@ internal class LocationTrackerViewModel(
         viewModelScope.launch {
             locationStateUseCase().collectLatest { locationState ->
                 _uiState.updateCopy {
-                    LocationTrackerUiState.userLocation set locationState.parseToString()
+                    LocationTrackerUiState.userLocationData set locationState
                 }
             }
         }
@@ -75,23 +75,27 @@ internal class LocationTrackerViewModel(
     private fun subscribeToLastKnownLocation() =
         viewModelScope.launch {
             lastKnownLocationUseCase().collectLatest { lastKnownLocation ->
-                lastKnownLocation?.let { location ->
-                    _uiState.updateCopy {
-                        LocationTrackerUiState.lastKnownLocation set location.parseToString()
-                    }
+                _uiState.updateCopy {
+                    LocationTrackerUiState.lastKnownLocationData set lastKnownLocation ?: DEFAULT_LOCATION
                 }
             }
         }
 
-    private fun Location.parseToString() =
-        this
-            .toString()
-            .replace(PARENTHESES_OPENED, "($BREAK_LINE$WHITE_SPACE")
-            .replace(PARENTHESES_CLOSED, "$BREAK_LINE$PARENTHESES_CLOSED")
-            .replace(COMA, "$COMA$BREAK_LINE")
-
     override fun onCleared() {
         stopTrackUserLocation()
         super.onCleared()
+    }
+
+    private companion object {
+        val DEFAULT_LOCATION =
+            Location(
+                latitude = ZERO_DOUBLE,
+                longitude = ZERO_DOUBLE,
+                accuracy = ZERO_FLOAT,
+                altitude = ZERO_DOUBLE,
+                speed = ZERO_FLOAT,
+                bearing = ZERO_FLOAT,
+                time = ZERO_LONG,
+            )
     }
 }

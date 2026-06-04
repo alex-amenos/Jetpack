@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
-import com.alxnophis.jetpack.kotlin.constants.EMPTY
+import com.alxnophis.jetpack.location.tracker.domain.model.Location
 
 internal sealed class LocationTrackerUiEvent : UiEvent {
     data object FineLocationPermissionGrantedUi : LocationTrackerUiEvent()
@@ -18,15 +18,15 @@ internal sealed class LocationTrackerUiEvent : UiEvent {
 @Immutable
 internal data class LocationTrackerUiState(
     val isFineLocationPermissionGranted: Boolean,
-    val userLocation: String,
-    val lastKnownLocation: String,
+    val userLocationData: Location?,
+    val lastKnownLocationData: Location?,
 ) : UiState {
     internal companion object {
         val initialState =
             LocationTrackerUiState(
                 isFineLocationPermissionGranted = false,
-                userLocation = EMPTY,
-                lastKnownLocation = EMPTY,
+                userLocationData = null,
+                lastKnownLocationData = null,
             )
     }
 }

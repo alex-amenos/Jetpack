@@ -4,101 +4,44 @@ import android.Manifest
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
-import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
-import com.alxnophis.jetpack.core.ui.theme.largePadding
-import com.alxnophis.jetpack.core.ui.theme.mediumPadding
-import com.alxnophis.jetpack.core.ui.theme.smallPadding
+import com.alxnophis.jetpack.kotlin.constants.ZERO_DOUBLE
 import com.alxnophis.jetpack.location.tracker.R
 import com.alxnophis.jetpack.location.tracker.ui.composable.provider.UserLocationPreviewProvider
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 internal fun LocationTrackerScreen(
     uiState: LocationTrackerUiState,
     onEvent: (LocationTrackerUiEvent) -> Unit,
 ) {
-    BackHandler {
-        onEvent(LocationTrackerUiEvent.StopTrackingRequested)
-        onEvent(LocationTrackerUiEvent.GoBackRequested)
-    }
-    AppTheme {
-        Scaffold(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
-            topBar = {
-                CoreTopBar(
-                    modifier = Modifier.fillMaxWidth(),
-                    title = stringResource(id = R.string.location_tracker_title),
-                    onBack = {
-                        onEvent(LocationTrackerUiEvent.StopTrackingRequested)
-                        onEvent(LocationTrackerUiEvent.GoBackRequested)
-                    },
-                )
-            },
-            contentWindowInsets = WindowInsets.safeDrawing,
-        ) { paddingValues ->
-            if (uiState.isFineLocationPermissionGranted) {
-                UserLocation(
-                    state = uiState,
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
-                )
-            } else {
-                LocationPermission(
-                    handleEvent = onEvent,
-                    modifier =
-                        Modifier
-                            .padding(paddingValues)
-                            .fillMaxSize()
-                            .padding(mediumPadding),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun LocationPermission(
-    handleEvent: LocationTrackerUiEvent.() -> Unit,
-    modifier: Modifier = Modifier,
-) {
     val permissionLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions(),
             onResult = { permissions: Map<String, Boolean> ->
                 if (permissions.values.all { it }) {
-                    LocationTrackerUiEvent.FineLocationPermissionGrantedUi.handleEvent()
+                    onEvent(LocationTrackerUiEvent.FineLocationPermissionGrantedUi)
                 }
             },
         )
@@ -110,66 +53,63 @@ private fun LocationPermission(
             ),
         )
     }
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Spacer(modifier = Modifier.height(25.dp))
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Justify,
-            text = stringResource(R.string.location_tracker_feature_require_permission),
-        )
-        Spacer(modifier = Modifier.height(mediumPadding + 25.dp))
-        CoreButtonMajor(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { requestLocationPermissions() },
-            text = stringResource(R.string.location_tracker_allow_fine_location),
+    LaunchedEffect(Unit) {
+        requestLocationPermissions()
+    }
+    BackHandler {
+        onEvent(LocationTrackerUiEvent.StopTrackingRequested)
+        onEvent(LocationTrackerUiEvent.GoBackRequested)
+    }
+    AppTheme {
+        MapComposable(
+            state = uiState,
+            onEvent = onEvent,
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
 
 @Composable
-private fun UserLocation(
+private fun MapComposable(
     state: LocationTrackerUiState,
+    onEvent: (LocationTrackerUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier) {
-        Text(
-            modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 16.sp,
-            text = stringResource(id = R.string.location_tracker_last_known_location),
-        )
-        Text(
-            modifier =
-                Modifier
-                    .wrapContentSize()
-                    .padding(largePadding),
-            text =
-                state
-                    .lastKnownLocation
-                    .ifEmpty { stringResource(id = R.string.location_tracker_location_not_available) },
-        )
-        Text(
-            modifier = Modifier.padding(start = mediumPadding, end = mediumPadding, top = mediumPadding, bottom = smallPadding),
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 16.sp,
-            text = stringResource(id = R.string.location_tracker_current_location),
-        )
-        Text(
-            modifier =
-                Modifier
-                    .wrapContentSize()
-                    .padding(mediumPadding),
-            text =
-                state
-                    .userLocation
-                    .ifEmpty { stringResource(id = R.string.location_tracker_location_not_available) },
-        )
+    val locationData =
+        remember(state.userLocationData, state.lastKnownLocationData) {
+            state.userLocationData ?: state.lastKnownLocationData
+        }
+    val position = locationData?.let { LatLng(it.latitude, it.longitude) } ?: LatLng(ZERO_DOUBLE, ZERO_DOUBLE)
+    val cameraPositionState =
+        rememberCameraPositionState {
+            this.position = CameraPosition.fromLatLngZoom(position, 15f)
+        }
+    // Update camera position when location changes
+    LaunchedEffect(position) {
+        cameraPositionState.position = CameraPosition.fromLatLngZoom(position, 15f)
+    }
+    Box(modifier) {
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState = cameraPositionState,
+            properties = MapProperties(isMyLocationEnabled = state.isFineLocationPermissionGranted),
+            uiSettings =
+                MapUiSettings(
+                    myLocationButtonEnabled = true,
+                    mapToolbarEnabled = false,
+                    zoomControlsEnabled = false,
+                ),
+            contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+        ) {
+            if (locationData != null) {
+                Marker(
+                    state = MarkerState(position = position),
+                    title = stringResource(id = R.string.location_tracker_current_location),
+                    contentDescription = stringResource(id = R.string.location_tracker_current_location),
+                    snippet = "${locationData.latitude}, ${locationData.longitude}",
+                )
+            }
+        }
     }
 }
 
