@@ -45,7 +45,7 @@ jobs:
 
       - name: Decode Keystore
         run: |
-          echo "${{ secrets.ALX_STORE_FILE }}" | base64 -d > keystore.jks
+          echo "${{ secrets.STORE_FILE }}" | base64 -d > keystore.jks
 
       - name: Sign Release APK
         uses: ilharp/sign-android-release@v1
@@ -58,7 +58,6 @@ jobs:
           keyPassword: ${{ secrets.KEY_PASSWORD }}
           buildToolsVersion: "36.0.0"
 
-      # Example use of `signedReleaseFile` output -- not needed
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
