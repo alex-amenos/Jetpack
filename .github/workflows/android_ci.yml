@@ -38,6 +38,9 @@ jobs:
       - name: Debug Unit tests
         run: ./gradlew koverHtmlReportDebug
 
+      - name: Create local.properties with API key
+        run: echo "JETPACK_GOOGLE_MAPS_API_KEY=${{ secrets.JETPACK_GOOGLE_MAPS_API_KEY }}" >> local.properties
+
       - name: Assemble Release
         run: ./gradlew app:assembleRelease
 
@@ -47,10 +50,10 @@ jobs:
         id: sign_app
         with:
           releaseDir: app/build/outputs/apk/release
-          signingKey: ${{ secrets.ALX_STORE_FILE }}
-          keyAlias: ${{ secrets.ALX_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.ALX_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.ALX_KEY_PASSWORD }}
+          signingKey: ${{ secrets.STORE_FILE }}
+          keyAlias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
           buildToolsVersion: "36.0.0"
 
       # Example use of `signedReleaseFile` output -- not needed
