@@ -43,13 +43,16 @@ jobs:
           JETPACK_GOOGLE_MAPS_API_KEY: ${{ secrets.JETPACK_GOOGLE_MAPS_API_KEY }}
         run: ./gradlew app:assembleRelease
 
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.ALX_STORE_FILE }}" | base64 -d > keystore.jks
+
       - name: Sign Release APK
         uses: ilharp/sign-android-release@v1
-        # ID used to access action output
         id: sign_app
         with:
           releaseDir: app/build/outputs/apk/release
-          signingKey: ${{ secrets.STORE_FILE }}
+          signingKey: keystore.jks
           keyAlias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
