@@ -6,8 +6,8 @@ import android.os.Looper
 import androidx.core.location.LocationManagerCompat
 import arrow.core.Either
 import arrow.core.left
-import com.alxnophis.jetpack.location.tracker.domain.model.Location
-import com.alxnophis.jetpack.location.tracker.domain.model.LocationParameters
+import com.alxnophis.jetpack.location.tracker.data.model.Location
+import com.alxnophis.jetpack.location.tracker.data.model.LocationParameters
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest

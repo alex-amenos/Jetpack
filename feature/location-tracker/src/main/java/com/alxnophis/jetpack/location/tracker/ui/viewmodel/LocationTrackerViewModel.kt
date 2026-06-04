@@ -6,11 +6,9 @@ import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.ZERO_DOUBLE
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_LONG
-import com.alxnophis.jetpack.location.tracker.domain.model.Location
-import com.alxnophis.jetpack.location.tracker.domain.usecase.LocationFlowUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.ProvideLastKnownLocationUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StartLocationProviderUseCase
-import com.alxnophis.jetpack.location.tracker.domain.usecase.StopLocationProviderUseCase
+import com.alxnophis.jetpack.location.tracker.data.model.Location
+import com.alxnophis.jetpack.location.tracker.data.model.LocationParameters
+import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
 import com.alxnophis.jetpack.location.tracker.ui.contract.isFineLocationPermissionGranted
@@ -20,10 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 internal class LocationTrackerViewModel(
-    private val startLocationProviderUseCase: StartLocationProviderUseCase,
-    private val stopLocationProviderUseCase: StopLocationProviderUseCase,
-    private val locationStateUseCase: LocationFlowUseCase,
-    private val lastKnownLocationUseCase: ProvideLastKnownLocationUseCase,
+    private val locationRepository: LocationRepository,
     initialState: LocationTrackerUiState = LocationTrackerUiState.initialState,
 ) : BaseViewModel<LocationTrackerUiEvent, LocationTrackerUiState>(initialState) {
     override fun handleEvent(event: LocationTrackerUiEvent) {
@@ -55,17 +50,17 @@ internal class LocationTrackerViewModel(
 
     private fun startTrackingUserLocation() =
         viewModelScope.launch {
-            startLocationProviderUseCase()
+            locationRepository.startLocationProvider(LocationParameters())
         }
 
     private fun stopTrackUserLocation() =
         viewModelScope.launch {
-            stopLocationProviderUseCase()
+            locationRepository.stopLocationProvider()
         }
 
     private fun subscribeToUserLocation() =
         viewModelScope.launch {
-            locationStateUseCase().collectLatest { locationState ->
+            locationRepository.locationSharedFlow.collectLatest { locationState ->
                 _uiState.updateCopy {
                     LocationTrackerUiState.userLocationData set locationState
                 }
@@ -74,9 +69,9 @@ internal class LocationTrackerViewModel(
 
     private fun subscribeToLastKnownLocation() =
         viewModelScope.launch {
-            lastKnownLocationUseCase().collectLatest { lastKnownLocation ->
+            locationRepository.provideLastKnownLocationFlow().collectLatest { lastKnownLocation ->
                 _uiState.updateCopy {
-                    LocationTrackerUiState.lastKnownLocationData set lastKnownLocation ?: DEFAULT_LOCATION
+                    LocationTrackerUiState.lastKnownLocationData set lastKnownLocation
                 }
             }
         }

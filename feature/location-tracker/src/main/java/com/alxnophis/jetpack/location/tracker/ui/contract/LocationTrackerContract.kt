@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
-import com.alxnophis.jetpack.location.tracker.domain.model.Location
+import com.alxnophis.jetpack.location.tracker.data.model.Location
 
 internal sealed class LocationTrackerUiEvent : UiEvent {
     data object FineLocationPermissionGrantedUi : LocationTrackerUiEvent()

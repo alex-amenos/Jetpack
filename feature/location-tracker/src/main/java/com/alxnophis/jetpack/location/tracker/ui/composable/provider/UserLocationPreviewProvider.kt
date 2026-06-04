@@ -4,7 +4,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.alxnophis.jetpack.kotlin.constants.ZERO_DOUBLE
 import com.alxnophis.jetpack.kotlin.constants.ZERO_FLOAT
 import com.alxnophis.jetpack.kotlin.constants.ZERO_LONG
-import com.alxnophis.jetpack.location.tracker.domain.model.Location
+import com.alxnophis.jetpack.location.tracker.data.model.Location
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
 
 internal class UserLocationPreviewProvider : PreviewParameterProvider<LocationTrackerUiState> {
