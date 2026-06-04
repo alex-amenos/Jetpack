@@ -44,6 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.core.location.LocationManagerCompat
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -86,7 +87,12 @@ private fun rememberIsLocationEnabled(): Boolean {
                     }
                 }
             }
-        context.registerReceiver(receiver, IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION))
+        ContextCompat.registerReceiver(
+            context,
+            receiver,
+            IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
         onDispose {
             context.unregisterReceiver(receiver)
         }
@@ -164,10 +170,7 @@ private fun MapComposable(
         }
     // Stop following if user drags map
     LaunchedEffect(cameraPositionState.isMoving) {
-        if (cameraPositionState.isMoving &&
-            cameraPositionState.cameraMoveStartedReason == CameraMoveStartedReason.GESTURE &&
-            state.isFollowingUser
-        ) {
+        if (cameraPositionState.isMoving && cameraPositionState.cameraMoveStartedReason == CameraMoveStartedReason.GESTURE && state.isFollowingUser) {
             onEvent(LocationTrackerUiEvent.MapDraggedByGesture)
         }
     }
@@ -226,7 +229,7 @@ private fun MapComposable(
                 onEvent(LocationTrackerUiEvent.GoBackRequested)
             },
         )
-        if (state.isFineLocationPermissionGranted && isDeviceLocationEnabled) {
+        if (state.isFineLocationPermissionGranted && isDeviceLocationEnabled && locationData != null) {
             FollowUserIconButton(
                 modifier =
                     Modifier
