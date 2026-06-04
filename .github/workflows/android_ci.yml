@@ -13,6 +13,7 @@ jobs:
 
   quality_and_build_release:
     runs-on: ubuntu-latest
+    environment: Jetpack
     steps:
       - name: Cancel Previous Workflow Runs
         uses: n1hility/cancel-previous-runs@v3
