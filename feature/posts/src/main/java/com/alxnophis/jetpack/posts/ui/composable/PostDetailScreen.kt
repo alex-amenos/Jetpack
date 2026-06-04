@@ -174,6 +174,7 @@ internal fun PostDetailContent(
                     Modifier
                         .fillMaxWidth()
                         .padding(paddingValues)
+                        .padding(horizontal = 16.dp)
                         .verticalScroll(rememberScrollState())
                         .testTag(CoreTags.TAG_POST_DETAIL),
             ) {
