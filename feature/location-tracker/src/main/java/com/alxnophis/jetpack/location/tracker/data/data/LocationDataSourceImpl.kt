@@ -15,79 +15,93 @@ import com.google.android.gms.location.LocationResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.shareIn
 import timber.log.Timber
+import java.util.concurrent.ConcurrentHashMap
 import android.location.Location as AndroidLocation
 
 internal class LocationDataSourceImpl(
     private val fusedLocationProvider: FusedLocationProviderClient,
     private val locationManager: LocationManager,
-    private val mutableLocationSharedFlow: MutableSharedFlow<Location> = MutableSharedFlow(),
-    ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : LocationDataSource {
-    override val locationSharedFlow: SharedFlow<Location> = mutableLocationSharedFlow.asSharedFlow()
+    private val coroutineScope: CoroutineScope = CoroutineScope(defaultDispatcher + SupervisorJob())
+    private val activeFlows = ConcurrentHashMap<LocationParameters, Flow<Location>>()
 
-    private val coroutineScope: CoroutineScope = CoroutineScope(ioDispatcher + SupervisorJob())
-    private val locationCallback =
-        object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                coroutineScope.launch {
-                    Timber.d("LocationDataSource - New Location ${locationResult.lastLocation}")
-                    locationResult
-                        .lastLocation
-                        ?.apply {
-                            mutableLocationSharedFlow.emit(
-                                Location(
-                                    latitude = latitude,
-                                    longitude = longitude,
-                                    altitude = altitude,
-                                    accuracy = accuracy,
-                                    speed = speed,
-                                    bearing = bearing,
-                                    time = time,
-                                ),
-                            )
+    @SuppressLint("MissingPermission")
+    override fun getLocationFlow(parameters: LocationParameters): Flow<Location> =
+        activeFlows.getOrPut(parameters) {
+            callbackFlow {
+                Timber.d("LocationDataSource started with $parameters")
+
+                val locationCallback =
+                    object : LocationCallback() {
+                        override fun onLocationResult(locationResult: LocationResult) {
+                            locationResult.lastLocation?.let { androidLocation ->
+                                Timber.d("LocationDataSource - New Location $androidLocation")
+                                trySend(
+                                    Location(
+                                        latitude = androidLocation.latitude,
+                                        longitude = androidLocation.longitude,
+                                        altitude = androidLocation.altitude,
+                                        accuracy = androidLocation.accuracy,
+                                        speed = androidLocation.speed,
+                                        bearing = androidLocation.bearing,
+                                        time = androidLocation.time,
+                                    ),
+                                )
+                            }
                         }
-                }
-            }
-        }
+                    }
 
-    private var locationJob: Job? = null
+                val locationRequest =
+                    LocationRequest
+                        .Builder(
+                            parameters.priority,
+                            parameters.fastestInterval,
+                        ).setPriority(parameters.priority)
+                        .build()
+
+                fusedLocationProvider.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+
+                awaitClose {
+                    Timber.d("LocationDataSource stopped")
+                    fusedLocationProvider.removeLocationUpdates(locationCallback)
+                }
+            }.shareIn(
+                scope = coroutineScope,
+                started = SharingStarted.WhileSubscribed(5000L),
+                replay = 1,
+            )
+        }
 
     @SuppressLint("MissingPermission")
     override fun provideLastKnownLocationFlow(): Flow<Location?> =
         callbackFlow {
-            fusedLocationProvider
-                .lastLocation
+            fusedLocationProvider.lastLocation
                 .addOnSuccessListener { location: AndroidLocation? ->
                     try {
-                        location
-                            ?.let {
-                                trySend(
-                                    Location(
-                                        latitude = it.latitude,
-                                        longitude = it.longitude,
-                                        altitude = it.altitude,
-                                        accuracy = it.accuracy,
-                                        speed = it.speed,
-                                        bearing = it.bearing,
-                                        time = it.time,
-                                    ),
-                                )
-                            }
-                            ?: trySend(null)
+                        location?.let {
+                            trySend(
+                                Location(
+                                    latitude = it.latitude,
+                                    longitude = it.longitude,
+                                    altitude = it.altitude,
+                                    accuracy = it.accuracy,
+                                    speed = it.speed,
+                                    bearing = it.bearing,
+                                    time = it.time,
+                                ),
+                            )
+                        } ?: trySend(null)
                         close()
                     } catch (exception: Exception) {
-                        Timber.e("Error getting last known location: ${exception.message}")
+                        Timber.e("Error getting last known location: \${exception.message}")
                         trySend(null)
                         close(exception)
                     }
@@ -106,31 +120,4 @@ internal class LocationDataSourceImpl(
                     false -> throw RuntimeException("Location is not enabled")
                 }
             }.mapLeft { Unit.left() }
-
-    @SuppressLint("MissingPermission")
-    override suspend fun startLocationProvider(locationParameters: LocationParameters) {
-        if (locationJob == null) {
-            locationJob =
-                coroutineScope.launch {
-                    Timber.d("LocationDataSource started with $locationParameters")
-                    fusedLocationProvider.let {
-                        val locationRequest =
-                            LocationRequest
-                                .Builder(
-                                    locationParameters.priority,
-                                    locationParameters.fastestInterval,
-                                ).setPriority(locationParameters.priority)
-                                .build()
-                        it.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-                    }
-                }
-        }
-    }
-
-    override suspend fun stopLocationProvider() {
-        fusedLocationProvider.removeLocationUpdates(locationCallback)
-        locationJob?.cancelAndJoin()
-        locationJob = null
-        Timber.d("LocationDataSource stopped")
-    }
 }

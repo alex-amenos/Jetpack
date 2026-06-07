@@ -14,8 +14,6 @@ import com.alxnophis.jetpack.location.tracker.ui.contract.userLocationData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 
 internal class LocationTrackerViewModel(
     private val locationRepository: LocationRepository,
@@ -23,14 +21,12 @@ internal class LocationTrackerViewModel(
 ) : BaseViewModel<LocationTrackerUiEvent, LocationTrackerUiState>(initialState) {
     private var userLocationJob: Job? = null
     private var lastKnownLocationJob: Job? = null
-    private val locationControlMutex = Mutex()
 
     override fun handleEvent(event: LocationTrackerUiEvent) {
         viewModelScope.launch {
             when (event) {
                 LocationTrackerUiEvent.LocationAccessGranted -> {
                     permissionsGranted()
-                    startTrackingUserLocation()
                     subscribeToUserLocation()
                     subscribeToLastKnownLocation()
                 }
@@ -83,25 +79,16 @@ internal class LocationTrackerViewModel(
         }
     }
 
-    private suspend fun startTrackingUserLocation() {
-        locationControlMutex.withLock {
-            locationRepository.startLocationProvider(LocationParameters())
-        }
-    }
-
-    private suspend fun stopTrackUserLocation() {
+    private fun stopTrackUserLocation() {
         userLocationJob?.cancel()
         lastKnownLocationJob?.cancel()
-        locationControlMutex.withLock {
-            locationRepository.stopLocationProvider()
-        }
     }
 
     private fun subscribeToUserLocation() {
         if (userLocationJob?.isActive == true) return
         userLocationJob =
             viewModelScope.launch {
-                locationRepository.locationSharedFlow.collectLatest { locationState ->
+                locationRepository.getLocationFlow(LocationParameters()).collectLatest { locationState ->
                     updateUiState {
                         copy {
                             LocationTrackerUiState.userLocationData set locationState
@@ -131,9 +118,7 @@ internal class LocationTrackerViewModel(
     }
 
     override fun onCleared() {
-        viewModelScope.launch {
-            stopTrackUserLocation()
-        }
+        stopTrackUserLocation()
         super.onCleared()
     }
 }
