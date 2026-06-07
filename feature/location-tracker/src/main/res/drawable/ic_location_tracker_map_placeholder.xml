@@ -1,0 +1,52 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="400dp"
+    android:viewportWidth="400"
+    android:viewportHeight="400">
+    <!-- Background (Land) -->
+    <path
+        android:fillColor="#EBEBEB"
+        android:pathData="M0,0 h400 v400 h-400 z" />
+    
+    <!-- Water Area -->
+    <path
+        android:fillColor="#BBDDF6"
+        android:pathData="M-50,150 Q100,200 200,100 T450,150 L450,-50 L-50,-50 z" />
+
+    <!-- Park / Greenery -->
+    <path
+        android:fillColor="#C8E6C9"
+        android:pathData="M250,250 Q300,200 350,250 T350,350 T250,350 z" />
+    <path
+        android:fillColor="#C8E6C9"
+        android:pathData="M50,250 Q100,300 50,350 T0,300 z" />
+
+    <!-- Highways (Yellow/Orange) -->
+    <path
+        android:strokeColor="#FFEB3B"
+        android:strokeWidth="12"
+        android:strokeLineCap="round"
+        android:pathData="M-20,200 L420,100" />
+    <path
+        android:strokeColor="#FFCC80"
+        android:strokeWidth="10"
+        android:strokeLineCap="round"
+        android:pathData="M150,-20 L250,420" />
+
+    <!-- Local Roads (White) -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:pathData="M0,300 L250,250 L400,300" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:pathData="M100,420 L50,200 L100,120" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:pathData="M300,-20 L250,150 L350,250" />
+</vector>

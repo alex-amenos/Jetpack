@@ -9,6 +9,7 @@ import android.location.LocationManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -41,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -225,18 +227,10 @@ private fun MapComposable(
     val coroutineScope = rememberCoroutineScope()
     Box(modifier) {
         if (isInspectionMode) {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(Color.LightGray),
-            ) {
-                if (locationData != null) {
-                    UserLocationMarkerContent(
-                        modifier = Modifier.align(Alignment.Center),
-                    )
-                }
-            }
+            FakeMapComposable(
+                hasLocationData = locationData != null,
+                modifier = Modifier.fillMaxSize(),
+            )
         } else {
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
@@ -404,6 +398,26 @@ private fun LocationAccessRationaleDialog(
             }
         },
     )
+}
+
+@Composable
+private fun FakeMapComposable(
+    hasLocationData: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_location_tracker_map_placeholder),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize(),
+        )
+        if (hasLocationData) {
+            UserLocationMarkerContent(
+                modifier = Modifier.align(Alignment.Center),
+            )
+        }
+    }
 }
 
 @PreviewLightDark
