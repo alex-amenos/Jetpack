@@ -26,13 +26,13 @@ internal class LocationTrackerViewModel(
         viewModelScope.launch {
             when (event) {
                 LocationTrackerUiEvent.LocationAccessGranted -> {
-                    permissionsGranted()
+                    locationAccessGranted()
                     subscribeToUserLocation()
                     subscribeToLastKnownLocation()
                 }
 
                 LocationTrackerUiEvent.LocationAccessRevoked -> {
-                    permissionsRevoked()
+                    locationAccessRevoked()
                     stopTrackUserLocation()
                 }
 
@@ -63,7 +63,7 @@ internal class LocationTrackerViewModel(
         }
     }
 
-    private fun permissionsGranted() {
+    private fun locationAccessGranted() {
         updateUiState {
             copy {
                 LocationTrackerUiState.hasLocationAccess set true
@@ -71,10 +71,12 @@ internal class LocationTrackerViewModel(
         }
     }
 
-    private fun permissionsRevoked() {
+    private fun locationAccessRevoked() {
         updateUiState {
             copy {
                 LocationTrackerUiState.hasLocationAccess set false
+                LocationTrackerUiState.userLocationData set null
+                LocationTrackerUiState.lastKnownLocationData set null
             }
         }
     }
@@ -88,13 +90,15 @@ internal class LocationTrackerViewModel(
         if (userLocationJob?.isActive == true) return
         userLocationJob =
             viewModelScope.launch {
-                locationRepository.getLocationFlow(LocationParameters()).collectLatest { locationState ->
-                    updateUiState {
-                        copy {
-                            LocationTrackerUiState.userLocationData set locationState
+                locationRepository
+                    .getLocationFlow(LocationParameters())
+                    .collectLatest { locationState ->
+                        updateUiState {
+                            copy {
+                                LocationTrackerUiState.userLocationData set locationState
+                            }
                         }
                     }
-                }
             }
     }
 
