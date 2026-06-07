@@ -107,7 +107,7 @@ internal class LocationDataSourceImpl(
                     }
                 }.addOnFailureListener {
                     trySend(null)
-                    close(it)
+                    close()
                 }
             awaitClose { Timber.d("LocationDataSource - ProvideLastKnownLocationFlow - awaitClose") }
         }
