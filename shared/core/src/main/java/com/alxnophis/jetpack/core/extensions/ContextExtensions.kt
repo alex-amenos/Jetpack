@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.alxnophis.jetpack.core.base.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 
@@ -63,3 +64,6 @@ fun Context.appPendingIntent(): PendingIntent {
     val intent = Intent().setClassName(this, ROOT_ACTIVITY).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK }
     return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 }
+
+fun Context.hasPermission(permission: String): Boolean =
+    ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED

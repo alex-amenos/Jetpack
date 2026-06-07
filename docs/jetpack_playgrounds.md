@@ -8,7 +8,12 @@ It is a personal project to experiment with Android development.
 
 It is the home screen where you can select some of experiments of this project.
 
-<img alt="Home screen" src="./images/home_screen.png" width="300" />
+<table>
+  <tr>
+    <td><img alt="Home screen 1" src="images/home_screen_1.png" width="300" /></td>
+    <td><img alt="Home screen 2" src="images/home_screen_2.png" width="300" /></td>
+  </tr>
+</table>
 
 ## Posts
 
@@ -43,6 +48,27 @@ This module is the most complete in the project and demonstrates modern Android 
   </tr>
 </table>
 
+## Location tracker
+
+User location tracking with an integrated Google Maps UI, custom UI overlays, and automatic camera framing.
+
+More experiment info:
+
+- **Architecture**: MVI (Model-View-Intent) pattern with `LocationRepository` abstraction.
+- **UI**: Jetpack Compose map rendering via `maps-compose`. Edge-to-edge support with safe padding.
+- **Location**: Tracks user fine/coarse location dynamically utilizing `FusedLocationProviderClient`.
+- **Map Interaction**: Auto-follows the user, smoothly animating the camera. Panning the map manually suspends the auto-follow mode until the user clicks the track button.
+- **State Handling**: Uses Arrow Optics for MVI immutable state manipulation. Uses `BroadcastReceiver` inside a `DisposableEffect` to seamlessly handle external system location toggle changes without memory leaks.
+- **Testing**: Experiment without testing.
+
+<table>
+  <tr>
+    <td><img alt="Location permissions 1" src="./images/location_tracker_screen_1.png" width="300" /></td>
+    <td><img alt="Location permissions 2" src="./images/location_tracker_screen_2.png" width="300" /></td>
+    <td><img alt="Location permissions 3" src="./images/location_tracker_screen_3.png" width="300" /></td>
+  </tr>
+</table>
+
 ## Authentication
 
 Authentication form with SignUp and SignIn.<br><br>
@@ -70,21 +96,6 @@ More experiment info:<br>
 - Experiment without testing.
 
 <img alt="Notifications screen" src="./images/notifications_screen.png" width="300" />
-
-## Location tracker
-
-User location tracking with an integrated Google Maps UI, custom UI overlays, and automatic camera framing.
-
-More experiment info:
-
-- **Architecture**: MVI (Model-View-Intent) pattern with `LocationRepository` abstraction.
-- **UI**: Jetpack Compose map rendering via `maps-compose`. Edge-to-edge support with safe padding.
-- **Location**: Tracks user fine/coarse location dynamically utilizing `FusedLocationProviderClient`.
-- **Map Interaction**: Auto-follows the user, smoothly animating the camera. Panning the map manually suspends the auto-follow mode until the user clicks the track button.
-- **State Handling**: Uses Arrow Optics for MVI immutable state manipulation. Uses `BroadcastReceiver` inside a `DisposableEffect` to seamlessly handle external system location toggle changes without memory leaks.
-- **Testing**: Experiment without testing.
-
-<img alt="Location permissions" src="./images/location_tracker_screen_1.png" width="300" /> <img alt="Location permissions" src="./images/location_tracker_screen_2.png" width="300" />
 
 ## Ball clicker (Game)
 

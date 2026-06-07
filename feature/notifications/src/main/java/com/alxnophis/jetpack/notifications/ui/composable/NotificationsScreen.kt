@@ -1,7 +1,6 @@
 package com.alxnophis.jetpack.notifications.ui.composable
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -27,9 +26,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
 import com.alxnophis.jetpack.core.extensions.appPendingIntent
+import com.alxnophis.jetpack.core.extensions.hasPermission
 import com.alxnophis.jetpack.core.extensions.showNotification
 import com.alxnophis.jetpack.core.ui.composable.CoreButtonMajor
 import com.alxnophis.jetpack.core.ui.composable.CoreTopBar
@@ -67,8 +66,8 @@ internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
 private fun NotificationPermission(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var hasNotificationPermission by remember {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            mutableStateOf(ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            mutableStateOf(context.hasPermission(Manifest.permission.POST_NOTIFICATIONS))
         } else {
             mutableStateOf(true)
         }
@@ -89,7 +88,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
             },
         )
     val requestPermission: () -> Unit = {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
