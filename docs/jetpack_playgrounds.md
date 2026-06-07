@@ -8,8 +8,12 @@ It is a personal project to experiment with Android development.
 
 It is the home screen where you can select some of experiments of this project.
 
-<img alt="Home screen" src="images/home_screen_1.png" width="300" />  
-<img alt="Home screen" src="images/home_screen_2.png" width="300" />
+<table>
+  <tr>
+    <td><img alt="Home screen 1" src="images/home_screen_1.png" width="300" /></td>
+    <td><img alt="Home screen 2" src="images/home_screen_2.png" width="300" /></td>
+  </tr>
+</table>
 
 ## Posts
 
@@ -85,9 +89,13 @@ More experiment info:
 - **State Handling**: Uses Arrow Optics for MVI immutable state manipulation. Uses `BroadcastReceiver` inside a `DisposableEffect` to seamlessly handle external system location toggle changes without memory leaks.
 - **Testing**: Experiment without testing.
 
-<img alt="Location permissions 1" src="./images/location_tracker_screen_1.png" width="300" />
-<img alt="Location permissions 2" src="./images/location_tracker_screen_2.png" width="300" />
-<img alt="Location permissions 3" src="./images/location_tracker_screen_3.png" width="300" />
+<table>
+  <tr>
+    <td><img alt="Location permissions 1" src="./images/location_tracker_screen_1.png" width="300" /></td>
+    <td><img alt="Location permissions 2" src="./images/location_tracker_screen_2.png" width="300" /></td>
+    <td><img alt="Location permissions 3" src="./images/location_tracker_screen_3.png" width="300" /></td>
+  </tr>
+</table>
 
 ## Ball clicker (Game)
 
