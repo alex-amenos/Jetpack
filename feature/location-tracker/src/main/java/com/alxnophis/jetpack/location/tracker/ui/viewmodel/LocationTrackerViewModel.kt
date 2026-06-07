@@ -69,6 +69,8 @@ internal class LocationTrackerViewModel(
                     updateUiState {
                         copy {
                             LocationTrackerUiState.hasRequestedPermissions set true
+                            LocationTrackerUiState.userLocationData set null
+                            LocationTrackerUiState.lastKnownLocationData set null
                         }
                     }
                 }
@@ -134,7 +136,7 @@ internal class LocationTrackerViewModel(
                         }
                     }
             }
-        lastKnownLocationJob?.invokeOnCompletion { 
+        lastKnownLocationJob?.invokeOnCompletion {
             lastKnownLocationJob = null
         }
     }
