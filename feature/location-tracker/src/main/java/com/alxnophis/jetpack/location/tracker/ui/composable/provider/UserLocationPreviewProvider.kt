@@ -12,21 +12,21 @@ internal class UserLocationPreviewProvider : PreviewParameterProvider<LocationTr
         get() =
             sequenceOf(
                 LocationTrackerUiState(
-                    hasLocationPermission = true,
+                    hasLocationAccess = true,
                     hasRequestedPermissions = true,
                     isFollowingUser = true,
                     userLocationData = DEFAULT_LOCATION,
                     lastKnownLocationData = DEFAULT_LOCATION,
                 ),
                 LocationTrackerUiState(
-                    hasLocationPermission = true,
+                    hasLocationAccess = true,
                     hasRequestedPermissions = true,
                     isFollowingUser = false,
                     userLocationData = null,
                     lastKnownLocationData = null,
                 ),
                 LocationTrackerUiState(
-                    hasLocationPermission = false,
+                    hasLocationAccess = false,
                     hasRequestedPermissions = false,
                     isFollowingUser = true,
                     userLocationData = null,

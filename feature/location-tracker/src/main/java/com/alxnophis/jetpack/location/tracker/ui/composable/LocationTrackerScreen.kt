@@ -120,20 +120,24 @@ internal fun LocationTrackerScreen(
         mutableStateOf(!isPermissionGranted || !isDeviceLocationEnabled)
     }
 
+    LaunchedEffect(isPermissionGranted, isDeviceLocationEnabled) {
+        if (!isPermissionGranted || !isDeviceLocationEnabled) {
+            showPermissionDialog = true
+            onEvent(LocationTrackerUiEvent.LocationAccessRevoked)
+        } else {
+            showPermissionDialog = false
+            onEvent(LocationTrackerUiEvent.LocationAccessGranted)
+        }
+    }
+
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         isPermissionGranted = context.hasLocationPermission()
-        if (isPermissionGranted) {
-            onEvent(LocationTrackerUiEvent.LocationPermissionGranted)
-        }
     }
     val permissionLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions(),
             onResult = { permissions: Map<String, Boolean> ->
                 isPermissionGranted = permissions.values.any { it }
-                if (isPermissionGranted) {
-                    onEvent(LocationTrackerUiEvent.LocationPermissionGranted)
-                }
                 onEvent(LocationTrackerUiEvent.PermissionRequested)
             },
         )
@@ -264,7 +268,7 @@ private fun MapComposable(
                 onEvent(LocationTrackerUiEvent.GoBackRequested)
             },
         )
-        if (state.hasLocationPermission && isDeviceLocationEnabled && locationData != null) {
+        if (state.hasLocationAccess && isDeviceLocationEnabled && locationData != null) {
             FollowUserIconButton(
                 modifier =
                     Modifier

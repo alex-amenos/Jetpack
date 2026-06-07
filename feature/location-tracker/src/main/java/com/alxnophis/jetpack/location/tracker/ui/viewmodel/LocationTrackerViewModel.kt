@@ -1,13 +1,13 @@
 package com.alxnophis.jetpack.location.tracker.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import arrow.optics.updateCopy
+import arrow.optics.copy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.location.tracker.data.model.LocationParameters
 import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
-import com.alxnophis.jetpack.location.tracker.ui.contract.hasLocationPermission
+import com.alxnophis.jetpack.location.tracker.ui.contract.hasLocationAccess
 import com.alxnophis.jetpack.location.tracker.ui.contract.hasRequestedPermissions
 import com.alxnophis.jetpack.location.tracker.ui.contract.isFollowingUser
 import com.alxnophis.jetpack.location.tracker.ui.contract.lastKnownLocationData
@@ -22,11 +22,16 @@ internal class LocationTrackerViewModel(
     override fun handleEvent(event: LocationTrackerUiEvent) {
         viewModelScope.launch {
             when (event) {
-                LocationTrackerUiEvent.LocationPermissionGranted -> {
+                LocationTrackerUiEvent.LocationAccessGranted -> {
                     permissionsGranted()
                     startTrackingUserLocation()
                     subscribeToUserLocation()
                     subscribeToLastKnownLocation()
+                }
+
+                LocationTrackerUiEvent.LocationAccessRevoked -> {
+                    permissionsRevoked()
+                    stopTrackUserLocation()
                 }
 
                 LocationTrackerUiEvent.StopTrackingRequested -> {
@@ -38,20 +43,26 @@ internal class LocationTrackerViewModel(
                 }
 
                 LocationTrackerUiEvent.MapDraggedByGesture -> {
-                    _uiState.updateCopy {
-                        LocationTrackerUiState.isFollowingUser set false
+                    updateUiState {
+                        copy {
+                            LocationTrackerUiState.isFollowingUser set false
+                        }
                     }
                 }
 
                 LocationTrackerUiEvent.FollowUserClicked -> {
-                    _uiState.updateCopy {
-                        LocationTrackerUiState.isFollowingUser set true
+                    updateUiState {
+                        copy {
+                            LocationTrackerUiState.isFollowingUser set true
+                        }
                     }
                 }
 
                 LocationTrackerUiEvent.PermissionRequested -> {
-                    _uiState.updateCopy {
-                        LocationTrackerUiState.hasRequestedPermissions set true
+                    updateUiState {
+                        copy {
+                            LocationTrackerUiState.hasRequestedPermissions set true
+                        }
                     }
                 }
             }
@@ -59,8 +70,18 @@ internal class LocationTrackerViewModel(
     }
 
     private fun permissionsGranted() {
-        _uiState.updateCopy {
-            LocationTrackerUiState.hasLocationPermission set true
+        updateUiState {
+            copy {
+                LocationTrackerUiState.hasLocationAccess set true
+            }
+        }
+    }
+
+    private fun permissionsRevoked() {
+        updateUiState {
+            copy {
+                LocationTrackerUiState.hasLocationAccess set false
+            }
         }
     }
 
@@ -77,8 +98,10 @@ internal class LocationTrackerViewModel(
     private fun subscribeToUserLocation() =
         viewModelScope.launch {
             locationRepository.locationSharedFlow.collectLatest { locationState ->
-                _uiState.updateCopy {
-                    LocationTrackerUiState.userLocationData set locationState
+                updateUiState {
+                    copy {
+                        LocationTrackerUiState.userLocationData set locationState
+                    }
                 }
             }
         }
@@ -88,8 +111,10 @@ internal class LocationTrackerViewModel(
             locationRepository
                 .provideLastKnownLocationFlow()
                 .collectLatest { lastKnownLocation ->
-                    _uiState.updateCopy {
-                        LocationTrackerUiState.lastKnownLocationData set lastKnownLocation
+                    updateUiState {
+                        copy {
+                            LocationTrackerUiState.lastKnownLocationData set lastKnownLocation
+                        }
                     }
                 }
         }
