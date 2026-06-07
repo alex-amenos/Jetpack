@@ -18,8 +18,6 @@ internal sealed class LocationTrackerUiEvent : UiEvent {
     data object MapDraggedByGesture : LocationTrackerUiEvent()
 
     data object FollowUserClicked : LocationTrackerUiEvent()
-
-    data object PermissionRequested : LocationTrackerUiEvent()
 }
 
 @optics
@@ -27,7 +25,6 @@ internal sealed class LocationTrackerUiEvent : UiEvent {
 internal data class LocationTrackerUiState(
     val hasLocationAccess: Boolean,
     val isFollowingUser: Boolean,
-    val hasRequestedPermissions: Boolean,
     val lastKnownLocationData: Location?,
     val userLocationData: Location?,
 ) : UiState {
@@ -36,7 +33,6 @@ internal data class LocationTrackerUiState(
             LocationTrackerUiState(
                 hasLocationAccess = false,
                 isFollowingUser = true,
-                hasRequestedPermissions = false,
                 lastKnownLocationData = null,
                 userLocationData = null,
             )

@@ -8,7 +8,6 @@ import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
 import com.alxnophis.jetpack.location.tracker.ui.contract.hasLocationAccess
-import com.alxnophis.jetpack.location.tracker.ui.contract.hasRequestedPermissions
 import com.alxnophis.jetpack.location.tracker.ui.contract.isFollowingUser
 import com.alxnophis.jetpack.location.tracker.ui.contract.lastKnownLocationData
 import com.alxnophis.jetpack.location.tracker.ui.contract.userLocationData
@@ -61,16 +60,6 @@ internal class LocationTrackerViewModel(
                     updateUiState {
                         copy {
                             LocationTrackerUiState.isFollowingUser set true
-                        }
-                    }
-                }
-
-                LocationTrackerUiEvent.PermissionRequested -> {
-                    updateUiState {
-                        copy {
-                            LocationTrackerUiState.hasRequestedPermissions set true
-                            LocationTrackerUiState.userLocationData set null
-                            LocationTrackerUiState.lastKnownLocationData set null
                         }
                     }
                 }

@@ -116,6 +116,21 @@ internal fun LocationTrackerScreen(
     var isPermissionGranted by remember {
         mutableStateOf(context.hasLocationPermission())
     }
+    val permissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestMultiplePermissions(),
+            onResult = { permissions: Map<String, Boolean> ->
+                isPermissionGranted = permissions.values.any { it }
+            },
+        )
+    val requestLocationPermissions: () -> Unit = {
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            ),
+        )
+    }
     var showPermissionDialog by rememberSaveable {
         mutableStateOf(!isPermissionGranted || !isDeviceLocationEnabled)
     }
@@ -133,41 +148,26 @@ internal fun LocationTrackerScreen(
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         isPermissionGranted = context.hasLocationPermission()
     }
-    val permissionLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestMultiplePermissions(),
-            onResult = { permissions: Map<String, Boolean> ->
-                isPermissionGranted = permissions.values.any { it }
-                onEvent(LocationTrackerUiEvent.PermissionRequested)
-            },
-        )
-    val requestLocationPermissions: () -> Unit = {
-        permissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-            ),
-        )
-    }
-
-    if (showPermissionDialog) {
-        LocationAccessRationaleDialog(
-            isPermissionGranted = isPermissionGranted,
-            onDismissRequest = { showPermissionDialog = false },
-            onConfirmRequest = {
-                showPermissionDialog = false
-                requestLocationPermissions()
-            },
-        )
-    }
 
     BackHandler {
         onEvent(LocationTrackerUiEvent.StopTrackingRequested)
         onEvent(LocationTrackerUiEvent.GoBackRequested)
     }
+
     AppTheme {
+        if (showPermissionDialog) {
+            LocationAccessRationaleDialog(
+                isPermissionGranted = isPermissionGranted,
+                onDismissRequest = { showPermissionDialog = false },
+                onConfirmRequest = {
+                    showPermissionDialog = false
+                    requestLocationPermissions()
+                },
+            )
+        }
+
         MapComposable(
-            state = uiState,
+            uiState = uiState,
             isDeviceLocationEnabled = isDeviceLocationEnabled,
             onEvent = onEvent,
             modifier = Modifier.fillMaxSize(),
@@ -177,15 +177,15 @@ internal fun LocationTrackerScreen(
 
 @Composable
 private fun MapComposable(
-    state: LocationTrackerUiState,
+    uiState: LocationTrackerUiState,
     isDeviceLocationEnabled: Boolean,
     onEvent: (LocationTrackerUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isInspectionMode = LocalInspectionMode.current
     val locationData =
-        remember(state.userLocationData, state.lastKnownLocationData) {
-            state.userLocationData ?: state.lastKnownLocationData
+        remember(uiState.userLocationData, uiState.lastKnownLocationData) {
+            uiState.userLocationData ?: uiState.lastKnownLocationData
         }
     val position =
         remember(locationData) {
@@ -206,13 +206,15 @@ private fun MapComposable(
         }
     // Stop following if user drags map
     LaunchedEffect(cameraPositionState.isMoving) {
-        if (cameraPositionState.isMoving && cameraPositionState.cameraMoveStartedReason == CameraMoveStartedReason.GESTURE && state.isFollowingUser) {
+        if (cameraPositionState.isMoving && cameraPositionState.cameraMoveStartedReason == CameraMoveStartedReason.GESTURE &&
+            uiState.isFollowingUser
+        ) {
             onEvent(LocationTrackerUiEvent.MapDraggedByGesture)
         }
     }
     // Update camera position when location changes
-    LaunchedEffect(position, state.isFollowingUser) {
-        if (state.isFollowingUser) {
+    LaunchedEffect(position, uiState.isFollowingUser) {
+        if (uiState.isFollowingUser) {
             val currentLatLng = cameraPositionState.position.target
             if (currentLatLng.latitude != position.latitude || currentLatLng.longitude != position.longitude) {
                 val zoom = if (cameraPositionState.position.zoom != 0f) cameraPositionState.position.zoom else 15f
@@ -247,6 +249,7 @@ private fun MapComposable(
                     val markerState = rememberMarkerState(position = position)
                     markerState.position = position
                     MarkerComposable(
+                        tag = "user_location_marker",
                         state = markerState,
                         title = stringResource(id = R.string.location_tracker_current_location),
                         snippet = "${locationData.latitude}, ${locationData.longitude}",
@@ -268,7 +271,7 @@ private fun MapComposable(
                 onEvent(LocationTrackerUiEvent.GoBackRequested)
             },
         )
-        if (state.hasLocationAccess && isDeviceLocationEnabled && locationData != null) {
+        if (uiState.hasLocationAccess && isDeviceLocationEnabled && locationData != null) {
             FollowUserIconButton(
                 modifier =
                     Modifier
@@ -276,7 +279,7 @@ private fun MapComposable(
                         .padding(mediumPadding)
                         .padding(WindowInsets.safeDrawing.asPaddingValues())
                         .size(48.dp),
-                isFollowingUser = state.isFollowingUser,
+                isFollowingUser = uiState.isFollowingUser,
                 onClick = {
                     onEvent(LocationTrackerUiEvent.FollowUserClicked)
                     coroutineScope.launch {
@@ -405,11 +408,13 @@ private fun LocationAccessRationaleDialog(
 
 @PreviewLightDark
 @Composable
-private fun LocationTrackerScreenPreview(
+private fun MapComposablePreview(
     @PreviewParameter(UserLocationPreviewProvider::class) uiState: LocationTrackerUiState,
 ) {
-    LocationTrackerScreen(
+    MapComposable(
         uiState = uiState,
+        isDeviceLocationEnabled = uiState.hasLocationAccess,
+        modifier = Modifier.fillMaxSize(),
         onEvent = {},
     )
 }
