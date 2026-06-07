@@ -85,12 +85,15 @@ internal class LocationDataSourceImpl(
                                 )
                             }
                             ?: trySend(null)
+                        close()
                     } catch (exception: Exception) {
                         Timber.e("Error getting last known location: ${exception.message}")
                         trySend(null)
+                        close(exception)
                     }
                 }.addOnFailureListener {
                     trySend(null)
+                    close(it)
                 }
             awaitClose { Timber.d("LocationDataSource - ProvideLastKnownLocationFlow - awaitClose") }
         }

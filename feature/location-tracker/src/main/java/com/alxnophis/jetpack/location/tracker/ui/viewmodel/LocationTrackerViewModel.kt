@@ -130,6 +130,9 @@ internal class LocationTrackerViewModel(
                         }
                     }
             }
+        lastKnownLocationJob?.invokeOnCompletion { 
+            lastKnownLocationJob = null
+        }
     }
 
     override fun onCleared() {
