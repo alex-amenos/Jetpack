@@ -15,6 +15,8 @@ import com.alxnophis.jetpack.location.tracker.ui.contract.userLocationData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 internal class LocationTrackerViewModel(
     private val locationRepository: LocationRepository,
@@ -22,6 +24,7 @@ internal class LocationTrackerViewModel(
 ) : BaseViewModel<LocationTrackerUiEvent, LocationTrackerUiState>(initialState) {
     private var userLocationJob: Job? = null
     private var lastKnownLocationJob: Job? = null
+    private val locationControlMutex = Mutex()
 
     override fun handleEvent(event: LocationTrackerUiEvent) {
         viewModelScope.launch {
@@ -89,15 +92,16 @@ internal class LocationTrackerViewModel(
         }
     }
 
-    private fun startTrackingUserLocation() =
-        viewModelScope.launch {
+    private suspend fun startTrackingUserLocation() {
+        locationControlMutex.withLock {
             locationRepository.startLocationProvider(LocationParameters())
         }
+    }
 
-    private fun stopTrackUserLocation() {
+    private suspend fun stopTrackUserLocation() {
         userLocationJob?.cancel()
         lastKnownLocationJob?.cancel()
-        viewModelScope.launch {
+        locationControlMutex.withLock {
             locationRepository.stopLocationProvider()
         }
     }
@@ -136,7 +140,9 @@ internal class LocationTrackerViewModel(
     }
 
     override fun onCleared() {
-        stopTrackUserLocation()
+        viewModelScope.launch {
+            stopTrackUserLocation()
+        }
         super.onCleared()
     }
 }
