@@ -85,6 +85,7 @@ More experiment info:
 - **Testing**: Experiment without testing.
 
 <img alt="Location permissions" src="./images/location_tracker_screen_1.png" width="300" /> <img alt="Location permissions" src="./images/location_tracker_screen_2.png" width="300" />
+<img alt="Location permissions" src="./images/location_tracker_screen_3.png" width="300" />
 
 ## Ball clicker (Game)
 
