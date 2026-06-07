@@ -8,7 +8,8 @@ It is a personal project to experiment with Android development.
 
 It is the home screen where you can select some of experiments of this project.
 
-<img alt="Home screen" src="./images/home_screen.png" width="300" />
+<img alt="Home screen" src="images/home_screen_1.png" width="300" />
+<img alt="Home screen" src="images/home_screen_2.png" width="300" />
 
 ## Posts
 
