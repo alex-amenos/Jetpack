@@ -7,4 +7,8 @@
     <string name="location_tracker_current_location">Current location</string>
     <string name="location_tracker_last_known_location">Last Known Location</string>
     <string name="location_tracker_location_not_available">Location not available</string>
+    <string name="location_tracker_permissions_rationale_title">Location access required</string>
+    <string name="location_tracker_permissions_rationale_description">Location permissions and active device location are required to show your location on the map. Without them, this feature will not work properly.</string>
+    <string name="location_tracker_permissions_rationale_accept">Request permissions</string>
+    <string name="location_tracker_permissions_rationale_dismiss">Dismiss</string>
 </resources>

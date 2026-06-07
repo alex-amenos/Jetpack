@@ -7,8 +7,8 @@ import com.alxnophis.jetpack.location.tracker.data.model.LocationParameters
 import com.alxnophis.jetpack.location.tracker.data.repository.LocationRepository
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiEvent
 import com.alxnophis.jetpack.location.tracker.ui.contract.LocationTrackerUiState
+import com.alxnophis.jetpack.location.tracker.ui.contract.hasLocationPermission
 import com.alxnophis.jetpack.location.tracker.ui.contract.hasRequestedPermissions
-import com.alxnophis.jetpack.location.tracker.ui.contract.isFineLocationPermissionGranted
 import com.alxnophis.jetpack.location.tracker.ui.contract.isFollowingUser
 import com.alxnophis.jetpack.location.tracker.ui.contract.lastKnownLocationData
 import com.alxnophis.jetpack.location.tracker.ui.contract.userLocationData
@@ -22,7 +22,7 @@ internal class LocationTrackerViewModel(
     override fun handleEvent(event: LocationTrackerUiEvent) {
         viewModelScope.launch {
             when (event) {
-                LocationTrackerUiEvent.FineLocationPermissionGrantedUi -> {
+                LocationTrackerUiEvent.LocationPermissionGranted -> {
                     permissionsGranted()
                     startTrackingUserLocation()
                     subscribeToUserLocation()
@@ -60,7 +60,7 @@ internal class LocationTrackerViewModel(
 
     private fun permissionsGranted() {
         _uiState.updateCopy {
-            LocationTrackerUiState.isFineLocationPermissionGranted set true
+            LocationTrackerUiState.hasLocationPermission set true
         }
     }
 

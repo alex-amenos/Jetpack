@@ -7,7 +7,7 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.location.tracker.data.model.Location
 
 internal sealed class LocationTrackerUiEvent : UiEvent {
-    data object FineLocationPermissionGrantedUi : LocationTrackerUiEvent()
+    data object LocationPermissionGranted : LocationTrackerUiEvent()
 
     data object StopTrackingRequested : LocationTrackerUiEvent()
 
@@ -23,7 +23,7 @@ internal sealed class LocationTrackerUiEvent : UiEvent {
 @optics
 @Immutable
 internal data class LocationTrackerUiState(
-    val isFineLocationPermissionGranted: Boolean,
+    val hasLocationPermission: Boolean,
     val isFollowingUser: Boolean,
     val hasRequestedPermissions: Boolean,
     val lastKnownLocationData: Location?,
@@ -32,7 +32,7 @@ internal data class LocationTrackerUiState(
     internal companion object {
         val initialState =
             LocationTrackerUiState(
-                isFineLocationPermissionGranted = false,
+                hasLocationPermission = false,
                 isFollowingUser = true,
                 hasRequestedPermissions = false,
                 lastKnownLocationData = null,

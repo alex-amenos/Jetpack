@@ -22,10 +22,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationSearching
 import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +50,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.location.LocationManagerCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.kotlin.constants.ZERO_DOUBLE
@@ -105,13 +111,30 @@ internal fun LocationTrackerScreen(
     uiState: LocationTrackerUiState,
     onEvent: (LocationTrackerUiEvent) -> Unit,
 ) {
+    val context = LocalContext.current
+    val isDeviceLocationEnabled = rememberIsLocationEnabled()
+    var isPermissionGranted by remember {
+        mutableStateOf(context.hasLocationPermission())
+    }
+    var showPermissionDialog by rememberSaveable {
+        mutableStateOf(!isPermissionGranted || !isDeviceLocationEnabled)
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        isPermissionGranted = context.hasLocationPermission()
+        if (isPermissionGranted) {
+            onEvent(LocationTrackerUiEvent.LocationPermissionGranted)
+        }
+    }
     val permissionLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions(),
             onResult = { permissions: Map<String, Boolean> ->
-                if (permissions.values.all { it }) {
-                    onEvent(LocationTrackerUiEvent.FineLocationPermissionGrantedUi)
+                isPermissionGranted = permissions.values.any { it }
+                if (isPermissionGranted) {
+                    onEvent(LocationTrackerUiEvent.LocationPermissionGranted)
                 }
+                onEvent(LocationTrackerUiEvent.PermissionRequested)
             },
         )
     val requestLocationPermissions: () -> Unit = {
@@ -122,12 +145,18 @@ internal fun LocationTrackerScreen(
             ),
         )
     }
-    LaunchedEffect(uiState.hasRequestedPermissions) {
-        if (!uiState.hasRequestedPermissions) {
-            requestLocationPermissions()
-            onEvent(LocationTrackerUiEvent.PermissionRequested)
-        }
+
+    if (showPermissionDialog) {
+        LocationAccessRationaleDialog(
+            isPermissionGranted = isPermissionGranted,
+            onDismissRequest = { showPermissionDialog = false },
+            onConfirmRequest = {
+                showPermissionDialog = false
+                requestLocationPermissions()
+            },
+        )
     }
+
     BackHandler {
         onEvent(LocationTrackerUiEvent.StopTrackingRequested)
         onEvent(LocationTrackerUiEvent.GoBackRequested)
@@ -135,7 +164,7 @@ internal fun LocationTrackerScreen(
     AppTheme {
         MapComposable(
             state = uiState,
-            isDeviceLocationEnabled = rememberIsLocationEnabled(),
+            isDeviceLocationEnabled = isDeviceLocationEnabled,
             onEvent = onEvent,
             modifier = Modifier.fillMaxSize(),
         )
@@ -154,9 +183,10 @@ private fun MapComposable(
         remember(state.userLocationData, state.lastKnownLocationData) {
             state.userLocationData ?: state.lastKnownLocationData
         }
-    val position = remember(locationData) {
-        locationData?.let { LatLng(it.latitude, it.longitude) } ?: LatLng(ZERO_DOUBLE, ZERO_DOUBLE)
-    }
+    val position =
+        remember(locationData) {
+            locationData?.let { LatLng(it.latitude, it.longitude) } ?: LatLng(ZERO_DOUBLE, ZERO_DOUBLE)
+        }
     val cameraPositionState =
         rememberCameraPositionState {
             this.position = CameraPosition.fromLatLngZoom(position, 15f)
@@ -234,7 +264,7 @@ private fun MapComposable(
                 onEvent(LocationTrackerUiEvent.GoBackRequested)
             },
         )
-        if (state.isFineLocationPermissionGranted && isDeviceLocationEnabled && locationData != null) {
+        if (state.hasLocationPermission && isDeviceLocationEnabled && locationData != null) {
             FollowUserIconButton(
                 modifier =
                     Modifier
@@ -314,6 +344,59 @@ private fun FollowUserIconButton(
             modifier = Modifier.size(28.dp),
         )
     }
+}
+
+@Composable
+private fun LocationAccessRationaleDialog(
+    isPermissionGranted: Boolean,
+    onDismissRequest: () -> Unit,
+    onConfirmRequest: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.LocationSearching,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+        },
+        title = {
+            Text(
+                text = stringResource(R.string.location_tracker_permissions_rationale_title),
+                style = MaterialTheme.typography.titleLarge,
+            )
+        },
+        text = {
+            Text(
+                text = stringResource(R.string.location_tracker_permissions_rationale_description),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.surface,
+        titleContentColor = MaterialTheme.colorScheme.onSurface,
+        textContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        confirmButton = {
+            if (!isPermissionGranted) {
+                TextButton(
+                    onClick = onConfirmRequest,
+                ) {
+                    Text(
+                        text = stringResource(R.string.location_tracker_permissions_rationale_accept),
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(
+                    text = stringResource(R.string.location_tracker_permissions_rationale_dismiss),
+                    color = MaterialTheme.colorScheme.secondary,
+                )
+            }
+        },
+    )
 }
 
 @PreviewLightDark
