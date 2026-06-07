@@ -66,7 +66,7 @@ internal fun NotificationsScreen(navigateBack: () -> Unit = {}) {
 private fun NotificationPermission(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var hasNotificationPermission by remember {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             mutableStateOf(context.hasPermission(Manifest.permission.POST_NOTIFICATIONS))
         } else {
             mutableStateOf(true)
@@ -88,7 +88,7 @@ private fun NotificationPermission(modifier: Modifier = Modifier) {
             },
         )
     val requestPermission: () -> Unit = {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
