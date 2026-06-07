@@ -422,6 +422,25 @@ private fun FakeMapComposable(
 
 @PreviewLightDark
 @Composable
+private fun LocationAccessRationaleDialogPreview() {
+    AppTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            contentAlignment = Alignment.Center,
+        ) {
+            LocationAccessRationaleDialog(
+                isPermissionGranted = false,
+                onDismissRequest = {},
+                onConfirmRequest = {},
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
 private fun MapComposablePreview(
     @PreviewParameter(UserLocationPreviewProvider::class) uiState: LocationTrackerUiState,
 ) {
