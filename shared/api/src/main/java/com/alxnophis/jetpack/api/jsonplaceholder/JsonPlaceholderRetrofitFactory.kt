@@ -41,19 +41,18 @@ class JsonPlaceholderRetrofitFactory(
             }
         }
         .build()
-        // Note: Certificate pinning is not implemented for jsonplaceholder.typicode.com
-        // because it's a public demo API without sensitive data. Standard HTTPS with
-        // system certificate validation is sufficient for this use case.
-        // For production APIs with sensitive data, consider Android Network Security Config.
 
-    operator fun invoke(): JsonPlaceholderRetrofitService = Retrofit
-        .Builder()
-        .baseUrl(BASE_URL)
-        .client(okHttpClient)
-        .addCallAdapterFactory(EitherCallAdapterFactory())
-        .addConverterFactory(jsonConverter)
-        .build()
-        .create(JsonPlaceholderRetrofitService::class.java)
+    private val retrofit: Retrofit by lazy {
+        Retrofit
+            .Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addCallAdapterFactory(EitherCallAdapterFactory())
+            .addConverterFactory(jsonConverter)
+            .build()
+    }
+
+    fun <T> createService(serviceClass: Class<T>): T = retrofit.create(serviceClass)
 
     private fun loggingInterceptor() = HttpLoggingInterceptor().apply {
         level = when {

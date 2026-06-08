@@ -11,8 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-@Suppress("unused")
-interface JsonPlaceholderRetrofitService {
+interface JsonPlaceholderPostsService {
     @GET("posts")
     suspend fun getPosts(): Either<CallError, List<PostApiModel>>
 
@@ -20,12 +19,16 @@ interface JsonPlaceholderRetrofitService {
     suspend fun getPostById(
         @Path("id") id: Long,
     ): Either<CallError, PostApiModel>
+}
 
+fun interface JsonPlaceholderCommentsService {
     @GET("comments")
     suspend fun getCommentsByPostId(
         @Query("postId") postId: Long,
     ): Either<CallError, List<CommentApiModel>>
+}
 
+interface JsonPlaceholderUsersService {
     @GET("users")
     suspend fun getUsers(): Either<CallError, List<UserApiModel>>
 
@@ -33,10 +36,14 @@ interface JsonPlaceholderRetrofitService {
     suspend fun getUsersBy(
         @Path("id") userId: Long,
     ): Either<CallError, UserApiModel>
+}
 
+fun interface JsonPlaceholderAlbumsService {
     @GET("albums")
     suspend fun getAlbums(): Either<CallError, List<AlbumApiModel>>
+}
 
+interface JsonPlaceholderPhotosService {
     @GET("photos")
     suspend fun getPhotos(): Either<CallError, List<PhotoApiModel>>
 

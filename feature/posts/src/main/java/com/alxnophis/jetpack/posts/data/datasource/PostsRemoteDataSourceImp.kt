@@ -6,7 +6,7 @@ import arrow.retrofit.adapter.either.networkhandling.HttpError
 import arrow.retrofit.adapter.either.networkhandling.IOError
 import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
 import com.alxnophis.jetpack.api.exception.NoConnectivityException
-import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderRetrofitService
+import com.alxnophis.jetpack.api.jsonplaceholder.JsonPlaceholderPostsService
 import com.alxnophis.jetpack.posts.data.mapper.mapToPost
 import com.alxnophis.jetpack.posts.data.mapper.mapToPosts
 import com.alxnophis.jetpack.posts.data.model.Post
@@ -15,7 +15,7 @@ import com.alxnophis.jetpack.posts.data.model.PostsError
 import timber.log.Timber
 
 internal class PostsRemoteDataSourceImp(
-    private val apiDataSource: JsonPlaceholderRetrofitService,
+    private val apiDataSource: JsonPlaceholderPostsService,
 ) : PostsRemoteDataSource {
     override suspend fun getPosts(): Either<PostsError, List<Post>> =
         apiDataSource
