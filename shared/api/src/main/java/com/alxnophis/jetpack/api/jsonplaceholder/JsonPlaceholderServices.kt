@@ -21,7 +21,7 @@ interface JsonPlaceholderPostsService {
     ): Either<CallError, PostApiModel>
 }
 
-fun interface JsonPlaceholderCommentsService {
+interface JsonPlaceholderCommentsService {
     @GET("comments")
     suspend fun getCommentsByPostId(
         @Query("postId") postId: Long,
@@ -38,7 +38,7 @@ interface JsonPlaceholderUsersService {
     ): Either<CallError, UserApiModel>
 }
 
-fun interface JsonPlaceholderAlbumsService {
+interface JsonPlaceholderAlbumsService {
     @GET("albums")
     suspend fun getAlbums(): Either<CallError, List<AlbumApiModel>>
 }
