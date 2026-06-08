@@ -12,7 +12,7 @@ internal class BallClickerTimerUseCase {
         flow {
             for (i in start downTo end) {
                 emit(i)
-                delay(1_000)
+                if (i != end) delay(1_000)
             }
         }
 }
