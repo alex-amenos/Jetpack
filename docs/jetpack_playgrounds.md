@@ -74,7 +74,7 @@ More experiment info:
 Authentication form with SignUp and SignIn.<br><br>
 More experiment info:<br>
 
-- Experiment with testing: unit test, snapshot tests and android tests
+- Experiment with testing: unit tests
 
 <img alt="Authentication screen" src="./images/authentication_screen.png" width="300" />
 
@@ -84,7 +84,7 @@ Settings options screen.<br><br>
 More experiment info:<br>
 
 - Not persisted settings<br>
-- Experiment with testing: unit test, snapshot tests and android tests
+- Experiment with testing: unit tests
 
 <img alt="Settings screen" src="./images/settings_screen.png" width="300" />
 
