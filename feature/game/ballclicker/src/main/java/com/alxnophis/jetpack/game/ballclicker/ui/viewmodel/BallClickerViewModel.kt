@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.game.ballclicker.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
+import com.alxnophis.jetpack.game.ballclicker.domain.usecase.BallClickerTimerUseCase
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerEvent
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.BallClickerState
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.DEFAULT_POINTS
@@ -15,16 +16,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 internal class BallClickerViewModel(
+    private val ballClickerTimerUseCase: BallClickerTimerUseCase,
     initialState: BallClickerState = BallClickerState.initialState,
     defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
@@ -55,7 +54,7 @@ internal class BallClickerViewModel(
                 BallClickerState.isTimerRunning set true
                 BallClickerState.points set DEFAULT_POINTS
             }
-            tickerFlow()
+            ballClickerTimerUseCase(DEFAULT_TIME_IN_SECONDS.toLong())
                 .onEach { seconds ->
                     _uiState.updateCopy {
                         BallClickerState.currentTimeInSeconds set seconds.toInt()
@@ -76,17 +75,6 @@ internal class BallClickerViewModel(
             _uiState.updateCopy {
                 BallClickerState.isTimerRunning set false
                 BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
-            }
-        }
-
-    private fun tickerFlow(
-        start: Long = DEFAULT_TIME_IN_SECONDS.toLong(),
-        end: Long = 0L,
-    ): Flow<Long> =
-        flow {
-            for (i in start downTo end) {
-                emit(i)
-                delay(1_000)
             }
         }
 }
