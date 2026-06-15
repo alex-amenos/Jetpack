@@ -4,17 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,12 +28,16 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.Movie
 import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
 import com.alxnophis.jetpack.movies.ui.contract.MoviesState
@@ -49,39 +53,48 @@ internal fun MoviesScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Search Movies") },
+                    title = { Text(stringResource(id = R.string.movies_search_title)) },
                     navigationIcon = {
                         IconButton(onClick = { handleEvent(MoviesEvent.GoBackRequested) }) {
-                            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(id = R.string.movies_cd_go_back),
+                            )
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                    ),
+                    colors =
+                        TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            scrolledContainerColor = MaterialTheme.colorScheme.onPrimary,
+                            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                            actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                        ),
                 )
-            }
+            },
         ) { paddingValues ->
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .background(MaterialTheme.colorScheme.surface)
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .background(MaterialTheme.colorScheme.surface),
             ) {
                 OutlinedTextField(
                     value = state.searchQuery,
                     onValueChange = { handleEvent(MoviesEvent.SearchQueryChanged(it)) },
-                    label = { Text("Search") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                    label = { Text(stringResource(id = R.string.movies_search_label)) },
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
                     singleLine = true,
                 )
 
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                ) {
                     items(movies.itemCount) { index ->
                         val movie = movies[index]
                         if (movie != null) {
@@ -92,42 +105,51 @@ internal fun MoviesScreen(
                     movies.apply {
                         when {
                             loadState.refresh is LoadState.Loading -> {
-                                item {
+                                item(span = { GridItemSpan(2) }) {
                                     Box(
-                                        modifier = Modifier.fillParentMaxSize(),
-                                        contentAlignment = Alignment.Center
+                                        modifier =
+                                            Modifier
+                                                .fillMaxSize()
+                                                .padding(32.dp),
+                                        contentAlignment = Alignment.Center,
                                     ) {
                                         CircularProgressIndicator()
                                     }
                                 }
                             }
+
                             loadState.append is LoadState.Loading -> {
-                                item {
+                                item(span = { GridItemSpan(2) }) {
                                     Box(
-                                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                        contentAlignment = Alignment.Center
+                                        modifier =
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .padding(16.dp),
+                                        contentAlignment = Alignment.Center,
                                     ) {
                                         CircularProgressIndicator()
                                     }
                                 }
                             }
+
                             loadState.refresh is LoadState.Error -> {
                                 val e = movies.loadState.refresh as LoadState.Error
-                                item {
+                                item(span = { GridItemSpan(2) }) {
                                     Text(
-                                        text = e.error.localizedMessage ?: "Unknown error",
+                                        text = e.error.localizedMessage ?: stringResource(id = R.string.movies_error_unknown),
                                         color = MaterialTheme.colorScheme.error,
-                                        modifier = Modifier.padding(16.dp)
+                                        modifier = Modifier.padding(16.dp),
                                     )
                                 }
                             }
+
                             loadState.append is LoadState.Error -> {
                                 val e = movies.loadState.append as LoadState.Error
-                                item {
+                                item(span = { GridItemSpan(2) }) {
                                     Text(
-                                        text = e.error.localizedMessage ?: "Unknown error",
+                                        text = e.error.localizedMessage ?: stringResource(id = R.string.movies_error_unknown),
                                         color = MaterialTheme.colorScheme.error,
-                                        modifier = Modifier.padding(16.dp)
+                                        modifier = Modifier.padding(16.dp),
                                     )
                                 }
                             }
@@ -140,31 +162,45 @@ internal fun MoviesScreen(
 }
 
 @Composable
-private fun MovieItem(movie: Movie, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+private fun MovieItem(
+    movie: Movie,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick)
+                .padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AsyncImage(
-            model = "https://image.tmdb.org/t/p/w200${movie.posterPath}",
+            model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
             contentDescription = movie.title,
-            modifier = Modifier
-                .size(60.dp, 90.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant),
-            contentScale = ContentScale.Crop
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+            contentScale = ContentScale.Crop,
         )
-        Spacer(modifier = Modifier.width(16.dp))
-        Column {
-            Text(text = movie.title, style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = movie.releaseDate ?: "Unknown",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = movie.title,
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = movie.releaseDate?.take(4) ?: stringResource(id = R.string.movies_year_unknown),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
