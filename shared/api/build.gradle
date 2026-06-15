@@ -1,7 +1,17 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-shared.gradle"
 
+def tmdbApiKey = project.findProperty('THEMOVIEDB_ORG_API_KEY') ?: '""'
+
 android {
     namespace = 'com.alxnophis.jetpack.api'
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigField("String", "THEMOVIEDB_ORG_API_KEY", tmdbApiKey.startsWith('"') ? tmdbApiKey : "\"${tmdbApiKey}\"")
+    }
 }
 
 dependencies {
