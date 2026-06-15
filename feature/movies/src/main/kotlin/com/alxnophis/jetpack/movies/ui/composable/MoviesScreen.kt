@@ -33,21 +33,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
-import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.Movie
+import com.alxnophis.jetpack.movies.domain.model.MovieException
 import com.alxnophis.jetpack.movies.ui.composable.provider.MoviesPagingProvider
 import com.alxnophis.jetpack.movies.ui.composable.provider.MoviesStateProvider
 import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
 import com.alxnophis.jetpack.movies.ui.contract.MoviesState
+import com.alxnophis.jetpack.movies.ui.mapper.toMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -152,10 +153,17 @@ internal fun MoviesScreen(
                             loadState.refresh is LoadState.Error -> {
                                 val e = movies.loadState.refresh as LoadState.Error
                                 item(span = { GridItemSpan(2) }) {
-                                    Text(
-                                        text = e.error.localizedMessage ?: stringResource(id = R.string.movies_error_unknown),
-                                        color = MaterialTheme.colorScheme.error,
-                                        modifier = Modifier.padding(16.dp),
+                                    val errorMessage =
+                                        (e.error as? MovieException)?.error?.toMessage() ?: e.error.localizedMessage ?: stringResource(
+                                            id = R.string.movies_error_unknown,
+                                        )
+                                    MovieErrorContent(
+                                        errorMessage = errorMessage,
+                                        modifier =
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .clickable { movies.retry() }
+                                                .padding(32.dp),
                                     )
                                 }
                             }
@@ -163,10 +171,17 @@ internal fun MoviesScreen(
                             loadState.append is LoadState.Error -> {
                                 val e = movies.loadState.append as LoadState.Error
                                 item(span = { GridItemSpan(2) }) {
-                                    Text(
-                                        text = e.error.localizedMessage ?: stringResource(id = R.string.movies_error_unknown),
-                                        color = MaterialTheme.colorScheme.error,
-                                        modifier = Modifier.padding(16.dp),
+                                    val errorMessage =
+                                        (e.error as? MovieException)?.error?.toMessage() ?: e.error.localizedMessage ?: stringResource(
+                                            id = R.string.movies_error_unknown,
+                                        )
+                                    MovieErrorContent(
+                                        errorMessage = errorMessage,
+                                        modifier =
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .clickable { movies.retry() }
+                                                .padding(32.dp),
                                     )
                                 }
                             }
@@ -222,7 +237,7 @@ private fun MovieItem(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun MoviesScreenPreview(
     @PreviewParameter(MoviesStateProvider::class) state: MoviesState,

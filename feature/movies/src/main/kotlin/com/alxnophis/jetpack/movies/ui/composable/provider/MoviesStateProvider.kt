@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.movies.ui.composable.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.paging.PagingData
+import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.movies.domain.model.Movie
 import com.alxnophis.jetpack.movies.ui.contract.MoviesState
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,7 @@ internal class MoviesStateProvider : PreviewParameterProvider<MoviesState> {
     override val values: Sequence<MoviesState> =
         sequenceOf(
             MoviesState(
-                searchQuery = "",
+                searchQuery = EMPTY,
             ),
             MoviesState(
                 searchQuery = "Matrix",
@@ -19,6 +20,7 @@ internal class MoviesStateProvider : PreviewParameterProvider<MoviesState> {
         )
 }
 
+@Suppress("ktlint:standard:max-line-length")
 internal class MoviesPagingProvider : PreviewParameterProvider<Flow<PagingData<Movie>>> {
     override val values: Sequence<Flow<PagingData<Movie>>> =
         sequenceOf(

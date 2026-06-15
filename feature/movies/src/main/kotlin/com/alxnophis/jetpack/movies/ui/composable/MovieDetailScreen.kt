@@ -28,17 +28,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.MovieDetails
 import com.alxnophis.jetpack.movies.ui.composable.provider.MovieDetailStateProvider
 import com.alxnophis.jetpack.movies.ui.contract.MovieDetailEvent
 import com.alxnophis.jetpack.movies.ui.contract.MovieDetailState
+import com.alxnophis.jetpack.movies.ui.mapper.toMessage
 
 @Composable
 internal fun MovieDetailScreen(
@@ -59,9 +59,12 @@ internal fun MovieDetailScreen(
                     }
 
                     state.error != null -> {
-                        CoreErrorDialog(
-                            errorMessage = stringResource(id = R.string.movies_error_loading, state.error.toString()),
-                            dismissError = { handleEvent(MovieDetailEvent.ErrorDismissRequested) },
+                        MovieErrorContent(
+                            errorMessage = state.error.toMessage(),
+                            modifier =
+                                Modifier
+                                    .align(Alignment.Center)
+                                    .padding(32.dp),
                         )
                     }
 
@@ -161,7 +164,7 @@ private fun BackButtonOverlay(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun MovieDetailScreenPreview(
     @PreviewParameter(MovieDetailStateProvider::class) state: MovieDetailState,
