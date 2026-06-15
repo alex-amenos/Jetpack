@@ -1,0 +1,40 @@
+package com.alxnophis.jetpack.movies.ui.composable.provider
+
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.alxnophis.jetpack.movies.domain.model.MovieDetails
+import com.alxnophis.jetpack.movies.domain.model.MovieError
+import com.alxnophis.jetpack.movies.ui.contract.MovieDetailState
+
+@Suppress("ktlint:standard:max-line-length")
+internal class MovieDetailStateProvider : PreviewParameterProvider<MovieDetailState> {
+    override val values: Sequence<MovieDetailState> =
+        sequenceOf(
+            MovieDetailState(
+                isLoading = false,
+                movie =
+                    MovieDetails(
+                        id = 1,
+                        title = "The Matrix",
+                        overview = "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+                        posterPath = null,
+                        backdropPath = null,
+                        releaseDate = "1999-03-31",
+                        voteAverage = 8.7,
+                        runtime = 136,
+                        status = "Released",
+                        tagline = "Welcome to the Real World.",
+                    ),
+                error = null,
+            ),
+            MovieDetailState(
+                isLoading = true,
+                movie = null,
+                error = null,
+            ),
+            MovieDetailState(
+                isLoading = false,
+                movie = null,
+                error = MovieError.Network,
+            ),
+        )
+}

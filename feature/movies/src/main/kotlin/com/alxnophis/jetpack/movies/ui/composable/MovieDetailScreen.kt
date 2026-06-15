@@ -28,12 +28,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.MovieDetails
+import com.alxnophis.jetpack.movies.ui.composable.provider.MovieDetailStateProvider
 import com.alxnophis.jetpack.movies.ui.contract.MovieDetailEvent
 import com.alxnophis.jetpack.movies.ui.contract.MovieDetailState
 
@@ -156,4 +159,15 @@ private fun BackButtonOverlay(
             tint = MaterialTheme.colorScheme.onSurface,
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MovieDetailScreenPreview(
+    @PreviewParameter(MovieDetailStateProvider::class) state: MovieDetailState,
+) {
+    MovieDetailScreen(
+        state = state,
+        handleEvent = {},
+    )
 }
