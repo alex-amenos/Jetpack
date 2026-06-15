@@ -33,13 +33,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
+import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.Movie
+import com.alxnophis.jetpack.movies.ui.composable.provider.MoviesPagingProvider
+import com.alxnophis.jetpack.movies.ui.composable.provider.MoviesStateProvider
 import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
 import com.alxnophis.jetpack.movies.ui.contract.MoviesState
 
@@ -214,4 +220,21 @@ private fun MovieItem(
             modifier = Modifier.fillMaxWidth(),
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MoviesScreenPreview(
+    @PreviewParameter(MoviesStateProvider::class) state: MoviesState,
+) {
+    val movies =
+        MoviesPagingProvider()
+            .values
+            .first()
+            .collectAsLazyPagingItems()
+    MoviesScreen(
+        state = state,
+        movies = movies,
+        handleEvent = {},
+    )
 }
