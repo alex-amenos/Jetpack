@@ -21,6 +21,7 @@ import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.ui.composable.HomeFeature
 import com.alxnophis.jetpack.location.tracker.ui.composable.LocationTrackerFeature
 import com.alxnophis.jetpack.movies.ui.composable.MovieDetailFeature
+import com.alxnophis.jetpack.movies.ui.composable.MovieNotSelectedComposable
 import com.alxnophis.jetpack.movies.ui.composable.MoviesFeature
 import com.alxnophis.jetpack.myplayground.ui.composable.MyPlaygroundFeature
 import com.alxnophis.jetpack.notifications.ui.navigation.NotificationsFeature
@@ -108,15 +109,27 @@ fun Navigation(modifier: Modifier = Modifier) {
                         onBack = onBack,
                     )
                 }
-                entry<Route.Movies> {
+                entry<Route.Movies>(
+                    metadata =
+                        ListDetailSceneStrategy.listPane {
+                            MovieNotSelectedComposable(
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        },
+                ) {
                     MoviesFeature(
                         onMovieSelected = { movieId ->
+                            if (backStack.last() is Route.MovieDetail) {
+                                backStack.removeLastOrNull()
+                            }
                             backStack.add(Route.MovieDetail(movieId))
                         },
                         onBack = onBack,
                     )
                 }
-                entry<Route.MovieDetail> { key ->
+                entry<Route.MovieDetail>(
+                    metadata = ListDetailSceneStrategy.detailPane(),
+                ) { key ->
                     MovieDetailFeature(
                         movieId = key.movieId,
                         onBack = onBack,

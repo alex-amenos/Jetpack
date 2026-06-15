@@ -6,6 +6,9 @@
     <string name="movies_error_unknown">Unknown error</string>
     <string name="movies_year_unknown">Unknown Year</string>
     <string name="movies_cd_go_back">Go Back</string>
+    <string name="movies_cd_clear_search">Clear search</string>
+    <string name="movies_not_selected_title">No Movie Selected</string>
+    <string name="movies_not_selected_detail">Select a movie from the list to view its details.</string>
 
     <!-- Movie Detail Screen -->
     <string name="movies_loading">Loading…</string>
