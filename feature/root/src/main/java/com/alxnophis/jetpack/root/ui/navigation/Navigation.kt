@@ -20,6 +20,7 @@ import com.alxnophis.jetpack.game.ballclicker.ui.composable.BallClickerFeature
 import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.ui.composable.HomeFeature
 import com.alxnophis.jetpack.location.tracker.ui.composable.LocationTrackerFeature
+import com.alxnophis.jetpack.movies.ui.composable.MovieDetailFeature
 import com.alxnophis.jetpack.movies.ui.composable.MoviesFeature
 import com.alxnophis.jetpack.myplayground.ui.composable.MyPlaygroundFeature
 import com.alxnophis.jetpack.notifications.ui.navigation.NotificationsFeature
@@ -109,6 +110,15 @@ fun Navigation(modifier: Modifier = Modifier) {
                 }
                 entry<Route.Movies> {
                     MoviesFeature(
+                        onMovieSelected = { movieId ->
+                            backStack.add(Route.MovieDetail(movieId))
+                        },
+                        onBack = onBack,
+                    )
+                }
+                entry<Route.MovieDetail> { key ->
+                    MovieDetailFeature(
+                        movieId = key.movieId,
                         onBack = onBack,
                     )
                 }
