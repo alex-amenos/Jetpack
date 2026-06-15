@@ -13,6 +13,8 @@ sealed interface Feature {
 
     data object LocationTracker : Feature
 
+    data object Movies : Feature
+
     data object Posts : Feature
 
     data object Settings : Feature

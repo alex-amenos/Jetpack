@@ -23,6 +23,9 @@ sealed class Route : NavKey {
     data object GameBallClicker : Route()
 
     @Serializable
+    data object Movies : Route()
+
+    @Serializable
     data object MyPlayground : Route()
 
     @Serializable

@@ -20,6 +20,7 @@ import com.alxnophis.jetpack.game.ballclicker.ui.composable.BallClickerFeature
 import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.ui.composable.HomeFeature
 import com.alxnophis.jetpack.location.tracker.ui.composable.LocationTrackerFeature
+import com.alxnophis.jetpack.movies.ui.composable.MoviesFeature
 import com.alxnophis.jetpack.myplayground.ui.composable.MyPlaygroundFeature
 import com.alxnophis.jetpack.notifications.ui.navigation.NotificationsFeature
 import com.alxnophis.jetpack.posts.ui.composable.PostDetailFeature
@@ -54,6 +55,7 @@ fun Navigation(modifier: Modifier = Modifier) {
                                     Feature.FileDownloader -> Route.FileDownloader
                                     Feature.GameBallClicker -> Route.GameBallClicker
                                     Feature.LocationTracker -> Route.LocationTracker
+                                    Feature.Movies -> Route.Movies
                                     Feature.MyPlayground -> Route.MyPlayground
                                     Feature.Notifications -> Route.Notifications
                                     Feature.Posts -> Route.Posts
@@ -102,6 +104,11 @@ fun Navigation(modifier: Modifier = Modifier) {
                 }
                 entry<Route.LocationTracker> {
                     LocationTrackerFeature(
+                        onBack = onBack,
+                    )
+                }
+                entry<Route.Movies> {
+                    MoviesFeature(
                         onBack = onBack,
                     )
                 }

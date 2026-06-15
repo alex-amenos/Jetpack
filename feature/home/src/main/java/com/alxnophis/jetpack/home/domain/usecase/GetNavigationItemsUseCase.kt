@@ -17,6 +17,7 @@ class GetNavigationItemsUseCase(
                 .catch {
                     listOf(
                         myPlayground,
+                        movies,
                         posts,
                         fileDownloader,
                         authentication,
@@ -28,7 +29,7 @@ class GetNavigationItemsUseCase(
                 }.mapLeft { NavigationError.Unknown }
         }
 
-    // TODO - Update Home navigation here
+    // TODO - Update Home navigation here with new features and remove the ones that are not needed anymore
     companion object {
         private val authentication =
             NavigationItem(
@@ -85,6 +86,13 @@ class GetNavigationItemsUseCase(
                 emoji = "📥",
                 description = "Download a file by URL to download folder",
                 feature = Feature.FileDownloader,
+            )
+        private val movies =
+            NavigationItem(
+                name = "Movies",
+                emoji = "🎬",
+                description = "Movies feature",
+                feature = Feature.Movies,
             )
     }
 }
