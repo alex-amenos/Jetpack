@@ -18,12 +18,12 @@ internal class MovieDetailViewModel(
     private val movieRepository: MovieRepository,
     initialState: MovieDetailState = MovieDetailState.initialState,
 ) : BaseViewModel<MovieDetailEvent, MovieDetailState>(initialState) {
-
-    override val uiState: StateFlow<MovieDetailState> = _uiState.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = initialState,
-    )
+    override val uiState: StateFlow<MovieDetailState> =
+        _uiState.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = initialState,
+        )
 
     private fun loadMovieDetails(movieId: Int) {
         viewModelScope.launch {
@@ -32,20 +32,22 @@ internal class MovieDetailViewModel(
                 MovieDetailState.error set null
             }
 
-            movieRepository.getMovieDetails(movieId).fold(
-                { error ->
-                    _uiState.updateCopy {
-                        MovieDetailState.isLoading set false
-                        MovieDetailState.error set error
-                    }
-                },
-                { movieDetails ->
-                    _uiState.updateCopy {
-                        MovieDetailState.isLoading set false
-                        MovieDetailState.movie set movieDetails
-                    }
-                }
-            )
+            movieRepository
+                .getMovieDetails(movieId)
+                .fold(
+                    { error ->
+                        _uiState.updateCopy {
+                            MovieDetailState.isLoading set false
+                            MovieDetailState.error set error
+                        }
+                    },
+                    { movieDetails ->
+                        _uiState.updateCopy {
+                            MovieDetailState.isLoading set false
+                            MovieDetailState.movie set movieDetails
+                        }
+                    },
+                )
         }
     }
 
@@ -54,13 +56,15 @@ internal class MovieDetailViewModel(
             is MovieDetailEvent.LoadMovie -> {
                 loadMovieDetails(event.movieId)
             }
+
             MovieDetailEvent.ErrorDismissRequested -> {
                 _uiState.updateCopy {
                     MovieDetailState.error set null
                 }
             }
+
             MovieDetailEvent.GoBackRequested -> {
-                // Handled in UI
+                throw IllegalStateException("Go back not implemented in ViewModel")
             }
         }
     }

@@ -50,11 +50,11 @@ internal class MoviesViewModel(
             }
 
             is MoviesEvent.MovieClicked -> {
-                // Handled in UI
+                throw IllegalStateException("MovieClicked event should be handled in the UI layer, not in the ViewModel.")
             }
 
             MoviesEvent.GoBackRequested -> {
-                // Handled in UI
+                throw IllegalStateException("Go back not implemented in ViewModel")
             }
         }
     }
