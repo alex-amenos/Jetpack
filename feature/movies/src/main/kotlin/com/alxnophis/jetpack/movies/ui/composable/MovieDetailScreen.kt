@@ -157,7 +157,12 @@ private fun MovieSuccessContent(
                 details.add(createDetail(stringResource(id = R.string.movies_runtime, it.toString())))
             }
 
-            Text(text = movie.title, style = MaterialTheme.typography.headlineMedium)
+            Text(
+                text = movie.title,
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+
+            )
             Spacer(modifier = Modifier.height(12.dp))
 
             if (details.isNotEmpty()) {
