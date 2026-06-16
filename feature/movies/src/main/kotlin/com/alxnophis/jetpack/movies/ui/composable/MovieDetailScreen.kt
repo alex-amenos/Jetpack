@@ -49,6 +49,7 @@ import com.alxnophis.jetpack.movies.ui.composable.provider.MovieDetailStateProvi
 import com.alxnophis.jetpack.movies.ui.contract.MovieDetailEvent
 import com.alxnophis.jetpack.movies.ui.contract.MovieDetailState
 import com.alxnophis.jetpack.movies.ui.mapper.toMessage
+import java.util.Locale
 
 @Composable
 internal fun MovieDetailScreen(
@@ -106,15 +107,23 @@ private fun MovieSuccessContent(
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        AsyncImage(
-            model = "https://image.tmdb.org/t/p/w500${movie.backdropPath ?: movie.posterPath}",
-            contentDescription = movie.title,
+        val movieImage = movie.backdropPath ?: movie.posterPath
+        movieImage?.let {
+            AsyncImage(
+                model = "https://image.tmdb.org/t/p/w500$movieImage",
+                contentDescription = movie.title,
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                contentScale = ContentScale.Crop,
+            )
+        } ?: Spacer(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-            contentScale = ContentScale.Crop,
+                    .height(80.dp),
         )
         Column(
             modifier =
@@ -141,7 +150,8 @@ private fun MovieSuccessContent(
                 details.add(createDetail(stringResource(id = R.string.movies_released, it)))
             }
             movie.voteAverage?.let {
-                details.add(createDetail(stringResource(id = R.string.movies_rating, it.toString())))
+                val formattedRating = String.format(Locale.US, "%.1f", it)
+                details.add(createDetail(stringResource(id = R.string.movies_rating, formattedRating)))
             }
             movie.runtime?.let {
                 details.add(createDetail(stringResource(id = R.string.movies_runtime, it.toString())))
