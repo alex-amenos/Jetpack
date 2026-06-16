@@ -163,6 +163,7 @@ private fun MovieSuccessContent(
                         text = "\"$it\"",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                 }
