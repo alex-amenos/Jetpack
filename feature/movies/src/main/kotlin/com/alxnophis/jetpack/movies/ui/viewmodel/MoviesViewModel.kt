@@ -1,31 +1,29 @@
 package com.alxnophis.jetpack.movies.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.movies.domain.model.Movie
 import com.alxnophis.jetpack.movies.domain.repository.MovieRepository
 import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
 import com.alxnophis.jetpack.movies.ui.contract.MoviesState
-import com.alxnophis.jetpack.movies.ui.contract.searchQuery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 internal class MoviesViewModel(
     private val movieRepository: MovieRepository,
+    savedStateHandle: SavedStateHandle,
     initialState: MoviesState = MoviesState.initialState,
-) : BaseViewModel<MoviesEvent, MoviesState>(initialState) {
-    private val searchQueryFlow = MutableStateFlow(initialState.searchQuery)
+) : BaseViewModel<MoviesEvent, MoviesState>(initialState, savedStateHandle) {
+    private val searchQueryFlow = MutableStateFlow(currentUiState.searchQuery)
 
     val moviesPagingFlow: Flow<PagingData<Movie>> =
         searchQueryFlow
@@ -33,20 +31,15 @@ internal class MoviesViewModel(
             .flatMapLatest { query -> movieRepository.searchMovies(query) }
             .cachedIn(viewModelScope)
 
-    override val uiState: StateFlow<MoviesState> =
-        _uiState.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = initialState,
-        )
-
     override fun handleEvent(event: MoviesEvent) {
         when (event) {
             is MoviesEvent.SearchQueryChanged -> {
-                _uiState.updateCopy {
-                    MoviesState.searchQuery set event.query
+                updateUiState {
+                    copy(searchQuery = event.query)
                 }
-                searchQueryFlow.value = event.query
+                searchQueryFlow.update {
+                    event.query
+                }
             }
 
             is MoviesEvent.MovieClicked -> {

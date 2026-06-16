@@ -151,10 +151,6 @@ internal fun MoviesScreen(
                             loadState.append is LoadState.Loading -> {
                                 appendLoadingContent()
                             }
-
-                            itemCount > 0 && loadState.refresh is LoadState.Loading -> {
-                                appendLoadingContent()
-                            }
                         }
                     }
                 }

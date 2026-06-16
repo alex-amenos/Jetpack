@@ -16,6 +16,6 @@ val moviesModule: Module =
                 movieService = get(),
             )
         }
-        viewModel { MoviesViewModel(get()) }
+        viewModel { MoviesViewModel(get(), get()) }
         viewModel { MovieDetailViewModel(get(), get()) }
     }
