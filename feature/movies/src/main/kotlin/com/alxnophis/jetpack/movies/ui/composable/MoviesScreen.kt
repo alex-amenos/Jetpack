@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -95,7 +96,7 @@ internal fun MoviesScreen(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
                     singleLine = true,
                     trailingIcon = {
                         if (state.searchQuery.isNotEmpty()) {
@@ -109,79 +110,63 @@ internal fun MoviesScreen(
                     },
                 )
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    items(movies.itemCount) { index ->
-                        val movie = movies[index]
-                        if (movie != null) {
-                            MovieItem(movie = movie, onClick = { handleEvent(MoviesEvent.MovieClicked(movie.id)) })
+                Box(modifier = Modifier.fillMaxSize()) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(minSize = 160.dp),
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        items(movies.itemCount) { index ->
+                            val movie = movies[index]
+                            if (movie != null) {
+                                MovieItem(
+                                    movie = movie,
+                                    onClick = { handleEvent(MoviesEvent.MovieClicked(movie.id)) },
+                                )
+                            }
                         }
-                    }
 
-                    movies.apply {
-                        when {
-                            loadState.refresh is LoadState.Loading -> {
-                                item(span = { GridItemSpan(2) }) {
-                                    Box(
-                                        modifier =
-                                            Modifier
-                                                .fillMaxSize()
-                                                .padding(32.dp),
-                                        contentAlignment = Alignment.Center,
-                                    ) {
-                                        CircularProgressIndicator()
-                                    }
+                        movies.apply {
+                            when {
+                                loadState.append is LoadState.Loading -> {
+                                    appendLoadingContent()
                                 }
-                            }
 
-                            loadState.append is LoadState.Loading -> {
-                                item(span = { GridItemSpan(2) }) {
-                                    Box(
-                                        modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .padding(16.dp),
-                                        contentAlignment = Alignment.Center,
-                                    ) {
-                                        CircularProgressIndicator()
-                                    }
+                                loadState.append is LoadState.Error -> {
+                                    val e = movies.loadState.append as LoadState.Error
+                                    appendErrorContent(
+                                        error = e.error,
+                                        onRetry = { movies.retry() },
+                                    )
                                 }
-                            }
 
-                            loadState.refresh is LoadState.Error -> {
-                                val e = movies.loadState.refresh as LoadState.Error
-                                item(span = { GridItemSpan(2) }) {
-                                    val errorMessage =
-                                        (e.error as? MovieException)?.error?.toMessage() ?: e.error.localizedMessage ?: stringResource(
-                                            id = R.string.movies_error_unknown,
-                                        )
-                                    MovieErrorContent(
-                                        errorMessage = errorMessage,
-                                        modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .clickable { movies.retry() }
-                                                .padding(32.dp),
+                                itemCount > 0 && loadState.refresh is LoadState.Loading -> {
+                                    appendLoadingContent()
+                                }
+
+                                itemCount > 0 && loadState.refresh is LoadState.Error -> {
+                                    val e = movies.loadState.refresh as LoadState.Error
+                                    appendErrorContent(
+                                        error = e.error,
+                                        onRetry = { movies.retry() },
                                     )
                                 }
                             }
+                        }
+                    }
 
-                            loadState.append is LoadState.Error -> {
-                                val e = movies.loadState.append as LoadState.Error
-                                item(span = { GridItemSpan(2) }) {
-                                    val errorMessage =
-                                        (e.error as? MovieException)?.error?.toMessage() ?: e.error.localizedMessage ?: stringResource(
-                                            id = R.string.movies_error_unknown,
-                                        )
-                                    MovieErrorContent(
-                                        errorMessage = errorMessage,
-                                        modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .clickable { movies.retry() }
-                                                .padding(32.dp),
+                    if (movies.itemCount == 0) {
+                        movies.apply {
+                            when {
+                                loadState.refresh is LoadState.Loading -> {
+                                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                                }
+
+                                loadState.refresh is LoadState.Error -> {
+                                    val e = movies.loadState.refresh as LoadState.Error
+                                    RefreshErrorContent(
+                                        error = e.error,
+                                        onRetry = { movies.retry() },
+                                        modifier = Modifier.align(Alignment.Center),
                                     )
                                 }
                             }
@@ -233,6 +218,57 @@ private fun MovieItem(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+private fun RefreshErrorContent(
+    error: Throwable,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val errorMessage = (error as? MovieException)?.error?.toMessage() ?: error.localizedMessage ?: stringResource(id = R.string.movies_error_unknown)
+    MovieErrorContent(
+        errorMessage = errorMessage,
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clickable(onClick = onRetry)
+                .padding(32.dp),
+    )
+}
+
+private fun LazyGridScope.appendLoadingContent() {
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+}
+
+private fun LazyGridScope.appendErrorContent(
+    error: Throwable,
+    onRetry: () -> Unit,
+) {
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        val errorMessage =
+            (error as? MovieException)?.error?.toMessage() ?: error.localizedMessage ?: stringResource(
+                id = R.string.movies_error_unknown,
+            )
+        MovieErrorContent(
+            errorMessage = errorMessage,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onRetry)
+                    .padding(32.dp),
         )
     }
 }

@@ -3,6 +3,7 @@ package com.alxnophis.jetpack.movies.ui.composable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,7 +17,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.movies.R
 
 @Composable
@@ -43,6 +46,20 @@ internal fun MovieErrorContent(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 16.dp),
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun MovieErrorContentPreview() {
+    AppTheme {
+        MovieErrorContent(
+            errorMessage = "It is a error message",
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
         )
     }
 }
