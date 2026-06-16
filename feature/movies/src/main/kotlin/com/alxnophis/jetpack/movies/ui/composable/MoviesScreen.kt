@@ -42,6 +42,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.Movie
 import com.alxnophis.jetpack.movies.domain.model.MovieException
@@ -89,25 +90,13 @@ internal fun MoviesScreen(
                         .padding(paddingValues)
                         .background(MaterialTheme.colorScheme.surface),
             ) {
-                OutlinedTextField(
-                    value = state.searchQuery,
-                    onValueChange = { handleEvent(MoviesEvent.SearchQueryChanged(it)) },
-                    label = { Text(stringResource(id = R.string.movies_search_label)) },
+                SearchField(
+                    searchQuery = state.searchQuery,
+                    onSearchQueryChanged = { handleEvent(MoviesEvent.SearchQueryChanged(it)) },
                     modifier =
                         Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp),
-                    singleLine = true,
-                    trailingIcon = {
-                        if (state.searchQuery.isNotEmpty()) {
-                            IconButton(onClick = { handleEvent(MoviesEvent.SearchQueryChanged("")) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = stringResource(id = R.string.movies_cd_clear_search),
-                                )
-                            }
-                        }
-                    },
                 )
 
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -176,6 +165,31 @@ internal fun MoviesScreen(
             }
         }
     }
+}
+
+@Composable
+private fun SearchField(
+    searchQuery: String,
+    onSearchQueryChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        value = searchQuery,
+        onValueChange = onSearchQueryChanged,
+        label = { Text(stringResource(id = R.string.movies_search_label)) },
+        modifier = modifier,
+        singleLine = true,
+        trailingIcon = {
+            if (searchQuery.isNotEmpty()) {
+                IconButton(onClick = { onSearchQueryChanged(EMPTY) }) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = stringResource(id = R.string.movies_cd_clear_search),
+                    )
+                }
+            }
+        },
+    )
 }
 
 @Composable
