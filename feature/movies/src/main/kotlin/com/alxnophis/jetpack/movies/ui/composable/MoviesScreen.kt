@@ -35,7 +35,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -47,7 +46,6 @@ import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.Movie
 import com.alxnophis.jetpack.movies.domain.model.MovieException
 import com.alxnophis.jetpack.movies.ui.composable.provider.MoviesPagingProvider
-import com.alxnophis.jetpack.movies.ui.composable.provider.MoviesStateProvider
 import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
 import com.alxnophis.jetpack.movies.ui.contract.MoviesState
 import com.alxnophis.jetpack.movies.ui.mapper.toMessage
@@ -289,16 +287,44 @@ private fun LazyGridScope.appendErrorContent(
 
 @PreviewLightDark
 @Composable
-private fun MoviesScreenPreview(
-    @PreviewParameter(MoviesStateProvider::class) state: MoviesState,
-) {
+private fun MoviesScreenSuccessPreview() {
     val movies =
         MoviesPagingProvider()
             .values
-            .first()
+            .elementAt(0)
             .collectAsLazyPagingItems()
     MoviesScreen(
-        state = state,
+        state = MoviesState(searchQuery = "Matrix"),
+        movies = movies,
+        handleEvent = {},
+    )
+}
+
+@PreviewLightDark
+@Composable
+private fun MoviesScreenEmptyPreview() {
+    val movies =
+        MoviesPagingProvider()
+            .values
+            .elementAt(1)
+            .collectAsLazyPagingItems()
+    MoviesScreen(
+        state = MoviesState(searchQuery = "Unknown"),
+        movies = movies,
+        handleEvent = {},
+    )
+}
+
+@PreviewLightDark
+@Composable
+private fun MoviesScreenErrorPreview() {
+    val movies =
+        MoviesPagingProvider()
+            .values
+            .elementAt(2)
+            .collectAsLazyPagingItems()
+    MoviesScreen(
+        state = MoviesState(searchQuery = "Supercalifragilisticexpialidocious"),
         movies = movies,
         handleEvent = {},
     )

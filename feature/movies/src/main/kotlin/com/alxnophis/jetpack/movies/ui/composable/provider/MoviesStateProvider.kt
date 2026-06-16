@@ -1,9 +1,13 @@
 package com.alxnophis.jetpack.movies.ui.composable.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.movies.domain.model.Movie
+import com.alxnophis.jetpack.movies.domain.model.MovieError
+import com.alxnophis.jetpack.movies.domain.model.MovieException
 import com.alxnophis.jetpack.movies.ui.contract.MoviesState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -58,7 +62,26 @@ internal class MoviesPagingProvider : PreviewParameterProvider<Flow<PagingData<M
                 ),
             ),
             flowOf(
-                PagingData.empty(),
+                PagingData.from(
+                    data = emptyList(),
+                    sourceLoadStates =
+                        LoadStates(
+                            refresh = LoadState.NotLoading(endOfPaginationReached = true),
+                            prepend = LoadState.NotLoading(endOfPaginationReached = true),
+                            append = LoadState.NotLoading(endOfPaginationReached = true),
+                        ),
+                ),
+            ),
+            flowOf(
+                PagingData.from(
+                    data = emptyList(),
+                    sourceLoadStates =
+                        LoadStates(
+                            refresh = LoadState.Error(MovieException(MovieError.Network)),
+                            prepend = LoadState.NotLoading(endOfPaginationReached = true),
+                            append = LoadState.NotLoading(endOfPaginationReached = true),
+                        ),
+                ),
             ),
         )
 }
