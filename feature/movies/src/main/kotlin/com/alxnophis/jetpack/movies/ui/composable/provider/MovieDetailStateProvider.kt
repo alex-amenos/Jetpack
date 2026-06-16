@@ -11,6 +11,7 @@ internal class MovieDetailStateProvider : PreviewParameterProvider<MovieDetailSt
         sequenceOf(
             MovieDetailState(
                 isLoading = false,
+                movieId = 1,
                 movie =
                     MovieDetails(
                         id = 1,
@@ -28,11 +29,13 @@ internal class MovieDetailStateProvider : PreviewParameterProvider<MovieDetailSt
             ),
             MovieDetailState(
                 isLoading = true,
+                movieId = null,
                 movie = null,
                 error = null,
             ),
             MovieDetailState(
                 isLoading = false,
+                movieId = null,
                 movie = null,
                 error = MovieError.Network,
             ),
