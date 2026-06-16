@@ -28,11 +28,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.kotlin.constants.BREAK_LINE
+import com.alxnophis.jetpack.kotlin.constants.BULLET
+import com.alxnophis.jetpack.kotlin.constants.COLON
+import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
 import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.MovieDetails
 import com.alxnophis.jetpack.movies.ui.composable.provider.MovieDetailStateProvider
@@ -101,17 +110,46 @@ private fun MovieSuccessContent(
             contentScale = ContentScale.Crop,
         )
         Column(modifier = Modifier.padding(24.dp)) {
+            val details = mutableListOf<AnnotatedString>()
+            val createDetail: (String) -> AnnotatedString = { text ->
+                buildAnnotatedString {
+                    append("$BULLET$WHITE_SPACE")
+                    val colonIndex = text.indexOf(COLON)
+                    if (colonIndex != -1) {
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(text.substring(0, colonIndex))
+                        }
+                        append(text.substring(colonIndex))
+                    } else {
+                        append(text)
+                    }
+                }
+            }
+            movie.releaseDate?.let {
+                details.add(createDetail(stringResource(id = R.string.movies_released, it)))
+            }
+            movie.voteAverage?.let {
+                details.add(createDetail(stringResource(id = R.string.movies_rating, it.toString())))
+            }
+            movie.runtime?.let {
+                details.add(createDetail(stringResource(id = R.string.movies_runtime, it.toString())))
+            }
+
             Text(text = movie.title, style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(12.dp))
 
-            val details = mutableListOf<String>()
-            movie.releaseDate?.let { details.add(stringResource(id = R.string.movies_released, it)) }
-            movie.voteAverage?.let { details.add(stringResource(id = R.string.movies_rating, it.toString())) }
-            movie.runtime?.let { details.add(stringResource(id = R.string.movies_runtime, it.toString())) }
-
             if (details.isNotEmpty()) {
+                val joinedText =
+                    buildAnnotatedString {
+                        details.forEachIndexed { index, annotatedString ->
+                            append(annotatedString)
+                            if (index < details.lastIndex) {
+                                append(BREAK_LINE)
+                            }
+                        }
+                    }
                 Text(
-                    text = details.joinToString(" • "),
+                    text = joinedText,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
