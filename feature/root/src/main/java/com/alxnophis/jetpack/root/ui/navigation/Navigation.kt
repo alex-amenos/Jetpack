@@ -3,10 +3,13 @@ package com.alxnophis.jetpack.root.ui.navigation
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
+import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -36,11 +39,15 @@ import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 fun Navigation(modifier: Modifier = Modifier) {
     val backStack = rememberNavBackStack(Route.Home)
     val onBack: () -> Unit = { backStack.removeLastOrNull() }
+    val adaptiveInfo = currentWindowAdaptiveInfoV2()
+    val customDirective = calculatePaneScaffoldDirective(adaptiveInfo).copy(horizontalPartitionSpacerSize = 0.dp)
+    val listDetailStrategy = rememberListDetailSceneStrategy<Any>(directive = customDirective)
+
     NavDisplay(
         backStack = backStack,
         modifier = modifier,
         onBack = onBack,
-        sceneStrategies = listOf(rememberListDetailSceneStrategy()),
+        sceneStrategies = listOf(listDetailStrategy),
         entryDecorators =
             listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
