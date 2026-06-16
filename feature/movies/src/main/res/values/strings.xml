@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Movies Screen -->
-    <string name="movies_search_title">Search Movies</string>
-    <string name="movies_search_label">Search</string>
+    <string name="movies_search_title">Movies</string>
+    <string name="movies_search_label">Search movies</string>
     <string name="movies_error_unknown">Unknown error</string>
     <string name="movies_year_unknown">Unknown Year</string>
     <string name="movies_cd_go_back">Go Back</string>
