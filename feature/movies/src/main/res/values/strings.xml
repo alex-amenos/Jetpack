@@ -23,4 +23,5 @@
     <string name="movies_error_unauthorized">Access denied. Please check your API configuration.</string>
     <string name="movies_error_unknown_message">An unexpected error occurred: %1$s</string>
     <string name="movies_cd_error_icon">Error icon</string>
+    <string name="movies_retry">Retry</string>
 </resources>

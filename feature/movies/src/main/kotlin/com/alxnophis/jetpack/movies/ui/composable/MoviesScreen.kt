@@ -24,10 +24,16 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,8 +63,33 @@ internal fun MoviesScreen(
     movies: LazyPagingItems<Movie>,
     handleEvent: (MoviesEvent) -> Unit,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val unknownErrorMessage = stringResource(id = R.string.movies_error_unknown)
+    val retryLabel = stringResource(id = R.string.movies_retry)
+    val loadState = movies.loadState
+    val errorState = loadState.append as? LoadState.Error ?: loadState.refresh as? LoadState.Error
+    val errorMessage =
+        errorState?.let {
+            (it.error as? MovieException)?.error?.toMessage() ?: it.error.localizedMessage ?: unknownErrorMessage
+        }
+
+    LaunchedEffect(errorState, errorMessage) {
+        if (errorState != null && errorMessage != null) {
+            val result =
+                snackbarHostState.showSnackbar(
+                    message = errorMessage,
+                    actionLabel = retryLabel,
+                    duration = SnackbarDuration.Indefinite,
+                )
+            if (result == SnackbarResult.ActionPerformed) {
+                movies.retry()
+            }
+        }
+    }
+
     AppTheme {
         Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {
                 TopAppBar(
                     title = { Text(stringResource(id = R.string.movies_search_title)) },
@@ -97,65 +128,32 @@ internal fun MoviesScreen(
                             .padding(horizontal = 16.dp, vertical = 8.dp),
                 )
 
-                Box(modifier = Modifier.fillMaxSize()) {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(minSize = 160.dp),
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        items(movies.itemCount) { index ->
-                            val movie = movies[index]
-                            if (movie != null) {
-                                MovieItem(
-                                    movie = movie,
-                                    onClick = { handleEvent(MoviesEvent.MovieClicked(movie.id)) },
-                                )
-                            }
-                        }
-
-                        movies.apply {
-                            when {
-                                loadState.append is LoadState.Loading -> {
-                                    appendLoadingContent()
-                                }
-
-                                loadState.append is LoadState.Error -> {
-                                    val e = movies.loadState.append as LoadState.Error
-                                    appendErrorContent(
-                                        error = e.error,
-                                        onRetry = { movies.retry() },
-                                    )
-                                }
-
-                                itemCount > 0 && loadState.refresh is LoadState.Loading -> {
-                                    appendLoadingContent()
-                                }
-
-                                itemCount > 0 && loadState.refresh is LoadState.Error -> {
-                                    val e = movies.loadState.refresh as LoadState.Error
-                                    appendErrorContent(
-                                        error = e.error,
-                                        onRetry = { movies.retry() },
-                                    )
-                                }
-                            }
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 160.dp),
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    items(movies.itemCount) { index ->
+                        val movie = movies[index]
+                        if (movie != null) {
+                            MovieItem(
+                                movie = movie,
+                                onClick = { handleEvent(MoviesEvent.MovieClicked(movie.id)) },
+                            )
                         }
                     }
 
-                    if (movies.itemCount == 0) {
-                        movies.apply {
-                            when {
-                                loadState.refresh is LoadState.Loading -> {
-                                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                                }
+                    movies.apply {
+                        when {
+                            loadState.refresh is LoadState.Loading -> {
+                                appendLoadingContent()
+                            }
 
-                                loadState.refresh is LoadState.Error -> {
-                                    val e = movies.loadState.refresh as LoadState.Error
-                                    RefreshErrorContent(
-                                        error = e.error,
-                                        onRetry = { movies.retry() },
-                                        modifier = Modifier.align(Alignment.Center),
-                                    )
-                                }
+                            loadState.append is LoadState.Loading -> {
+                                appendLoadingContent()
+                            }
+
+                            itemCount > 0 && loadState.refresh is LoadState.Loading -> {
+                                appendLoadingContent()
                             }
                         }
                     }
@@ -232,23 +230,6 @@ private fun MovieItem(
             modifier = Modifier.fillMaxWidth(),
         )
     }
-}
-
-@Composable
-private fun RefreshErrorContent(
-    error: Throwable,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val errorMessage = (error as? MovieException)?.error?.toMessage() ?: error.localizedMessage ?: stringResource(id = R.string.movies_error_unknown)
-    MovieErrorContent(
-        errorMessage = errorMessage,
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .clickable(onClick = onRetry)
-                .padding(32.dp),
-    )
 }
 
 private fun LazyGridScope.appendLoadingContent() {
