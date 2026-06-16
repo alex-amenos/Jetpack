@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -55,7 +56,7 @@ internal fun MovieDetailScreen(
     handleEvent: (MovieDetailEvent) -> Unit,
 ) {
     AppTheme {
-        Scaffold { _ ->
+        Scaffold { paddingValues ->
             Box(
                 modifier =
                     Modifier
@@ -72,13 +73,18 @@ internal fun MovieDetailScreen(
                             errorMessage = state.error.toMessage(),
                             modifier =
                                 Modifier
+                                    .padding(paddingValues)
                                     .align(Alignment.Center)
                                     .padding(32.dp),
                         )
                     }
 
                     state.movie != null -> {
-                        MovieSuccessContent(movie = state.movie, modifier = Modifier.fillMaxSize())
+                        MovieSuccessContent(
+                            movie = state.movie,
+                            paddingValues = paddingValues,
+                            modifier = Modifier.fillMaxSize(),
+                        )
                     }
                 }
 
@@ -94,6 +100,7 @@ internal fun MovieDetailScreen(
 @Composable
 private fun MovieSuccessContent(
     movie: MovieDetails,
+    paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -109,7 +116,12 @@ private fun MovieSuccessContent(
                     .background(MaterialTheme.colorScheme.surfaceVariant),
             contentScale = ContentScale.Crop,
         )
-        Column(modifier = Modifier.padding(24.dp)) {
+        Column(
+            modifier =
+                Modifier
+                    .padding(paddingValues)
+                    .padding(24.dp),
+        ) {
             val details = mutableListOf<AnnotatedString>()
             val createDetail: (String) -> AnnotatedString = { text ->
                 buildAnnotatedString {
