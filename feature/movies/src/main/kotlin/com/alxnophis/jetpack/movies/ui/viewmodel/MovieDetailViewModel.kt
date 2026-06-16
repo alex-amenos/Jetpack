@@ -2,15 +2,10 @@ package com.alxnophis.jetpack.movies.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import arrow.optics.updateCopy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.movies.domain.repository.MovieRepository
 import com.alxnophis.jetpack.movies.ui.contract.MovieDetailEvent
 import com.alxnophis.jetpack.movies.ui.contract.MovieDetailState
-import com.alxnophis.jetpack.movies.ui.contract.error
-import com.alxnophis.jetpack.movies.ui.contract.isLoading
-import com.alxnophis.jetpack.movies.ui.contract.movie
-import com.alxnophis.jetpack.movies.ui.contract.movieId
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -50,25 +45,31 @@ internal class MovieDetailViewModel(
         viewModelScope.launch {
             if (currentUiState.movie != null) return@launch
 
-            _uiState.updateCopy {
-                MovieDetailState.isLoading set true
-                MovieDetailState.movieId set movieId
-                MovieDetailState.error set null
+            updateUiState {
+                copy(
+                    isLoading = true,
+                    movieId = movieId,
+                    error = null,
+                )
             }
 
             movieRepository
                 .getMovieDetails(movieId)
                 .fold(
                     { error ->
-                        _uiState.updateCopy {
-                            MovieDetailState.isLoading set false
-                            MovieDetailState.error set error
+                        updateUiState {
+                            copy(
+                                isLoading = false,
+                                error = error,
+                            )
                         }
                     },
                     { movieDetails ->
-                        _uiState.updateCopy {
-                            MovieDetailState.isLoading set false
-                            MovieDetailState.movie set movieDetails
+                        updateUiState {
+                            copy(
+                                isLoading = false,
+                                movie = movieDetails,
+                            )
                         }
                     },
                 )
@@ -76,8 +77,8 @@ internal class MovieDetailViewModel(
     }
 
     private fun dismissError() {
-        _uiState.updateCopy {
-            MovieDetailState.error set null
+        updateUiState {
+            copy(error = null)
         }
     }
 }

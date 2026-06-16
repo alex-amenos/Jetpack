@@ -1,20 +1,22 @@
 package com.alxnophis.jetpack.movies.ui.contract
 
+import android.os.Parcelable
 import androidx.compose.runtime.Immutable
-import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.movies.domain.model.MovieDetails
 import com.alxnophis.jetpack.movies.domain.model.MovieError
+import kotlinx.parcelize.Parcelize
 
-@optics
+@Parcelize
 @Immutable
 data class MovieDetailState(
     val isLoading: Boolean,
     val movieId: Int?,
     val movie: MovieDetails?,
     val error: MovieError?,
-) : UiState {
+) : UiState,
+    Parcelable {
     companion object {
         val initialState =
             MovieDetailState(

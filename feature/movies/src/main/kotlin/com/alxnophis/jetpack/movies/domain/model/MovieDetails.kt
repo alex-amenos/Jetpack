@@ -1,5 +1,9 @@
 package com.alxnophis.jetpack.movies.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class MovieDetails(
     val id: Int,
     val title: String,
@@ -11,4 +15,4 @@ data class MovieDetails(
     val runtime: Int?,
     val status: String?,
     val tagline: String?,
-)
+) : Parcelable
