@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
@@ -55,6 +57,8 @@ import com.alxnophis.jetpack.movies.ui.composable.provider.MoviesPagingProvider
 import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
 import com.alxnophis.jetpack.movies.ui.contract.MoviesState
 import com.alxnophis.jetpack.movies.ui.mapper.toMessage
+
+private const val CONTENT_TYPE_MOVIE_ITEM = "MovieItemContentType"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -132,7 +136,11 @@ internal fun MoviesScreen(
                     columns = GridCells.Adaptive(minSize = 160.dp),
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    items(movies.itemCount) { index ->
+                    items(
+                        count = movies.itemCount,
+                        key = movies.itemKey { it.id },
+                        contentType = movies.itemContentType { CONTENT_TYPE_MOVIE_ITEM },
+                    ) { index ->
                         val movie = movies[index]
                         if (movie != null) {
                             MovieItem(
