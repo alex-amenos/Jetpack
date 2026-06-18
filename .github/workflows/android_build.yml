@@ -33,7 +33,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Assemble Release
-        run: ./gradlew app:assembleRelease -PJETPACK_GOOGLE_MAPS_API_KEY=${{ secrets.JETPACK_GOOGLE_MAPS_API_KEY }}
+        run: ./gradlew app:assembleRelease -PJETPACK_GOOGLE_MAPS_API_KEY=${{ secrets.JETPACK_GOOGLE_MAPS_API_KEY }} -PTHEMOVIEDB_ORG_API_TOKEN=${{ secrets.THEMOVIEDB_ORG_API_TOKEN }}
 
       - name: Sign Release APK
         uses: ilharp/sign-android-release@v2
