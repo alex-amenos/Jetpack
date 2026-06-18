@@ -14,7 +14,7 @@ import com.alxnophis.jetpack.movies.domain.model.MovieDetailsMother
 import com.alxnophis.jetpack.movies.domain.model.MovieError
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -30,6 +30,18 @@ private class MovieRepositoryImplTest {
             searchService = mockSearchService,
             movieService = mockMovieService,
         )
+
+    @Nested
+    inner class SearchMovies {
+        @Test
+        fun `GIVEN a query WHEN searchMovies THEN returns Flow of PagingData`() {
+            val query = "Batman"
+
+            val result = repository.searchMovies(query)
+
+            assertNotNull(result)
+        }
+    }
 
     @Nested
     inner class GetMovieDetails {
@@ -68,7 +80,10 @@ private class MovieRepositoryImplTest {
 
                 val result: Either<MovieError, MovieDetails> = repository.getMovieDetails(MOVIE_ID)
 
-                assertLeftMovieError(result) { it == MovieError.NotFound }
+                assertEquals(
+                    MovieError.NotFound.left(),
+                    result,
+                )
             }
 
         @Test
@@ -118,16 +133,6 @@ private class MovieRepositoryImplTest {
                     result,
                 )
             }
-    }
-
-    private fun assertLeftMovieError(
-        result: Either<MovieError, MovieDetails>,
-        expectedErrorPredicate: (MovieError) -> Boolean,
-    ) {
-        assertTrue(result.isLeft())
-        result.onLeft { domainError ->
-            assertTrue(expectedErrorPredicate(domainError))
-        }
     }
 
     private companion object {
