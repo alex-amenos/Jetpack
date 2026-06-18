@@ -43,6 +43,7 @@ import com.alxnophis.jetpack.kotlin.constants.BREAK_LINE
 import com.alxnophis.jetpack.kotlin.constants.BULLET
 import com.alxnophis.jetpack.kotlin.constants.COLON
 import com.alxnophis.jetpack.kotlin.constants.WHITE_SPACE
+import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.MovieDetails
 import com.alxnophis.jetpack.movies.ui.composable.provider.MovieDetailStateProvider
@@ -129,7 +130,7 @@ private fun MovieSuccessContent(
             modifier =
                 Modifier
                     .padding(paddingValues)
-                    .padding(24.dp),
+                    .padding(horizontal = 24.dp, vertical = 0.dp),
         ) {
             val details = mutableListOf<AnnotatedString>()
             val createDetail: (String) -> AnnotatedString = { text ->
@@ -138,7 +139,7 @@ private fun MovieSuccessContent(
                     val colonIndex = text.indexOf(COLON)
                     if (colonIndex != -1) {
                         withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(text.substring(0, colonIndex))
+                            append(text.substring(ZERO_INT, colonIndex))
                         }
                         append(text.substring(colonIndex))
                     } else {
@@ -161,7 +162,7 @@ private fun MovieSuccessContent(
                 text = movie.title,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-
+                modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(12.dp))
 
