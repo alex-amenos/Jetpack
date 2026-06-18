@@ -1,6 +1,6 @@
 apply from: "$rootDir/buildSystem/gradle/common-android-shared.gradle"
 
-def tmdbApiToken = project.findProperty('THEMOVIEDB_ORG_API_TOKEN') ?: '""'
+def tmdbApiToken = (project.findProperty('THEMOVIEDB_ORG_API_TOKEN') ?: "").toString()
 
 android {
     namespace = 'com.alxnophis.jetpack.api'
