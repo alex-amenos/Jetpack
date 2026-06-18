@@ -50,14 +50,17 @@ This module is the most complete in the project and demonstrates modern Android 
 
 ## Movies
 
-Search and view details for movies using The Movie DB (TMDB) API.<br><br>
+Search and view details for movies using The Movie DB (TMDB) API.<br>
+Uses adaptive layouts to support both phone and tablet form factors.<br><br>
 More experiment info:<br>
 
 - **Architecture**: MVI (Model-View-Intent) pattern.
+- **Navigation**: Uses Jetpack Navigation 3 with `ListDetailSceneStrategy` for adaptive panes.
 - **UI**: Built entirely with Jetpack Compose.
 - **Pagination**: Uses `androidx.paging` components for infinite scrolling of movie search results.
 - **Data Layer**: Network requests via Retrofit with TMDB API.
 - **Error Handling**: Functional error handling using Arrow `Either` and typed errors.
+- **Testing**: Covered with JUnit 5 unit tests.
 
 <table>
   <tr>
