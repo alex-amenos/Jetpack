@@ -42,10 +42,14 @@ class MoviesViewModelTest : BaseViewModelUnitTest() {
             runTest(testDispatcher) {
                 // We must collect the lazy Flow so the debounce/flatMapLatest operators run
                 val job = launch { viewModel.moviesPagingFlow.collect {} }
+
+                // GIVEN
                 val query = "Batman"
 
+                // WHEN
                 viewModel.handleEvent(MoviesEvent.SearchQueryChanged(query))
 
+                // THEN
                 viewModel.uiState.test {
                     assertEquals(MoviesState(searchQuery = query), awaitItem())
                 }

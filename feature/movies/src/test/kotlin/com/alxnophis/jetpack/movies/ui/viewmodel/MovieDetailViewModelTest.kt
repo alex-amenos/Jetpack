@@ -35,15 +35,18 @@ private class MovieDetailViewModelTest : BaseViewModelUnitTest() {
         @Test
         fun `GIVEN valid ID WHEN network succeeds THEN state transitions to Success`() =
             runTest(UnconfinedTestDispatcher(testScheduler)) {
+                // GIVEN
                 val movieDetails = MovieDetailsMother(id = 1, title = "Success Movie")
                 repository.movieDetailsResult = movieDetails.right()
 
                 viewModel.uiState.test {
                     assertEquals(MovieDetailState.initialState, awaitItem())
 
+                    // WHEN
                     viewModel.handleEvent(MovieDetailEvent.LoadMovie(1))
 
-                    // With UnconfinedTestDispatcher, state transitions synchronously 
+                    // THEN
+                    // With UnconfinedTestDispatcher, state transitions synchronously
                     // and StateFlow conflates the intermediate Loading state.
                     assertEquals(
                         MovieDetailState(
@@ -61,13 +64,17 @@ private class MovieDetailViewModelTest : BaseViewModelUnitTest() {
         @Test
         fun `GIVEN valid ID WHEN network fails THEN state transitions to Error`() =
             runTest(UnconfinedTestDispatcher(testScheduler)) {
+                // GIVEN
                 val error = MovieError.Network
                 repository.movieDetailsResult = error.left()
+
                 viewModel.uiState.test {
                     assertEquals(MovieDetailState.initialState, awaitItem())
 
+                    // WHEN
                     viewModel.handleEvent(MovieDetailEvent.LoadMovie(1))
 
+                    // THEN
                     assertEquals(
                         MovieDetailState(
                             isLoading = false,
@@ -84,6 +91,7 @@ private class MovieDetailViewModelTest : BaseViewModelUnitTest() {
         @Test
         fun `GIVEN valid ID WHEN already has movie THEN does not fetch again`() =
             runTest(UnconfinedTestDispatcher(testScheduler)) {
+                // GIVEN
                 val movieDetails = MovieDetailsMother(id = 1, title = "Success Movie")
                 repository.movieDetailsResult = movieDetails.right()
 
@@ -99,8 +107,10 @@ private class MovieDetailViewModelTest : BaseViewModelUnitTest() {
 
                     assertEquals(1, repository.getMovieDetailsCallCount)
 
+                    // WHEN
                     viewModel.handleEvent(MovieDetailEvent.LoadMovie(1))
 
+                    // THEN
                     // Call count should not increase
                     assertEquals(1, repository.getMovieDetailsCallCount)
                 }
@@ -112,6 +122,7 @@ private class MovieDetailViewModelTest : BaseViewModelUnitTest() {
         @Test
         fun `GIVEN error state WHEN dismissed THEN clears error from state`() =
             runTest(UnconfinedTestDispatcher(testScheduler)) {
+                // GIVEN
                 repository.movieDetailsResult = MovieError.NotFound.left()
 
                 viewModel.uiState.test {
@@ -124,8 +135,10 @@ private class MovieDetailViewModelTest : BaseViewModelUnitTest() {
                         awaitItem(),
                     )
 
+                    // WHEN
                     viewModel.handleEvent(MovieDetailEvent.ErrorDismissRequested)
 
+                    // THEN
                     assertEquals(
                         MovieDetailState(isLoading = false, movieId = 1, movie = null, error = null),
                         awaitItem(),
