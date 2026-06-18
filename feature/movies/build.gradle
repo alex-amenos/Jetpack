@@ -1,0 +1,17 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
+
+android {
+    resourcePrefix = 'movies'
+    namespace = 'com.alxnophis.jetpack.movies'
+}
+
+dependencies {
+    implementation project(Modules.SHARED_API)
+    implementation libs.retrofit
+    implementation libs.androidx.paging.runtime
+    implementation libs.androidx.paging.compose
+    implementation libs.coil
+
+    testImplementation(libs.bundles.kotest)
+    testImplementation libs.robolectric
+}

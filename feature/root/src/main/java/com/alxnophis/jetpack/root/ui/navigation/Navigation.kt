@@ -3,10 +3,13 @@ package com.alxnophis.jetpack.root.ui.navigation
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
+import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -20,6 +23,9 @@ import com.alxnophis.jetpack.game.ballclicker.ui.composable.BallClickerFeature
 import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.ui.composable.HomeFeature
 import com.alxnophis.jetpack.location.tracker.ui.composable.LocationTrackerFeature
+import com.alxnophis.jetpack.movies.ui.composable.MovieDetailFeature
+import com.alxnophis.jetpack.movies.ui.composable.MovieNotSelectedComposable
+import com.alxnophis.jetpack.movies.ui.composable.MoviesFeature
 import com.alxnophis.jetpack.myplayground.ui.composable.MyPlaygroundFeature
 import com.alxnophis.jetpack.notifications.ui.navigation.NotificationsFeature
 import com.alxnophis.jetpack.posts.ui.composable.PostDetailFeature
@@ -33,11 +39,15 @@ import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 fun Navigation(modifier: Modifier = Modifier) {
     val backStack = rememberNavBackStack(Route.Home)
     val onBack: () -> Unit = { backStack.removeLastOrNull() }
+    val adaptiveInfo = currentWindowAdaptiveInfoV2()
+    val customDirective = calculatePaneScaffoldDirective(adaptiveInfo).copy(horizontalPartitionSpacerSize = 0.dp)
+    val listDetailStrategy = rememberListDetailSceneStrategy<Any>(directive = customDirective)
+
     NavDisplay(
         backStack = backStack,
         modifier = modifier,
         onBack = onBack,
-        sceneStrategies = listOf(rememberListDetailSceneStrategy()),
+        sceneStrategies = listOf(listDetailStrategy),
         entryDecorators =
             listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
@@ -54,6 +64,7 @@ fun Navigation(modifier: Modifier = Modifier) {
                                     Feature.FileDownloader -> Route.FileDownloader
                                     Feature.GameBallClicker -> Route.GameBallClicker
                                     Feature.LocationTracker -> Route.LocationTracker
+                                    Feature.Movies -> Route.Movies
                                     Feature.MyPlayground -> Route.MyPlayground
                                     Feature.Notifications -> Route.Notifications
                                     Feature.Posts -> Route.Posts
@@ -102,6 +113,32 @@ fun Navigation(modifier: Modifier = Modifier) {
                 }
                 entry<Route.LocationTracker> {
                     LocationTrackerFeature(
+                        onBack = onBack,
+                    )
+                }
+                entry<Route.Movies>(
+                    metadata =
+                        ListDetailSceneStrategy.listPane {
+                            MovieNotSelectedComposable(
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        },
+                ) {
+                    MoviesFeature(
+                        onMovieSelected = { movieId ->
+                            if (backStack.last() is Route.MovieDetail) {
+                                backStack.removeLastOrNull()
+                            }
+                            backStack.add(Route.MovieDetail(movieId))
+                        },
+                        onBack = onBack,
+                    )
+                }
+                entry<Route.MovieDetail>(
+                    metadata = ListDetailSceneStrategy.detailPane(),
+                ) { key ->
+                    MovieDetailFeature(
+                        movieId = key.movieId,
                         onBack = onBack,
                     )
                 }

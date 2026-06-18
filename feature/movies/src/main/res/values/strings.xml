@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Movies Screen -->
+    <string name="movies_search_title">Movies</string>
+    <string name="movies_search_label">Search movies</string>
+    <string name="movies_error_unknown">Unknown error</string>
+    <string name="movies_year_unknown">Unknown Year</string>
+    <string name="movies_cd_go_back">Go Back</string>
+    <string name="movies_cd_clear_search">Clear search</string>
+    <string name="movies_not_selected_title">No Movie Selected</string>
+    <string name="movies_not_selected_detail">Select a movie from the list to view its details.</string>
+
+    <!-- Movie Detail Screen -->
+    <string name="movies_loading">Loading…</string>
+    <string name="movies_error_loading">Error loading movie: %1$s</string>
+    <string name="movies_released">Released: %1$s</string>
+    <string name="movies_rating">Rating: %1$s/10</string>
+    <string name="movies_runtime">Runtime: %1$s min</string>
+    <string name="movies_overview">Overview</string>
+    <!-- Error Messages -->
+    <string name="movies_error_network">Unable to connect. Please check your internet connection.</string>
+    <string name="movies_error_not_found">The requested movie could not be found.</string>
+    <string name="movies_error_unauthorized">Access denied. Please check your API configuration.</string>
+    <string name="movies_error_unknown_message">An unexpected error occurred: %1$s</string>
+    <string name="movies_cd_error_icon">Error icon</string>
+    <string name="movies_retry">Retry</string>
+</resources>

@@ -5,6 +5,7 @@ import com.alxnophis.jetpack.filedownloader.di.fileDownloaderModule
 import com.alxnophis.jetpack.game.ballclicker.di.ballClickerModule
 import com.alxnophis.jetpack.home.di.homeModule
 import com.alxnophis.jetpack.location.tracker.di.locationTrackerModule
+import com.alxnophis.jetpack.movies.di.moviesModule
 import com.alxnophis.jetpack.myplayground.di.myPlaygroundModule
 import com.alxnophis.jetpack.notifications.di.notificationsModule
 import com.alxnophis.jetpack.posts.di.postsModule
@@ -18,6 +19,7 @@ val featureModules: List<Module> =
         fileDownloaderModule,
         homeModule,
         locationTrackerModule,
+        moviesModule,
         myPlaygroundModule,
         notificationsModule,
         postsModule,

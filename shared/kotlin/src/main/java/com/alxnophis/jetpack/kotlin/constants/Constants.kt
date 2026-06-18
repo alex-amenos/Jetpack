@@ -21,3 +21,5 @@ const val ZERO_INT = 0
 const val ZERO_DOUBLE = 0.0
 const val ZERO_FLOAT = 0f
 const val ZERO_LONG = 0L
+const val COLON = ":"
+const val BULLET = "•"

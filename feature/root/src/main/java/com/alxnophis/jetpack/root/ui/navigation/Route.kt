@@ -23,6 +23,14 @@ sealed class Route : NavKey {
     data object GameBallClicker : Route()
 
     @Serializable
+    data object Movies : Route()
+
+    @Serializable
+    data class MovieDetail(
+        val movieId: Int,
+    ) : Route()
+
+    @Serializable
     data object MyPlayground : Route()
 
     @Serializable
