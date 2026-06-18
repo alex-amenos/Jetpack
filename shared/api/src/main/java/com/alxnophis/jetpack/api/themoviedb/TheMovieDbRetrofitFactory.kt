@@ -71,6 +71,7 @@ class TheMovieDbRetrofitFactory(
 
     private fun loggingInterceptor() =
         HttpLoggingInterceptor().apply {
+            redactHeader("Authorization")
             level =
                 when {
                     isDebugBuildType() -> HttpLoggingInterceptor.Level.BODY
