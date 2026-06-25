@@ -53,6 +53,7 @@ android {
     testOptions {
         unitTests.all {
             it.useJUnitPlatform()
+            it.systemProperty("robolectric.enabledSdks", "36")
         }
     }
 
