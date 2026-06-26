@@ -4,7 +4,9 @@ It is a personal project to experiment with Android development.
 
 ℹ️ Some experiments are not completed in terms of development, you can see on code maybe is missing testing or some data/domain layer.
 
-You can read about the Jetpack playgrounds [here](./docs/jetpack_playgrounds.md)
+You can read about the Jetpack playgrounds [here](./docs/jetpack_playgrounds.md).
+
+For instructions on how to set up the project and configure the required API keys, see the [Project Setup Guide](./docs/SETUP.md).
 
 To learn about the project's architecture, read [here](https://deepwiki.com/alex-amenos/Jetpack).
 
