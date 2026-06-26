@@ -10,17 +10,16 @@ To fully run and test all the features in this project, you need to configure a 
 
 ## API Keys Configuration
 
-Create a file named `local.properties` in the root directory of the project (if it doesn't already exist). This file is git-ignored to prevent your secrets from being pushed to the repository.
+The project reads these values as **Gradle project properties** (via `project.findProperty(...)`).
 
-Add the following properties to your `local.properties` file:
+Recommended: add them to your user Gradle properties file at `~/.gradle/gradle.properties` (this is not committed to the repo):
 
-```properties
-# Google Maps SDK for Android
-JETPACK_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+    # ~/.gradle/gradle.properties
+    JETPACK_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+    THEMOVIEDB_ORG_API_TOKEN=your_tmdb_api_read_access_token_here
 
-# TMDB (The Movie Database) API Read Access Token
-THEMOVIEDB_ORG_API_TOKEN=your_tmdb_api_read_access_token_here
-```
+Alternatively, you can pass them on the command line when running Gradle:
+`./gradlew :app:assembleDebug -PJETPACK_GOOGLE_MAPS_API_KEY=... -PTHEMOVIEDB_ORG_API_TOKEN=...`
 
 ### 1. Google Maps API Key (`JETPACK_GOOGLE_MAPS_API_KEY`)
 Used in the `location-tracker` feature to display Google Maps.
