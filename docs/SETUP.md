@@ -1,6 +1,6 @@
 # Project Setup
 
-To fully run and test all the features in this project, you need to configure a few API keys. These keys are required to build the app successfully without errors and to enable full functionality.
+To fully run and test all the features in this project, you need to configure a few API keys. The app can still build without them, but Google Maps and TMDB-related features will be disabled or fail at runtime.
 
 ## Prerequisites
 
