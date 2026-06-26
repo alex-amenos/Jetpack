@@ -39,7 +39,7 @@ Used in the `movies` feature to fetch movie data.
 - Go to your account settings by clicking on your profile icon.
 - Select the **API** section from the left sidebar.
 - Request an API key by filling out the developer form.
-- Look for the **API Read Access Token (v4 auth)** or the **API Key (v3 auth)**. The project is expecting the token as `THEMOVIEDB_ORG_API_TOKEN`.
+- Look for the **API Read Access Token (v4 auth)**. This project uses it as a Bearer token (`Authorization: Bearer ...`) and does not support the v3 **API Key (v3 auth)** here.
 - Copy the token and paste it into `local.properties` as `THEMOVIEDB_ORG_API_TOKEN`.
 
 ## Build and Run
