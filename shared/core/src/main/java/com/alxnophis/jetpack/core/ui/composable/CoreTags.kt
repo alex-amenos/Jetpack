@@ -23,4 +23,5 @@ object CoreTags {
     const val TAG_MOVIES_LIST = "movies_list"
     const val TAG_MOVIE_ITEM = "movie_item"
     const val TAG_MOVIE_DETAIL = "movie_detail"
+    const val TAG_MOVIES_SEARCH_FIELD = "movies_search_field"
 }

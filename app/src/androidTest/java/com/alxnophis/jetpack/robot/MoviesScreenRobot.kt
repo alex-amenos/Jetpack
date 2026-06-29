@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performTextInput
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 
 /**
@@ -102,6 +103,19 @@ class MoviesScreenRobot(
         composeTestRule
             .onNodeWithTag(CoreTags.TAG_MOVIES_LIST)
             .assertIsDisplayed()
+        return this
+    }
+
+    /**
+     * Types text into the search box to find a movie.
+     *
+     * @param query The text to search for
+     * @return This robot instance for method chaining
+     */
+    fun searchMovie(query: String): MoviesScreenRobot {
+        composeTestRule
+            .onNodeWithTag(CoreTags.TAG_MOVIES_SEARCH_FIELD)
+            .performTextInput(query)
         return this
     }
 }

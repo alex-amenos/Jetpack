@@ -1,6 +1,6 @@
 package com.alxnophis.jetpack.e2e
 
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alxnophis.jetpack.robot.homeScreen
 import com.alxnophis.jetpack.robot.movieDetailScreen
@@ -77,6 +77,7 @@ class MoviesJourneyRobotTest {
             .waitForHomeScreen()
             .assertHomeDisplayed()
             .navigateToMovies()
+            .searchMovie("Star Wars")
             .waitForMoviesToLoad()
             .assertMoviesDisplayed()
             .assertMovieItemsVisible()
@@ -88,6 +89,7 @@ class MoviesJourneyRobotTest {
             .homeScreen()
             .waitForHomeScreen()
             .navigateToMovies()
+            .searchMovie("Star Wars")
             .waitForMoviesToLoad()
             .scrollToIndex(2)
     }
@@ -98,6 +100,7 @@ class MoviesJourneyRobotTest {
             .homeScreen()
             .waitForHomeScreen()
             .navigateToMovies()
+            .searchMovie("Star Wars")
             .waitForMoviesToLoad()
             .clickMovieAtIndex(0)
 
@@ -113,6 +116,7 @@ class MoviesJourneyRobotTest {
             .homeScreen()
             .waitForHomeScreen()
             .navigateToMovies()
+            .searchMovie("Star Wars")
             .waitForMoviesToLoad()
             .clickMovieAtIndex(0)
 
@@ -135,6 +139,7 @@ class MoviesJourneyRobotTest {
             .waitForHomeScreen()
             .assertHomeDisplayed()
             .navigateToMovies()
+            .searchMovie("Star Wars")
             .waitForMoviesToLoad()
             .assertMoviesDisplayed()
             .clickMovieAtIndex(0)

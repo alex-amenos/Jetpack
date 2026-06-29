@@ -138,9 +138,10 @@ internal fun MoviesScreen(
 
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 160.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .testTag(CoreTags.TAG_MOVIES_LIST),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .testTag(CoreTags.TAG_MOVIES_LIST),
                 ) {
                     items(
                         count = movies.itemCount,
@@ -188,7 +189,7 @@ private fun SearchField(
         value = searchQuery,
         onValueChange = onSearchQueryChanged,
         label = { Text(stringResource(id = R.string.movies_search_label)) },
-        modifier = modifier,
+        modifier = modifier.testTag(CoreTags.TAG_MOVIES_SEARCH_FIELD),
         singleLine = true,
         shape = RoundedCornerShape(percent = 25),
         trailingIcon = {
