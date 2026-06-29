@@ -18,4 +18,9 @@ object CoreTags {
     const val TAG_POSTS_LIST = "posts_list"
     const val TAG_POST_ITEM = "post_item"
     const val TAG_POST_DETAIL = "post_detail"
+
+    // Movies feature
+    const val TAG_MOVIES_LIST = "movies_list"
+    const val TAG_MOVIE_ITEM = "movie_item"
+    const val TAG_MOVIE_DETAIL = "movie_detail"
 }

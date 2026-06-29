@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -38,6 +39,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.kotlin.constants.BREAK_LINE
 import com.alxnophis.jetpack.kotlin.constants.BULLET
@@ -85,14 +87,18 @@ internal fun MovieDetailScreen(
                         MovieSuccessContent(
                             movie = state.movie,
                             paddingValues = paddingValues,
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .testTag(CoreTags.TAG_MOVIE_DETAIL),
                         )
                     }
                 }
 
                 BackButtonOverlay(
                     onBack = { handleEvent(MovieDetailEvent.GoBackRequested) },
-                    modifier = Modifier.align(Alignment.TopStart),
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .testTag(CoreTags.TAG_CORE_BACK),
                 )
             }
         }

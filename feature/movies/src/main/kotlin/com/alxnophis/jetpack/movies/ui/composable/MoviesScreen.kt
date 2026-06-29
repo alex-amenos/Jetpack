@@ -40,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -50,6 +51,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
+import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.movies.R
@@ -136,7 +138,9 @@ internal fun MoviesScreen(
 
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 160.dp),
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag(CoreTags.TAG_MOVIES_LIST),
                 ) {
                     items(
                         count = movies.itemCount,
@@ -151,7 +155,8 @@ internal fun MoviesScreen(
                                 modifier =
                                     Modifier
                                         .padding(4.dp)
-                                        .fillMaxWidth(),
+                                        .fillMaxWidth()
+                                        .testTag(CoreTags.TAG_MOVIE_ITEM),
                             )
                         }
                     }
