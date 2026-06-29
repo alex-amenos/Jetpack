@@ -84,7 +84,7 @@ class HomeScreenRobot(
 
         composeTestRule.waitUntil(timeoutMillis = 10000) {
             composeTestRule
-                .onAllNodesWithText("Movies")
+                .onAllNodesWithText("Search movies")
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
