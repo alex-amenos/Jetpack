@@ -72,6 +72,27 @@ class HomeScreenRobot(
     }
 
     /**
+     * Navigates from home screen to the movies feature.
+     * Waits for the movies screen to load after navigation.
+     *
+     * @return A new [MoviesScreenRobot] instance for continued interaction
+     */
+    fun navigateToMovies(): MoviesScreenRobot {
+        composeTestRule
+            .onNodeWithText("Movies")
+            .performClick()
+
+        composeTestRule.waitUntil(timeoutMillis = 10000) {
+            composeTestRule
+                .onAllNodesWithText("Search movies")
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
+
+        return MoviesScreenRobot(composeTestRule)
+    }
+
+    /**
      * Asserts that the home screen is currently displayed.
      *
      * @return This robot instance for method chaining
