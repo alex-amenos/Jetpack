@@ -47,7 +47,7 @@ jobs:
           buildToolsVersion: "36.1.0"
 
       - name: Upload Release APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Signed Release APK
           path: ${{steps.sign_app.outputs.signedFile}}
