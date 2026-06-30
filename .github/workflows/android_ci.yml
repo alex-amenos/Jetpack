@@ -8,6 +8,7 @@ on:
 permissions:
   actions: write
   contents: read
+  security-events: write
 
 jobs:
 
@@ -27,9 +28,15 @@ jobs:
         with:
           scan-type: 'fs'
           scan-ref: '.'
-          format: 'table'
-          exit-code: 1
+          format: 'sarif'
+          output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
 
       - name: Setup JDK Zulu 21
         uses: actions/setup-java@v3
