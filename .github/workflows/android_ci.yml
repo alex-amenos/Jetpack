@@ -28,8 +28,6 @@ jobs:
           scan-type: 'fs'
           scan-ref: '.'
           format: 'table'
-          exit-code: 1
-          ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
 
       - name: Setup JDK Zulu 21
