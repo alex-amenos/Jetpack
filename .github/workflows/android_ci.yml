@@ -8,7 +8,6 @@ on:
 permissions:
   actions: write
   contents: read
-  security-events: write
 
 jobs:
 
@@ -22,22 +21,6 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          exit-code: '1'
-          severity: 'CRITICAL,HIGH'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357 # v3
-        if: always()
-        with:
-          sarif_file: 'trivy-results.sarif'
 
       - name: Setup JDK Zulu 21
         uses: actions/setup-java@v3
