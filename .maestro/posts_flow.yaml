@@ -1,0 +1,67 @@
+appId: com.alxnophis.jetpack.debug
+---
+# Launch app
+- launchApp:
+    clearState: true
+
+# 1. Assert Home Screen is displayed
+- assertVisible: "Jetpack Project"
+
+# 2. Scroll to and tap on Posts option from the list
+- scrollUntilVisible:
+    element: "Posts"
+    direction: DOWN
+- assertVisible: "Posts"
+- tapOn: "Posts"
+
+# 3. Assert Posts Screen is displayed
+- assertVisible: "Posts"
+- assertVisible:
+    id: "posts_list"
+
+# 4. Wait for posts to load and verify items are visible
+- extendedWaitUntil:
+    visible:
+      id: "post_item"
+    timeout: 15000
+- assertVisible:
+    id: "post_item"
+
+# 5. Tap on the first post item to view details
+- tapOn:
+    id: "post_item"
+    index: 0
+
+# 6. Wait for and assert Post Detail Screen is displayed
+- extendedWaitUntil:
+    visible:
+      id: "post_detail"
+    timeout: 10000
+- assertVisible:
+    id: "post_detail"
+
+# 7. Navigate back to Posts screen
+- tapOn:
+    id: "core_back"
+
+# 8. Verify back on Posts screen
+- assertVisible:
+    id: "posts_list"
+- assertVisible:
+    id: "post_item"
+
+# 9. Scroll through the posts list
+- scroll
+
+# 10. Perform pull-to-refresh
+- swipe:
+    direction: DOWN
+- assertVisible:
+    id: "posts_list"
+
+# 11. Navigate back to Home screen
+- tapOn:
+    id: "core_back"
+
+# 12. Verify back on Home screen
+- assertVisible: "Jetpack Project"

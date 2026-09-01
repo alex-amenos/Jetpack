@@ -1,0 +1,66 @@
+appId: com.alxnophis.jetpack.debug
+---
+# Launch app
+- launchApp:
+    clearState: true
+
+# 1. Assert Home Screen is displayed
+- assertVisible: "Jetpack Project"
+
+# 2. Scroll to and tap on Movies option from the list
+- scrollUntilVisible:
+    element: "Movies"
+    direction: DOWN
+- assertVisible: "Movies"
+- tapOn: "Movies"
+
+# 3. Assert Movies Screen is displayed
+- assertVisible:
+    id: "movies_search_field"
+- assertVisible: "Search movies"
+
+# 4. Search for a movie
+- tapOn:
+    id: "movies_search_field"
+- inputText: "Star Wars"
+
+# 5. Wait for movies list to load and verify items are visible
+- extendedWaitUntil:
+    visible:
+      id: "movie_item"
+    timeout: 15000
+- assertVisible:
+    id: "movies_list"
+- assertVisible:
+    id: "movie_item"
+
+# 6. Tap on the first movie item
+- tapOn:
+    id: "movie_item"
+    index: 0
+
+# 7. Wait for and assert Movie Detail Screen is displayed
+- extendedWaitUntil:
+    visible:
+      id: "movie_detail"
+    timeout: 10000
+- assertVisible:
+    id: "movie_detail"
+- assertVisible: "Overview"
+
+# 8. Navigate back to Movies screen
+- tapOn:
+    id: "core_back"
+
+# 9. Verify back on Movies screen
+- assertVisible:
+    id: "movies_search_field"
+- assertVisible:
+    id: "movies_list"
+
+# 10. Navigate back to Home screen
+- tapOn:
+    id: "core_back"
+
+# 11. Verify back on Home screen
+- assertVisible: "Jetpack Project"

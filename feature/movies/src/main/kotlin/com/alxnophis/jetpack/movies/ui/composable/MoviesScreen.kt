@@ -102,7 +102,10 @@ internal fun MoviesScreen(
                 TopAppBar(
                     title = { Text(stringResource(id = R.string.movies_search_title)) },
                     navigationIcon = {
-                        IconButton(onClick = { handleEvent(MoviesEvent.GoBackRequested) }) {
+                        IconButton(
+                            modifier = Modifier.testTag(CoreTags.TAG_CORE_BACK),
+                            onClick = { handleEvent(MoviesEvent.GoBackRequested) },
+                        ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = stringResource(id = R.string.movies_cd_go_back),

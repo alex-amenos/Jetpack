@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
+import com.alxnophis.jetpack.core.extensions.testTagsAsResourceIdInDebug
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.root.ui.navigation.Navigation
 
@@ -20,6 +21,7 @@ class RootActivity : ComponentActivity() {
                 Navigation(
                     modifier =
                         Modifier
+                            .testTagsAsResourceIdInDebug()
                             .fillMaxSize()
                             .background(MaterialTheme.colorScheme.surface),
                 )
