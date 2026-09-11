@@ -75,6 +75,7 @@ import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import com.alxnophis.jetpack.core.R as CoreR
 
 @ExperimentalComposeUiApi
 @Composable
@@ -104,7 +105,7 @@ internal fun AuthenticationForm(
                         onClick = { handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorizationRequested) },
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_help),
+                            painter = painterResource(id = CoreR.drawable.ic_help),
                             contentDescription = null,
                         )
                     }
@@ -239,7 +240,7 @@ fun EmailInput(
         },
         leadingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.ic_email),
+                painter = painterResource(id = CoreR.drawable.ic_email),
                 contentDescription = null,
             )
         },
@@ -278,7 +279,7 @@ fun PasswordInput(
             },
         leadingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.ic_lock),
+                painter = painterResource(id = CoreR.drawable.ic_lock),
                 contentDescription = null,
             )
         },
@@ -299,9 +300,9 @@ fun PasswordInput(
                     painterResource(
                         id =
                             if (isPasswordHidden) {
-                                R.drawable.ic_visibility
+                                CoreR.drawable.ic_visibility
                             } else {
-                                R.drawable.ic_visibility_off
+                                CoreR.drawable.ic_visibility_off
                             },
                     ),
                 contentDescription = null,
@@ -374,9 +375,9 @@ fun PasswordRequirementsView(
                 message = requirementStatus,
                 icon =
                     if (satisfied) {
-                        R.drawable.ic_check
+                        CoreR.drawable.ic_check
                     } else {
-                        R.drawable.ic_close
+                        CoreR.drawable.ic_close
                     },
                 tint =
                     if (satisfied) {

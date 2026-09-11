@@ -41,6 +41,7 @@ import com.alxnophis.jetpack.posts.ui.composable.provider.PostDetailPreviewProvi
 import com.alxnophis.jetpack.posts.ui.contract.PostDetailEvent
 import com.alxnophis.jetpack.posts.ui.contract.PostDetailUiError
 import com.alxnophis.jetpack.posts.ui.contract.PostDetailUiState
+import com.alxnophis.jetpack.core.R as CoreR
 
 @Composable
 internal fun PostDetailScreen(
@@ -122,8 +123,8 @@ internal fun PostDetailUiErrors(
                         onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_close),
-                            contentDescription = stringResource(id = R.string.core_cd_close),
+                            painter = painterResource(CoreR.drawable.ic_close),
+                            contentDescription = stringResource(id = CoreR.string.core_cd_close),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }
@@ -137,7 +138,7 @@ internal fun PostDetailUiErrors(
                         verticalArrangement = Arrangement.Center,
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_error),
+                            painter = painterResource(CoreR.drawable.ic_error),
                             contentDescription = stringResource(R.string.posts_cd_error_icon),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(48.dp),
@@ -187,8 +188,8 @@ internal fun PostDetailContent(
                     onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_close),
-                        contentDescription = stringResource(R.string.core_cd_close),
+                        painter = painterResource(CoreR.drawable.ic_close),
+                        contentDescription = stringResource(CoreR.string.core_cd_close),
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }

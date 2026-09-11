@@ -62,6 +62,7 @@ import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.kotlin.constants.THREE_DOTS
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import kotlinx.coroutines.launch
+import com.alxnophis.jetpack.core.R as CoreR
 
 private typealias HandleFileDownloaderUiEvent = FileDownloaderUiEvent.() -> Unit
 
@@ -154,7 +155,7 @@ private fun FileDownloaderContent(
                     },
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_close),
+                        painter = painterResource(id = CoreR.drawable.ic_close),
                         contentDescription = null,
                     )
                 }
@@ -308,9 +309,10 @@ private fun SnackbarError(
     Box(modifier) {
         SnackbarHost(
             hostState = snackbarHostState,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .windowInsetsPadding(WindowInsets.safeDrawing),
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .windowInsetsPadding(WindowInsets.safeDrawing),
         ) { snackbarData: SnackbarData ->
             Snackbar(
                 modifier = Modifier.padding(mediumPadding),
@@ -328,7 +330,7 @@ private fun FileDownloaderScaffoldPreview() {
     val uiState =
         FileDownloaderUiState(
             url = EMPTY,
-            error = R.string.core_error_title,
+            error = CoreR.string.core_error_title,
             fileStatusList =
                 listOf(
                     "Lorem ipsum dolor sit amet",
