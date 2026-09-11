@@ -55,6 +55,7 @@ okhttp-profiler = "1.0.8"
 robolectric = "4.16.1"
 roborazzi = "1.64.0"
 slack-lint-compose = "1.5.1"
+structured-coroutines = "1.1.1"
 timber = "5.0.1"
 turbine = "1.2.1"
 version-catalog-update = "1.1.1"
@@ -161,6 +162,8 @@ roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = 
 roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
 roborazzi-rule = { module = "io.github.takahirom.roborazzi:roborazzi-junit-rule", version.ref = "roborazzi" }
 slack-lint-compose = { module = "com.slack.lint.compose:compose-lint-checks", version.ref = "slack-lint-compose" }
+structured-coroutines-annotations = { module = "io.github.santimattius:structured-coroutines-annotations", version.ref = "structured-coroutines" }
+structured-coroutines-lint = { module = "io.github.santimattius:structured-coroutines-lint-rules", version.ref = "structured-coroutines" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
