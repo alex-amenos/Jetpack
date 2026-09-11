@@ -425,9 +425,10 @@ private fun FakeMapComposable(
 private fun LocationAccessRationaleDialogPreview() {
     AppTheme {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
             contentAlignment = Alignment.Center,
         ) {
             LocationAccessRationaleDialog(

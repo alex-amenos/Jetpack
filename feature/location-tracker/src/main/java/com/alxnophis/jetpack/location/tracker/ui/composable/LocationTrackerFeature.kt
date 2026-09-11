@@ -15,7 +15,7 @@ fun LocationTrackerFeature(onBack: () -> Unit) {
     LaunchedEffect(Unit) {
         MapsInitializer.initialize(context, MapsInitializer.Renderer.LATEST, null)
     }
-    
+
     val viewModel = koinViewModel<LocationTrackerViewModel>()
     LocationTrackerScreen(
         uiState = viewModel.uiState.collectAsStateWithLifecycle().value,

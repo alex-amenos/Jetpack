@@ -27,9 +27,10 @@ import com.alxnophis.jetpack.posts.R
 fun PostNotSelectedComposable(modifier: Modifier = Modifier) {
     AppTheme {
         Box(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface),
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
             contentAlignment = Alignment.Center,
         ) {
             Column(

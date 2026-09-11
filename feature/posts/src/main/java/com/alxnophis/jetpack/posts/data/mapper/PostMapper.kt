@@ -5,9 +5,10 @@ import com.alxnophis.jetpack.posts.data.model.Post
 
 internal fun List<PostApiModel>.mapToPosts(): List<Post> = map { it.mapToPost() }
 
-internal fun PostApiModel.mapToPost() = Post(
-    id = id,
-    userId = userId,
-    title = title,
-    body = body,
-)
+internal fun PostApiModel.mapToPost() =
+    Post(
+        id = id,
+        userId = userId,
+        title = title,
+        body = body,
+    )
