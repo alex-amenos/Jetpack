@@ -65,5 +65,4 @@ fun Context.appPendingIntent(): PendingIntent {
     return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 }
 
-fun Context.hasPermission(permission: String): Boolean =
-    ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+fun Context.hasPermission(permission: String): Boolean = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED

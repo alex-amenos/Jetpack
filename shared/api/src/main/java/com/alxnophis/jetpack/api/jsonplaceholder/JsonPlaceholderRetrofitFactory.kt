@@ -20,27 +20,28 @@ import java.util.concurrent.TimeUnit
 class JsonPlaceholderRetrofitFactory(
     context: Context,
 ) {
-    private val cache: Cache = Cache(
-        directory = File(context.cacheDir, HTTP_CACHE_DIR),
-        maxSize = HTTP_CACHE_SIZE,
-    )
+    private val cache: Cache =
+        Cache(
+            directory = File(context.cacheDir, HTTP_CACHE_DIR),
+            maxSize = HTTP_CACHE_SIZE,
+        )
 
-    private val okHttpClient: OkHttpClient = OkHttpClient
-        .Builder()
-        .cache(cache)
-        .callTimeout(TIMEOUT_CALL, TimeUnit.SECONDS)
-        .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
-        .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
-        .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
-        .addInterceptor(NetworkStatusInterceptor(context))
-        .addInterceptor(loggingInterceptor())
-        .addInterceptor(ChuckerInterceptor(context))
-        .also { okHttpClientBuilder ->
-            if (BuildConfig.DEBUG) {
-                okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
-            }
-        }
-        .build()
+    private val okHttpClient: OkHttpClient =
+        OkHttpClient
+            .Builder()
+            .cache(cache)
+            .callTimeout(TIMEOUT_CALL, TimeUnit.SECONDS)
+            .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
+            .addInterceptor(NetworkStatusInterceptor(context))
+            .addInterceptor(loggingInterceptor())
+            .addInterceptor(ChuckerInterceptor(context))
+            .also { okHttpClientBuilder ->
+                if (BuildConfig.DEBUG) {
+                    okHttpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
+                }
+            }.build()
 
     private val retrofit: Retrofit by lazy {
         Retrofit
@@ -54,12 +55,14 @@ class JsonPlaceholderRetrofitFactory(
 
     fun <T> createService(serviceClass: Class<T>): T = retrofit.create(serviceClass)
 
-    private fun loggingInterceptor() = HttpLoggingInterceptor().apply {
-        level = when {
-            isDebugBuildType() -> HttpLoggingInterceptor.Level.BODY
-            else -> HttpLoggingInterceptor.Level.NONE
+    private fun loggingInterceptor() =
+        HttpLoggingInterceptor().apply {
+            level =
+                when {
+                    isDebugBuildType() -> HttpLoggingInterceptor.Level.BODY
+                    else -> HttpLoggingInterceptor.Level.NONE
+                }
         }
-    }
 
     private companion object {
         const val BASE_URL = "https://jsonplaceholder.typicode.com/"

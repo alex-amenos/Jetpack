@@ -25,6 +25,6 @@ fun MoviesFeature(
                 MoviesEvent.GoBackRequested -> onBack()
                 else -> viewModel.handleEvent(event)
             }
-        }
+        },
     )
 }

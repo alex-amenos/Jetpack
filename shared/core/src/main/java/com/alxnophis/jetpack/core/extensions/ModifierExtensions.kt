@@ -11,9 +11,7 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
  * to avoid overhead and exclude test metadata from production release builds.
  */
 @OptIn(ExperimentalComposeUiApi::class)
-fun Modifier.testTagsAsResourceIdInDebug(
-    enabled: Boolean = isDebugBuildType(),
-): Modifier =
+fun Modifier.testTagsAsResourceIdInDebug(enabled: Boolean = isDebugBuildType()): Modifier =
     if (enabled) {
         this.semantics {
             testTagsAsResourceId = true

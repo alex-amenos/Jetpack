@@ -42,9 +42,7 @@ fun CoreLoadingDialog(isLoading: Boolean) {
 }
 
 @Composable
-fun CoreLoadingContent(
-    modifier: Modifier = Modifier,
-) {
+fun CoreLoadingContent(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier,
