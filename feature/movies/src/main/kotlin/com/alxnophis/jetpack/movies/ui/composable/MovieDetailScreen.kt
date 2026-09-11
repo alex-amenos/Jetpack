@@ -87,18 +87,20 @@ internal fun MovieDetailScreen(
                         MovieSuccessContent(
                             movie = state.movie,
                             paddingValues = paddingValues,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .testTag(CoreTags.TAG_MOVIE_DETAIL),
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .testTag(CoreTags.TAG_MOVIE_DETAIL),
                         )
                     }
                 }
 
                 BackButtonOverlay(
                     onBack = { handleEvent(MovieDetailEvent.GoBackRequested) },
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .testTag(CoreTags.TAG_CORE_BACK),
+                    modifier =
+                        Modifier
+                            .align(Alignment.TopStart)
+                            .testTag(CoreTags.TAG_CORE_BACK),
                 )
             }
         }

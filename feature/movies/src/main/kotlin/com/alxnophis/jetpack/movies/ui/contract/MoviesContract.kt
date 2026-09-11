@@ -11,7 +11,8 @@ import kotlinx.parcelize.Parcelize
 @Immutable
 data class MoviesState(
     val searchQuery: String,
-) : UiState, Parcelable {
+) : UiState,
+    Parcelable {
     companion object {
         val initialState = MoviesState(searchQuery = EMPTY)
     }

@@ -15,7 +15,10 @@ class ImmutableListParceler<T : Parcelable>(
             .orEmpty()
             .toImmutableList()
 
-    override fun ImmutableList<T>.write(parcel: Parcel, flags: Int) {
+    override fun ImmutableList<T>.write(
+        parcel: Parcel,
+        flags: Int,
+    ) {
         parcel.writeTypedList(this.toList())
     }
 }

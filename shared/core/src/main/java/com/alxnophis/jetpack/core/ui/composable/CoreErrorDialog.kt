@@ -74,7 +74,7 @@ fun CoreErrorDialog(
 private fun CoreErrorDialogLongMessagePreview() {
     AppTheme {
         CoreErrorDialog(
-            errorMessage = "Unable to connect to the server. Please check your internet connection and try again. If the problem persists, contact support.",
+            errorMessage = "Unable to connect to the server. Please check your connection and try again. If the problem persists, contact support.",
             dismissError = {},
         )
     }

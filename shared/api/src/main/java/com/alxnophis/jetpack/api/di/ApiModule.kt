@@ -5,7 +5,8 @@ import com.alxnophis.jetpack.api.themoviedb.di.theMovieDbApiModule
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-val apiModule: Module = module {
-    includes(jsonPlaceholderApiModule)
-    includes(theMovieDbApiModule)
-}
+val apiModule: Module =
+    module {
+        includes(jsonPlaceholderApiModule)
+        includes(theMovieDbApiModule)
+    }

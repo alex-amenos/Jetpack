@@ -28,9 +28,10 @@ import com.alxnophis.jetpack.movies.R
 fun MovieNotSelectedComposable(modifier: Modifier = Modifier) {
     AppTheme {
         Box(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface),
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
             contentAlignment = Alignment.Center,
         ) {
             Column(

@@ -31,32 +31,36 @@ internal class SettingsRepositoryImpl(
 
     private suspend inline fun updatePreference(
         crossinline update: (SettingsPreferences) -> SettingsPreferences,
-    ): Either<SettingsPreferencesError, Unit> = catch {
-        settingsDataStore.updateData { update(it) }
-    }
-        .map { UpdatedSuccessfully }
-        .mapLeft { error ->
-            when (error) {
-                is IOException -> SettingsPreferencesError.Disk
-                else -> SettingsPreferencesError.Unexpected
+    ): Either<SettingsPreferencesError, Unit> =
+        catch {
+            settingsDataStore.updateData { update(it) }
+        }.map { UpdatedSuccessfully }
+            .mapLeft { error ->
+                when (error) {
+                    is IOException -> SettingsPreferencesError.Disk
+                    else -> SettingsPreferencesError.Unexpected
+                }
             }
+
+    override suspend fun updateNotificationsEnabled(enabled: Boolean): Either<SettingsPreferencesError, Unit> =
+        updatePreference {
+            it.copy(notificationsEnabled = enabled)
         }
 
-    override suspend fun updateNotificationsEnabled(enabled: Boolean): Either<SettingsPreferencesError, Unit> = updatePreference {
-        it.copy(notificationsEnabled = enabled)
-    }
+    override suspend fun updateHintsEnabled(enabled: Boolean): Either<SettingsPreferencesError, Unit> =
+        updatePreference {
+            it.copy(hintsEnabled = enabled)
+        }
 
-    override suspend fun updateHintsEnabled(enabled: Boolean): Either<SettingsPreferencesError, Unit> = updatePreference {
-        it.copy(hintsEnabled = enabled)
-    }
+    override suspend fun updateMarketingOption(enabled: Boolean): Either<SettingsPreferencesError, Unit> =
+        updatePreference {
+            it.copy(marketingOption = enabled)
+        }
 
-    override suspend fun updateMarketingOption(enabled: Boolean): Either<SettingsPreferencesError, Unit> = updatePreference {
-        it.copy(marketingOption = enabled)
-    }
-
-    override suspend fun updateThemeOption(themeOption: SettingsPreferences.ThemeOptions): Either<SettingsPreferencesError, Unit> = updatePreference {
-        it.copy(themeOption = themeOption)
-    }
+    override suspend fun updateThemeOption(themeOption: SettingsPreferences.ThemeOptions): Either<SettingsPreferencesError, Unit> =
+        updatePreference {
+            it.copy(themeOption = themeOption)
+        }
 
     companion object {
         private const val SETTINGS_PREFERENCES_FILE_NAME = "settings_preferences"

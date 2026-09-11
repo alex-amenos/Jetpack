@@ -10,11 +10,12 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-internal val jsonPlaceholderApiModule: Module = module {
-    single { JsonPlaceholderRetrofitFactory(androidContext()) }
-    single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderPostsService::class.java) }
-    single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderCommentsService::class.java) }
-    single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderUsersService::class.java) }
-    single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderAlbumsService::class.java) }
-    single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderPhotosService::class.java) }
-}
+internal val jsonPlaceholderApiModule: Module =
+    module {
+        single { JsonPlaceholderRetrofitFactory(androidContext()) }
+        single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderPostsService::class.java) }
+        single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderCommentsService::class.java) }
+        single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderUsersService::class.java) }
+        single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderAlbumsService::class.java) }
+        single { get<JsonPlaceholderRetrofitFactory>().createService(JsonPlaceholderPhotosService::class.java) }
+    }

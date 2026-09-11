@@ -308,9 +308,10 @@ private fun SnackbarError(
     Box(modifier) {
         SnackbarHost(
             hostState = snackbarHostState,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .windowInsetsPadding(WindowInsets.safeDrawing),
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .windowInsetsPadding(WindowInsets.safeDrawing),
         ) { snackbarData: SnackbarData ->
             Snackbar(
                 modifier = Modifier.padding(mediumPadding),
