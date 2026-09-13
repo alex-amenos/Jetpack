@@ -38,12 +38,10 @@ internal class HomeViewModel(
             )
 
     override fun handleEvent(event: HomeEvent) {
-        viewModelScope.launch {
-            when (event) {
-                HomeEvent.ErrorDismissRequested -> dismissError()
-                HomeEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
-                is HomeEvent.NavigationRequested -> throw IllegalStateException("Navigation not implemented")
-            }
+        when (event) {
+            HomeEvent.ErrorDismissRequested -> dismissError()
+            HomeEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
+            is HomeEvent.NavigationRequested -> throw IllegalStateException("Navigation not implemented")
         }
     }
 
@@ -74,10 +72,13 @@ internal class HomeViewModel(
     private suspend fun getNavigationItems(): Either<NavigationError, List<NavigationItem>> = getNavigationItemsUseCase.invoke()
 
     private fun dismissError() {
-        viewModelScope.launch {
-            _uiState.updateCopy {
-                HomeState.error set NO_ERROR
-            }
+        _uiState.updateCopy {
+            HomeState.error set NO_ERROR
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        navigationItemsJob?.cancel()
     }
 }
