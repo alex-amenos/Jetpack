@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.settings.R
+import com.alxnophis.jetpack.core.R as CoreR
 
 @Composable
 internal fun SettingsManageSubscriptionItem(
@@ -37,7 +38,7 @@ internal fun SettingsManageSubscriptionItem(
                 text = title,
             )
             Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_right),
+                painter = painterResource(id = CoreR.drawable.ic_arrow_right),
                 contentDescription = null,
             )
         }

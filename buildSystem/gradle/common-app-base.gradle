@@ -47,6 +47,7 @@ android {
         checkDependencies = true
         checkReleaseBuilds = false
         ignoreTestSources = true
+        lintConfig = file("$rootDir/lint.xml")
         htmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.html")
         xmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.xml")
         disable += ['LogNotTimber',
@@ -110,4 +111,6 @@ dependencies {
     
     debugImplementation(platform(libs.androidx.compose.bom))
     debugImplementation libs.androidx.compose.ui.test.manifest
+
+    lintChecks libs.structured.coroutines.lint
 }

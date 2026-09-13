@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.posts.R
+import com.alxnophis.jetpack.core.R as CoreR
 
 @Composable
 fun PostNotSelectedComposable(modifier: Modifier = Modifier) {
@@ -39,7 +40,7 @@ fun PostNotSelectedComposable(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_error),
+                    painter = painterResource(CoreR.drawable.ic_error),
                     contentDescription = stringResource(R.string.posts_cd_error_icon),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(48.dp),

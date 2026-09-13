@@ -9,6 +9,7 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
+@Suppress("InlineCoroutineScope")
 val coreModule: Module =
     module {
         factory { BaseDateFormatter() }

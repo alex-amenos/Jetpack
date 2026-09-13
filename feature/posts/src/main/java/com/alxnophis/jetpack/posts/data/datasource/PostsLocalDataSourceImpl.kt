@@ -13,6 +13,7 @@ import com.alxnophis.jetpack.posts.data.mapper.mapToPosts
 import com.alxnophis.jetpack.posts.data.model.Post
 import com.alxnophis.jetpack.posts.data.model.PostDetailLocalError
 import com.alxnophis.jetpack.posts.data.model.PostsLocalError
+import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 
 internal class PostsLocalDataSourceImpl(
@@ -31,6 +32,7 @@ internal class PostsLocalDataSourceImpl(
                 posts.right()
             }
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Timber.e(e, "Error getting posts from local database")
             PostsLocalError.DatabaseError.left()
         }
@@ -42,6 +44,7 @@ internal class PostsLocalDataSourceImpl(
                 ?.mapToPost()
                 ?.right() ?: PostDetailLocalError.NotFound.left()
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Timber.e(e, "Error getting post by id from local database")
             PostDetailLocalError.DatabaseError.left()
         }
@@ -51,6 +54,7 @@ internal class PostsLocalDataSourceImpl(
             postDao.insertPosts(posts.mapToPostEntities())
             Unit.right()
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Timber.e(e, "Error saving posts to local database")
             PostsLocalError.DatabaseError.left()
         }
@@ -60,6 +64,7 @@ internal class PostsLocalDataSourceImpl(
             postDao.insertPost(post.mapToPostEntity())
             Unit.right()
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Timber.e(e, "Error saving post to local database")
             PostDetailLocalError.DatabaseError.left()
         }
@@ -69,6 +74,7 @@ internal class PostsLocalDataSourceImpl(
             postDao.deleteAllPosts()
             Unit.right()
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Timber.e(e, "Error clearing posts from local database")
             PostsLocalError.DatabaseError.left()
         }
@@ -78,6 +84,7 @@ internal class PostsLocalDataSourceImpl(
             val metadata = postsMetadataDao.getMetadata(PostsMetadataEntity.POSTS_METADATA_ID)
             metadata?.lastUpdateTimestamp.right()
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Timber.e(e, "Error getting last update timestamp from local database")
             PostsLocalError.DatabaseError.left()
         }
@@ -88,6 +95,7 @@ internal class PostsLocalDataSourceImpl(
             postsMetadataDao.insertMetadata(metadata)
             Unit.right()
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Timber.e(e, "Error saving last update timestamp to local database")
             PostsLocalError.DatabaseError.left()
         }

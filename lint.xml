@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Structured Coroutines: Error-level issues -->
+    <issue id="GlobalScopeUsage" severity="error" />
+    <issue id="InlineCoroutineScope" severity="error" />
+    <issue id="ViewModelScopeLeak" severity="error" />
+    <issue id="MainDispatcherMisuse" severity="error" />
+    <issue id="RunBlockingInSuspend" severity="error" />
+    <issue id="JobInBuilderContext" severity="error" />
+    <issue id="CancellationExceptionSubclass" severity="error" />
+    <issue id="AsyncWithoutAwait" severity="error" />
+    <issue id="LifecycleAwareScope" severity="error" />
+
+    <!-- Structured Coroutines: Warning-level issues -->
+    <issue id="CancellationExceptionSwallowed" severity="warning" />
+    <issue id="LifecycleAwareFlowCollection" severity="warning" />
+    <issue id="RedundantLaunchInCoroutineScope" severity="warning" />
+    <issue id="SuspendInFinally" severity="warning" />
+    <issue id="RunBlockingWithDelayInTest" severity="warning" />
+    <issue id="RunBlockingInsteadOfRunTest" severity="warning" />
+    <issue id="ChannelNotClosed" severity="warning" />
+    <issue id="ConsumeEachMultipleConsumers" severity="warning" />
+    <issue id="FlowBlockingCall" severity="warning" />
+    <issue id="ScopeReuseAfterCancel" severity="warning" />
+    <issue id="DispatchersUnconfined" severity="warning" />
+
+    <!-- Structured Coroutines: Ignored heuristic rules -->
+    <issue id="LoopWithoutYield" severity="ignore" />
+    <issue id="UnstructuredLaunch" severity="ignore" />
+</lint>

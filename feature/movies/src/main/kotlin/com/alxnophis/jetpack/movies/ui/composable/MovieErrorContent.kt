@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.movies.R
+import com.alxnophis.jetpack.core.R as CoreR
 
 @Composable
 internal fun MovieErrorContent(
@@ -33,7 +34,7 @@ internal fun MovieErrorContent(
         verticalArrangement = Arrangement.Center,
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_error),
+            painter = painterResource(CoreR.drawable.ic_error),
             contentDescription = stringResource(R.string.movies_cd_error_icon),
             tint = MaterialTheme.colorScheme.error,
             modifier = Modifier.size(48.dp),

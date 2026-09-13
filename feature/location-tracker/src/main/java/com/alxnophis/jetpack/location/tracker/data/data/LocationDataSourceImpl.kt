@@ -30,6 +30,7 @@ internal class LocationDataSourceImpl(
     private val locationManager: LocationManager,
     defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : LocationDataSource {
+    @Suppress("InlineCoroutineScope")
     private val coroutineScope: CoroutineScope = CoroutineScope(defaultDispatcher + SupervisorJob())
     private val activeFlows = ConcurrentHashMap<LocationParameters, Flow<Location>>()
 

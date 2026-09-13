@@ -35,5 +35,15 @@ jobs:
       - name: Check Ktlint
         run: ./gradlew ktlintCheck
 
+      - name: Android Lint
+        run: ./gradlew lintDebug
+
       - name: Debug Unit tests
         run: ./gradlew koverHtmlReportDebug
+
+      - name: Upload Lint Reports
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: lint-reports
+          path: "**/build/reports/lint/**"

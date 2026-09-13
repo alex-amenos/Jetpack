@@ -8,9 +8,15 @@ Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture wit
 
 **CI Validation (Run before committing):**
 ```bash
-./gradlew ktlintCheck                      # Run linting
+./gradlew ktlintCheck                      # Run ktlint code formatting check
+./gradlew lintDebug                        # Run Android Lint (includes Compose & structured-coroutines rules)
 ./gradlew koverHtmlReportDebug             # Run all unit tests + coverage (used in CI)
 ```
+
+**Android Lint & Structured Coroutines:**
+- **All modules:** `./gradlew lintDebug`
+- **Single module:** `./gradlew :feature:posts:lintDebug`
+- **Report locations:** `<module>/build/reports/lint/lint-results.html`
 
 **Testing & Screenshots:**
 - **Run module test:** `./gradlew :feature:posts:testDebugUnitTest`
