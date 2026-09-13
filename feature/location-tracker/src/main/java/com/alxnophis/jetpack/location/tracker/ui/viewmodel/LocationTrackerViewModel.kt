@@ -23,40 +23,38 @@ internal class LocationTrackerViewModel(
     private var lastKnownLocationJob: Job? = null
 
     override fun handleEvent(event: LocationTrackerUiEvent) {
-        viewModelScope.launch {
-            when (event) {
-                LocationTrackerUiEvent.LocationAccessGranted -> {
-                    locationAccessGranted()
-                    subscribeToUserLocation()
-                    subscribeToLastKnownLocation()
-                }
+        when (event) {
+            LocationTrackerUiEvent.LocationAccessGranted -> {
+                locationAccessGranted()
+                subscribeToUserLocation()
+                subscribeToLastKnownLocation()
+            }
 
-                LocationTrackerUiEvent.LocationAccessRevoked -> {
-                    locationAccessRevoked()
-                    stopTrackUserLocation()
-                }
+            LocationTrackerUiEvent.LocationAccessRevoked -> {
+                locationAccessRevoked()
+                stopTrackUserLocation()
+            }
 
-                LocationTrackerUiEvent.StopTrackingRequested -> {
-                    stopTrackUserLocation()
-                }
+            LocationTrackerUiEvent.StopTrackingRequested -> {
+                stopTrackUserLocation()
+            }
 
-                LocationTrackerUiEvent.GoBackRequested -> {
-                    throw IllegalStateException("GoBackRequested not implemented")
-                }
+            LocationTrackerUiEvent.GoBackRequested -> {
+                throw IllegalStateException("GoBackRequested not implemented")
+            }
 
-                LocationTrackerUiEvent.MapDraggedByGesture -> {
-                    updateUiState {
-                        copy {
-                            LocationTrackerUiState.isFollowingUser set false
-                        }
+            LocationTrackerUiEvent.MapDraggedByGesture -> {
+                updateUiState {
+                    copy {
+                        LocationTrackerUiState.isFollowingUser set false
                     }
                 }
+            }
 
-                LocationTrackerUiEvent.FollowUserClicked -> {
-                    updateUiState {
-                        copy {
-                            LocationTrackerUiState.isFollowingUser set true
-                        }
+            LocationTrackerUiEvent.FollowUserClicked -> {
+                updateUiState {
+                    copy {
+                        LocationTrackerUiState.isFollowingUser set true
                     }
                 }
             }
