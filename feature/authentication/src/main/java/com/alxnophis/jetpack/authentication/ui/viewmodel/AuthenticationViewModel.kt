@@ -17,12 +17,15 @@ import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 internal class AuthenticationViewModel(
     private val authenticateUseCase: AuthenticateUseCase,
     savedStateHandle: SavedStateHandle,
     initialUiState: AuthenticationState = AuthenticationState.initialState,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel<AuthenticationEvent, AuthenticationState>(initialUiState, savedStateHandle) {
     /**
      * Never persist the password field — clear it before writing to SavedStateHandle
@@ -145,7 +148,10 @@ internal class AuthenticationViewModel(
     private suspend fun authenticateUser(
         email: String,
         password: String,
-    ): Either<AuthenticationError, Unit> = authenticateUseCase.invoke(email, password)
+    ): Either<AuthenticationError, Unit> =
+        context(ioDispatcher) {
+            authenticateUseCase(email, password)
+        }
 
     companion object {
         private const val MIN_PASSWORD_LENGTH = 8

@@ -12,14 +12,14 @@ import kotlinx.coroutines.withContext
 typealias Authenticated = Unit
 
 internal class AuthenticateUseCase(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val delay: Long = DELAY,
 ) {
-    suspend fun invoke(
+    context(dispatcher: CoroutineDispatcher)
+    suspend operator fun invoke(
         email: String,
         password: String,
     ): Either<AuthenticationError, Authenticated> =
-        withContext(ioDispatcher) {
+        withContext(dispatcher) {
             either {
                 delay(delay)
                 ensure(hasAuthorization(email, password)) { AuthenticationError.WrongAuthentication }

@@ -6,6 +6,7 @@
 - Configure Kotlin compiler arguments for new language features (`-Xcontext-parameters`, `-Xexplicit-backing-fields`).
 - Integrate and demonstrate new Kotlin 2.4 features:
   - **Explicit Backing Fields** in state management (`:feature:file-downloader`).
+  - **Context Parameters** for ambient dependency passing (`:feature:authentication`).
 - Verify build, ktlint, tests, coverage, and screenshot regression suites.
 
 ---
@@ -67,6 +68,21 @@ kotlin.compilerOptions {
   - Mutate directly within repository functions (`downloadingFiles.update { ... }`).
   - Verifies read-only StateFlow encapsulation with zero boilerplate backing properties.
 - **Verification**: Run unit tests in `:feature:file-downloader`.
+
+### Phase 3: Feature Adoption — Context Parameters
+- **Target**: `AuthenticateUseCase.kt` (`feature:authentication`).
+  - Declare ambient coroutine dispatcher dependency via Kotlin 2.4 context parameter:
+    ```kotlin
+    context(dispatcher: CoroutineDispatcher)
+    suspend operator fun invoke(
+        email: String,
+        password: String,
+    ): Either<AuthenticationError, Authenticated>
+    ```
+  - Eliminates constructor boilerplate in domain use case and simplifies instantiation across DI and callers.
+  - Caller (`AuthenticationViewModel.kt`) supplies context via `context(ioDispatcher) { ... }`.
+  - Updated Ktlint to `1.8.0` in `buildSystem/gradle/ktlint.gradle` for full syntax and AST support.
+- **Verification**: Run unit tests in `:feature:authentication`.
 
 ---
 

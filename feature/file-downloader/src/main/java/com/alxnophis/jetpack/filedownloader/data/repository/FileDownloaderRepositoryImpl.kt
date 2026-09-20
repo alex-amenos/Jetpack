@@ -26,8 +26,14 @@ internal class FileDownloaderRepositoryImpl(
             Either
                 .catch {
                     when {
-                        isFileDownloading(fileUrl) -> throw FileDownloadingException()
-                        isFileDownloaded(fileUrl) -> throw FileDownloadedException()
+                        isFileDownloading(fileUrl) -> {
+                            throw FileDownloadingException()
+                        }
+
+                        isFileDownloaded(fileUrl) -> {
+                            throw FileDownloadedException()
+                        }
+
                         else -> {
                             androidDownloaderDataSource
                                 .downloadFile(fileUrl)
