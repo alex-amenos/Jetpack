@@ -11,6 +11,8 @@ import com.alxnophis.jetpack.game.ballclicker.ui.contract.DEFAULT_TIME_IN_SECOND
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.currentTimeInSeconds
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.isTimerRunning
 import com.alxnophis.jetpack.game.ballclicker.ui.contract.points
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.catch
@@ -23,6 +25,7 @@ import timber.log.Timber
 internal class BallClickerViewModel(
     private val ballClickerTimerUseCase: BallClickerTimerUseCase,
     initialState: BallClickerState = BallClickerState.initialState,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : BaseViewModel<BallClickerEvent, BallClickerState>(initialState) {
     private var timerJob: Job? = null
 
@@ -49,17 +52,18 @@ internal class BallClickerViewModel(
         }
         timerJob =
             viewModelScope.launch {
-                ballClickerTimerUseCase(DEFAULT_TIME_IN_SECONDS.toLong())
-                    .onEach { seconds ->
-                        _uiState.updateCopy {
-                            BallClickerState.currentTimeInSeconds set seconds.toInt()
-                        }
-                    }.onCompletion {
-                        _uiState.updateCopy {
-                            BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
-                            BallClickerState.isTimerRunning set false
-                        }
-                    }.cancellable()
+                context(defaultDispatcher) {
+                    ballClickerTimerUseCase(DEFAULT_TIME_IN_SECONDS.toLong())
+                }.onEach { seconds ->
+                    _uiState.updateCopy {
+                        BallClickerState.currentTimeInSeconds set seconds.toInt()
+                    }
+                }.onCompletion {
+                    _uiState.updateCopy {
+                        BallClickerState.currentTimeInSeconds set DEFAULT_TIME_IN_SECONDS
+                        BallClickerState.isTimerRunning set false
+                    }
+                }.cancellable()
                     .catch { throwable ->
                         Timber.e(throwable, "Error in ball clicker timer")
                     }.collect()
