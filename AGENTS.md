@@ -2,7 +2,10 @@
 
 Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture with Arrow for functional programming.
 
-**Tech Stack:** Kotlin 2.2.21 | Compose BOM 2026.05.01 | Koin 4.2.1 | Arrow-kt 2.2.2.1 | Retrofit | JUnit 5 | Roborazzi
+**Tech Stack:** Kotlin 2.4.20 | Compose BOM 2026.05.01 | Koin 4.2.2 | Arrow-kt 2.2.3 | Retrofit | JUnit 5 | Roborazzi
+
+## Git & Commit Rules
+- **DO NOT commit without review:** Never execute `git commit`, `git push`, or amend commits automatically. Commits are strictly forbidden unless the user has reviewed the changes and explicitly ordered a commit.
 
 ## High-Signal Workflows & Commands
 
