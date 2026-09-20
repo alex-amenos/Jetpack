@@ -14,6 +14,8 @@ import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.home.ui.contract.data
 import com.alxnophis.jetpack.home.ui.contract.error
 import com.alxnophis.jetpack.home.ui.contract.isLoading
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +26,7 @@ import kotlinx.coroutines.launch
 internal class HomeViewModel(
     private val getNavigationItemsUseCase: GetNavigationItemsUseCase,
     initialState: HomeState = HomeState.initialState,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel<HomeEvent, HomeState>(initialState) {
     private var navigationItemsJob: Job? = null
 
@@ -69,7 +72,10 @@ internal class HomeViewModel(
             }
     }
 
-    private suspend fun getNavigationItems(): Either<NavigationError, List<NavigationItem>> = getNavigationItemsUseCase.invoke()
+    private suspend fun getNavigationItems(): Either<NavigationError, List<NavigationItem>> =
+        context(ioDispatcher) {
+            getNavigationItemsUseCase()
+        }
 
     private fun dismissError() {
         _uiState.updateCopy {
