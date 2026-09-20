@@ -5,8 +5,7 @@
 - Update tightly coupled compiler plugins and companion libraries (`google-ksp`, `arrow-stack`, `koin`).
 - Configure Kotlin compiler arguments for new language features (`-Xcontext-parameters`, `-Xexplicit-backing-fields`).
 - Integrate and demonstrate new Kotlin 2.4 features:
-  - **Explicit Backing Fields** in state management (`:feature:file-downloader`, `:feature:my-playground`).
-  - **Context Parameters** with idiomatic utilities and unit tests (`:shared:kotlin`).
+  - **Explicit Backing Fields** in state management (`:feature:file-downloader`).
 - Verify build, ktlint, tests, coverage, and screenshot regression suites.
 
 ---
@@ -66,20 +65,8 @@ kotlin.compilerOptions {
         field = MutableStateFlow(emptyList())
     ```
   - Mutate directly within repository functions (`downloadingFiles.update { ... }`).
-- **Target**: `MyPlaygroundViewModel.kt` (`feature:my-playground`).
-  - Add explicit backing fields demonstration for custom reactive state properties.
-- **Verification**: Run unit tests in `:feature:file-downloader` and `:feature:my-playground`.
-
-### Phase 3: Feature Adoption — Context Parameters
-- **Target**: `:shared:kotlin` (`com.alxnophis.jetpack.kotlin.context`).
-  - Implement reusable utilities using Kotlin 2.4 context parameters (e.g. contextual execution, dispatching, and formatting helpers).
-  - Example syntax:
-    ```kotlin
-    context(dispatcher: CoroutineDispatcher, logger: (String) -> Unit)
-    suspend fun <T> executeContextual(tag: String, block: suspend () -> T): T
-    ```
-- **Target**: `:shared:kotlin` unit tests (`ContextParametersTest.kt`).
-  - Add test suite validating resolution, nested scopes, and named context parameter access.
+  - Verifies read-only StateFlow encapsulation with zero boilerplate backing properties.
+- **Verification**: Run unit tests in `:feature:file-downloader`.
 
 ---
 
