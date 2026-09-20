@@ -8,7 +8,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 
@@ -17,13 +16,10 @@ internal class FileDownloaderRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : FileDownloaderRepository {
     override val downloadingFiles: StateFlow<List<DownloaderFile>>
-        get() = _downloadingFiles.asStateFlow()
+        field = MutableStateFlow(emptyList())
 
     override val downloadedFiles: StateFlow<List<DownloaderFile>>
-        get() = _downloadedFiles.asStateFlow()
-
-    private val _downloadingFiles: MutableStateFlow<List<DownloaderFile>> = MutableStateFlow(emptyList())
-    private val _downloadedFiles: MutableStateFlow<List<DownloaderFile>> = MutableStateFlow(emptyList())
+        field = MutableStateFlow(emptyList())
 
     override suspend fun downloadFile(fileUrl: String): Either<FileDownloaderError, Long> =
         withContext(ioDispatcher) {
@@ -36,7 +32,7 @@ internal class FileDownloaderRepositoryImpl(
                             androidDownloaderDataSource
                                 .downloadFile(fileUrl)
                                 .also { downloadId ->
-                                    _downloadingFiles.update {
+                                    downloadingFiles.update {
                                         it.plus(DownloaderFile(id = downloadId, url = fileUrl))
                                     }
                                 }
@@ -52,24 +48,24 @@ internal class FileDownloaderRepositoryImpl(
         }
 
     override fun fileDownloaded(downloadId: Long) {
-        val downloadedFile = _downloadingFiles.value.filter { it.id == downloadId }
-        _downloadingFiles.update {
+        val downloadedFile = downloadingFiles.value.filter { it.id == downloadId }
+        downloadingFiles.update {
             it.filterNot { item -> item.id == downloadId }
         }
-        _downloadedFiles.update {
+        downloadedFiles.update {
             it.plus(downloadedFile)
         }
     }
 
     private fun isFileDownloading(fileUrl: String): Boolean =
-        _downloadingFiles
+        downloadingFiles
             .value
             .firstOrNull { downloadingFile -> downloadingFile.url == fileUrl }
             ?.let { true }
             ?: false
 
     private fun isFileDownloaded(fileUrl: String): Boolean =
-        _downloadedFiles
+        downloadedFiles
             .value
             .firstOrNull { downloadingFile -> downloadingFile.url == fileUrl }
             ?.let { true }
