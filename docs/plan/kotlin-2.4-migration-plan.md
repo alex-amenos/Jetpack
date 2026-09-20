@@ -65,7 +65,7 @@ kotlin.compilerOptions {
 - **Verification**: All unit tests in `:feature:file-downloader` passed.
 
 ### Phase 3: Feature Adoption — Context Parameters (Completed)
-- **Target**: `AuthenticateUseCase.kt` (`feature:authentication`).
+- **Target 1**: `AuthenticateUseCase.kt` (`feature:authentication`).
   - Replaced constructor injection of `CoroutineDispatcher` with ambient context parameter:
     ```kotlin
     internal class AuthenticateUseCase(
@@ -79,31 +79,27 @@ kotlin.compilerOptions {
             withContext(dispatcher) { ... }
     }
     ```
-  - Caller (`AuthenticationViewModel.kt`) supplies context at execution site:
-    ```kotlin
-    context(ioDispatcher) {
-        authenticateUseCase(email, password)
-    }
-    ```
+  - Caller (`AuthenticationViewModel.kt`) supplies context at execution site: `context(ioDispatcher) { authenticateUseCase(email, password) }`.
   - Unit tests (`AuthenticateUseCaseUnitTest.kt` and `AuthenticationViewModelUnitTest.kt`) supply `context(testDispatcher)` directly.
-- **Verification**: All 11 unit tests in `:feature:authentication` passed.
+- **Target 2**: `GetNavigationItemsUseCase.kt` (`feature:home`).
+  - Replaced constructor dispatcher injection with `context(dispatcher: CoroutineDispatcher) suspend operator fun invoke()`.
+  - Caller (`HomeViewModel.kt`) supplies context: `context(ioDispatcher) { getNavigationItemsUseCase() }`.
+  - Added unit test suite in `GetNavigationItemsUseCaseTest.kt` and `HomeViewModelTest.kt`.
+- **Target 3**: `BallClickerTimerUseCase.kt` (`feature:game:ballclicker`).
+  - Replaced constructor dispatcher injection with `context(dispatcher: CoroutineDispatcher) operator fun invoke(...)`.
+  - Caller (`BallClickerViewModel.kt`) supplies context: `context(defaultDispatcher) { ballClickerTimerUseCase(...) }`.
+  - Added unit test suite in `BallClickerTimerUseCaseTest.kt` and `BallClickerViewModelTest.kt`.
+- **Tooling Support**:
+  - Updated Ktlint engine to `1.8.0` in `buildSystem/gradle/ktlint.gradle` for full syntax and AST support.
+- **Verification**: All unit tests in `:feature:authentication`, `:feature:home`, and `:feature:game:ballclicker` passed.
 
 ---
 
 ## 5. Candidate Use Cases for Future Context Parameters Adoption
 
-Beyond `AuthenticateUseCase`, the following real codebase opportunities exist for adopting Context Parameters:
+Beyond the completed use cases, additional codebase opportunities exist:
 
-### A. Domain Layer: Ambient Dispatchers in Remaining Use Cases
-- **`GetNavigationItemsUseCase`** (`:feature:home`):
-  - Current: Stores `private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO` in constructor.
-  - Future: Declare `context(dispatcher: CoroutineDispatcher) suspend operator fun invoke(): Either<NavigationError, List<NavigationItem>>`.
-  - Caller (`HomeViewModel`): Invokes within `context(Dispatchers.IO) { ... }`.
-- **`BallClickerTimerUseCase`** (`:feature:game:ballclicker`):
-  - Current: Stores `private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default` in constructor.
-  - Future: Declare `context(dispatcher: CoroutineDispatcher) operator fun invoke(...): Flow<Long> = flow { ... }.flowOn(dispatcher)`.
-
-### B. Data Layer: Infrastructure Decoupling in Repositories & Data Sources
+### A. Data Layer: Infrastructure Decoupling in Repositories & Data Sources
 - **`FileDownloaderRepositoryImpl`** (`:feature:file-downloader`):
   - Current: Retains `ioDispatcher: CoroutineDispatcher` in constructor solely to wrap download calls.
   - Future: Declare `context(dispatcher: CoroutineDispatcher) override suspend fun downloadFile(fileUrl: String)`.
