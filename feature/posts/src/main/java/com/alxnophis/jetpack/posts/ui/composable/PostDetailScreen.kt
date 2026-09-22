@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.composable.CoreLoadingContent
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.ui.composable.provider.PostDetailPreviewProvider
 import com.alxnophis.jetpack.posts.ui.contract.PostDetailEvent
@@ -133,7 +135,7 @@ internal fun PostDetailUiErrors(
                             Modifier
                                 .fillMaxWidth()
                                 .align(Alignment.Center)
-                                .padding(16.dp),
+                                .padding(mediumPadding),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
@@ -143,7 +145,7 @@ internal fun PostDetailUiErrors(
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(48.dp),
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(mediumPadding))
                         Text(
                             text = errorMessage,
                             style = MaterialTheme.typography.headlineSmall,
@@ -175,7 +177,7 @@ internal fun PostDetailContent(
                     Modifier
                         .fillMaxWidth()
                         .padding(paddingValues)
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = extraSmallPadding)
                         .verticalScroll(rememberScrollState())
                         .testTag(CoreTags.TAG_POST_DETAIL),
             ) {
@@ -214,7 +216,7 @@ internal fun PostDetailContent(
                     text = uiState.postBody,
                     textAlign = TextAlign.Justify,
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(mediumPadding))
             }
         }
     }
