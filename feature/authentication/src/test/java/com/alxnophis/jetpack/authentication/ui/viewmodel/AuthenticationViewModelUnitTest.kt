@@ -18,7 +18,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -123,7 +122,9 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `WHEN user is authenticated with correct credentials THEN update state accordingly`() {
         runTest {
-            whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
+            context(testDispatcher) {
+                whenever(authenticateUseCaseMock.invoke(EMAIL, PASSWORD)).thenReturn(Unit.right())
+            }
             val initialState = AuthenticationState.initialState.copy(email = EMAIL, password = PASSWORD, isLoading = false)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -145,7 +146,6 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `GIVEN an authorized user WHEN remove user authorization THEN update state accordingly`() {
         runTest {
-            whenever(authenticateUseCaseMock.invoke(any(), any())).thenReturn(Unit.right())
             val initialState = AuthenticationState.initialState.copy(email = EMAIL, password = PASSWORD, isLoading = false, isUserAuthorized = true)
             val viewModel = viewModelMother(initialState = initialState)
 
@@ -164,7 +164,9 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
         runTest {
             val initialState = AuthenticationState.initialState.copy(email = EMAIL, password = PASSWORD, error = NO_ERROR)
             val viewModel = viewModelMother(initialState = initialState)
-            whenever(authenticateUseCaseMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
+            context(testDispatcher) {
+                whenever(authenticateUseCaseMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
+            }
 
             viewModel.handleEvent(AuthenticationEvent.Authenticated)
 
@@ -185,9 +187,10 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
         initialState: AuthenticationState = AuthenticationState.initialState,
         authenticateUseCase: AuthenticateUseCase = authenticateUseCaseMock,
     ) = AuthenticationViewModel(
-        authenticateUseCase,
-        SavedStateHandle(),
-        initialState,
+        authenticateUseCase = authenticateUseCase,
+        savedStateHandle = SavedStateHandle(),
+        initialUiState = initialState,
+        ioDispatcher = testDispatcher,
     )
 
     companion object {

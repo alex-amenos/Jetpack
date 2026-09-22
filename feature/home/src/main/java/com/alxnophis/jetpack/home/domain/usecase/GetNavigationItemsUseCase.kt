@@ -5,14 +5,12 @@ import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class GetNavigationItemsUseCase(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) {
+class GetNavigationItemsUseCase {
+    context(dispatcher: CoroutineDispatcher)
     suspend operator fun invoke(): Either<NavigationError, List<NavigationItem>> =
-        withContext(ioDispatcher) {
+        withContext(dispatcher) {
             Either
                 .catch {
                     listOf(

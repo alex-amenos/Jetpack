@@ -2,7 +2,22 @@
 
 Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture with Arrow for functional programming.
 
-**Tech Stack:** Kotlin 2.2.21 | Compose BOM 2026.05.01 | Koin 4.2.1 | Arrow-kt 2.2.2.1 | Retrofit | JUnit 5 | Roborazzi
+**Tech Stack:** Kotlin 2.4.20 | Compose BOM 2026.05.01 | Koin 4.2.2 | Arrow-kt 2.2.3 | Retrofit | JUnit 5 | Roborazzi
+
+## Git & Commit Rules
+- **DO NOT commit without review:** Never execute `git commit`, `git push`, or amend commits automatically. Commits are strictly forbidden unless the user has reviewed the changes and explicitly ordered a commit.
+- **Conventional Commits:** All commit messages must follow the [Conventional Commits v1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) specification:
+  - **Structure:** `<type>[optional scope]: <description>`
+  - **Types:**
+    - `feat:` A new feature
+    - `fix:` A bug fix
+    - `docs:` Documentation only changes
+    - `refactor:` Code changes that neither fix a bug nor add a feature
+    - `build:` Changes that affect the build system or external dependencies (e.g., Gradle, version catalog, AGP)
+    - `test:` Adding missing tests or correcting existing tests
+    - `ci:` Changes to CI configuration files and scripts
+    - `chore:` Other changes that don't modify src or test files
+  - **Breaking changes:** Append `!` after type/scope (e.g., `feat!: ...`) or add `BREAKING CHANGE:` in footer.
 
 ## High-Signal Workflows & Commands
 
