@@ -59,7 +59,8 @@ internal class ConnectivityNetworkMonitor(
                 }
 
             val request =
-                NetworkRequest.Builder()
+                NetworkRequest
+                    .Builder()
                     .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                     .build()
 
@@ -70,7 +71,8 @@ internal class ConnectivityNetworkMonitor(
             awaitClose {
                 manager.unregisterNetworkCallback(callback)
             }
-        }.conflate().distinctUntilChanged()
+        }.conflate()
+            .distinctUntilChanged()
 
     private fun ConnectivityManager.isCurrentlyConnected(): Boolean {
         val activeNet = activeNetwork ?: return false
