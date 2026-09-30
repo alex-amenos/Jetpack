@@ -23,5 +23,6 @@ val featureModules: List<Module> =
         myPlaygroundModule,
         notificationsModule,
         postsModule,
+        rootModule,
         settingsModule,
     )
