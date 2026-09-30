@@ -18,7 +18,7 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.root.ui.composable.OfflineIndicator
 import com.alxnophis.jetpack.root.ui.navigation.Navigation
 import com.alxnophis.jetpack.root.ui.viewmodel.RootViewModel
-import com.alxnophis.jetpack.settings.data.model.ThemeOptions
+import com.alxnophis.jetpack.settings.data.model.SettingsPreferences.ThemeOptions
 
 class RootActivity : ComponentActivity() {
     private val rootViewModel: RootViewModel by viewModel()

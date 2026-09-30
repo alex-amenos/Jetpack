@@ -14,12 +14,12 @@ import org.mockito.kotlin.whenever
 import com.alxnophis.jetpack.core.connectivity.NetworkMonitor
 import com.alxnophis.jetpack.root.ui.contract.RootUiState
 import com.alxnophis.jetpack.settings.data.model.SettingsPreferences
-import com.alxnophis.jetpack.settings.data.model.ThemeOptions
+import com.alxnophis.jetpack.settings.data.model.SettingsPreferences.ThemeOptions
 import com.alxnophis.jetpack.settings.data.repository.SettingsRepository
-import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
+import com.alxnophis.jetpack.testing.base.BaseUnitTest
 
 @ExperimentalCoroutinesApi
-private class RootViewModelUnitTests : BaseViewModelUnitTest() {
+private class RootViewModelUnitTests : BaseUnitTest() {
     private val settingsRepositoryMock: SettingsRepository = mock()
     private val networkMonitorMock: NetworkMonitor = mock()
 
@@ -89,6 +89,7 @@ private class RootViewModelUnitTests : BaseViewModelUnitTest() {
                 awaitItem() shouldBeEqualTo RootUiState.initialState
 
                 settingsFlow.emit(SettingsPreferences.default.copy(themeOption = ThemeOptions.LIGHT))
+                networkFlow.emit(true)
                 runCurrent()
                 awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.LIGHT, isOnline = true)
 
