@@ -27,15 +27,6 @@ internal class RootViewModel(
         }.stateIn(
             scope = viewModelScope,
             initialValue = initialState,
-            started =
-                SharingStarted.WhileSubscribed(
-                    stopTimeoutMillis = STOP_TIMEOUT_MILLIS,
-                    replayExpirationMillis = REPLAY_EXPIRATION_MILLIS,
-                ),
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         )
-
-    companion object {
-        private const val STOP_TIMEOUT_MILLIS = 1_000L
-        private const val REPLAY_EXPIRATION_MILLIS = 9_000L
-    }
 }

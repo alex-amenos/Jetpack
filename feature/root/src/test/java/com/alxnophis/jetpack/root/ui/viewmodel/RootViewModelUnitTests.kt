@@ -10,6 +10,7 @@ import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
+import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalCoroutinesApi
 private class RootViewModelUnitTests : BaseUnitTest() {
@@ -102,6 +104,36 @@ private class RootViewModelUnitTests : BaseUnitTest() {
                 runCurrent()
                 awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.LIGHT, isOnline = true)
 
+                expectNoEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `GIVEN updated state WHEN unsubscribed for longer than 10 seconds and resubscribing THEN assert last state is retained`() {
+        runTest {
+            val settingsFlow = MutableSharedFlow<SettingsPreferences>()
+            val networkFlow = MutableSharedFlow<Boolean>()
+            whenever(settingsRepositoryMock.getSettingsFlow()).thenReturn(settingsFlow)
+            whenever(networkMonitorMock.isOnline).thenReturn(networkFlow)
+
+            val viewModel = RootViewModel(settingsRepositoryMock, networkMonitorMock)
+
+            viewModel.uiState.test {
+                awaitItem() shouldBeEqualTo RootUiState.initialState
+
+                runCurrent()
+                settingsFlow.emit(SettingsPreferences.default.copy(themeOption = ThemeOptions.DARK))
+                networkFlow.emit(false)
+                runCurrent()
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.DARK, isOnline = false)
+            }
+
+            advanceTimeBy(15.seconds)
+            runCurrent()
+
+            viewModel.uiState.test {
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.DARK, isOnline = false)
                 expectNoEvents()
             }
         }
