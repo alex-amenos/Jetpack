@@ -143,3 +143,13 @@ More experiment info:<br>
 - Experiment without testing.
 
 <img alt="File downloader" src="./images/file_downloader_screen.png" width="300" />
+
+## My playground
+
+A scratchpad module (`:feature:my-playground`) designed for rapid prototyping, isolated Composable experiments, and ad-hoc UI spikes.<br><br>
+More experiment info:<br>
+
+- **Architecture**: MVI pattern with `BaseViewModel<MyPlaygroundEvent, MyPlaygroundState>`.
+- **UI**: Jetpack Compose screen with automatic focus request on launch (`FocusRequester`), monospace text input styling, and top bar back navigation.
+- **Testing**: Previews for Light and Dark modes (`@PreviewLightDark`).
+
