@@ -1,6 +1,12 @@
 package com.alxnophis.jetpack.root.ui.viewmodel
 
 import app.cash.turbine.test
+import com.alxnophis.jetpack.core.connectivity.NetworkMonitor
+import com.alxnophis.jetpack.root.ui.contract.RootUiState
+import com.alxnophis.jetpack.settings.data.model.SettingsPreferences
+import com.alxnophis.jetpack.settings.data.model.SettingsPreferences.ThemeOptions
+import com.alxnophis.jetpack.settings.data.repository.SettingsRepository
+import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
@@ -11,12 +17,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
-import com.alxnophis.jetpack.core.connectivity.NetworkMonitor
-import com.alxnophis.jetpack.root.ui.contract.RootUiState
-import com.alxnophis.jetpack.settings.data.model.SettingsPreferences
-import com.alxnophis.jetpack.settings.data.model.SettingsPreferences.ThemeOptions
-import com.alxnophis.jetpack.settings.data.repository.SettingsRepository
-import com.alxnophis.jetpack.testing.base.BaseUnitTest
 
 @ExperimentalCoroutinesApi
 private class RootViewModelUnitTests : BaseUnitTest() {
@@ -88,6 +88,7 @@ private class RootViewModelUnitTests : BaseUnitTest() {
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo RootUiState.initialState
 
+                runCurrent()
                 settingsFlow.emit(SettingsPreferences.default.copy(themeOption = ThemeOptions.LIGHT))
                 networkFlow.emit(true)
                 runCurrent()
