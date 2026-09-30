@@ -13,14 +13,14 @@ import java.io.OutputStream
 import java.util.Base64
 
 @Serializable
-internal data class SettingsPreferences(
+data class SettingsPreferences(
     val notificationsEnabled: Boolean,
     val hintsEnabled: Boolean,
     val marketingOption: Boolean,
     val themeOption: ThemeOptions,
 ) {
     @Serializable
-    internal enum class ThemeOptions(
+    enum class ThemeOptions(
         @StringRes val label: Int,
     ) {
         LIGHT(R.string.settings_light),

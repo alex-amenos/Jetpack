@@ -48,7 +48,8 @@ Multi-module Android app using Kotlin, Jetpack Compose, and MVI architecture wit
 ## Architecture & Code Conventions
 
 ### MVI & Functional Programming
-- **BaseViewModel:** ViewModels must extend `com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel<Event, State>`. Override `handleEvent(event: Event)` to process actions.
+- **BaseViewModel:** Feature ViewModels with complex interactive screens and event pipelines extend `com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel<Event, State>`. Override `handleEvent(event: Event)` to process actions.
+- **StateFlow with `stateIn` (Standard ViewModel):** Simpler ViewModels or root/orchestration ViewModels that derive and combine reactive state directly from flows/repositories (such as `SettingsViewModel` and `RootViewModel`) use standard Android `androidx.lifecycle.ViewModel` with `stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5_000), initialValue = ...)` rather than `BaseViewModel`.
 - **Error Handling:** Use Arrow's `Either<Error, Data>`. Domain errors are modeled as sealed interfaces (e.g., `PostsError`). Avoid throwing exceptions for business logic; use `.mapLeft` / `.fold`.
 - **State Management:** Use Arrow Optics (`@optics` + `updateCopy`) for complex immutable state updates in ViewModels, preferring this over standard data class `copy()` methods.
   ```kotlin
