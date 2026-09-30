@@ -7,8 +7,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -48,7 +53,14 @@ class RootActivity : ComponentActivity() {
                         modifier =
                             Modifier
                                 .fillMaxWidth()
-                                .weight(1f),
+                                .weight(1f)
+                                .then(
+                                    if (!state.isOnline) {
+                                        Modifier.consumeWindowInsets(WindowInsets.statusBars.only(WindowInsetsSides.Top))
+                                    } else {
+                                        Modifier
+                                    },
+                                ),
                     )
                 }
             }
