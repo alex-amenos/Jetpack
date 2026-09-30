@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 internal class ConnectivityNetworkMonitor(
-    private val context: Context,
+    context: Context,
 ) : NetworkMonitor {
     private val connectivityManager: ConnectivityManager? = context.getSystemService()
 
@@ -30,11 +30,6 @@ internal class ConnectivityNetworkMonitor(
             val callback =
                 object : NetworkCallback() {
                     private val networks = mutableSetOf<Network>()
-
-                    override fun onAvailable(network: Network) {
-                        networks += network
-                        channel.trySend(true)
-                    }
 
                     override fun onLost(network: Network) {
                         networks -= network
