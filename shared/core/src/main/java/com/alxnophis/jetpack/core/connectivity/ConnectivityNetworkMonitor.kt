@@ -51,7 +51,7 @@ internal class ConnectivityNetworkMonitor(
                             networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
                         if (hasInternet && isValidated) {
                             networks += network
-                        } else if (!hasInternet) {
+                        } else {
                             networks -= network
                         }
                         channel.trySend(networks.isNotEmpty())
@@ -77,6 +77,7 @@ internal class ConnectivityNetworkMonitor(
     private fun ConnectivityManager.isCurrentlyConnected(): Boolean {
         val activeNet = activeNetwork ?: return false
         val capabilities = getNetworkCapabilities(activeNet) ?: return false
-        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 }
