@@ -25,7 +25,7 @@ Additionally, guidelines were needed to clarify when to use `BaseViewModel` vers
 2. **Global Theme Propagation:**
    - Expose `SettingsRepository` and `ThemeOptions` from `:feature:settings`.
    - Introduce `LocalDarkTheme` composition local in `:shared:core`'s `AppTheme` to allow dynamic Compose theme propagation without Activity restarts.
-   - `RootViewModel` observes `settingsRepository.themeOptionsFlow` and supplies resolved theme states to `RootActivity`.
+   - `RootViewModel` observes `settingsRepository.getSettingsFlow()` and combines its theme preference with connectivity state for `RootActivity`.
 
 3. **Reactive Connectivity Monitoring:**
    - Define `NetworkMonitor` interface and `ConnectivityNetworkMonitor` implementation in `:shared:core` using `ConnectivityManager.NetworkCallback` with `callbackFlow`.
