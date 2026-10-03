@@ -66,10 +66,7 @@ internal fun MovieDetailScreen(
             ) {
                 when {
                     state.isLoading -> {
-                        CoreLoadingDialog(
-                            isLoading = true,
-                            dismissOnBackPress = true,
-                        )
+                        CoreLoadingDialog(isLoading = true)
                     }
 
                     state.error != null -> {
