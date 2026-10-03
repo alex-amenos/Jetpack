@@ -41,14 +41,6 @@ internal class MoviesViewModel(
                     event.query
                 }
             }
-
-            is MoviesEvent.MovieClicked -> {
-                throw IllegalStateException("MovieClicked event should be handled in the UI layer, not in the ViewModel.")
-            }
-
-            MoviesEvent.GoBackRequested -> {
-                throw IllegalStateException("Go back not implemented in ViewModel")
-            }
         }
     }
 

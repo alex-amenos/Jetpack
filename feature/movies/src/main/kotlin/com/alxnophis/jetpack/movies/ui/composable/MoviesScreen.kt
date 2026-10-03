@@ -69,7 +69,9 @@ private const val CONTENT_TYPE_MOVIE_ITEM = "MovieItemContentType"
 internal fun MoviesScreen(
     state: MoviesState,
     movies: LazyPagingItems<Movie>,
-    handleEvent: (MoviesEvent) -> Unit,
+    onBack: () -> Unit = {},
+    onMovieClicked: (Int) -> Unit = {},
+    handleEvent: (MoviesEvent) -> Unit = {},
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val unknownErrorMessage = stringResource(id = R.string.movies_error_unknown)
@@ -104,7 +106,7 @@ internal fun MoviesScreen(
                     navigationIcon = {
                         IconButton(
                             modifier = Modifier.testTag(CoreTags.TAG_CORE_BACK),
-                            onClick = { handleEvent(MoviesEvent.GoBackRequested) },
+                            onClick = onBack,
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -155,7 +157,7 @@ internal fun MoviesScreen(
                         if (movie != null) {
                             MovieItem(
                                 movie = movie,
-                                onClick = { handleEvent(MoviesEvent.MovieClicked(movie.id)) },
+                                onClick = { onMovieClicked(movie.id) },
                                 modifier =
                                     Modifier
                                         .padding(4.dp)

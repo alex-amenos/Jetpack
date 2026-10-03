@@ -14,7 +14,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -145,15 +144,5 @@ private class MovieDetailViewModelTest : BaseViewModelUnitTest() {
                     )
                 }
             }
-    }
-
-    @Nested
-    inner class GoBackRequested {
-        @Test
-        fun `GIVEN click WHEN dispatched THEN throws IllegalStateException`() {
-            assertThrows(IllegalStateException::class.java) {
-                viewModel.handleEvent(MovieDetailEvent.GoBackRequested)
-            }
-        }
     }
 }

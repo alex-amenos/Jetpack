@@ -55,7 +55,8 @@ import java.util.Locale
 @Composable
 internal fun MovieDetailScreen(
     state: MovieDetailState,
-    handleEvent: (MovieDetailEvent) -> Unit,
+    onBack: () -> Unit = {},
+    handleEvent: (MovieDetailEvent) -> Unit = {},
 ) {
     AppTheme {
         Scaffold { paddingValues ->
@@ -94,7 +95,7 @@ internal fun MovieDetailScreen(
                 }
 
                 BackButtonOverlay(
-                    onBack = { handleEvent(MovieDetailEvent.GoBackRequested) },
+                    onBack = onBack,
                     modifier =
                         Modifier
                             .align(Alignment.TopStart)

@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -63,25 +62,5 @@ class MoviesViewModelTest : BaseViewModelUnitTest() {
 
                 job.cancel()
             }
-    }
-
-    @Nested
-    inner class OnMovieClicked {
-        @Test
-        fun `GIVEN movie id WHEN dispatched THEN throws IllegalStateException`() {
-            assertThrows(IllegalStateException::class.java) {
-                viewModel.handleEvent(MoviesEvent.MovieClicked(123))
-            }
-        }
-    }
-
-    @Nested
-    inner class OnGoBackRequested {
-        @Test
-        fun `GIVEN click WHEN dispatched THEN throws IllegalStateException`() {
-            assertThrows(IllegalStateException::class.java) {
-                viewModel.handleEvent(MoviesEvent.GoBackRequested)
-            }
-        }
     }
 }

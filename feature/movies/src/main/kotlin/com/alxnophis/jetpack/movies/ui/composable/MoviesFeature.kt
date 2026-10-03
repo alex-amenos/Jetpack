@@ -19,12 +19,8 @@ fun MoviesFeature(
     MoviesScreen(
         state = state,
         movies = moviesPagingItems,
-        handleEvent = { event ->
-            when (event) {
-                is MoviesEvent.MovieClicked -> onMovieSelected(event.movieId)
-                MoviesEvent.GoBackRequested -> onBack()
-                else -> viewModel.handleEvent(event)
-            }
-        },
+        onBack = onBack,
+        onMovieClicked = onMovieSelected,
+        handleEvent = viewModel::handleEvent,
     )
 }

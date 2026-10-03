@@ -22,10 +22,4 @@ sealed interface MoviesEvent : UiEvent {
     data class SearchQueryChanged(
         val query: String,
     ) : MoviesEvent
-
-    data class MovieClicked(
-        val movieId: Int,
-    ) : MoviesEvent
-
-    data object GoBackRequested : MoviesEvent
 }
