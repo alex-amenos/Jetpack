@@ -23,6 +23,5 @@ fun MovieDetailFeature(
     MovieDetailScreen(
         state = state,
         onBack = onBack,
-        handleEvent = viewModel::handleEvent,
     )
 }

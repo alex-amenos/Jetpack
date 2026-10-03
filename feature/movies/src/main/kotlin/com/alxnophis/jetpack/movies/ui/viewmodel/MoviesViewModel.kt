@@ -7,8 +7,8 @@ import androidx.paging.cachedIn
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.movies.domain.model.Movie
 import com.alxnophis.jetpack.movies.domain.repository.MovieRepository
-import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
-import com.alxnophis.jetpack.movies.ui.contract.MoviesState
+import com.alxnophis.jetpack.movies.ui.contract.MoviesUiEvent
+import com.alxnophis.jetpack.movies.ui.contract.MoviesUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -22,8 +22,8 @@ import kotlin.time.Duration.Companion.milliseconds
 internal class MoviesViewModel(
     private val movieRepository: MovieRepository,
     savedStateHandle: SavedStateHandle,
-    initialState: MoviesState = MoviesState.initialState,
-) : BaseViewModel<MoviesEvent, MoviesState>(initialState, savedStateHandle) {
+    initialState: MoviesUiState = MoviesUiState.initialState,
+) : BaseViewModel<MoviesUiEvent, MoviesUiState>(initialState, savedStateHandle) {
     private val searchQueryFlow = MutableStateFlow(currentUiState.searchQuery)
 
     val moviesPagingFlow: Flow<PagingData<Movie>> =
@@ -32,9 +32,9 @@ internal class MoviesViewModel(
             .flatMapLatest { query -> movieRepository.searchMovies(query) }
             .cachedIn(viewModelScope)
 
-    override fun handleEvent(event: MoviesEvent) {
+    override fun handleEvent(event: MoviesUiEvent) {
         when (event) {
-            is MoviesEvent.SearchQueryChanged -> {
+            is MoviesUiEvent.SearchQueryChanged -> {
                 updateUiState {
                     copy(searchQuery = event.query)
                 }

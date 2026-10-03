@@ -3,7 +3,6 @@ package com.alxnophis.jetpack.movies.ui.composable
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
 import com.alxnophis.jetpack.movies.ui.viewmodel.MoviesViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -17,7 +16,7 @@ fun MoviesFeature(
     val moviesPagingItems = viewModel.moviesPagingFlow.collectAsLazyPagingItems()
 
     MoviesScreen(
-        state = state,
+        uiState = state,
         movies = moviesPagingItems,
         onBack = onBack,
         onMovieClicked = onMovieSelected,

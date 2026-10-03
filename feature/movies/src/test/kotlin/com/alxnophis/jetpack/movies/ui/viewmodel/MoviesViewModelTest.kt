@@ -3,8 +3,8 @@ package com.alxnophis.jetpack.movies.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.alxnophis.jetpack.movies.data.repository.FakeMovieRepository
-import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
-import com.alxnophis.jetpack.movies.ui.contract.MoviesState
+import com.alxnophis.jetpack.movies.ui.contract.MoviesUiEvent
+import com.alxnophis.jetpack.movies.ui.contract.MoviesUiState
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ class MoviesViewModelTest : BaseViewModelUnitTest() {
     fun `GIVEN initial state WHEN initialized THEN state is Idle and paging flow defaults`() =
         runTest(testDispatcher) {
             viewModel.uiState.test {
-                assertEquals(MoviesState.initialState, awaitItem())
+                assertEquals(MoviesUiState.initialState, awaitItem())
             }
         }
 
@@ -46,11 +46,11 @@ class MoviesViewModelTest : BaseViewModelUnitTest() {
                 val query = "Batman"
 
                 // WHEN
-                viewModel.handleEvent(MoviesEvent.SearchQueryChanged(query))
+                viewModel.handleEvent(MoviesUiEvent.SearchQueryChanged(query))
 
                 // THEN
                 viewModel.uiState.test {
-                    assertEquals(MoviesState(searchQuery = query), awaitItem())
+                    assertEquals(MoviesUiState(searchQuery = query), awaitItem())
                 }
 
                 // Advance time to pass the debounce delay

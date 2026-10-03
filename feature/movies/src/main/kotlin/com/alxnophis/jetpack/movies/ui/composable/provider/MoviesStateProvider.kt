@@ -8,17 +8,17 @@ import com.alxnophis.jetpack.kotlin.constants.EMPTY
 import com.alxnophis.jetpack.movies.domain.model.Movie
 import com.alxnophis.jetpack.movies.domain.model.MovieError
 import com.alxnophis.jetpack.movies.domain.model.MovieException
-import com.alxnophis.jetpack.movies.ui.contract.MoviesState
+import com.alxnophis.jetpack.movies.ui.contract.MoviesUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-internal class MoviesStateProvider : PreviewParameterProvider<MoviesState> {
-    override val values: Sequence<MoviesState> =
+internal class MoviesStateProvider : PreviewParameterProvider<MoviesUiState> {
+    override val values: Sequence<MoviesUiState> =
         sequenceOf(
-            MoviesState(
+            MoviesUiState(
                 searchQuery = EMPTY,
             ),
-            MoviesState(
+            MoviesUiState(
                 searchQuery = "Matrix",
             ),
         )
