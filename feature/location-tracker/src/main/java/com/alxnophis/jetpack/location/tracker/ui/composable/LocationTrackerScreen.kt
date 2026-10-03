@@ -111,7 +111,8 @@ private fun rememberIsLocationEnabled(): Boolean {
 @Composable
 internal fun LocationTrackerScreen(
     uiState: LocationTrackerUiState,
-    onEvent: (LocationTrackerUiEvent) -> Unit,
+    onBack: () -> Unit = {},
+    onEvent: (LocationTrackerUiEvent) -> Unit = {},
 ) {
     val context = LocalContext.current
     val isDeviceLocationEnabled = rememberIsLocationEnabled()
@@ -153,7 +154,7 @@ internal fun LocationTrackerScreen(
 
     BackHandler {
         onEvent(LocationTrackerUiEvent.StopTrackingRequested)
-        onEvent(LocationTrackerUiEvent.GoBackRequested)
+        onBack()
     }
 
     AppTheme {
@@ -171,6 +172,7 @@ internal fun LocationTrackerScreen(
         MapComposable(
             uiState = uiState,
             isDeviceLocationEnabled = isDeviceLocationEnabled,
+            onBack = onBack,
             onEvent = onEvent,
             modifier = Modifier.fillMaxSize(),
         )
@@ -181,6 +183,7 @@ internal fun LocationTrackerScreen(
 private fun MapComposable(
     uiState: LocationTrackerUiState,
     isDeviceLocationEnabled: Boolean,
+    onBack: () -> Unit = {},
     onEvent: (LocationTrackerUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -262,7 +265,7 @@ private fun MapComposable(
                     .size(48.dp),
             onGoBack = {
                 onEvent(LocationTrackerUiEvent.StopTrackingRequested)
-                onEvent(LocationTrackerUiEvent.GoBackRequested)
+                onBack()
             },
         )
         if (uiState.hasLocationAccess && isDeviceLocationEnabled && locationData != null) {

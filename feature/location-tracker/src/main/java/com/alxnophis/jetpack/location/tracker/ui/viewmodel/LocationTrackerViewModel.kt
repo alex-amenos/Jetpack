@@ -39,10 +39,6 @@ internal class LocationTrackerViewModel(
                 stopTrackUserLocation()
             }
 
-            LocationTrackerUiEvent.GoBackRequested -> {
-                throw IllegalStateException("GoBackRequested not implemented")
-            }
-
             LocationTrackerUiEvent.MapDraggedByGesture -> {
                 updateUiState {
                     copy {
