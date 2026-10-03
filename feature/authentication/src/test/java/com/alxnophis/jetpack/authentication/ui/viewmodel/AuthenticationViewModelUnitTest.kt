@@ -10,7 +10,7 @@ import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
-import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationUiError
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 import kotlinx.collections.immutable.persistentListOf
@@ -71,14 +71,15 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `GIVEN a error state WHEN request dismiss error THEN validate dismissed error`() {
         runTest {
-            val initialState = AuthenticationState.initialState.copy(error = 1)
+            val error = AuthenticationUiError(id = 100L, messageRes = 1)
+            val initialState = AuthenticationState.initialState.copy(error = error)
             val viewModel = viewModelMother(initialState = initialState)
 
-            viewModel.handleEvent(AuthenticationEvent.ErrorDismissRequested)
+            viewModel.handleEvent(AuthenticationEvent.ErrorDismissRequested(100L))
 
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo initialState
-                awaitItem() shouldBeEqualTo initialState.copy(error = NO_ERROR)
+                awaitItem() shouldBeEqualTo initialState.copy(error = null)
                 expectNoEvents()
             }
         }
@@ -162,7 +163,7 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
     @Test
     fun `GIVEN a not authorized user WHEN authenticated an user with incorrect credentials THEN validate loading and error state sequence`() {
         runTest {
-            val initialState = AuthenticationState.initialState.copy(email = EMAIL, password = PASSWORD, error = NO_ERROR)
+            val initialState = AuthenticationState.initialState.copy(email = EMAIL, password = PASSWORD, error = null)
             val viewModel = viewModelMother(initialState = initialState)
             context(testDispatcher) {
                 whenever(authenticateUseCaseMock.invoke(EMAIL, PASSWORD)).thenReturn(AuthenticationError.WrongAuthentication.left())
@@ -173,11 +174,9 @@ private class AuthenticationViewModelUnitTest : BaseViewModelUnitTest() {
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo initialState
                 awaitItem() shouldBeEqualTo initialState.copy(isLoading = true)
-                awaitItem() shouldBeEqualTo
-                    initialState.copy(
-                        isLoading = false,
-                        error = R.string.authentication_auth_error,
-                    )
+                val item = awaitItem()
+                item.isLoading shouldBeEqualTo false
+                item.error?.messageRes shouldBeEqualTo R.string.authentication_auth_error
                 expectNoEvents()
             }
         }

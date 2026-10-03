@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.home.ui.composable
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,13 +42,17 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.composable.provider.HomePreviewProvider
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
-import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
 
 @Composable
 internal fun HomeScreen(
     state: HomeState,
+    onNavigateTo: (Feature) -> Unit = {},
+    onBack: () -> Unit = {},
     onEvent: (HomeEvent) -> Unit = {},
 ) {
+    BackHandler {
+        onBack()
+    }
     AppTheme {
         Scaffold(
             topBar = { HomeTopBar() },
@@ -60,12 +65,12 @@ internal fun HomeScreen(
                     Modifier
                         .background(color = MaterialTheme.colorScheme.surface)
                         .padding(paddingValues),
-                navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) },
+                navigateTo = onNavigateTo,
             )
-            if (state.error != NO_ERROR) {
+            state.error?.let { error ->
                 CoreErrorDialog(
-                    errorMessage = stringResource(state.error),
-                    dismissError = { onEvent(HomeEvent.ErrorDismissRequested) },
+                    errorMessage = stringResource(error.messageRes),
+                    dismissError = { onEvent(HomeEvent.ErrorDismissRequested(error.id)) },
                 )
             }
         }

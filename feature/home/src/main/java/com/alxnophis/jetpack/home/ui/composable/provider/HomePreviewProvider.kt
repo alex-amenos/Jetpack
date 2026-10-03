@@ -4,7 +4,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.contract.HomeState
-import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
 
 internal class HomePreviewProvider : PreviewParameterProvider<HomeState> {
     override val values: Sequence<HomeState>
@@ -27,7 +26,7 @@ internal class HomePreviewProvider : PreviewParameterProvider<HomeState> {
                                 feature = Feature.Settings,
                             ),
                         ),
-                    error = NO_ERROR,
+                    error = null,
                 ),
             )
 }

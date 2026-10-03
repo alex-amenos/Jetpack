@@ -56,6 +56,7 @@ import com.alxnophis.jetpack.core.ui.composable.drawVerticalScrollbar
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.filedownloader.R
+import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiError
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiState
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
@@ -78,15 +79,22 @@ internal val LocalFileDownloaderUiEventHandler =
 @Composable
 internal fun FileDownloaderScreen(
     uiState: FileDownloaderUiState,
-    onEvent: (FileDownloaderUiEvent) -> Unit,
+    onBack: () -> Unit = {},
+    onEvent: (FileDownloaderUiEvent) -> Unit = {},
 ) {
     CompositionLocalProvider(LocalFileDownloaderUiEventHandler provides onEvent) {
-        FileDownloaderContainer(uiState)
+        FileDownloaderContainer(
+            uiState = uiState,
+            onBack = onBack,
+        )
     }
 }
 
 @Composable
-private fun FileDownloaderContainer(uiState: FileDownloaderUiState) {
+private fun FileDownloaderContainer(
+    uiState: FileDownloaderUiState,
+    onBack: () -> Unit,
+) {
     val handleEvent = LocalFileDownloaderUiEventHandler.current
     AppTheme {
         Scaffold(
@@ -95,7 +103,7 @@ private fun FileDownloaderContainer(uiState: FileDownloaderUiState) {
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.file_downloader_title),
-                    onBack = { FileDownloaderUiEvent.GoBackRequested.handleEvent() },
+                    onBack = onBack,
                 )
             },
             contentWindowInsets = WindowInsets.safeDrawing,
@@ -247,27 +255,24 @@ private fun EllipsizedMiddleText(text: String) {
 @Composable
 private fun FileDownloaderErrors(uiState: FileDownloaderUiState) {
     val handleEvent = LocalFileDownloaderUiEventHandler.current
+    val error = uiState.error ?: return
     val dismissError: () -> Unit = {
-        FileDownloaderUiEvent.ErrorDismissRequested.handleEvent()
+        FileDownloaderUiEvent.ErrorDismissRequested(error.id).handleEvent()
     }
-    when {
-        uiState.error == R.string.file_downloader_generic_error -> {
+    when (error.messageRes) {
+        R.string.file_downloader_generic_error -> {
             DialogError(
-                error = uiState.error,
-                onDismiss = dismissError,
-            )
-        }
-
-        uiState.error != null -> {
-            SnackbarError(
-                modifier = Modifier.fillMaxSize(),
-                error = uiState.error,
+                error = error.messageRes,
                 onDismiss = dismissError,
             )
         }
 
         else -> {
-            doNothing()
+            SnackbarError(
+                modifier = Modifier.fillMaxSize(),
+                error = error,
+                onDismiss = dismissError,
+            )
         }
     }
 }
@@ -285,14 +290,14 @@ private fun DialogError(
 
 @Composable
 private fun SnackbarError(
-    error: Int,
+    error: FileDownloaderUiError,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
 ) {
-    val errorMessage = stringResource(id = error)
+    val errorMessage = stringResource(id = error.messageRes)
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    LaunchedEffect(error) {
+    LaunchedEffect(error.id) {
         scope.launch {
             val result =
                 snackbarHostState.showSnackbar(
@@ -330,7 +335,7 @@ private fun FileDownloaderScaffoldPreview() {
     val uiState =
         FileDownloaderUiState(
             url = EMPTY,
-            error = CoreR.string.core_error_title,
+            error = FileDownloaderUiError(messageRes = CoreR.string.core_error_title),
             fileStatusList =
                 listOf(
                     "Lorem ipsum dolor sit amet",
