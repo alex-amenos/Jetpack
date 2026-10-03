@@ -13,6 +13,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MoviesViewModelTest : BaseViewModelUnitTest() {
@@ -54,7 +55,7 @@ class MoviesViewModelTest : BaseViewModelUnitTest() {
                 }
 
                 // Advance time to pass the debounce delay
-                advanceTimeBy(MoviesViewModel.SEARCH_DEBOUNCE_DELAY + 10)
+                advanceTimeBy(MoviesViewModel.SEARCH_DEBOUNCE_DELAY + 10.milliseconds)
 
                 // Check that repository was eventually called
                 assertEquals("Batman", repository.lastSearchQuery)
