@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.location.tracker.ui.composable
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -73,6 +74,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.launch
 
+@SuppressLint("WrongConstant")
 @Composable
 private fun rememberIsLocationEnabled(): Boolean {
     val context = LocalContext.current.applicationContext
