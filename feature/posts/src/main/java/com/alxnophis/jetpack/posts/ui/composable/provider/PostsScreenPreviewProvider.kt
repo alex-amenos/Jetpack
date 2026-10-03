@@ -23,22 +23,22 @@ internal class PostsScreenPreviewProvider : PreviewParameterProvider<PostsUiStat
             PostsUiState(
                 status = PostsStatus.Error,
                 posts = emptyList<Post>().toImmutableList(),
-                error = PostUiError.Network,
+                error = PostUiError.Network(),
             ),
             PostsUiState(
                 status = PostsStatus.Error,
                 posts = emptyList<Post>().toImmutableList(),
-                error = PostUiError.Server,
+                error = PostUiError.Server(),
             ),
             PostsUiState(
                 status = PostsStatus.Error,
                 posts = emptyList<Post>().toImmutableList(),
-                error = PostUiError.Unexpected,
+                error = PostUiError.Unexpected(),
             ),
             PostsUiState(
                 status = PostsStatus.Error,
                 posts = emptyList<Post>().toImmutableList(),
-                error = PostUiError.NoConnectivity,
+                error = PostUiError.NoConnectivity(),
             ),
         )
 

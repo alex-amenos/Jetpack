@@ -34,7 +34,6 @@ internal class BallClickerViewModel(
             BallClickerEvent.BallClicked -> ballClicked()
             BallClickerEvent.StartRequested -> startGame()
             BallClickerEvent.StopRequested -> stopGame()
-            BallClickerEvent.GoBackRequested -> throw IllegalStateException("GoBackRequested is not implemented")
         }
     }
 

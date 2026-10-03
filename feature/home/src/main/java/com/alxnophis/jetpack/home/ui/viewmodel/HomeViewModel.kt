@@ -10,7 +10,7 @@ import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.domain.usecase.GetNavigationItemsUseCase
 import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
-import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
+import com.alxnophis.jetpack.home.ui.contract.HomeUiError
 import com.alxnophis.jetpack.home.ui.contract.data
 import com.alxnophis.jetpack.home.ui.contract.error
 import com.alxnophis.jetpack.home.ui.contract.isLoading
@@ -42,9 +42,7 @@ internal class HomeViewModel(
 
     override fun handleEvent(event: HomeEvent) {
         when (event) {
-            HomeEvent.ErrorDismissRequested -> dismissError()
-            HomeEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
-            is HomeEvent.NavigationRequested -> throw IllegalStateException("Navigation not implemented")
+            is HomeEvent.ErrorDismissRequested -> dismissError(event.errorId)
         }
     }
 
@@ -59,7 +57,7 @@ internal class HomeViewModel(
                     {
                         _uiState.updateCopy {
                             HomeState.isLoading set false
-                            HomeState.error set R.string.home_error_loading_navigation_items
+                            HomeState.error set HomeUiError(messageRes = R.string.home_error_loading_navigation_items)
                         }
                     },
                     { navigationItems ->
@@ -77,9 +75,11 @@ internal class HomeViewModel(
             getNavigationItemsUseCase()
         }
 
-    private fun dismissError() {
-        _uiState.updateCopy {
-            HomeState.error set NO_ERROR
+    private fun dismissError(errorId: Long) {
+        if (currentUiState.error?.id == errorId) {
+            _uiState.updateCopy {
+                HomeState.error set null
+            }
         }
     }
 

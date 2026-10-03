@@ -7,7 +7,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.home.domain.model.Feature
-import com.alxnophis.jetpack.home.ui.contract.HomeEvent
 import com.alxnophis.jetpack.home.ui.contract.HomeState
 import com.alxnophis.jetpack.home.ui.viewmodel.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -18,26 +17,16 @@ fun HomeFeature(
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current
-    val finish = { ActivityCompat.finishAffinity(context as Activity) }
+    val finish = {
+        onBack()
+        (context as? Activity)?.let { ActivityCompat.finishAffinity(it) }
+    }
     val viewModel = koinViewModel<HomeViewModel>()
     val state: HomeState by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreen(
         state = state,
-        onEvent = { event ->
-            when (event) {
-                HomeEvent.GoBackRequested -> {
-                    onBack()
-                    finish()
-                }
-
-                is HomeEvent.NavigationRequested -> {
-                    onNavigateTo(event.feature)
-                }
-
-                else -> {
-                    viewModel.handleEvent(event)
-                }
-            }
-        },
+        onNavigateTo = onNavigateTo,
+        onBack = { finish() },
+        onEvent = viewModel::handleEvent,
     )
 }

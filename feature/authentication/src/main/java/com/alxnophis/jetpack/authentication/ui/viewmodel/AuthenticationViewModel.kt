@@ -11,7 +11,7 @@ import com.alxnophis.jetpack.authentication.domain.usecase.AuthenticateUseCase.C
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationMode
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
-import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
+import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationUiError
 import com.alxnophis.jetpack.authentication.ui.contract.PasswordRequirements
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
@@ -38,14 +38,12 @@ internal class AuthenticationViewModel(
         viewModelScope.launch {
             when (event) {
                 AuthenticationEvent.Authenticated -> authenticate()
-                AuthenticationEvent.ErrorDismissRequested -> dismissError()
+                is AuthenticationEvent.ErrorDismissRequested -> dismissError(event.errorId)
                 AuthenticationEvent.ToggleAuthenticationModeRequested -> toggleAuthenticationMode()
                 AuthenticationEvent.SetUserNotAuthorized -> setUserNotAuthorized()
                 AuthenticationEvent.AutoCompleteAuthorizationRequested -> autoCompleteAuthorization()
-                AuthenticationEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
                 is AuthenticationEvent.EmailChanged -> updateEmail(event.email)
                 is AuthenticationEvent.PasswordChanged -> updatePassword(event.password)
-                is AuthenticationEvent.NavigateToAuthScreenRequested -> throw IllegalStateException("Navigate to auth screen not implemented")
             }
         }
     }
@@ -89,7 +87,7 @@ internal class AuthenticationViewModel(
                     updateUiState {
                         copy(
                             isLoading = false,
-                            error = R.string.authentication_auth_error,
+                            error = AuthenticationUiError(messageRes = R.string.authentication_auth_error),
                         )
                     }
                 },
@@ -105,9 +103,11 @@ internal class AuthenticationViewModel(
         }
     }
 
-    private fun dismissError() {
-        updateUiState {
-            copy(error = NO_ERROR)
+    private fun dismissError(errorId: Long) {
+        if (currentUiState.error?.id == errorId) {
+            updateUiState {
+                copy(error = null)
+            }
         }
     }
 

@@ -86,7 +86,8 @@ internal fun AuthenticationForm(
     authenticationMode: AuthenticationMode,
     completedPasswordRequirements: ImmutableList<PasswordRequirements>,
     enableAuthentication: Boolean,
-    handleEvent: AuthenticationEvent.() -> Unit,
+    onBack: () -> Unit = {},
+    handleEvent: (AuthenticationEvent) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -102,7 +103,7 @@ internal fun AuthenticationForm(
                 modifier = Modifier.fillMaxWidth(),
                 actions = {
                     IconButton(
-                        onClick = { handleEvent.invoke(AuthenticationEvent.AutoCompleteAuthorizationRequested) },
+                        onClick = { handleEvent(AuthenticationEvent.AutoCompleteAuthorizationRequested) },
                     ) {
                         Icon(
                             painter = painterResource(id = CoreR.drawable.ic_help),
@@ -110,7 +111,7 @@ internal fun AuthenticationForm(
                         )
                     }
                 },
-                onBack = { handleEvent(AuthenticationEvent.GoBackRequested) },
+                onBack = onBack,
             )
         },
         modifier =

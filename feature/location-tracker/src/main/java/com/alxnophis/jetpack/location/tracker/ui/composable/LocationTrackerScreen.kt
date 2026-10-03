@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.location.tracker.ui.composable
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -73,6 +74,10 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.launch
 
+private const val DEFAULT_ZOOM_IN = 14f
+private const val DEFAULT_ZOOM_OUT = 3f
+
+@SuppressLint("WrongConstant")
 @Composable
 private fun rememberIsLocationEnabled(): Boolean {
     val context = LocalContext.current.applicationContext
@@ -99,7 +104,7 @@ private fun rememberIsLocationEnabled(): Boolean {
             context,
             receiver,
             IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION),
-            ContextCompat.RECEIVER_NOT_EXPORTED,
+            ContextCompat.RECEIVER_EXPORTED,
         )
         onDispose {
             context.unregisterReceiver(receiver)
@@ -111,7 +116,8 @@ private fun rememberIsLocationEnabled(): Boolean {
 @Composable
 internal fun LocationTrackerScreen(
     uiState: LocationTrackerUiState,
-    onEvent: (LocationTrackerUiEvent) -> Unit,
+    onBack: () -> Unit = {},
+    onEvent: (LocationTrackerUiEvent) -> Unit = {},
 ) {
     val context = LocalContext.current
     val isDeviceLocationEnabled = rememberIsLocationEnabled()
@@ -153,7 +159,7 @@ internal fun LocationTrackerScreen(
 
     BackHandler {
         onEvent(LocationTrackerUiEvent.StopTrackingRequested)
-        onEvent(LocationTrackerUiEvent.GoBackRequested)
+        onBack()
     }
 
     AppTheme {
@@ -173,6 +179,7 @@ internal fun LocationTrackerScreen(
             isDeviceLocationEnabled = isDeviceLocationEnabled,
             onEvent = onEvent,
             modifier = Modifier.fillMaxSize(),
+            onBack = onBack,
         )
     }
 }
@@ -183,8 +190,10 @@ private fun MapComposable(
     isDeviceLocationEnabled: Boolean,
     onEvent: (LocationTrackerUiEvent) -> Unit,
     modifier: Modifier = Modifier,
+    onBack: () -> Unit = {},
 ) {
     val isInspectionMode = LocalInspectionMode.current
+    val isLocationActive = isDeviceLocationEnabled && uiState.hasLocationAccess
     val locationData =
         remember(uiState.userLocationData, uiState.lastKnownLocationData) {
             uiState.userLocationData ?: uiState.lastKnownLocationData
@@ -193,9 +202,10 @@ private fun MapComposable(
         remember(locationData) {
             locationData?.let { LatLng(it.latitude, it.longitude) } ?: LatLng(ZERO_DOUBLE, ZERO_DOUBLE)
         }
+    val initialZoom = if (isLocationActive) DEFAULT_ZOOM_IN else DEFAULT_ZOOM_OUT
     val cameraPositionState =
         rememberCameraPositionState {
-            this.position = CameraPosition.fromLatLngZoom(position, 15f)
+            this.position = CameraPosition.fromLatLngZoom(position, initialZoom)
         }
     val mapProperties = remember { MapProperties(isMyLocationEnabled = false) }
     val mapUiSettings =
@@ -206,6 +216,7 @@ private fun MapComposable(
                 zoomControlsEnabled = false,
             )
         }
+
     // Stop following if user drags map
     LaunchedEffect(cameraPositionState.isMoving) {
         if (cameraPositionState.isMoving && cameraPositionState.cameraMoveStartedReason == CameraMoveStartedReason.GESTURE &&
@@ -216,10 +227,10 @@ private fun MapComposable(
     }
     // Update camera position when location changes
     LaunchedEffect(position, uiState.isFollowingUser) {
-        if (uiState.isFollowingUser) {
+        if (uiState.isFollowingUser && isLocationActive) {
             val currentLatLng = cameraPositionState.position.target
             if (currentLatLng.latitude != position.latitude || currentLatLng.longitude != position.longitude) {
-                val zoom = if (cameraPositionState.position.zoom != 0f) cameraPositionState.position.zoom else 15f
+                val zoom = if (cameraPositionState.position.zoom > DEFAULT_ZOOM_OUT) cameraPositionState.position.zoom else DEFAULT_ZOOM_IN
                 cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(position, zoom))
             }
         }
@@ -262,7 +273,7 @@ private fun MapComposable(
                     .size(48.dp),
             onGoBack = {
                 onEvent(LocationTrackerUiEvent.StopTrackingRequested)
-                onEvent(LocationTrackerUiEvent.GoBackRequested)
+                onBack()
             },
         )
         if (uiState.hasLocationAccess && isDeviceLocationEnabled && locationData != null) {
@@ -277,7 +288,7 @@ private fun MapComposable(
                 onClick = {
                     onEvent(LocationTrackerUiEvent.FollowUserClicked)
                     coroutineScope.launch {
-                        val zoom = if (cameraPositionState.position.zoom != 0f) cameraPositionState.position.zoom else 15f
+                        val zoom = if (cameraPositionState.position.zoom > DEFAULT_ZOOM_OUT) cameraPositionState.position.zoom else DEFAULT_ZOOM_IN
                         cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(position, zoom))
                     }
                 },

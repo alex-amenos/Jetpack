@@ -15,8 +15,6 @@ internal sealed class SettingsUiEvent : UiEvent {
 
     data object SetHint : SettingsUiEvent()
 
-    data object GoBackRequested : SettingsUiEvent()
-
     data class SetMarketingOption(
         val marketingOption: MarketingOption,
     ) : SettingsUiEvent()

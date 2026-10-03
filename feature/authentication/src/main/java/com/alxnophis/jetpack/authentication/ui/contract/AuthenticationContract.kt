@@ -14,8 +14,6 @@ import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
 
-internal const val NO_ERROR = 0
-
 private object ImmutablePasswordRequirementsListParceler : Parceler<ImmutableList<PasswordRequirements>> by immutableListParceler()
 
 internal sealed class AuthenticationEvent : UiEvent {
@@ -23,13 +21,13 @@ internal sealed class AuthenticationEvent : UiEvent {
 
     data object AutoCompleteAuthorizationRequested : AuthenticationEvent()
 
-    data object ErrorDismissRequested : AuthenticationEvent()
+    data class ErrorDismissRequested(
+        val errorId: Long = 0L,
+    ) : AuthenticationEvent()
 
     data object ToggleAuthenticationModeRequested : AuthenticationEvent()
 
     data object SetUserNotAuthorized : AuthenticationEvent()
-
-    data object GoBackRequested : AuthenticationEvent()
 
     data class EmailChanged(
         val email: String,
@@ -38,11 +36,14 @@ internal sealed class AuthenticationEvent : UiEvent {
     data class PasswordChanged(
         val password: String,
     ) : AuthenticationEvent()
-
-    data class NavigateToAuthScreenRequested(
-        val email: String,
-    ) : AuthenticationEvent()
 }
+
+@Parcelize
+@Immutable
+internal data class AuthenticationUiError(
+    val id: Long = System.currentTimeMillis(),
+    @param:StringRes val messageRes: Int,
+) : Parcelable
 
 @Parcelize
 @Immutable
@@ -54,7 +55,7 @@ internal data class AuthenticationState(
     val password: String,
     val passwordRequirements: ImmutableList<PasswordRequirements>,
     val isLoading: Boolean,
-    val error: Int,
+    val error: AuthenticationUiError?,
 ) : UiState,
     Parcelable {
     fun isFormValid(): Boolean =
@@ -74,7 +75,7 @@ internal data class AuthenticationState(
                 password = EMPTY,
                 passwordRequirements = persistentListOf(),
                 isLoading = false,
-                error = NO_ERROR,
+                error = null,
             )
     }
 }

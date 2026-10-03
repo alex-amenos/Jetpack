@@ -7,7 +7,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationEvent
 import com.alxnophis.jetpack.authentication.ui.contract.AuthenticationState
-import com.alxnophis.jetpack.authentication.ui.contract.NO_ERROR
 import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 
@@ -15,22 +14,29 @@ import com.alxnophis.jetpack.core.ui.theme.AppTheme
 @Composable
 internal fun AuthenticationScreen(
     state: AuthenticationState,
+    onNavigateToAuthorized: (email: String) -> Unit = {},
+    onBack: () -> Unit = {},
     onEvent: (AuthenticationEvent) -> Unit = {},
 ) {
     LaunchedEffect(state.isUserAuthorized) {
         if (state.isUserAuthorized) {
-            onEvent(AuthenticationEvent.NavigateToAuthScreenRequested(state.email))
+            onNavigateToAuthorized(state.email)
             onEvent(AuthenticationEvent.SetUserNotAuthorized)
         }
     }
-    AuthenticationContent(state, onEvent)
+    AuthenticationContent(
+        authenticationState = state,
+        onBack = onBack,
+        onEvent = onEvent,
+    )
 }
 
 @ExperimentalComposeUiApi
 @Composable
 internal fun AuthenticationContent(
     authenticationState: AuthenticationState,
-    onEvent: AuthenticationEvent.() -> Unit = {},
+    onBack: () -> Unit = {},
+    onEvent: (AuthenticationEvent) -> Unit = {},
 ) {
     AppTheme {
         AuthenticationForm(
@@ -45,12 +51,13 @@ internal fun AuthenticationContent(
                 } else {
                     false
                 },
+            onBack = onBack,
             handleEvent = onEvent,
         )
-        if (authenticationState.error != NO_ERROR) {
+        authenticationState.error?.let { error ->
             CoreErrorDialog(
-                errorMessage = stringResource(authenticationState.error),
-                dismissError = { onEvent(AuthenticationEvent.ErrorDismissRequested) },
+                errorMessage = stringResource(error.messageRes),
+                dismissError = { onEvent(AuthenticationEvent.ErrorDismissRequested(error.id)) },
             )
         }
     }

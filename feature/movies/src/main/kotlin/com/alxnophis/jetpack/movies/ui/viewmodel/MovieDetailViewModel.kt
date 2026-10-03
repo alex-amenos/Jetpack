@@ -34,10 +34,6 @@ internal class MovieDetailViewModel(
             MovieDetailEvent.ErrorDismissRequested -> {
                 dismissError()
             }
-
-            MovieDetailEvent.GoBackRequested -> {
-                throw IllegalStateException("Go back not implemented in ViewModel")
-            }
         }
     }
 

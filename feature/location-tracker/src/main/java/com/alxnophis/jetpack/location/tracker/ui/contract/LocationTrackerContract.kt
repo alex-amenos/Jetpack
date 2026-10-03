@@ -13,8 +13,6 @@ internal sealed class LocationTrackerUiEvent : UiEvent {
 
     data object StopTrackingRequested : LocationTrackerUiEvent()
 
-    data object GoBackRequested : LocationTrackerUiEvent()
-
     data object MapDraggedByGesture : LocationTrackerUiEvent()
 
     data object FollowUserClicked : LocationTrackerUiEvent()

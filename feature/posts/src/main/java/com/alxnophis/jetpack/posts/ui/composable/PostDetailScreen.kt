@@ -49,12 +49,13 @@ import com.alxnophis.jetpack.core.R as CoreR
 @Composable
 internal fun PostDetailScreen(
     uiState: PostDetailUiState,
+    onBack: () -> Unit = {},
     handleEvent: (PostDetailEvent) -> Unit = {},
 ) {
     when {
         uiState.isLoading -> PostDetailLoading()
-        uiState.isSuccess -> PostDetailContent(uiState, handleEvent)
-        uiState.isError -> PostDetailUiErrors(uiState, handleEvent)
+        uiState.isSuccess -> PostDetailContent(uiState, onBack, handleEvent)
+        uiState.isError -> PostDetailUiErrors(uiState, onBack, handleEvent)
     }
 }
 
@@ -92,7 +93,8 @@ internal fun PostDetailLoading() {
 @Composable
 internal fun PostDetailUiErrors(
     uiState: PostDetailUiState,
-    handleEvent: PostDetailEvent.() -> Unit,
+    onBack: () -> Unit = {},
+    handleEvent: PostDetailEvent.() -> Unit = {},
 ) {
     uiState.error?.let {
         val errorMessage =
@@ -124,7 +126,7 @@ internal fun PostDetailUiErrors(
                                 .wrapContentWidth()
                                 .align(Alignment.TopEnd)
                                 .testTag(CoreTags.TAG_CORE_BACK),
-                        onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
+                        onClick = onBack,
                     ) {
                         Icon(
                             painter = painterResource(CoreR.drawable.ic_close),
@@ -164,6 +166,7 @@ internal fun PostDetailUiErrors(
 @Composable
 internal fun PostDetailContent(
     uiState: PostDetailUiState,
+    onBack: () -> Unit = {},
     handleEvent: (PostDetailEvent) -> Unit = {},
 ) {
     AppTheme {
@@ -189,7 +192,7 @@ internal fun PostDetailContent(
                             .wrapContentWidth()
                             .align(Alignment.End)
                             .testTag(CoreTags.TAG_CORE_BACK),
-                    onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
+                    onClick = onBack,
                 ) {
                     Icon(
                         painter = painterResource(CoreR.drawable.ic_close),

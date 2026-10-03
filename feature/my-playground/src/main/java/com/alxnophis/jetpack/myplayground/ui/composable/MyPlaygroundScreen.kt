@@ -35,6 +35,7 @@ import com.alxnophis.jetpack.myplayground.ui.contract.MyPlaygroundState
 @Composable
 internal fun MyPlaygroundScreen(
     state: MyPlaygroundState,
+    onBack: () -> Unit = {},
     onEvent: (MyPlaygroundEvent) -> Unit = {},
 ) {
     AppTheme {
@@ -44,7 +45,7 @@ internal fun MyPlaygroundScreen(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.myplayground_title),
-                    onBack = { onEvent(MyPlaygroundEvent.GoBackRequested) },
+                    onBack = onBack,
                 )
             },
             contentWindowInsets = WindowInsets.safeDrawing,

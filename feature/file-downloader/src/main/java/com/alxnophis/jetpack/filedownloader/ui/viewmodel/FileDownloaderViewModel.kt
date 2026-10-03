@@ -8,6 +8,7 @@ import com.alxnophis.jetpack.filedownloader.R
 import com.alxnophis.jetpack.filedownloader.data.model.DownloaderFile
 import com.alxnophis.jetpack.filedownloader.data.model.FileDownloaderError
 import com.alxnophis.jetpack.filedownloader.data.repository.FileDownloaderRepository
+import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiError
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiEvent
 import com.alxnophis.jetpack.filedownloader.ui.contract.FileDownloaderUiState
 import com.alxnophis.jetpack.filedownloader.ui.contract.error
@@ -44,10 +45,9 @@ internal class FileDownloaderViewModel(
         Timber.d("## FileDownloaderViewModel processing event: $event")
         viewModelScope.launch {
             when (event) {
-                FileDownloaderUiEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented")
                 is FileDownloaderUiEvent.UrlChanged -> updateUrl(event.url)
                 is FileDownloaderUiEvent.DownloadFileRequested -> downloadFile()
-                is FileDownloaderUiEvent.ErrorDismissRequested -> dismissError()
+                is FileDownloaderUiEvent.ErrorDismissRequested -> dismissError(event.errorId)
             }
         }
     }
@@ -88,7 +88,7 @@ internal class FileDownloaderViewModel(
                                     FileDownloaderError.Unknown -> R.string.file_downloader_generic_error
                                 }
                             _uiState.updateCopy {
-                                FileDownloaderUiState.error set errorResId
+                                FileDownloaderUiState.error set FileDownloaderUiError(messageRes = errorResId)
                             }
                         },
                         {
@@ -101,9 +101,11 @@ internal class FileDownloaderViewModel(
         }
     }
 
-    private fun dismissError() {
-        _uiState.updateCopy {
-            FileDownloaderUiState.error set null
+    private fun dismissError(errorId: Long) {
+        if (currentUiState.error?.id == errorId) {
+            _uiState.updateCopy {
+                FileDownloaderUiState.error set null
+            }
         }
     }
 

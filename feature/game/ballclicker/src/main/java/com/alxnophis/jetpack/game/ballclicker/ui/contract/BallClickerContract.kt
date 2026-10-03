@@ -11,8 +11,6 @@ internal sealed class BallClickerEvent : UiEvent {
     data object StartRequested : BallClickerEvent()
 
     data object StopRequested : BallClickerEvent()
-
-    data object GoBackRequested : BallClickerEvent()
 }
 
 @optics

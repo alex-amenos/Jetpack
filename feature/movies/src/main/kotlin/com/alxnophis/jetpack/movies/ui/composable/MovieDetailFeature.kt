@@ -22,11 +22,6 @@ fun MovieDetailFeature(
 
     MovieDetailScreen(
         state = state,
-        handleEvent = { event ->
-            when (event) {
-                MovieDetailEvent.GoBackRequested -> onBack()
-                else -> viewModel.handleEvent(event)
-            }
-        },
+        onBack = onBack,
     )
 }
