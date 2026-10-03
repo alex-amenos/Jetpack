@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -37,6 +36,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.alxnophis.jetpack.core.ui.composable.CoreLoadingDialog
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.kotlin.constants.BREAK_LINE
@@ -66,7 +66,10 @@ internal fun MovieDetailScreen(
             ) {
                 when {
                     state.isLoading -> {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                        CoreLoadingDialog(
+                            isLoading = true,
+                            dismissOnBackPress = true,
+                        )
                     }
 
                     state.error != null -> {
