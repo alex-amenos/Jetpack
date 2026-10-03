@@ -12,7 +12,7 @@ fun PostsFeature(
 ) {
     val viewModel = koinViewModel<PostsViewModel>()
     PostsScreen(
-        state = viewModel.uiState.collectAsStateWithLifecycle().value,
+        uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
         onBack = onBack,
         onPostSelected = onPostSelected,
         handleEvent = viewModel::handleEvent,

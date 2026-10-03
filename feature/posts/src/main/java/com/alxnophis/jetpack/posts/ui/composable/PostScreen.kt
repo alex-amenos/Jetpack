@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -60,22 +59,6 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 
 @Composable
 internal fun PostsScreen(
-    state: PostsUiState,
-    onBack: () -> Unit = {},
-    onPostSelected: (Long) -> Unit = {},
-    handleEvent: (PostsEvent) -> Unit = {},
-) {
-    PostContent(
-        uiState = state,
-        onBack = onBack,
-        onPostSelected = onPostSelected,
-        handleEvent = handleEvent,
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun PostContent(
     uiState: PostsUiState,
     onBack: () -> Unit = {},
     onPostSelected: (Long) -> Unit = {},
@@ -109,7 +92,11 @@ private fun PostContent(
                                 errorId = error.id,
                                 errorMessage = stringResource(R.string.posts_error_no_connectivity),
                                 snackbarHostState = snackbarHostState,
-                                onDismiss = { PostsEvent.DismissErrorRequested(error.id).handleEvent() },
+                                onDismiss = {
+                                    PostsEvent
+                                        .DismissErrorRequested(error.id)
+                                        .handleEvent()
+                                },
                             )
                         }
 
@@ -157,7 +144,8 @@ private fun PostSnackbarError(
             )
         when (result) {
             SnackbarResult.Dismissed,
-            SnackbarResult.ActionPerformed -> onDismiss()
+            SnackbarResult.ActionPerformed,
+            -> onDismiss()
         }
     }
 }
@@ -176,7 +164,11 @@ private fun PostDialogErrors(
                 is PostUiError.Server -> stringResource(R.string.posts_error_server)
                 is PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
             },
-        dismissError = { PostsEvent.DismissErrorRequested(error.id).handleEvent() },
+        dismissError = {
+            PostsEvent
+                .DismissErrorRequested(error.id)
+                .handleEvent()
+        },
     )
 }
 
