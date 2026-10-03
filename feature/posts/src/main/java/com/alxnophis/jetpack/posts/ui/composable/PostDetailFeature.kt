@@ -14,19 +14,14 @@ fun PostDetailFeature(
     onBack: () -> Unit,
 ) {
     val viewModel = koinViewModel<PostDetailViewModel>()
-    val handleEvent: PostDetailEvent.() -> Unit = viewModel::handleEvent
     LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
         PostDetailEvent
             .LoadPost(postId)
-            .handleEvent()
+            .let(viewModel::handleEvent)
     }
     PostDetailScreen(
         uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
-        handleEvent = { event ->
-            when (event) {
-                PostDetailEvent.GoBackRequested -> onBack()
-                else -> event.handleEvent()
-            }
-        },
+        onBack = onBack,
+        handleEvent = viewModel::handleEvent,
     )
 }

@@ -11,12 +11,8 @@ import kotlinx.collections.immutable.toImmutableList
 internal sealed interface PostsEvent : UiEvent {
     data object OnUpdatePostsRequested : PostsEvent
 
-    data object GoBackRequested : PostsEvent
-
-    data object DismissErrorRequested : PostsEvent
-
-    data class OnPostClicked(
-        val post: Post,
+    data class DismissErrorRequested(
+        val errorId: Long = 0L,
     ) : PostsEvent
 }
 
@@ -50,13 +46,25 @@ internal sealed interface PostsStatus {
 
 @Immutable
 internal sealed interface PostUiError {
-    data object NoConnectivity : PostUiError
+    val id: Long
 
-    data object Network : PostUiError
+    data class NoConnectivity(
+        override val id: Long = 0L,
+    ) : PostUiError
 
-    data object NotFound : PostUiError
+    data class Network(
+        override val id: Long = 0L,
+    ) : PostUiError
 
-    data object Server : PostUiError
+    data class NotFound(
+        override val id: Long = 0L,
+    ) : PostUiError
 
-    data object Unexpected : PostUiError
+    data class Server(
+        override val id: Long = 0L,
+    ) : PostUiError
+
+    data class Unexpected(
+        override val id: Long = 0L,
+    ) : PostUiError
 }
