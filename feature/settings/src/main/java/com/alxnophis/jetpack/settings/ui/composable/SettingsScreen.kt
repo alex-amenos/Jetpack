@@ -29,6 +29,7 @@ import com.alxnophis.jetpack.settings.ui.contract.SettingsUiState
 @Composable
 internal fun SettingsScreen(
     state: SettingsUiState,
+    onBack: () -> Unit = {},
     onEvent: (SettingsUiEvent) -> Unit = {},
     appVersion: String = LocalContext.current.getVersion(),
 ) {
@@ -39,7 +40,7 @@ internal fun SettingsScreen(
                 CoreTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.settings_title),
-                    onBack = { onEvent(SettingsUiEvent.GoBackRequested) },
+                    onBack = onBack,
                 )
             },
             modifier = Modifier.fillMaxSize(),
