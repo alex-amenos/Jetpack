@@ -99,7 +99,7 @@ private fun rememberIsLocationEnabled(): Boolean {
             context,
             receiver,
             IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION),
-            ContextCompat.RECEIVER_NOT_EXPORTED,
+            ContextCompat.RECEIVER_EXPORTED,
         )
         onDispose {
             context.unregisterReceiver(receiver)
@@ -172,9 +172,9 @@ internal fun LocationTrackerScreen(
         MapComposable(
             uiState = uiState,
             isDeviceLocationEnabled = isDeviceLocationEnabled,
-            onBack = onBack,
             onEvent = onEvent,
             modifier = Modifier.fillMaxSize(),
+            onBack = onBack,
         )
     }
 }
@@ -183,9 +183,9 @@ internal fun LocationTrackerScreen(
 private fun MapComposable(
     uiState: LocationTrackerUiState,
     isDeviceLocationEnabled: Boolean,
-    onBack: () -> Unit = {},
     onEvent: (LocationTrackerUiEvent) -> Unit,
     modifier: Modifier = Modifier,
+    onBack: () -> Unit = {},
 ) {
     val isInspectionMode = LocalInspectionMode.current
     val locationData =
