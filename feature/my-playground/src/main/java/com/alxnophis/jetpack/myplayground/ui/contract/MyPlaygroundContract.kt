@@ -7,8 +7,6 @@ import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.kotlin.constants.EMPTY
 
 internal sealed class MyPlaygroundEvent : UiEvent {
-    data object GoBackRequested : MyPlaygroundEvent()
-
     data class TextFieldChanged(
         val value: String,
     ) : MyPlaygroundEvent()
