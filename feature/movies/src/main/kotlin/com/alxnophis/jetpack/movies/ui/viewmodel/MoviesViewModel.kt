@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 internal class MoviesViewModel(
@@ -45,6 +46,6 @@ internal class MoviesViewModel(
     }
 
     companion object {
-        const val SEARCH_DEBOUNCE_DELAY = 500L
+        val SEARCH_DEBOUNCE_DELAY = 500.milliseconds
     }
 }

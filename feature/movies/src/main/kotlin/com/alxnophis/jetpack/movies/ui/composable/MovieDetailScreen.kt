@@ -47,7 +47,6 @@ import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.MovieDetails
 import com.alxnophis.jetpack.movies.ui.composable.provider.MovieDetailStateProvider
-import com.alxnophis.jetpack.movies.ui.contract.MovieDetailEvent
 import com.alxnophis.jetpack.movies.ui.contract.MovieDetailState
 import com.alxnophis.jetpack.movies.ui.mapper.toMessage
 import java.util.Locale
@@ -56,7 +55,6 @@ import java.util.Locale
 internal fun MovieDetailScreen(
     state: MovieDetailState,
     onBack: () -> Unit = {},
-    handleEvent: (MovieDetailEvent) -> Unit = {},
 ) {
     AppTheme {
         Scaffold { paddingValues ->
@@ -241,6 +239,5 @@ private fun MovieDetailScreenPreview(
 ) {
     MovieDetailScreen(
         state = state,
-        handleEvent = {},
     )
 }
