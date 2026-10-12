@@ -112,8 +112,10 @@ More experiment info:<br>
 Settings options screen.<br><br>
 More experiment info:<br>
 
-- Not persisted settings<br>
-- Experiment with testing: unit tests
+- Persisted user preferences using Jetpack Preferences DataStore (`SettingsRepository`).<br>
+- Exposes theme preferences across modules for global Compose dynamic theming.<br>
+- Architecture: Standard `ViewModel` exposing reactive `StateFlow` via `stateIn(WhileSubscribed)`.<br>
+- Experiment with testing: unit tests with Turbine.
 
 <img alt="Settings screen" src="./images/settings_screen.png" width="300" />
 

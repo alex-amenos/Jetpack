@@ -44,7 +44,7 @@ jobs:
           keyAlias: ${{ secrets.ALX_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ALX_STORE_PASSWORD }}
           keyPassword: ${{ secrets.ALX_KEY_PASSWORD }}
-          buildToolsVersion: "36.1.0"
+          buildToolsVersion: "37.0.0"
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v7

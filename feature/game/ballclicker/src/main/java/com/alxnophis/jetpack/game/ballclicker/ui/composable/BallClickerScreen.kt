@@ -52,11 +52,12 @@ import kotlin.random.Random
 @Composable
 internal fun BallClickerScreen(
     state: BallClickerState,
-    onEvent: (BallClickerEvent) -> Unit,
+    onBack: () -> Unit = {},
+    onEvent: (BallClickerEvent) -> Unit = {},
 ) {
     BackHandler {
         onEvent(BallClickerEvent.StopRequested)
-        onEvent(BallClickerEvent.GoBackRequested)
+        onBack()
     }
     AppTheme {
         Scaffold(

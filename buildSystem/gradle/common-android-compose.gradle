@@ -2,8 +2,7 @@ apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 apply plugin: 'io.github.takahirom.roborazzi'
 
 composeCompiler {
-    enableStrongSkippingMode = false
-    includeSourceInformation = true
+    enableStrongSkippingMode = true
 }
 
 android {

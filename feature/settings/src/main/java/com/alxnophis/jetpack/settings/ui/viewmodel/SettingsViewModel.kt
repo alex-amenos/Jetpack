@@ -38,11 +38,7 @@ internal class SettingsViewModel(
             }.stateIn(
                 scope = viewModelScope,
                 initialValue = initialState,
-                started =
-                    SharingStarted.WhileSubscribed(
-                        stopTimeoutMillis = STOP_TIMEOUT_MILLIS,
-                        replayExpirationMillis = REPLAY_EXPIRATION_MILLIS,
-                    ),
+                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
             )
 
     fun handleEvent(event: SettingsUiEvent) {
@@ -51,7 +47,6 @@ internal class SettingsViewModel(
                 SettingsUiEvent.ManageSubscription -> manageSubscription()
                 SettingsUiEvent.SetNotifications -> toggleNotifications()
                 SettingsUiEvent.SetHint -> toggleHint()
-                SettingsUiEvent.GoBackRequested -> throw IllegalStateException("Go back is not implemented")
                 is SettingsUiEvent.SetMarketingOption -> setMarketing(event.marketingOption)
                 is SettingsUiEvent.SetTheme -> setTheme(event.theme)
             }
@@ -81,10 +76,5 @@ internal class SettingsViewModel(
 
     private suspend fun setTheme(theme: Theme) {
         settingsRepository.updateThemeOption(theme.map())
-    }
-
-    companion object {
-        private const val STOP_TIMEOUT_MILLIS = 1_000L
-        private const val REPLAY_EXPIRATION_MILLIS = 9_000L
     }
 }

@@ -5,7 +5,9 @@ import org.koin.core.logger.Logger
 import org.koin.core.logger.MESSAGE
 import timber.log.Timber
 
-class KoinLogger : Logger() {
+class KoinLogger(
+    level: Level = Level.ERROR,
+) : Logger(level) {
     override fun display(
         level: Level,
         msg: MESSAGE,

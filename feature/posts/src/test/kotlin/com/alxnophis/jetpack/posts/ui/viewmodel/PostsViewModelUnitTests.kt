@@ -3,15 +3,7 @@ package com.alxnophis.jetpack.posts.ui.viewmodel
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
-import com.alxnophis.jetpack.posts.data.model.Post
-import com.alxnophis.jetpack.posts.data.model.PostMother
-import com.alxnophis.jetpack.posts.data.model.PostsError
-import com.alxnophis.jetpack.posts.data.repository.PostsRepository
-import com.alxnophis.jetpack.posts.ui.contract.PostUiError
-import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
-import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
-import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
-import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
+import java.util.stream.Stream
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -26,15 +18,27 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import java.util.stream.Stream
+import com.alxnophis.jetpack.core.base.provider.BaseRandomProvider
+import com.alxnophis.jetpack.posts.data.model.Post
+import com.alxnophis.jetpack.posts.data.model.PostMother
+import com.alxnophis.jetpack.posts.data.model.PostsError
+import com.alxnophis.jetpack.posts.data.repository.PostsRepository
+import com.alxnophis.jetpack.posts.ui.contract.PostUiError
+import com.alxnophis.jetpack.posts.ui.contract.PostsEvent
+import com.alxnophis.jetpack.posts.ui.contract.PostsStatus
+import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
+import com.alxnophis.jetpack.testing.base.BaseViewModelUnitTest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExperimentalCoroutinesApi
 internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
     private val postRepositoryMock: PostsRepository = mock()
+    private val randomProviderMock: BaseRandomProvider = mock()
 
     override fun beforeEachCompleted() {
         reset(postRepositoryMock)
+        reset(randomProviderMock)
+        whenever(randomProviderMock.mostSignificantBitsRandomUUID()).thenReturn(TEST_ERROR_ID)
     }
 
     @Test
@@ -94,13 +98,14 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
     }
 
     @Test
-    fun `GIVEN a uiState with error WHEN dismiss error is requested THEN update uiState without error`() {
+    fun `GIVEN a uiState with error WHEN dismiss error is requested with matching errorId THEN update uiState without error`() {
         runTest {
-            val initialState = PostsUiState.initialState.copy(error = PostUiError.Network)
+            val testError = PostUiError.Network(id = TEST_ERROR_ID)
+            val initialState = PostsUiState.initialState.copy(error = testError)
             val viewModel = viewModelMother(initialState = initialState)
             whenever(postRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
 
-            viewModel.handleEvent(PostsEvent.DismissErrorRequested)
+            viewModel.handleEvent(PostsEvent.DismissErrorRequested(TEST_ERROR_ID))
 
             viewModel.uiState.test {
                 skipItems(2)
@@ -110,15 +115,35 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
         }
     }
 
+    @Test
+    fun `GIVEN a uiState with error WHEN dismiss error is requested with different errorId THEN error is not dismissed`() {
+        runTest {
+            val testError = PostUiError.Network(id = TEST_ERROR_ID)
+            val initialState = PostsUiState.initialState.copy(error = testError)
+            val viewModel = viewModelMother(initialState = initialState)
+            whenever(postRepositoryMock.getPosts()).thenReturn(emptyList<Post>().right())
+
+            viewModel.handleEvent(PostsEvent.DismissErrorRequested(errorId = 999L))
+
+            viewModel.uiState.test {
+                skipItems(2)
+                expectNoEvents()
+            }
+        }
+    }
+
     private fun viewModelMother(
         postsRepository: PostsRepository = postRepositoryMock,
+        randomProvider: BaseRandomProvider = randomProviderMock,
         initialState: PostsUiState = PostsUiState.initialState,
     ) = PostsViewModel(
         postsRepository = postsRepository,
+        randomProvider = randomProvider,
         initialUiState = initialState,
     )
 
     private companion object {
+        const val TEST_ERROR_ID = 100L
         val post1 = PostMother(id = 1, userId = 1, title = "title1", body = "body1")
         val post2 = PostMother(id = 2, userId = 2, title = "title2", body = "body2")
         val postList = listOf(post1, post2)
@@ -126,9 +151,9 @@ internal class PostsViewModelUnitTests : BaseViewModelUnitTest() {
         @JvmStatic
         private fun postErrorsTestCases() =
             Stream.of(
-                Arguments.of(PostsError.Network, PostUiError.Network),
-                Arguments.of(PostsError.Server, PostUiError.Server),
-                Arguments.of(PostsError.Unexpected, PostUiError.Unexpected),
+                Arguments.of(PostsError.Network, PostUiError.Network(TEST_ERROR_ID)),
+                Arguments.of(PostsError.Server, PostUiError.Server(TEST_ERROR_ID)),
+                Arguments.of(PostsError.Unexpected, PostUiError.Unexpected(TEST_ERROR_ID)),
             )
     }
 }

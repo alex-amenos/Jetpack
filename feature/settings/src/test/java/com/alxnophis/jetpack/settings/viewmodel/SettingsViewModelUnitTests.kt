@@ -12,7 +12,9 @@ import com.alxnophis.jetpack.settings.ui.contract.Theme
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalCoroutinesApi
 private class SettingsViewModelUnitTests : BaseUnitTest() {
@@ -113,6 +116,52 @@ private class SettingsViewModelUnitTests : BaseUnitTest() {
             runCurrent()
 
             verify(settingsRepositoryMock).updateThemeOption(SettingsPreferences.ThemeOptions.DARK)
+        }
+    }
+
+    @Test
+    fun `GIVEN updated state WHEN unsubscribed for longer than 10 seconds and resubscribing THEN assert last state is retained`() {
+        runTest {
+            val settingsFlow = MutableSharedFlow<SettingsPreferences>()
+            whenever(settingsRepositoryMock.getSettingsFlow()).thenReturn(settingsFlow)
+
+            val viewModel = settingsViewModelMother()
+
+            viewModel.uiState.test {
+                awaitItem() shouldBeEqualTo SettingsUiState.initialState
+
+                runCurrent()
+                val updatedPrefs =
+                    SettingsPreferencesMother.create(
+                        notificationsEnabled = true,
+                        hintsEnabled = false,
+                        marketingOption = true,
+                        themeOption = SettingsPreferences.ThemeOptions.DARK,
+                    )
+                settingsFlow.emit(updatedPrefs)
+                runCurrent()
+                awaitItem() shouldBeEqualTo
+                    SettingsUiState(
+                        notificationsEnabled = true,
+                        hintsEnabled = false,
+                        marketingOption = MarketingOption.ALLOWED,
+                        themeOption = Theme.DARK,
+                    )
+            }
+
+            advanceTimeBy(15.seconds)
+            runCurrent()
+
+            viewModel.uiState.test {
+                awaitItem() shouldBeEqualTo
+                    SettingsUiState(
+                        notificationsEnabled = true,
+                        hintsEnabled = false,
+                        marketingOption = MarketingOption.ALLOWED,
+                        themeOption = Theme.DARK,
+                    )
+                expectNoEvents()
+            }
         }
     }
 

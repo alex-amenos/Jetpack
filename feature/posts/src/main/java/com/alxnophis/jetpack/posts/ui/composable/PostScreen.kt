@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -60,16 +59,9 @@ import com.alxnophis.jetpack.posts.ui.contract.PostsUiState
 
 @Composable
 internal fun PostsScreen(
-    state: PostsUiState,
-    handleEvent: (PostsEvent) -> Unit = {},
-) {
-    PostContent(state, handleEvent)
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun PostContent(
     uiState: PostsUiState,
+    onBack: () -> Unit = {},
+    onPostSelected: (Long) -> Unit = {},
     handleEvent: PostsEvent.() -> Unit = {},
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -79,7 +71,7 @@ private fun PostContent(
             topBar = {
                 CoreTopBar(
                     title = stringResource(id = R.string.posts_title),
-                    onBack = { PostsEvent.GoBackRequested.handleEvent() },
+                    onBack = onBack,
                 )
             },
             snackbarHost = {
@@ -95,11 +87,16 @@ private fun PostContent(
             Box(modifier = Modifier.padding(padding)) {
                 uiState.error?.let { error: PostUiError ->
                     when (error) {
-                        PostUiError.NoConnectivity -> {
+                        is PostUiError.NoConnectivity -> {
                             PostSnackbarError(
+                                errorId = error.id,
                                 errorMessage = stringResource(R.string.posts_error_no_connectivity),
                                 snackbarHostState = snackbarHostState,
-                                onDismiss = { PostsEvent.DismissErrorRequested.handleEvent() },
+                                onDismiss = {
+                                    PostsEvent
+                                        .DismissErrorRequested(error.id)
+                                        .handleEvent()
+                                },
                             )
                         }
 
@@ -118,7 +115,7 @@ private fun PostContent(
                     val lazyListState = rememberLazyListState()
                     PostList(
                         uiState = uiState,
-                        handleEvent = handleEvent,
+                        onPostSelected = onPostSelected,
                         lazyListState = lazyListState,
                         modifier =
                             Modifier
@@ -134,19 +131,21 @@ private fun PostContent(
 
 @Composable
 private fun PostSnackbarError(
+    errorId: Long,
     errorMessage: String,
     snackbarHostState: SnackbarHostState,
     onDismiss: () -> Unit,
 ) {
-    LaunchedEffect(errorMessage) {
+    LaunchedEffect(errorId) {
         val result =
             snackbarHostState.showSnackbar(
                 message = errorMessage,
                 actionLabel = null,
             )
         when (result) {
-            SnackbarResult.Dismissed -> onDismiss()
-            SnackbarResult.ActionPerformed -> onDismiss()
+            SnackbarResult.Dismissed,
+            SnackbarResult.ActionPerformed,
+            -> onDismiss()
         }
     }
 }
@@ -159,22 +158,26 @@ private fun PostDialogErrors(
     CoreErrorDialog(
         errorMessage =
             when (error) {
-                PostUiError.NoConnectivity -> stringResource(R.string.posts_error_no_connectivity)
-                PostUiError.Network -> stringResource(R.string.posts_error_network)
-                PostUiError.NotFound -> stringResource(R.string.posts_error_not_found)
-                PostUiError.Server -> stringResource(R.string.posts_error_server)
-                PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
+                is PostUiError.NoConnectivity -> stringResource(R.string.posts_error_no_connectivity)
+                is PostUiError.Network -> stringResource(R.string.posts_error_network)
+                is PostUiError.NotFound -> stringResource(R.string.posts_error_not_found)
+                is PostUiError.Server -> stringResource(R.string.posts_error_server)
+                is PostUiError.Unexpected -> stringResource(R.string.posts_error_unexpected)
             },
-        dismissError = { PostsEvent.DismissErrorRequested.handleEvent() },
+        dismissError = {
+            PostsEvent
+                .DismissErrorRequested(error.id)
+                .handleEvent()
+        },
     )
 }
 
 @Composable
 private fun PostList(
     uiState: PostsUiState,
+    onPostSelected: (Long) -> Unit,
     lazyListState: LazyListState,
     modifier: Modifier = Modifier,
-    handleEvent: PostsEvent.() -> Unit,
 ) {
     LazyColumn(
         state = lazyListState,
@@ -198,11 +201,8 @@ private fun PostList(
                         Modifier
                             .padding(vertical = mediumPadding)
                             .shadow(1.dp, shape = RoundedCornerShape(8.dp))
-                            .clickable {
-                                PostsEvent
-                                    .OnPostClicked(item)
-                                    .handleEvent()
-                            }.testTag(CoreTags.TAG_POST_ITEM)
+                            .clickable { onPostSelected(item.id) }
+                            .testTag(CoreTags.TAG_POST_ITEM)
                             .fillParentMaxWidth(),
                 )
             },

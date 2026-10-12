@@ -1,33 +1,10 @@
 package com.alxnophis.jetpack.home.domain.usecase
 
-import arrow.core.Either
 import com.alxnophis.jetpack.home.domain.model.Feature
-import com.alxnophis.jetpack.home.domain.model.NavigationError
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-class GetNavigationItemsUseCase(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) {
-    suspend operator fun invoke(): Either<NavigationError, List<NavigationItem>> =
-        withContext(ioDispatcher) {
-            Either
-                .catch {
-                    listOf(
-                        myPlayground,
-                        movies,
-                        posts,
-                        fileDownloader,
-                        authentication,
-                        settings,
-                        notifications,
-                        locationTracker,
-                        gameBallClicker,
-                    )
-                }.mapLeft { NavigationError.Unknown }
-        }
+class GetNavigationItemsUseCase {
+    operator fun invoke(): List<NavigationItem> = defaultNavigationItems
 
     // TODO - Update Home navigation here with new features and remove the ones that are not needed anymore
     companion object {
@@ -93,6 +70,19 @@ class GetNavigationItemsUseCase(
                 emoji = "🎬",
                 description = "Movies feature",
                 feature = Feature.Movies,
+            )
+
+        val defaultNavigationItems =
+            listOf(
+                myPlayground,
+                movies,
+                posts,
+                fileDownloader,
+                authentication,
+                settings,
+                notifications,
+                locationTracker,
+                gameBallClicker,
             )
     }
 }

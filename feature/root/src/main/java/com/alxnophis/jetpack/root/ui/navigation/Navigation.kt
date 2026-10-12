@@ -1,6 +1,10 @@
 package com.alxnophis.jetpack.root.ui.navigation
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
@@ -9,6 +13,7 @@ import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
@@ -37,8 +42,15 @@ import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 @SuppressLint("ComposeModifierMissing")
 @Composable
 fun Navigation(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     val backStack = rememberNavBackStack(Route.Home)
-    val onBack: () -> Unit = { backStack.removeLastOrNull() }
+    val onBack: () -> Unit = {
+        if (backStack.size > 1) {
+            backStack.removeLastOrNull()
+        } else {
+            (context as? Activity)?.finishAffinity()
+        }
+    }
     val adaptiveInfo = currentWindowAdaptiveInfoV2()
     val customDirective = calculatePaneScaffoldDirective(adaptiveInfo).copy(horizontalPartitionSpacerSize = 0.dp)
     val listDetailStrategy = rememberListDetailSceneStrategy<Any>(directive = customDirective)
@@ -48,6 +60,15 @@ fun Navigation(modifier: Modifier = Modifier) {
         modifier = modifier,
         onBack = onBack,
         sceneStrategies = listOf(listDetailStrategy),
+        transitionSpec = {
+            slideInHorizontally(initialOffsetX = { it }) togetherWith slideOutHorizontally(targetOffsetX = { -it })
+        },
+        popTransitionSpec = {
+            slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(targetOffsetX = { it })
+        },
+        predictivePopTransitionSpec = {
+            slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(targetOffsetX = { it })
+        },
         entryDecorators =
             listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
@@ -88,6 +109,9 @@ fun Navigation(modifier: Modifier = Modifier) {
                         userEmail = key.email,
                         onBack = {
                             backStack.removeAll { it is Route.Authentication || it is Route.Authorized }
+                            if (backStack.isEmpty()) {
+                                backStack.add(Route.Home)
+                            }
                         },
                     )
                 }

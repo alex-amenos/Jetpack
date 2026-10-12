@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.size
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.alxnophis.jetpack.core.ui.composable.CoreLoadingContent
 import com.alxnophis.jetpack.core.ui.composable.CoreTags
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.core.ui.theme.mediumPadding
 import com.alxnophis.jetpack.posts.R
 import com.alxnophis.jetpack.posts.ui.composable.provider.PostDetailPreviewProvider
 import com.alxnophis.jetpack.posts.ui.contract.PostDetailEvent
@@ -46,12 +49,13 @@ import com.alxnophis.jetpack.core.R as CoreR
 @Composable
 internal fun PostDetailScreen(
     uiState: PostDetailUiState,
+    onBack: () -> Unit = {},
     handleEvent: (PostDetailEvent) -> Unit = {},
 ) {
     when {
         uiState.isLoading -> PostDetailLoading()
-        uiState.isSuccess -> PostDetailContent(uiState, handleEvent)
-        uiState.isError -> PostDetailUiErrors(uiState, handleEvent)
+        uiState.isSuccess -> PostDetailContent(uiState, onBack, handleEvent)
+        uiState.isError -> PostDetailUiErrors(uiState, onBack, handleEvent)
     }
 }
 
@@ -63,7 +67,7 @@ internal fun PostDetailLoading() {
                 Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface),
-            contentWindowInsets = WindowInsets.safeGestures,
+            contentWindowInsets = WindowInsets.safeGestures.only(WindowInsetsSides.Vertical),
         ) { paddingValues ->
             Box(
                 modifier =
@@ -89,7 +93,8 @@ internal fun PostDetailLoading() {
 @Composable
 internal fun PostDetailUiErrors(
     uiState: PostDetailUiState,
-    handleEvent: PostDetailEvent.() -> Unit,
+    onBack: () -> Unit = {},
+    handleEvent: PostDetailEvent.() -> Unit = {},
 ) {
     uiState.error?.let {
         val errorMessage =
@@ -106,13 +111,14 @@ internal fun PostDetailUiErrors(
                     Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.surface),
-                contentWindowInsets = WindowInsets.safeGestures,
+                contentWindowInsets = WindowInsets.safeGestures.only(WindowInsetsSides.Vertical),
             ) { paddingValues ->
                 Box(
                     modifier =
                         Modifier
                             .fillMaxSize()
-                            .padding(paddingValues),
+                            .padding(paddingValues)
+                            .padding(horizontal = mediumPadding),
                 ) {
                     IconButton(
                         modifier =
@@ -120,7 +126,7 @@ internal fun PostDetailUiErrors(
                                 .wrapContentWidth()
                                 .align(Alignment.TopEnd)
                                 .testTag(CoreTags.TAG_CORE_BACK),
-                        onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
+                        onClick = onBack,
                     ) {
                         Icon(
                             painter = painterResource(CoreR.drawable.ic_close),
@@ -133,7 +139,7 @@ internal fun PostDetailUiErrors(
                             Modifier
                                 .fillMaxWidth()
                                 .align(Alignment.Center)
-                                .padding(16.dp),
+                                .padding(mediumPadding),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
@@ -143,7 +149,7 @@ internal fun PostDetailUiErrors(
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(48.dp),
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(mediumPadding))
                         Text(
                             text = errorMessage,
                             style = MaterialTheme.typography.headlineSmall,
@@ -160,6 +166,7 @@ internal fun PostDetailUiErrors(
 @Composable
 internal fun PostDetailContent(
     uiState: PostDetailUiState,
+    onBack: () -> Unit = {},
     handleEvent: (PostDetailEvent) -> Unit = {},
 ) {
     AppTheme {
@@ -168,14 +175,14 @@ internal fun PostDetailContent(
                 Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface),
-            contentWindowInsets = WindowInsets.safeGestures,
+            contentWindowInsets = WindowInsets.safeGestures.only(WindowInsetsSides.Vertical),
         ) { paddingValues ->
             Column(
                 modifier =
                     Modifier
                         .fillMaxWidth()
                         .padding(paddingValues)
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = mediumPadding)
                         .verticalScroll(rememberScrollState())
                         .testTag(CoreTags.TAG_POST_DETAIL),
             ) {
@@ -185,7 +192,7 @@ internal fun PostDetailContent(
                             .wrapContentWidth()
                             .align(Alignment.End)
                             .testTag(CoreTags.TAG_CORE_BACK),
-                    onClick = { handleEvent(PostDetailEvent.GoBackRequested) },
+                    onClick = onBack,
                 ) {
                     Icon(
                         painter = painterResource(CoreR.drawable.ic_close),
@@ -214,7 +221,7 @@ internal fun PostDetailContent(
                     text = uiState.postBody,
                     textAlign = TextAlign.Justify,
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(mediumPadding))
             }
         }
     }

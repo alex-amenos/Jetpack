@@ -26,7 +26,6 @@ internal class PostDetailViewModel(
             when (event) {
                 is PostDetailEvent.LoadPost -> loadPost(event.postId)
                 is PostDetailEvent.UpdatePost -> updatePost()
-                is PostDetailEvent.GoBackRequested -> throw IllegalStateException("Go back not implemented in ViewModel")
                 is PostDetailEvent.DismissErrorRequested -> dismissError()
             }
         }

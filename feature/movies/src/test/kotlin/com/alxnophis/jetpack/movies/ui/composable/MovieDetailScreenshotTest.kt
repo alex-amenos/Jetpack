@@ -29,7 +29,6 @@ internal class MovieDetailScreenshotTest(
         composeRule.setContent {
             MovieDetailScreen(
                 state = uiState,
-                handleEvent = {},
             )
         }
 

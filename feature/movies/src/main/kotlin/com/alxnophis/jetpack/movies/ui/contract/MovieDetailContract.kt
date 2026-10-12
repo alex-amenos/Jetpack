@@ -33,7 +33,5 @@ sealed interface MovieDetailEvent : UiEvent {
         val movieId: Int,
     ) : MovieDetailEvent
 
-    data object GoBackRequested : MovieDetailEvent
-
     data object ErrorDismissRequested : MovieDetailEvent
 }

@@ -1,37 +1,17 @@
+@file:Suppress("ktlint:standard:filename")
+
 package com.alxnophis.jetpack.home.ui.contract
 
 import androidx.compose.runtime.Immutable
-import arrow.optics.optics
-import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
-import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
+import com.alxnophis.jetpack.home.domain.usecase.GetNavigationItemsUseCase
 
-internal const val NO_ERROR = 0
-
-internal sealed class HomeEvent : UiEvent {
-    data object ErrorDismissRequested : HomeEvent()
-
-    data object GoBackRequested : HomeEvent()
-
-    data class NavigationRequested(
-        val feature: Feature,
-    ) : HomeEvent()
-}
-
-@optics
 @Immutable
-internal data class HomeState(
-    val isLoading: Boolean,
-    val data: List<NavigationItem>,
-    val error: Int,
+internal data class HomeUiState(
+    val navigationItems: List<NavigationItem> = GetNavigationItemsUseCase.defaultNavigationItems,
 ) : UiState {
     internal companion object {
-        val initialState =
-            HomeState(
-                isLoading = false,
-                data = emptyList(),
-                error = NO_ERROR,
-            )
+        val initialState = HomeUiState()
     }
 }

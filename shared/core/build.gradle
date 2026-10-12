@@ -13,6 +13,7 @@ dependencies {
     implementation libs.androidx.arch.core.common
     implementation libs.androidx.arch.core.runtime
     implementation libs.androidx.core.ktx
+    implementation libs.androidx.core.splashscreen
     implementation libs.androidx.lifecycle.extension
     implementation libs.androidx.lifecycle.common
     implementation libs.androidx.lifecycle.runtime

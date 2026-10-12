@@ -4,7 +4,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.alxnophis.jetpack.movies.ui.composable.provider.MoviesPagingProvider
-import com.alxnophis.jetpack.movies.ui.contract.MoviesState
+import com.alxnophis.jetpack.movies.ui.contract.MoviesUiState
 import com.alxnophis.jetpack.testing.screenshot.ScreenshotTestUtils.captureScreenshot
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import org.junit.Rule
@@ -31,7 +31,7 @@ internal class MoviesScreenshotTest(
         composeRule.setContent {
             val movies = pagingFlow.collectAsLazyPagingItems()
             MoviesScreen(
-                state = MoviesState.initialState,
+                uiState = MoviesUiState.initialState,
                 movies = movies,
                 handleEvent = {},
             )

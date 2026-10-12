@@ -14,8 +14,6 @@ internal sealed interface PostDetailEvent : UiEvent {
 
     data object UpdatePost : PostDetailEvent
 
-    data object GoBackRequested : PostDetailEvent
-
     data object DismissErrorRequested : PostDetailEvent
 }
 

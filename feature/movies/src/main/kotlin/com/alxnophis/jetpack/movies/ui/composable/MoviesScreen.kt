@@ -45,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -58,8 +59,8 @@ import com.alxnophis.jetpack.movies.R
 import com.alxnophis.jetpack.movies.domain.model.Movie
 import com.alxnophis.jetpack.movies.domain.model.MovieException
 import com.alxnophis.jetpack.movies.ui.composable.provider.MoviesPagingProvider
-import com.alxnophis.jetpack.movies.ui.contract.MoviesEvent
-import com.alxnophis.jetpack.movies.ui.contract.MoviesState
+import com.alxnophis.jetpack.movies.ui.contract.MoviesUiEvent
+import com.alxnophis.jetpack.movies.ui.contract.MoviesUiState
 import com.alxnophis.jetpack.movies.ui.mapper.toMessage
 
 private const val CONTENT_TYPE_MOVIE_ITEM = "MovieItemContentType"
@@ -67,9 +68,11 @@ private const val CONTENT_TYPE_MOVIE_ITEM = "MovieItemContentType"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MoviesScreen(
-    state: MoviesState,
+    uiState: MoviesUiState,
     movies: LazyPagingItems<Movie>,
-    handleEvent: (MoviesEvent) -> Unit,
+    onBack: () -> Unit = {},
+    onMovieClicked: (Int) -> Unit = {},
+    handleEvent: (MoviesUiEvent) -> Unit = {},
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val unknownErrorMessage = stringResource(id = R.string.movies_error_unknown)
@@ -104,7 +107,7 @@ internal fun MoviesScreen(
                     navigationIcon = {
                         IconButton(
                             modifier = Modifier.testTag(CoreTags.TAG_CORE_BACK),
-                            onClick = { handleEvent(MoviesEvent.GoBackRequested) },
+                            onClick = onBack,
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -123,58 +126,77 @@ internal fun MoviesScreen(
                 )
             },
         ) { paddingValues ->
-            Column(
+            MoviesContent(
+                uiState = uiState,
+                handleEvent = handleEvent,
+                movies = movies,
+                onMovieClicked = onMovieClicked,
+                loadState = loadState,
                 modifier =
                     Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
                         .background(MaterialTheme.colorScheme.surface),
-            ) {
-                SearchField(
-                    searchQuery = state.searchQuery,
-                    onSearchQueryChanged = { handleEvent(MoviesEvent.SearchQueryChanged(it)) },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                )
+            )
+        }
+    }
+}
 
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 160.dp),
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .testTag(CoreTags.TAG_MOVIES_LIST),
-                ) {
-                    items(
-                        count = movies.itemCount,
-                        key = movies.itemKey { it.id },
-                        contentType = movies.itemContentType { CONTENT_TYPE_MOVIE_ITEM },
-                    ) { index ->
-                        val movie = movies[index]
-                        if (movie != null) {
-                            MovieItem(
-                                movie = movie,
-                                onClick = { handleEvent(MoviesEvent.MovieClicked(movie.id)) },
-                                modifier =
-                                    Modifier
-                                        .padding(4.dp)
-                                        .fillMaxWidth()
-                                        .testTag(CoreTags.TAG_MOVIE_ITEM),
-                            )
-                        }
+@Composable
+private fun MoviesContent(
+    uiState: MoviesUiState,
+    handleEvent: (MoviesUiEvent) -> Unit,
+    movies: LazyPagingItems<Movie>,
+    onMovieClicked: (Int) -> Unit,
+    loadState: CombinedLoadStates,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        SearchField(
+            searchQuery = uiState.searchQuery,
+            onSearchQueryChanged = { handleEvent(MoviesUiEvent.SearchQueryChanged(it)) },
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 160.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .testTag(CoreTags.TAG_MOVIES_LIST),
+        ) {
+            items(
+                count = movies.itemCount,
+                key = movies.itemKey { it.id },
+                contentType = movies.itemContentType { CONTENT_TYPE_MOVIE_ITEM },
+            ) { index ->
+                val movie = movies[index]
+                if (movie != null) {
+                    MovieItem(
+                        movie = movie,
+                        onClick = { onMovieClicked(movie.id) },
+                        modifier =
+                            Modifier
+                                .padding(4.dp)
+                                .fillMaxWidth()
+                                .testTag(CoreTags.TAG_MOVIE_ITEM),
+                    )
+                }
+            }
+
+            movies.apply {
+                when {
+                    loadState.refresh is LoadState.Loading -> {
+                        appendLoadingContent()
                     }
 
-                    movies.apply {
-                        when {
-                            loadState.refresh is LoadState.Loading -> {
-                                appendLoadingContent()
-                            }
-
-                            loadState.append is LoadState.Loading -> {
-                                appendLoadingContent()
-                            }
-                        }
+                    loadState.append is LoadState.Loading -> {
+                        appendLoadingContent()
                     }
                 }
             }
@@ -299,7 +321,7 @@ private fun MoviesScreenSuccessPreview() {
             .elementAt(0)
             .collectAsLazyPagingItems()
     MoviesScreen(
-        state = MoviesState(searchQuery = "Matrix"),
+        uiState = MoviesUiState(searchQuery = "Matrix"),
         movies = movies,
         handleEvent = {},
     )
@@ -314,7 +336,7 @@ private fun MoviesScreenEmptyPreview() {
             .elementAt(1)
             .collectAsLazyPagingItems()
     MoviesScreen(
-        state = MoviesState(searchQuery = "Unknown"),
+        uiState = MoviesUiState(searchQuery = "Unknown"),
         movies = movies,
         handleEvent = {},
     )
@@ -329,7 +351,7 @@ private fun MoviesScreenErrorPreview() {
             .elementAt(2)
             .collectAsLazyPagingItems()
     MoviesScreen(
-        state = MoviesState(searchQuery = "Supercalifragilisticexpialidocious"),
+        uiState = MoviesUiState(searchQuery = "Supercalifragilisticexpialidocious"),
         movies = movies,
         handleEvent = {},
     )

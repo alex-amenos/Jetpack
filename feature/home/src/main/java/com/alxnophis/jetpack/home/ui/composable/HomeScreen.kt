@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.home.ui.composable
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
-import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -39,15 +39,17 @@ import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.composable.provider.HomePreviewProvider
-import com.alxnophis.jetpack.home.ui.contract.HomeEvent
-import com.alxnophis.jetpack.home.ui.contract.HomeState
-import com.alxnophis.jetpack.home.ui.contract.NO_ERROR
+import com.alxnophis.jetpack.home.ui.contract.HomeUiState
 
 @Composable
 internal fun HomeScreen(
-    state: HomeState,
-    onEvent: (HomeEvent) -> Unit = {},
+    uiState: HomeUiState,
+    onNavigateTo: (Feature) -> Unit = {},
+    onBack: () -> Unit = {},
 ) {
+    BackHandler {
+        onBack()
+    }
     AppTheme {
         Scaffold(
             topBar = { HomeTopBar() },
@@ -55,19 +57,13 @@ internal fun HomeScreen(
             contentWindowInsets = WindowInsets.safeDrawing,
         ) { paddingValues ->
             SectionsList(
-                state = state,
+                uiState = uiState,
                 modifier =
                     Modifier
                         .background(color = MaterialTheme.colorScheme.surface)
                         .padding(paddingValues),
-                navigateTo = { route -> onEvent(HomeEvent.NavigationRequested(route)) },
+                navigateTo = onNavigateTo,
             )
-            if (state.error != NO_ERROR) {
-                CoreErrorDialog(
-                    errorMessage = stringResource(state.error),
-                    dismissError = { onEvent(HomeEvent.ErrorDismissRequested) },
-                )
-            }
         }
     }
 }
@@ -98,7 +94,7 @@ internal fun HomeTopBar() {
 
 @Composable
 internal fun SectionsList(
-    state: HomeState,
+    uiState: HomeUiState,
     modifier: Modifier = Modifier,
     navigateTo: (feature: Feature) -> Unit,
 ) {
@@ -107,7 +103,7 @@ internal fun SectionsList(
         modifier = modifier,
     ) {
         items(
-            items = state.data,
+            items = uiState.navigationItems,
             key = { item: NavigationItem -> item.id },
             itemContent = { item: NavigationItem ->
                 Row(
@@ -163,7 +159,7 @@ internal fun SectionsList(
 @PreviewLightDark
 @Composable
 private fun HomeScreenPreview(
-    @PreviewParameter(HomePreviewProvider::class) uiState: HomeState,
+    @PreviewParameter(HomePreviewProvider::class) uiState: HomeUiState,
 ) {
     HomeScreen(uiState)
 }

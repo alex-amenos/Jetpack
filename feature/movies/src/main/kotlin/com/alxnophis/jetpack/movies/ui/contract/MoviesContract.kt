@@ -9,23 +9,17 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Immutable
-data class MoviesState(
+data class MoviesUiState(
     val searchQuery: String,
 ) : UiState,
     Parcelable {
     companion object {
-        val initialState = MoviesState(searchQuery = EMPTY)
+        val initialState = MoviesUiState(searchQuery = EMPTY)
     }
 }
 
-sealed interface MoviesEvent : UiEvent {
+sealed interface MoviesUiEvent : UiEvent {
     data class SearchQueryChanged(
         val query: String,
-    ) : MoviesEvent
-
-    data class MovieClicked(
-        val movieId: Int,
-    ) : MoviesEvent
-
-    data object GoBackRequested : MoviesEvent
+    ) : MoviesUiEvent
 }
