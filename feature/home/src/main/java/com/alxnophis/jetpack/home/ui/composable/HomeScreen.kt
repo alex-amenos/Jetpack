@@ -32,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
-import com.alxnophis.jetpack.core.ui.composable.CoreErrorDialog
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.core.ui.theme.extraSmallPadding
 import com.alxnophis.jetpack.core.ui.theme.mediumPadding
@@ -40,15 +39,13 @@ import com.alxnophis.jetpack.home.R
 import com.alxnophis.jetpack.home.domain.model.Feature
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
 import com.alxnophis.jetpack.home.ui.composable.provider.HomePreviewProvider
-import com.alxnophis.jetpack.home.ui.contract.HomeEvent
-import com.alxnophis.jetpack.home.ui.contract.HomeState
+import com.alxnophis.jetpack.home.ui.contract.HomeUiState
 
 @Composable
 internal fun HomeScreen(
-    state: HomeState,
+    state: HomeUiState,
     onNavigateTo: (Feature) -> Unit = {},
     onBack: () -> Unit = {},
-    onEvent: (HomeEvent) -> Unit = {},
 ) {
     BackHandler {
         onBack()
@@ -67,12 +64,6 @@ internal fun HomeScreen(
                         .padding(paddingValues),
                 navigateTo = onNavigateTo,
             )
-            state.error?.let { error ->
-                CoreErrorDialog(
-                    errorMessage = stringResource(error.messageRes),
-                    dismissError = { onEvent(HomeEvent.ErrorDismissRequested(error.id)) },
-                )
-            }
         }
     }
 }
@@ -103,7 +94,7 @@ internal fun HomeTopBar() {
 
 @Composable
 internal fun SectionsList(
-    state: HomeState,
+    state: HomeUiState,
     modifier: Modifier = Modifier,
     navigateTo: (feature: Feature) -> Unit,
 ) {
@@ -168,7 +159,7 @@ internal fun SectionsList(
 @PreviewLightDark
 @Composable
 private fun HomeScreenPreview(
-    @PreviewParameter(HomePreviewProvider::class) uiState: HomeState,
+    @PreviewParameter(HomePreviewProvider::class) uiState: HomeUiState,
 ) {
     HomeScreen(uiState)
 }
