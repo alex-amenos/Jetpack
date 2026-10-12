@@ -3,14 +3,12 @@ package com.alxnophis.jetpack.settings.data.model
 import androidx.datastore.core.CorruptionException
 import com.alxnophis.jetpack.core.base.crypto.Crypto
 import com.alxnophis.jetpack.testing.base.BaseUnitTest
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
-import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldThrow
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.Base64
@@ -94,10 +92,8 @@ internal class SettingsPreferencesSerializerTest : BaseUnitTest() {
             }
             val corruptInput = ByteArrayInputStream("not-valid-json-and-not-base64-payload!!!".toByteArray(Charsets.UTF_8))
 
-            invoking {
-                runBlocking {
-                    serializer.readFrom(corruptInput)
-                }
-            } shouldThrow CorruptionException::class
+            assertThrows<CorruptionException> {
+                serializer.readFrom(corruptInput)
+            }
         }
 }
