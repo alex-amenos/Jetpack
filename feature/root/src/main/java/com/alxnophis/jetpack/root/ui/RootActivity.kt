@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.extensions.testTagsAsResourceIdInDebug
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
@@ -30,6 +31,7 @@ class RootActivity : ComponentActivity() {
     private val rootViewModel: RootViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
