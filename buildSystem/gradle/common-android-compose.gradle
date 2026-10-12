@@ -3,7 +3,6 @@ apply plugin: 'io.github.takahirom.roborazzi'
 
 composeCompiler {
     enableStrongSkippingMode = true
-    includeSourceInformation = false
 }
 
 android {
