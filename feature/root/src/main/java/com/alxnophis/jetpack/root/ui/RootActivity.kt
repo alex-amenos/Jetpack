@@ -32,13 +32,11 @@ class RootActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
-        var isReady = false
-        splashScreen.setKeepOnScreenCondition { !isReady }
+        splashScreen.setKeepOnScreenCondition { !rootViewModel.uiState.value.isReady }
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             val state by rootViewModel.uiState.collectAsStateWithLifecycle()
-            isReady = true
             val isDarkTheme =
                 when (state.themeOption) {
                     ThemeOptions.SYSTEM -> isSystemInDarkTheme()
