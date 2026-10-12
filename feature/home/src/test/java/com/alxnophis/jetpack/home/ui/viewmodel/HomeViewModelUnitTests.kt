@@ -47,7 +47,7 @@ internal class HomeViewModelUnitTests : BaseViewModelUnitTest() {
             val viewModel = viewModelMother(getNavigationItemsUseCase = getNavigationItemsUseCaseMock)
 
             viewModel.uiState.test {
-                awaitItem() shouldBeEqualTo HomeUiState(data = customItems)
+                awaitItem() shouldBeEqualTo HomeUiState(navigationItems = customItems)
                 expectNoEvents()
             }
         }
@@ -57,7 +57,7 @@ internal class HomeViewModelUnitTests : BaseViewModelUnitTest() {
         runTest {
             val customInitialState =
                 HomeUiState(
-                    data =
+                    navigationItems =
                         listOf(
                             NavigationItem(
                                 name = "Test Feature",
@@ -78,7 +78,7 @@ internal class HomeViewModelUnitTests : BaseViewModelUnitTest() {
 
     private fun viewModelMother(
         getNavigationItemsUseCase: GetNavigationItemsUseCase = getNavigationItemsUseCaseMock,
-        initialState: HomeUiState = HomeUiState(data = getNavigationItemsUseCase()),
+        initialState: HomeUiState = HomeUiState(navigationItems = getNavigationItemsUseCase()),
     ) = HomeViewModel(
         getNavigationItemsUseCase = getNavigationItemsUseCase,
         initialState = initialState,

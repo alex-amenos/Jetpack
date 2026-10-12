@@ -43,7 +43,7 @@ import com.alxnophis.jetpack.home.ui.contract.HomeUiState
 
 @Composable
 internal fun HomeScreen(
-    state: HomeUiState,
+    uiState: HomeUiState,
     onNavigateTo: (Feature) -> Unit = {},
     onBack: () -> Unit = {},
 ) {
@@ -57,7 +57,7 @@ internal fun HomeScreen(
             contentWindowInsets = WindowInsets.safeDrawing,
         ) { paddingValues ->
             SectionsList(
-                state = state,
+                uiState = uiState,
                 modifier =
                     Modifier
                         .background(color = MaterialTheme.colorScheme.surface)
@@ -94,7 +94,7 @@ internal fun HomeTopBar() {
 
 @Composable
 internal fun SectionsList(
-    state: HomeUiState,
+    uiState: HomeUiState,
     modifier: Modifier = Modifier,
     navigateTo: (feature: Feature) -> Unit,
 ) {
@@ -103,7 +103,7 @@ internal fun SectionsList(
         modifier = modifier,
     ) {
         items(
-            items = state.data,
+            items = uiState.navigationItems,
             key = { item: NavigationItem -> item.id },
             itemContent = { item: NavigationItem ->
                 Row(

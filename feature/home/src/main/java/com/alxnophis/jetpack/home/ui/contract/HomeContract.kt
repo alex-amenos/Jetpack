@@ -9,7 +9,7 @@ import com.alxnophis.jetpack.home.domain.usecase.GetNavigationItemsUseCase
 
 @Immutable
 internal data class HomeUiState(
-    val data: List<NavigationItem> = GetNavigationItemsUseCase.defaultNavigationItems,
+    val navigationItems: List<NavigationItem> = GetNavigationItemsUseCase.defaultNavigationItems,
 ) : UiState {
     internal companion object {
         val initialState = HomeUiState()

@@ -22,9 +22,9 @@ fun HomeFeature(
         (context as? Activity)?.let { ActivityCompat.finishAffinity(it) }
     }
     val viewModel = koinViewModel<HomeViewModel>()
-    val state: HomeUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState: HomeUiState by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreen(
-        state = state,
+        uiState = uiState,
         onNavigateTo = onNavigateTo,
         onBack = { finish() },
     )

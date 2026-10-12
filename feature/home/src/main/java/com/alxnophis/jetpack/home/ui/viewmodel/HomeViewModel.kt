@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 internal class HomeViewModel(
     getNavigationItemsUseCase: GetNavigationItemsUseCase,
-    initialState: HomeUiState = HomeUiState(data = getNavigationItemsUseCase()),
+    initialState: HomeUiState = HomeUiState(navigationItems = getNavigationItemsUseCase()),
 ) : ViewModel() {
     val uiState: StateFlow<HomeUiState> = initialState.asStateFlow()
 }

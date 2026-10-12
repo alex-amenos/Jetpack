@@ -10,7 +10,7 @@ internal class HomePreviewProvider : PreviewParameterProvider<HomeUiState> {
         get() =
             sequenceOf(
                 HomeUiState(
-                    data =
+                    navigationItems =
                         listOf(
                             NavigationItem(
                                 name = "Screen 1",
