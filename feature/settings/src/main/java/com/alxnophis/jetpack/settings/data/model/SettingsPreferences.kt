@@ -1,9 +1,11 @@
 package com.alxnophis.jetpack.settings.data.model
 
 import androidx.annotation.StringRes
+import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
 import com.alxnophis.jetpack.core.base.crypto.Crypto
 import com.alxnophis.jetpack.settings.R
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -11,6 +13,7 @@ import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.Base64
+import java.util.concurrent.atomic.AtomicBoolean
 
 @Serializable
 data class SettingsPreferences(
@@ -42,40 +45,42 @@ data class SettingsPreferences(
 /**
  * Serializer for [SettingsPreferences].
  *
- * This serializer handles the reading and writing of [SettingsPreferences] to and from an [InputStream]
- * and [OutputStream] respectively. The serialization process involves the following steps for security:
- *
- * 1. **Serialization to JSON**: The [SettingsPreferences] object is first converted into a JSON string.
- * 2. **Encryption**: The JSON string (as bytes) is then encrypted using [Crypto].
- * 3. **Base64 Encoding**: The encrypted bytes are Base64 encoded to ensure safe transmission and storage as a string.
- *
- * The deserialization process reverses these steps:
- *
- * 1. **Base64 Decoding**: The input string is Base64 decoded.
- * 2. **Decryption**: The resulting bytes are decrypted using [Crypto].
- * 3. **Deserialization from JSON**: The decrypted string is parsed from JSON back into a [SettingsPreferences] object.
- *
- * Encryption is applied to protect the user's settings data.
+ * Persists settings as UTF-8 plaintext JSON for cold startup performance.
+ * On first upgrade from legacy encrypted versions, it decrypts using [Crypto]
+ * and flags [hasLegacyEncryptedData] so DataStore migrations rewrite plaintext atomically.
  */
-internal object SettingsPreferencesSerializer : Serializer<SettingsPreferences> {
+internal class SettingsPreferencesSerializer(
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+) : Serializer<SettingsPreferences> {
     override val defaultValue: SettingsPreferences
         get() = SettingsPreferences.default
 
+    val hasLegacyEncryptedData = AtomicBoolean(false)
+
+    internal var decryptPayload: (ByteArray) -> ByteArray = { Crypto.decrypt(it) }
+
     override suspend fun readFrom(input: InputStream): SettingsPreferences {
         val text =
-            withContext(Dispatchers.IO) {
-                input.bufferedReader(Charsets.UTF_8).use { it.readText() }
+            withContext(ioDispatcher) {
+                input
+                    .bufferedReader(Charsets.UTF_8)
+                    .use { it.readText() }
             }
         if (text.isBlank()) return defaultValue
         return try {
             Json.decodeFromString(text)
-        } catch (_: Exception) {
+        } catch (jsonException: Exception) {
             try {
-                val encryptedBytesDecoded = Base64.getDecoder().decode(text)
-                val decryptedBytes = Crypto.decrypt(encryptedBytesDecoded)
-                Json.decodeFromString(decryptedBytes.decodeToString())
-            } catch (_: Exception) {
-                defaultValue
+                val encryptedBytesDecoded =
+                    Base64
+                        .getDecoder()
+                        .decode(text)
+                val decryptedBytes = decryptPayload(encryptedBytesDecoded)
+                val preferences = Json.decodeFromString<SettingsPreferences>(decryptedBytes.decodeToString())
+                hasLegacyEncryptedData.set(true)
+                preferences
+            } catch (cryptoException: Exception) {
+                throw CorruptionException("Failed to parse or decrypt SettingsPreferences payload", jsonException)
             }
         }
     }
@@ -85,7 +90,7 @@ internal object SettingsPreferencesSerializer : Serializer<SettingsPreferences> 
         output: OutputStream,
     ) {
         val json = Json.encodeToString(t)
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             output.use {
                 it.write(json.toByteArray(Charsets.UTF_8))
             }
