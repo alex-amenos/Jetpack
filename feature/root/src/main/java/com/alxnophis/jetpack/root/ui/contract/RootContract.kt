@@ -11,12 +11,14 @@ internal sealed interface RootUiEvent : UiEvent
 internal data class RootUiState(
     val themeOption: SettingsPreferences.ThemeOptions,
     val isOnline: Boolean,
+    val isReady: Boolean = false,
 ) : UiState {
     companion object {
         val initialState =
             RootUiState(
                 themeOption = SettingsPreferences.ThemeOptions.SYSTEM,
                 isOnline = true,
+                isReady = false,
             )
     }
 }

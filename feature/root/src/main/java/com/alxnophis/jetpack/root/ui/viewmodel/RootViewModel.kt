@@ -23,6 +23,7 @@ internal class RootViewModel(
             RootUiState(
                 themeOption = settings.themeOption,
                 isOnline = isOnline,
+                isReady = true,
             )
         }.stateIn(
             scope = viewModelScope,

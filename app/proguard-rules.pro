@@ -4,7 +4,6 @@
 #
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
--dontobfuscate
 -printconfiguration ./build/reports/proguard/proguard-merged-config.txt
 
 # Fixes CompositionLocal LocalLifecycleOwner not present errors when using Lifecycle

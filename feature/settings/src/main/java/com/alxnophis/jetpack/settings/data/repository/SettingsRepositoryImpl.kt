@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.settings.data.repository
 
 import android.content.Context
+import androidx.datastore.core.DataMigration
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import androidx.datastore.dataStore
@@ -15,10 +16,27 @@ internal typealias UpdatedSuccessfully = Unit
 
 internal class SettingsRepositoryImpl(
     private val context: Context,
+    private val serializer: SettingsPreferencesSerializer = SettingsPreferencesSerializer(),
 ) : SettingsRepository {
     private val Context.dataStore: DataStore<SettingsPreferences> by dataStore(
         fileName = SETTINGS_PREFERENCES_FILE_NAME,
-        serializer = SettingsPreferencesSerializer,
+        serializer = serializer,
+        produceMigrations = {
+            listOf(
+                object : DataMigration<SettingsPreferences> {
+                    override suspend fun shouldMigrate(currentData: SettingsPreferences): Boolean = serializer.hasLegacyEncryptedData.get()
+
+                    override suspend fun migrate(currentData: SettingsPreferences): SettingsPreferences {
+                        serializer.hasLegacyEncryptedData.set(false)
+                        return currentData
+                    }
+
+                    override suspend fun cleanUp() {
+                        serializer.hasLegacyEncryptedData.set(false)
+                    }
+                },
+            )
+        },
     )
 
     private val settingsDataStore: DataStore<SettingsPreferences>

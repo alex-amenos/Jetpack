@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.settings.di
 
+import com.alxnophis.jetpack.settings.data.model.SettingsPreferencesSerializer
 import com.alxnophis.jetpack.settings.data.repository.SettingsRepository
 import com.alxnophis.jetpack.settings.data.repository.SettingsRepositoryImpl
 import com.alxnophis.jetpack.settings.ui.viewmodel.SettingsViewModel
@@ -10,6 +11,7 @@ import org.koin.dsl.module
 
 val settingsModule: Module =
     module {
-        single<SettingsRepository> { SettingsRepositoryImpl(androidContext()) }
+        single { SettingsPreferencesSerializer() }
+        single<SettingsRepository> { SettingsRepositoryImpl(androidContext(), get()) }
         viewModel { SettingsViewModel(get()) }
     }

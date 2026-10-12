@@ -39,6 +39,7 @@ private class RootViewModelUnitTests : BaseUnitTest() {
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo RootUiState.initialState
                 runCurrent()
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.SYSTEM, isOnline = true, isReady = true)
                 expectNoEvents()
             }
         }
@@ -55,7 +56,7 @@ private class RootViewModelUnitTests : BaseUnitTest() {
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo RootUiState.initialState
                 runCurrent()
-                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.DARK, isOnline = true)
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.DARK, isOnline = true, isReady = true)
                 expectNoEvents()
             }
         }
@@ -71,7 +72,7 @@ private class RootViewModelUnitTests : BaseUnitTest() {
             viewModel.uiState.test {
                 awaitItem() shouldBeEqualTo RootUiState.initialState
                 runCurrent()
-                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.SYSTEM, isOnline = false)
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.SYSTEM, isOnline = false, isReady = true)
                 expectNoEvents()
             }
         }
@@ -94,15 +95,15 @@ private class RootViewModelUnitTests : BaseUnitTest() {
                 settingsFlow.emit(SettingsPreferences.default.copy(themeOption = ThemeOptions.LIGHT))
                 networkFlow.emit(true)
                 runCurrent()
-                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.LIGHT, isOnline = true)
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.LIGHT, isOnline = true, isReady = true)
 
                 networkFlow.emit(false)
                 runCurrent()
-                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.LIGHT, isOnline = false)
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.LIGHT, isOnline = false, isReady = true)
 
                 networkFlow.emit(true)
                 runCurrent()
-                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.LIGHT, isOnline = true)
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.LIGHT, isOnline = true, isReady = true)
 
                 expectNoEvents()
             }
@@ -126,14 +127,14 @@ private class RootViewModelUnitTests : BaseUnitTest() {
                 settingsFlow.emit(SettingsPreferences.default.copy(themeOption = ThemeOptions.DARK))
                 networkFlow.emit(false)
                 runCurrent()
-                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.DARK, isOnline = false)
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.DARK, isOnline = false, isReady = true)
             }
 
             advanceTimeBy(15.seconds)
             runCurrent()
 
             viewModel.uiState.test {
-                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.DARK, isOnline = false)
+                awaitItem() shouldBeEqualTo RootUiState(themeOption = ThemeOptions.DARK, isOnline = false, isReady = true)
                 expectNoEvents()
             }
         }
