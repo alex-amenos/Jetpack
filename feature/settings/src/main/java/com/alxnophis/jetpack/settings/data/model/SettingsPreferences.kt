@@ -62,14 +62,22 @@ internal object SettingsPreferencesSerializer : Serializer<SettingsPreferences> 
         get() = SettingsPreferences.default
 
     override suspend fun readFrom(input: InputStream): SettingsPreferences {
-        val encryptedBytes =
+        val text =
             withContext(Dispatchers.IO) {
-                input.bufferedReader().use { it.readText() }
+                input.bufferedReader(Charsets.UTF_8).use { it.readText() }
             }
-        val encryptedBytesDecoded = Base64.getDecoder().decode(encryptedBytes)
-        val decryptedBytes = Crypto.decrypt(encryptedBytesDecoded)
-        val decodeJsonString = decryptedBytes.decodeToString()
-        return Json.decodeFromString(decodeJsonString)
+        if (text.isBlank()) return defaultValue
+        return try {
+            Json.decodeFromString(text)
+        } catch (_: Exception) {
+            try {
+                val encryptedBytesDecoded = Base64.getDecoder().decode(text)
+                val decryptedBytes = Crypto.decrypt(encryptedBytesDecoded)
+                Json.decodeFromString(decryptedBytes.decodeToString())
+            } catch (_: Exception) {
+                defaultValue
+            }
+        }
     }
 
     override suspend fun writeTo(
@@ -77,12 +85,9 @@ internal object SettingsPreferencesSerializer : Serializer<SettingsPreferences> 
         output: OutputStream,
     ) {
         val json = Json.encodeToString(t)
-        val bytes = json.toByteArray()
-        val encryptedBytes = Crypto.encrypt(bytes)
-        val encryptedBytesBase64 = Base64.getEncoder().encode(encryptedBytes)
         withContext(Dispatchers.IO) {
             output.use {
-                it.write(encryptedBytesBase64)
+                it.write(json.toByteArray(Charsets.UTF_8))
             }
         }
     }
