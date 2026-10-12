@@ -4,6 +4,8 @@
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@android:color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/core_ic_splash_icon</item>
+        <item name="windowSplashScreenIconBackgroundColor">#FFFFFF</item>
         <item name="postSplashScreenTheme">@style/CoreTheme</item>
     </style>
 </resources>
