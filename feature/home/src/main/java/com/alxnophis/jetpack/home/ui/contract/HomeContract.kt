@@ -6,6 +6,7 @@ import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
 import com.alxnophis.jetpack.home.domain.model.NavigationItem
+import com.alxnophis.jetpack.home.domain.usecase.GetNavigationItemsUseCase
 
 internal sealed class HomeEvent : UiEvent {
     data class ErrorDismissRequested(
@@ -30,7 +31,7 @@ internal data class HomeState(
         val initialState =
             HomeState(
                 isLoading = false,
-                data = emptyList(),
+                data = GetNavigationItemsUseCase.defaultNavigationItems,
                 error = null,
             )
     }

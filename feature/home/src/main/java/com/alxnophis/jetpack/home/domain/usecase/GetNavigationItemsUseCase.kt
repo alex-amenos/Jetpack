@@ -13,17 +13,7 @@ class GetNavigationItemsUseCase {
         withContext(dispatcher) {
             Either
                 .catch {
-                    listOf(
-                        myPlayground,
-                        movies,
-                        posts,
-                        fileDownloader,
-                        authentication,
-                        settings,
-                        notifications,
-                        locationTracker,
-                        gameBallClicker,
-                    )
+                    defaultNavigationItems
                 }.mapLeft { NavigationError.Unknown }
         }
 
@@ -91,6 +81,19 @@ class GetNavigationItemsUseCase {
                 emoji = "🎬",
                 description = "Movies feature",
                 feature = Feature.Movies,
+            )
+
+        val defaultNavigationItems =
+            listOf(
+                myPlayground,
+                movies,
+                posts,
+                fileDownloader,
+                authentication,
+                settings,
+                notifications,
+                locationTracker,
+                gameBallClicker,
             )
     }
 }

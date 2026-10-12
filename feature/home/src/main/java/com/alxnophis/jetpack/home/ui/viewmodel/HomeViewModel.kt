@@ -48,6 +48,7 @@ internal class HomeViewModel(
 
     private fun loadNavigationItems() {
         if (navigationItemsJob != null) return
+        if (currentUiState.data.isNotEmpty()) return
         navigationItemsJob =
             viewModelScope.launch {
                 _uiState.updateCopy {
