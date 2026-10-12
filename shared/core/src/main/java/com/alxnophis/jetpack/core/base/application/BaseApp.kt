@@ -8,9 +8,13 @@ import com.alxnophis.jetpack.core.base.provider.NotificationChannelProvider
 import com.alxnophis.jetpack.core.di.KoinLogger
 import com.alxnophis.jetpack.core.di.coreModules
 import com.alxnophis.jetpack.core.extensions.isDebugBuildType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import org.koin.core.module.Module
 import timber.log.Timber
 
@@ -28,16 +32,14 @@ open class BaseApp : Application() {
     protected open fun getCoreModules(): List<Module> = coreModules
 
     private fun initKoin() {
-        val koinApp =
-            startKoin {
-                androidContext(this@BaseApp)
-                androidLogger()
-                modules(
-                    getCoreModules() + getFeatureModules(),
-                )
+        startKoin {
+            androidContext(this@BaseApp)
+            if (BuildConfig.DEBUG) {
+                logger(KoinLogger(Level.ERROR))
             }
-        if (BuildConfig.DEBUG) {
-            koinApp.logger(KoinLogger())
+            modules(
+                getCoreModules() + getFeatureModules(),
+            )
         }
     }
 
@@ -48,12 +50,14 @@ open class BaseApp : Application() {
     }
 
     private fun initNotificationChannels() {
-        NotificationChannelProvider(this).apply {
-            createNotificationChannel(
-                channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
-                channelName = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_NAME,
-                notificationImportance = NotificationManager.IMPORTANCE_HIGH,
-            )
+        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            NotificationChannelProvider(this@BaseApp).apply {
+                createNotificationChannel(
+                    channelId = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_ID,
+                    channelName = NotificationChannelProvider.DEFAULT_NOTIFICATION_CHANNEL_NAME,
+                    notificationImportance = NotificationManager.IMPORTANCE_HIGH,
+                )
+            }
         }
     }
 
