@@ -6,6 +6,7 @@ A personal project and sandbox for experimenting with modern Android development
 
 ## 📚 Documentation
 
+* **[Project Setup Guide](./docs/SETUP.md):** Step-by-step instructions for configuring and running the app.
 * **[Jetpack Playgrounds](./docs/jetpack_playgrounds.md):** Detailed information about the specific experiments and features.
 * **[Architecture Overview](https://deepwiki.com/alex-amenos/Jetpack):** Deep dive into the project's architectural decisions.
 
