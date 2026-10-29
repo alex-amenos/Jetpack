@@ -9,6 +9,7 @@ A personal project and sandbox for experimenting with modern Android development
 * **[Project Setup Guide](./docs/SETUP.md):** Instructions on building the project and configuring required API keys (Google Maps, TMDB).
 * **[Jetpack Playgrounds](./docs/jetpack_playgrounds.md):** Detailed information about the specific experiments and features.
 * **[Architecture Overview](https://deepwiki.com/alex-amenos/Jetpack):** Deep dive into the project's architectural decisions.
+* **[Kotlin Multiplatform Migration Evaluation](./docs/KMP_MIGRATION.md):** Comprehensive feasibility study, dependency audit, and phased roadmap for moving the project to KMP.
 
 ## 🛠️ Tech Stack & Architecture
 
