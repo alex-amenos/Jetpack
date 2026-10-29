@@ -6,7 +6,6 @@ A personal project and sandbox for experimenting with modern Android development
 
 ## 📚 Documentation
 
-* **[Project Setup Guide](./docs/SETUP.md):** Instructions on building the project and configuring required API keys (Google Maps, TMDB).
 * **[Jetpack Playgrounds](./docs/jetpack_playgrounds.md):** Detailed information about the specific experiments and features.
 * **[Architecture Overview](https://deepwiki.com/alex-amenos/Jetpack):** Deep dive into the project's architectural decisions.
 
