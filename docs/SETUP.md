@@ -1,96 +1,83 @@
 # Project Setup
 
-To fully run and test all the features in this project, you need to configure a few API keys. The app can still build without them, but Google Maps and TMDB-related features will be disabled or fail at runtime.
+Follow these steps to configure, build, and run the Jetpack app locally.
 
 ## Prerequisites
 
-- [Android Studio](https://developer.android.com/studio)
-- [JDK 21](https://adoptium.net/) (Recommended: Zulu or Eclipse Temurin)
 - Git
+- Android Studio
+- JDK 21 (Android Studio's bundled JDK is suitable if it is version 21)
+- An Android emulator or a physical Android device running API 26 or newer
 
-## API Keys Configuration
+The project includes the Gradle wrapper, so you do not need to install Gradle separately. Android Studio can install the Android SDK components required by the project when you sync.
 
-The project reads these values as **Gradle project properties** (via `project.findProperty(...)`).
+## 1. Get the project
 
-Recommended: add them to your user Gradle properties file at `~/.gradle/gradle.properties` (this is not committed to the repo):
+Clone the repository and open its root directory in Android Studio:
 
-    # ~/.gradle/gradle.properties
-    JETPACK_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
-    THEMOVIEDB_ORG_API_TOKEN=your_tmdb_api_read_access_token_here
+```shell
+git clone https://github.com/alex-amenos/Jetpack.git
+cd Jetpack
+```
 
-Alternatively, you can pass them on the command line when running Gradle:
-`./gradlew :app:assembleDebug -PJETPACK_GOOGLE_MAPS_API_KEY=... -PTHEMOVIEDB_ORG_API_TOKEN=...`
+In Android Studio, choose **Open** and select the `Jetpack` directory. If prompted, trust the project and sync it with Gradle. In **Settings > Build, Execution, Deployment > Build Tools > Gradle**, set **Gradle JDK** to JDK 21.
 
-### 1. Google Maps API Key (`JETPACK_GOOGLE_MAPS_API_KEY`)
-Used in the `location-tracker` feature to display Google Maps.
+## 2. Configure API credentials
 
-- Go to the [Google Cloud Console](https://console.cloud.google.com/).
-- Create a new project or select an existing one.
-- Navigate to **APIs & Services** > **Library**.
-- Search for **Maps SDK for Android** and enable it.
-- Go to **APIs & Services** > **Credentials**.
-- Click **Create Credentials** > **API key**.
-- Copy the API key and paste it into `local.properties` as `JETPACK_GOOGLE_MAPS_API_KEY`.
+API credentials are optional for building and launching the app. Without them, features that use Google Maps or TMDB will not work correctly.
 
-### 2. TMDB API Token (`THEMOVIEDB_ORG_API_TOKEN`)
-Used in the `movies` feature to fetch movie data.
+The project reads credentials as Gradle project properties. The recommended option is to add them to your user-level Gradle properties file, which is outside the repository and should not be committed:
 
-- Create an account on [The Movie Database (TMDB)](https://www.themoviedb.org/).
-- Go to your account settings by clicking on your profile icon.
-- Select the **API** section from the left sidebar.
-- Request an API key by filling out the developer form.
-- Look for the **API Read Access Token (v4 auth)**. This project uses it as a Bearer token (`Authorization: Bearer ...`) and does not support the v3 **API Key (v3 auth)** here.
-- Copy the token and paste it into `local.properties` as `THEMOVIEDB_ORG_API_TOKEN`.
+- macOS or Linux: `~/.gradle/gradle.properties`
+- Windows: `%USERPROFILE%\.gradle\gradle.properties`
 
-## Build and Run
+Add the properties for the services you want to use:
 
-Once the `local.properties` file is configured with the correct API keys:
-1. Open the project in Android Studio.
-2. Sync Project with Gradle Files.
-3. Select the `app` run configuration and deploy it to your emulator or physical device.
+```properties
+JETPACK_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+THEMOVIEDB_ORG_API_TOKEN=your_tmdb_api_read_access_token
+```
 
-For more details on the application architecture, check [here](https://deepwiki.com/alex-amenos/Jetpack).
+Create a Google Maps API key in the [Google Cloud Console](https://console.cloud.google.com/), enable **Maps SDK for Android**, and use the key for `JETPACK_GOOGLE_MAPS_API_KEY`. Create a TMDB account, request API access in your account's **API** settings, and use the **API Read Access Token (v4 auth)** for `THEMOVIEDB_ORG_API_TOKEN`. The project does not use a TMDB v3 API key for this property.
 
-## Library Update Compatibility
+Alternatively, pass the values to a Gradle command with `-P`:
 
-The version catalog keeps these dependency updates together:
+```shell
+./gradlew :app:assembleDebug \
+  -PJETPACK_GOOGLE_MAPS_API_KEY=your_google_maps_api_key \
+  -PTHEMOVIEDB_ORG_API_TOKEN=your_tmdb_api_read_access_token
+```
 
-| Dependency | Previous version | Updated version |
-| --- | --- | --- |
-| AndroidX Test Rules | 1.6.1 | 1.7.0 |
-| AndroidX Test Runner | 1.6.2 | 1.7.0 |
-| Roborazzi plugin and libraries | 1.74.0 | 1.76.0 |
-| ConstraintLayout Compose | 1.1.1 | 1.1.2 |
-| Google Play Services Maps | 19.0.0 | 20.0.0 |
-| kotlinx.collections.immutable | 0.4.0 | 0.5.2 |
+Avoid putting real credentials in committed files, screenshots, or shared command history. Restrict API keys in the provider consoles where possible.
 
-- **AndroidX Test:** Runner is aligned with Rules at 1.7.0; JUnit extensions remain at 1.3.0.
-  `ServiceTestRule.startService` now throws if its intent does not launch a service.
-  The project does not currently use this rule. See the
-  [upstream Rules changelog](https://github.com/android/android-test/blob/axt_2025_07_30_stable/runner/rules/CHANGELOG.md).
-- **Google Maps:** Maps Compose 8.6.0 already uses Maps KTX 6.4.1, which declares Maps SDK 20.0.0.
-  This aligns the direct SDK declaration with that dependency chain.
-  Maps KTX 6.x raised its minimum Android API to 23; the app already requires API 26.
-  No Maps Compose or application minimum-SDK update is needed. See the
-  [Maps KTX 6.0.0 release notes](https://github.com/googlemaps/android-maps-ktx/releases/tag/v6.0.0) and
-  [6.4.1 version catalog](https://github.com/googlemaps/android-maps-ktx/blob/v6.4.1/gradle/libs.versions.toml).
-  Smoke-test the live map, location marker, camera following, gestures, and permission changes on a
-  device with Google Play services and a configured Maps API key.
-- **Immutable collections:** 0.5.x deprecates copy-returning methods such as `add`, `put`, and `set`
-  in favor of `adding`, `putting`, and `replacingAt`. Old names become compilation errors in 0.6.0
-  and are removed in 0.7.0. Current project usages are factories, `ImmutableList`, and
-  `toImmutableList`, so no call-site migration is needed. Kotlin 2.4.20 already exceeds the
-  library's Kotlin 2.3.0 baseline. See the
-  [migration guide](https://github.com/Kotlin/kotlinx.collections.immutable/blob/v0.5.2/docs/0.5.0-MIGRATION.md).
-- **Roborazzi:** Keep the plugin and capture libraries on the shared catalog version.
-  [1.75.0](https://github.com/takahirom/roborazzi/releases/tag/1.75.0) and
-  [1.76.0](https://github.com/takahirom/roborazzi/releases/tag/1.76.0) change when generated-preview
-  and Compose setup options are applied relative to Activity launch. This can change screenshots;
-  precompiled custom `ComposePreviewTester` implementations also require recompilation.
-  This project uses explicit Compose tests with `SemanticsNodeInteraction.captureRoboImage`,
-  not generated preview tests or custom testers. Run `./gradlew verifyRoborazziDebug` before
-  accepting the upgrade. Only use `./gradlew recordRoborazziDebug` after reviewing any visual
-  differences; do not overwrite baselines just to make verification pass.
-- **ConstraintLayout Compose:** No direct ConstraintLayout API usage was found in the app.
-  It remains included in the shared Compose bundle; verify compilation, lint, and screenshots
-  with the patch update.
+## 3. Build the debug app
+
+From the project root, build the debug APK:
+
+```shell
+./gradlew :app:assembleDebug
+```
+
+On Windows, use `gradlew.bat :app:assembleDebug`. The Android Gradle Plugin may prompt you to install missing SDK components; accept the licenses and install the requested components.
+
+## 4. Launch the app
+
+In Android Studio, start an emulator or connect an Android device with USB debugging enabled. Select the **app** run configuration and click **Run**.
+
+Alternatively, install and launch the debug app on a running emulator or connected device:
+
+```shell
+./gradlew :app:installDebug
+```
+
+The debug application ID is `com.alxnophis.jetpack.debug`. Grant location permission when prompted if you want to use location-based features.
+
+## Useful checks
+
+Run the project's CI checks from the repository root:
+
+```shell
+./gradlew ktlintCheck
+./gradlew lintDebug
+./gradlew koverHtmlReportDebug
+```
