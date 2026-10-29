@@ -50,3 +50,47 @@ Once the `local.properties` file is configured with the correct API keys:
 3. Select the `app` run configuration and deploy it to your emulator or physical device.
 
 For more details on the application architecture, check [here](https://deepwiki.com/alex-amenos/Jetpack).
+
+## Library Update Compatibility
+
+The version catalog keeps these dependency updates together:
+
+| Dependency | Previous version | Updated version |
+| --- | --- | --- |
+| AndroidX Test Rules | 1.6.1 | 1.7.0 |
+| AndroidX Test Runner | 1.6.2 | 1.7.0 |
+| Roborazzi plugin and libraries | 1.74.0 | 1.76.0 |
+| ConstraintLayout Compose | 1.1.1 | 1.1.2 |
+| Google Play Services Maps | 19.0.0 | 20.0.0 |
+| kotlinx.collections.immutable | 0.4.0 | 0.5.2 |
+
+- **AndroidX Test:** Runner is aligned with Rules at 1.7.0; JUnit extensions remain at 1.3.0.
+  `ServiceTestRule.startService` now throws if its intent does not launch a service.
+  The project does not currently use this rule. See the
+  [upstream Rules changelog](https://github.com/android/android-test/blob/axt_2025_07_30_stable/runner/rules/CHANGELOG.md).
+- **Google Maps:** Maps Compose 8.6.0 already uses Maps KTX 6.4.1, which declares Maps SDK 20.0.0.
+  This aligns the direct SDK declaration with that dependency chain.
+  Maps KTX 6.x raised its minimum Android API to 23; the app already requires API 26.
+  No Maps Compose or application minimum-SDK update is needed. See the
+  [Maps KTX 6.0.0 release notes](https://github.com/googlemaps/android-maps-ktx/releases/tag/v6.0.0) and
+  [6.4.1 version catalog](https://github.com/googlemaps/android-maps-ktx/blob/v6.4.1/gradle/libs.versions.toml).
+  Smoke-test the live map, location marker, camera following, gestures, and permission changes on a
+  device with Google Play services and a configured Maps API key.
+- **Immutable collections:** 0.5.x deprecates copy-returning methods such as `add`, `put`, and `set`
+  in favor of `adding`, `putting`, and `replacingAt`. Old names become compilation errors in 0.6.0
+  and are removed in 0.7.0. Current project usages are factories, `ImmutableList`, and
+  `toImmutableList`, so no call-site migration is needed. Kotlin 2.4.20 already exceeds the
+  library's Kotlin 2.3.0 baseline. See the
+  [migration guide](https://github.com/Kotlin/kotlinx.collections.immutable/blob/v0.5.2/docs/0.5.0-MIGRATION.md).
+- **Roborazzi:** Keep the plugin and capture libraries on the shared catalog version.
+  [1.75.0](https://github.com/takahirom/roborazzi/releases/tag/1.75.0) and
+  [1.76.0](https://github.com/takahirom/roborazzi/releases/tag/1.76.0) change when generated-preview
+  and Compose setup options are applied relative to Activity launch. This can change screenshots;
+  precompiled custom `ComposePreviewTester` implementations also require recompilation.
+  This project uses explicit Compose tests with `SemanticsNodeInteraction.captureRoboImage`,
+  not generated preview tests or custom testers. Run `./gradlew verifyRoborazziDebug` before
+  accepting the upgrade. Only use `./gradlew recordRoborazziDebug` after reviewing any visual
+  differences; do not overwrite baselines just to make verification pass.
+- **ConstraintLayout Compose:** No direct ConstraintLayout API usage was found in the app.
+  It remains included in the shared Compose bundle; verify compilation, lint, and screenshots
+  with the patch update.
