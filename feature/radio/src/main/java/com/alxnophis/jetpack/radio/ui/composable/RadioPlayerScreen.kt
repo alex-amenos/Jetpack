@@ -74,6 +74,11 @@ import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerEvent
 import com.alxnophis.jetpack.radio.ui.viewmodel.RadioPlayerViewModel
 import org.koin.androidx.compose.koinViewModel
 
+private const val ICON_RATIO = 0.6f
+private val PRIMARY_ICON_SIZE = 64.dp
+private val RIPPLE_CORNER_RADIUS = 16.dp
+private val BANNER_MAX_WIDTH = 420.dp
+
 @Composable
 fun RadioPlayerFeature(onBack: () -> Unit) {
     NotificationPermissionRequest()
@@ -126,7 +131,6 @@ internal fun RadioPlayerScreen(
             ) {
                 PlayerInfo(
                     uiState = uiState,
-                    handleEvent = handleEvent,
                     iconSize = 160.dp,
                     modifier = Modifier.weight(1f),
                 )
@@ -149,7 +153,6 @@ internal fun RadioPlayerScreen(
             ) {
                 PlayerInfo(
                     uiState = uiState,
-                    handleEvent = handleEvent,
                     iconSize = 200.dp,
                 )
                 PlayerControls(
@@ -200,15 +203,9 @@ internal fun RadioPlayerScreen(
     }
 }
 
-private const val ICON_RATIO = 0.6f
-private val PRIMARY_ICON_SIZE = 64.dp
-private val RIPPLE_CORNER_RADIUS = 16.dp
-private val BANNER_MAX_WIDTH = 420.dp
-
 @Composable
 private fun PlayerInfo(
     uiState: PlayerUiState,
-    handleEvent: (RadioPlayerEvent) -> Unit,
     iconSize: Dp,
     modifier: Modifier = Modifier,
 ) {
@@ -221,7 +218,7 @@ private fun PlayerInfo(
         Text(
             text = uiState.stationName.orEmpty(),
             style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface,
         )
