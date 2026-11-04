@@ -36,6 +36,8 @@ import com.alxnophis.jetpack.notifications.ui.navigation.NotificationsFeature
 import com.alxnophis.jetpack.posts.ui.composable.PostDetailFeature
 import com.alxnophis.jetpack.posts.ui.composable.PostNotSelectedComposable
 import com.alxnophis.jetpack.posts.ui.composable.PostsFeature
+import com.alxnophis.jetpack.radio.ui.composable.RadioPlayerFeature
+import com.alxnophis.jetpack.radio.ui.composable.StationListFeature
 import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
@@ -89,6 +91,7 @@ fun Navigation(modifier: Modifier = Modifier) {
                                     Feature.MyPlayground -> Route.MyPlayground
                                     Feature.Notifications -> Route.Notifications
                                     Feature.Posts -> Route.Posts
+                                    Feature.RadioStreaming -> Route.RadioStations
                                     Feature.Settings -> Route.Settings
                                 }
                             backStack.add(route)
@@ -168,6 +171,17 @@ fun Navigation(modifier: Modifier = Modifier) {
                 }
                 entry<Route.Settings> {
                     SettingsFeature(
+                        onBack = onBack,
+                    )
+                }
+                entry<Route.RadioStations> {
+                    StationListFeature(
+                        onBack = onBack,
+                        onStationSelected = { backStack.add(Route.RadioPlayer) },
+                    )
+                }
+                entry<Route.RadioPlayer> {
+                    RadioPlayerFeature(
                         onBack = onBack,
                     )
                 }

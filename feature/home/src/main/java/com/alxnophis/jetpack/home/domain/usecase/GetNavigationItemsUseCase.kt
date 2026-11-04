@@ -72,6 +72,14 @@ class GetNavigationItemsUseCase {
                 feature = Feature.Movies,
             )
 
+        private val radioStreaming =
+            NavigationItem(
+                name = "Radio Streaming",
+                emoji = "📻",
+                description = "Listen to live Spanish radio stations",
+                feature = Feature.RadioStreaming,
+            )
+
         val defaultNavigationItems =
             listOf(
                 myPlayground,
@@ -83,6 +91,7 @@ class GetNavigationItemsUseCase {
                 notifications,
                 locationTracker,
                 gameBallClicker,
+                radioStreaming,
             )
     }
 }

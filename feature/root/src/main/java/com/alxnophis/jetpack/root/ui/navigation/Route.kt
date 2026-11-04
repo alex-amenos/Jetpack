@@ -49,4 +49,10 @@ sealed class Route : NavKey {
 
     @Serializable
     data object Settings : Route()
+
+    @Serializable
+    data object RadioStations : Route()
+
+    @Serializable
+    data object RadioPlayer : Route()
 }
