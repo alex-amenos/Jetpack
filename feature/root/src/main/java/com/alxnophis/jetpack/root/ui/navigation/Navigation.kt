@@ -12,6 +12,7 @@ import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -43,7 +44,11 @@ import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @SuppressLint("ComposeModifierMissing")
 @Composable
-fun Navigation(modifier: Modifier = Modifier) {
+fun Navigation(
+    modifier: Modifier = Modifier,
+    openRadioPlayer: Boolean = false,
+    onRadioPlayerOpened: () -> Unit = {},
+) {
     val context = LocalContext.current
     val backStack = rememberNavBackStack(Route.Home)
     val onBack: () -> Unit = {
@@ -56,6 +61,18 @@ fun Navigation(modifier: Modifier = Modifier) {
     val adaptiveInfo = currentWindowAdaptiveInfoV2()
     val customDirective = calculatePaneScaffoldDirective(adaptiveInfo).copy(horizontalPartitionSpacerSize = 0.dp)
     val listDetailStrategy = rememberListDetailSceneStrategy<Any>(directive = customDirective)
+
+    fun showRadioPlayer() {
+        if (backStack.last() is Route.RadioPlayer) return
+        if (backStack.last() !is Route.RadioStations) backStack.add(Route.RadioStations)
+        backStack.add(Route.RadioPlayer)
+    }
+
+    LaunchedEffect(openRadioPlayer) {
+        if (!openRadioPlayer) return@LaunchedEffect
+        showRadioPlayer()
+        onRadioPlayerOpened()
+    }
 
     NavDisplay(
         backStack = backStack,

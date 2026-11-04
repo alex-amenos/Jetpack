@@ -1,10 +1,12 @@
 package com.alxnophis.jetpack.radio.playback
 
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultLoadControl
 
 internal object RadioLoadControl {
     private const val LIVE_BUFFER_MS = 3_000
 
+    @UnstableApi
     fun create(): DefaultLoadControl =
         DefaultLoadControl
             .Builder()

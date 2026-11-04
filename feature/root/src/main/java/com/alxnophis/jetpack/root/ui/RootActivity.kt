@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.root.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,11 +17,14 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.extensions.testTagsAsResourceIdInDebug
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
+import com.alxnophis.jetpack.radio.playback.RadioPlayerIntent
 import com.alxnophis.jetpack.root.ui.composable.OfflineIndicator
 import com.alxnophis.jetpack.root.ui.navigation.Navigation
 import com.alxnophis.jetpack.root.ui.viewmodel.RootViewModel
@@ -29,12 +33,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RootActivity : ComponentActivity() {
     private val rootViewModel: RootViewModel by viewModel()
+    private var openRadioPlayerRequest by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition { !rootViewModel.uiState.value.isReady }
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        handleIntent(intent)
         setContent {
             val state by rootViewModel.uiState.collectAsStateWithLifecycle()
             val isDarkTheme =
@@ -53,6 +59,8 @@ class RootActivity : ComponentActivity() {
                 ) {
                     OfflineIndicator(isOnline = state.isOnline)
                     Navigation(
+                        openRadioPlayer = openRadioPlayerRequest,
+                        onRadioPlayerOpened = { openRadioPlayerRequest = false },
                         modifier =
                             Modifier
                                 .fillMaxWidth()
@@ -68,5 +76,14 @@ class RootActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        if (intent?.action == RadioPlayerIntent.ACTION_OPEN_PLAYER) openRadioPlayerRequest = true
     }
 }

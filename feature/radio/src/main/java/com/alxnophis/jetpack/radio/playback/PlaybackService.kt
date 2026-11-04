@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.radio.playback
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import androidx.media3.common.AudioAttributes
@@ -43,6 +44,7 @@ class PlaybackService : MediaSessionService() {
             MediaSession
                 .Builder(this, player)
                 .setCallback(RadioSessionCallback())
+                .setSessionActivity(openPlayerPendingIntent())
                 .build()
         sleepTimer.remainingMillis
             .onEach { remaining -> publishRemaining(remaining) }
@@ -60,6 +62,15 @@ class PlaybackService : MediaSessionService() {
         mediaSession = null
         player.release()
         super.onDestroy()
+    }
+
+    private fun openPlayerPendingIntent(): PendingIntent {
+        val intent =
+            packageManager.getLaunchIntentForPackage(packageName)?.apply {
+                action = RadioPlayerIntent.ACTION_OPEN_PLAYER
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            } ?: Intent()
+        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     private fun publishRemaining(remainingMillis: Long?) {
