@@ -18,6 +18,7 @@ object Modules {
     const val FEATURE_NOTIFICATIONS = ":feature:notifications"
     const val FEATURE_LOCATION_TRACKER = ":feature:location-tracker"
     const val FEATURE_POSTS = ":feature:posts"
+    const val FEATURE_RADIO = ":feature:radio"
     const val FEATURE_ROOT = ":feature:root"
     const val FEATURE_SETTINGS = ":feature:settings"
     const val FEATURE_FILE_DOWNLOADER = ":feature:file-downloader"
