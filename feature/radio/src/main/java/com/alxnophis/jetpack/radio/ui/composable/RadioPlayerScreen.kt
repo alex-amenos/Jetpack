@@ -6,9 +6,6 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,13 +17,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.Stop
@@ -34,19 +32,18 @@ import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,11 +52,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.radio.R
 import com.alxnophis.jetpack.radio.playback.PlaybackStatus
@@ -100,40 +99,19 @@ internal fun RadioPlayerScreen(
 ) {
     var showTimerSheet by remember { mutableStateOf(false) }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Text(text = uiState.stationName.orEmpty(), maxLines = 1) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.radio_back),
-                        )
-                    }
-                },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                    ),
-            )
-        },
-    ) { innerPadding ->
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
+                    .statusBarsPadding()
                     .padding(horizontal = 24.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(48.dp, Alignment.CenterVertically),
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 StationIcon(faviconUrl = uiState.artworkUri, size = 200.dp)
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     text = uiState.stationName.orEmpty(),
                     style = MaterialTheme.typography.headlineSmall,
@@ -141,7 +119,7 @@ internal fun RadioPlayerScreen(
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(14.dp))
                 LiveChip()
                 if (uiState.status == PlaybackStatus.Error) {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -154,22 +132,32 @@ internal fun RadioPlayerScreen(
                     uiState = uiState,
                     onAction = handleEvent,
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
                 SecondaryRow(
                     uiState = uiState,
                     onStop = { handleEvent(RadioPlayerEvent.Stop) },
                     onTimer = { showTimerSheet = true },
                 )
                 uiState.sleepTimerRemainingMillis?.let { remaining ->
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
                     Text(
                         text = stringResource(R.string.radio_sleep_remaining, formatRemaining(remaining)),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
         }
+
+        BackButton(
+            onClick = onBack,
+            modifier =
+                Modifier
+                    .align(Alignment.TopStart)
+                    .statusBarsPadding()
+                    .padding(start = 16.dp, top = 8.dp),
+        )
     }
 
     if (showTimerSheet) {
@@ -179,6 +167,23 @@ internal fun RadioPlayerScreen(
                 handleEvent(RadioPlayerEvent.SetSleepTimer(minutes))
                 showTimerSheet = false
             },
+        )
+    }
+}
+
+@Composable
+private fun BackButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    FilledTonalIconButton(
+        onClick = onClick,
+        modifier = modifier.size(48.dp),
+        shape = RoundedCornerShape(16.dp),
+    ) {
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = stringResource(R.string.radio_back),
         )
     }
 }
@@ -235,7 +240,7 @@ private fun ControlsRow(
         RoundControl(
             icon = Icons.Filled.SkipPrevious,
             description = stringResource(R.string.radio_previous),
-            size = 52.dp,
+            size = 68.dp,
             enabled = uiState.canPrevious,
             onClick = { onAction(RadioPlayerEvent.Previous) },
         )
@@ -243,7 +248,7 @@ private fun ControlsRow(
         RoundControl(
             icon = Icons.Filled.SkipNext,
             description = stringResource(R.string.radio_next),
-            size = 52.dp,
+            size = 68.dp,
             enabled = uiState.canNext,
             onClick = { onAction(RadioPlayerEvent.Next) },
         )
@@ -274,7 +279,7 @@ private fun PlayPauseButton(
     Box(
         modifier =
             Modifier
-                .size(84.dp)
+                .size(108.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primary)
                 .clickable(onClick = onClick),
@@ -283,21 +288,36 @@ private fun PlayPauseButton(
         when {
             uiState.status == PlaybackStatus.Buffering -> {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(44.dp),
                     color = MaterialTheme.colorScheme.onPrimary,
                 )
             }
 
             isError -> {
-                Icon(Icons.Filled.PlayArrow, stringResource(R.string.radio_retry), tint = MaterialTheme.colorScheme.onPrimary)
+                Icon(
+                    Icons.Filled.PlayArrow,
+                    stringResource(R.string.radio_retry),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(64.dp),
+                )
             }
 
             isPlaying -> {
-                Icon(Icons.Filled.Pause, stringResource(R.string.radio_pause), tint = MaterialTheme.colorScheme.onPrimary)
+                Icon(
+                    Icons.Filled.Pause,
+                    stringResource(R.string.radio_pause),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(64.dp),
+                )
             }
 
             else -> {
-                Icon(Icons.Filled.PlayArrow, stringResource(R.string.radio_play), tint = MaterialTheme.colorScheme.onPrimary)
+                Icon(
+                    Icons.Filled.PlayArrow,
+                    stringResource(R.string.radio_play),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(64.dp),
+                )
             }
         }
     }
@@ -316,14 +336,14 @@ private fun SecondaryRow(
         RoundControl(
             icon = Icons.Filled.Stop,
             description = stringResource(R.string.radio_stop),
-            size = 44.dp,
+            size = 60.dp,
             enabled = uiState.status != PlaybackStatus.Idle,
             onClick = onStop,
         )
         RoundControl(
             icon = Icons.Filled.Timer,
             description = stringResource(R.string.radio_sleep_timer),
-            size = 44.dp,
+            size = 60.dp,
             enabled = true,
             onClick = onTimer,
         )
@@ -341,10 +361,13 @@ private fun RoundControl(
     IconButton(
         onClick = onClick,
         enabled = enabled,
-        modifier = Modifier.size(size).background(MaterialTheme.colorScheme.surfaceVariant, CircleShape),
+        modifier =
+            Modifier
+                .size(size)
+                .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape),
         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant),
     ) {
-        Icon(imageVector = icon, contentDescription = description)
+        Icon(imageVector = icon, contentDescription = description, modifier = Modifier.size(32.dp))
     }
 }
 
@@ -357,7 +380,10 @@ private fun SleepTimerSheet(
     val sheetState = rememberModalBottomSheetState()
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(text = stringResource(R.string.radio_sleep_title), style = MaterialTheme.typography.titleLarge)
