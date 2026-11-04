@@ -7,6 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -35,14 +36,13 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,6 +55,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -177,6 +178,10 @@ internal fun RadioPlayerScreen(
     }
 }
 
+private const val ICON_RATIO = 0.6f
+private val PRIMARY_ICON_SIZE = 64.dp
+private val RIPPLE_CORNER_RADIUS = 16.dp
+
 @Composable
 private fun PlayerInfo(
     uiState: PlayerUiState,
@@ -221,7 +226,7 @@ private fun PlayerControls(
             uiState = uiState,
             onAction = handleEvent,
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         SecondaryRow(
             uiState = uiState,
             onStop = { handleEvent(RadioPlayerEvent.Stop) },
@@ -255,9 +260,6 @@ private fun BackButton(
         )
     }
 }
-
-private const val ICON_RATIO = 0.45f
-private val PRIMARY_ICON_SIZE = 52.dp
 
 @Composable
 private fun LiveChip() {
@@ -355,16 +357,20 @@ private fun PlayPauseButton(
         modifier =
             Modifier
                 .size(108.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
-                .clickable(onClick = onClick),
+                .clip(RoundedCornerShape(RIPPLE_CORNER_RADIUS))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(bounded = true),
+                    role = Role.Button,
+                    onClick = onClick,
+                ),
         contentAlignment = Alignment.Center,
     ) {
         when {
             uiState.status == PlaybackStatus.Buffering -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(44.dp),
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
 
@@ -372,7 +378,7 @@ private fun PlayPauseButton(
                 Icon(
                     Icons.Rounded.PlayArrow,
                     stringResource(R.string.radio_retry),
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(PRIMARY_ICON_SIZE),
                 )
             }
@@ -381,7 +387,7 @@ private fun PlayPauseButton(
                 Icon(
                     Icons.Rounded.Pause,
                     stringResource(R.string.radio_pause),
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(PRIMARY_ICON_SIZE),
                 )
             }
@@ -390,7 +396,7 @@ private fun PlayPauseButton(
                 Icon(
                     Icons.Rounded.PlayArrow,
                     stringResource(R.string.radio_play),
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(PRIMARY_ICON_SIZE),
                 )
             }
@@ -433,16 +439,26 @@ private fun RoundControl(
     enabled: Boolean,
     onClick: () -> Unit,
 ) {
-    IconButton(
-        onClick = onClick,
-        enabled = enabled,
+    Box(
         modifier =
             Modifier
                 .size(size)
-                .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape),
-        colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant),
+                .clip(RoundedCornerShape(RIPPLE_CORNER_RADIUS))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(bounded = true),
+                    enabled = enabled,
+                    role = Role.Button,
+                    onClick = onClick,
+                ),
+        contentAlignment = Alignment.Center,
     ) {
-        Icon(imageVector = icon, contentDescription = description, modifier = Modifier.size(size * ICON_RATIO))
+        Icon(
+            imageVector = icon,
+            contentDescription = description,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = if (enabled) 1f else 0.38f),
+            modifier = Modifier.size(size * ICON_RATIO),
+        )
     }
 }
 
