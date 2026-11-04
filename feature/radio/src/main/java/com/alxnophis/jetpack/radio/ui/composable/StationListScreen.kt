@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.radio.ui.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -33,12 +33,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.Dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.alxnophis.jetpack.radio.R
 import com.alxnophis.jetpack.radio.domain.model.Station
@@ -144,13 +144,22 @@ private fun MessageContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.fillMaxSize().padding(24.dp),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = message, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
         Spacer(modifier = Modifier.padding(8.dp))
-        Button(onClick = onAction) { Text(text = actionLabel) }
+        Button(onClick = onAction) {
+            Text(text = actionLabel)
+        }
     }
 }
 
@@ -216,17 +225,29 @@ internal fun StationIcon(
     val shape = RoundedCornerShape(size / 4)
     if (faviconUrl == null) {
         Box(
-            modifier = Modifier.size(size).clip(shape).background(MaterialTheme.colorScheme.primaryContainer),
+            modifier =
+                Modifier
+                    .size(size)
+                    .clip(shape)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(imageVector = Icons.Filled.Radio, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimaryContainer)
+            Icon(
+                imageVector = Icons.Filled.Radio,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(size * 0.5f),
+            )
         }
     } else {
         AsyncImage(
             model = faviconUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(size).clip(shape),
+            modifier =
+                Modifier
+                    .size(size)
+                    .clip(shape),
         )
     }
 }
