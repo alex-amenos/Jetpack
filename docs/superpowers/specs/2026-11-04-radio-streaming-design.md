@@ -1,7 +1,7 @@
 # Radio Streaming Feature Design
 
 **Date:** 2026-11-04
-**Status:** Approved by user (scope and visual design). Pending builder check.
+**Status:** Approved by user. Builder check completed; decisions in section 12 confirmed.
 
 ## 1. Intent
 
@@ -68,9 +68,9 @@ No API key is needed.
 | `codec` | String | Debug information only |
 | `bitrate` | Int | Debug information only |
 
-**Filtering:** Drop stations whose `url_resolved` is empty or whose scheme is not `http` or `https`.
+**Filtering:** Drop stations whose `url_resolved` is empty or whose scheme is not `https`. Plain `http://` streams are excluded by design (decided by user), so no cleartext traffic is allowed and no `network_security_config` is needed.
 
-**Cleartext traffic:** Some stations stream over plain `http://`. Their hosts are not known in advance, so a per-domain allow list is not possible. Decision: allow cleartext traffic through a `network_security_config` for the app. This is a security trade-off and is flagged for the user's approval (see section 12).
+**Cleartext traffic:** Not allowed. The app keeps Android's default (cleartext blocked).
 
 ## 7. Architecture
 
@@ -150,7 +150,7 @@ Repository and use cases return `Either<RadioError, T>`. Exceptions are not used
 
 ## 10. Testing
 
-- Unit tests for the mapper and for the filter that drops stations with empty or non-HTTP URLs.
+- Unit tests for the mapper and for the filter that drops stations with empty or non-HTTPS URLs.
 - Unit tests for the repository with a fake API service, covering success and each `RadioError`.
 - ViewModel tests with Turbine, following the `GIVEN ... WHEN ... THEN ...` naming.
 - Playback state mapping tested with a fake `Player` or by testing the mapper function that converts player state to UI state.
@@ -161,13 +161,13 @@ Repository and use cases return `Either<RadioError, T>`. Exceptions are not used
 ## 11. Risks
 
 - Radio Browser mirror is down: the list fails. Only `de1` is used; mirror fallback is out of scope and can be added later.
-- Stations over HTTP can be blocked or insecure. Accepted through the cleartext decision.
+- Stations that only offer `http://` are excluded, so the list can contain fewer than 30 stations.
 - A 3-second buffer with 320 kbps streams can stutter on weak networks. Accepted by the user; can be raised later.
 - Notification permission denied on Android 13+: playback still works but no notification appears. The user is informed in the UI.
 
 ## 12. Decisions made by the designer (to confirm)
 
-1. Cleartext traffic allowed app-wide through `network_security_config`, since hosts are dynamic. Note: this is broader than the earlier per-station idea and is a security trade-off.
+1. HTTPS-only streams. Plain `http://` stations are excluded; cleartext traffic stays blocked (decided by user).
 2. Previous/next do not wrap around at the ends of the list.
 3. Sleep timer presets: 15, 30, 60 minutes, plus Off. Owned by `PlaybackService`.
 4. Previous/next and sleep timer use the same playback service as Play/Stop.
@@ -184,7 +184,7 @@ None that change what gets built. Items not listed above are decided by the impl
 
 ## 14. Builder check log
 
-- Cleartext allowance (12.1): pending user approval.
+- Cleartext allowance (12.1): decided by user, HTTPS-only.
 - Task removal behavior: decided (see Anti-goals).
 - Recovery: decided as manual (12.9).
 - Playlist ownership: decided as service queue (12.10).

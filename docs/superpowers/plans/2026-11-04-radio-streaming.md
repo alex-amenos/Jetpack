@@ -17,7 +17,7 @@
 - Buffer: `DefaultLoadControl` with `minBufferMs = 3000` and `bufferForPlaybackMs = 3000`.
 - No `SimpleCache` for the stream.
 - Required permissions: `INTERNET`, `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_MEDIA_PLAYBACK`, `POST_NOTIFICATIONS` (runtime, Android 13+).
-- Cleartext HTTP allowed app-wide through `network_security_config` (pending user approval).
+- Cleartext HTTP is not allowed; only `https` stream URLs are played (`http://` stations are filtered out).
 - ViewModels, UI, use cases, and repository implementations are `internal`. Repository interface is internal too (the feature exposes no cross-module API).
 - Imports: no wildcards; order Android, third-party, project.
 - Test names: ``GIVEN ... WHEN ... THEN ...``.
@@ -25,7 +25,7 @@
 
 ## Review Focus
 
-1. **Station with empty or non-HTTP(S) `url_resolved`:** must be dropped from the list, not shown. Pinned by Task 3.
+1. **Station with empty or non-HTTPS `url_resolved`:** must be dropped from the list, not shown. Pinned by Task 3.
 2. **API returns zero stations:** the list shows the empty state, not an error. Pinned by Task 3 and Task 7.
 3. **Network loss during playback:** the UI shows the error state with "Reintentar" and never shows "playing". Pinned by Task 6.
 4. **Retry tapped after error:** playback restarts on the same station without re-selecting it. Pinned by Task 6.
@@ -38,10 +38,9 @@
 **Files:**
 - Create: `feature/radio/build.gradle`
 - Create: `feature/radio/src/main/AndroidManifest.xml`
-- Create: `feature/radio/src/main/res/xml/network_security_config.xml`
 - Modify: `settings.gradle` (add `include ':feature:radio'`)
 - Modify: `gradle/libs.versions.toml` (add `media3` version and libraries: `androidx-media3-exoplayer`, `androidx-media3-session`, `androidx-media3-ui-compose` if needed, `androidx-media3-test-utils` for tests)
-- Modify: `app/build.gradle` (add `implementation project(':feature:radio')`)
+- Modify: `feature/root/build.gradle` (add `implementation project(Modules.FEATURE_RADIO)`), `buildSrc/src/main/java/Modules.kt` (add `FEATURE_RADIO`)
 
 **Interfaces:**
 - Consumes: none
@@ -61,7 +60,7 @@ Add a `media3` version to `gradle/libs.versions.toml` and the library entries li
 
 - [ ] **Step 4: Declare the manifest with permissions and the service**
 
-In `feature/radio/src/main/AndroidManifest.xml`, declare the permissions from Global Constraints and `<service android:name=".playback.PlaybackService" android:foregroundServiceType="mediaPlayback" android:exported="false"> <intent-filter><action android:name="androidx.media3.session.MediaSessionService"/></intent-filter></service>`. Add `android:networkSecurityConfig="@xml/network_security_config"` through the module manifest merge; `network_security_config.xml` sets `<base-config cleartextTrafficPermitted="true"/>`.
+In `feature/radio/src/main/AndroidManifest.xml`, declare the permissions from Global Constraints and `<service android:name=".playback.PlaybackService" android:foregroundServiceType="mediaPlayback" android:exported="false"> <intent-filter><action android:name="androidx.media3.session.MediaSessionService"/></intent-filter></service>`. Do not add a `networkSecurityConfig` (cleartext stays blocked).
 
 - [ ] **Step 5: Verify the build**
 
@@ -122,7 +121,7 @@ git commit -m "feat(radio): add station domain model and errors"
 **Interfaces:**
 - Produces:
   - In `shared/api`: `interface RadioBrowserServices { @GET("json/stations/bycountry/Spain") suspend fun getSpanishStations(@Query("limit") limit: Int = 30, @Query("order") order: String = "votes", @Query("reverse") reverse: Boolean = true): List<StationApiModel> }`, `data class StationApiModel(stationuuid, name, url_resolved, favicon, codec, bitrate)` with `@SerialName` where needed, and `RadioBrowserModule` providing the service through the Retrofit factory (base URL `https://de1.api.radio-browser.info/`), following `themoviedb`.
-  - `fun StationApiModel.toStationOrNull(): Station?` in `feature/radio`, returns null when `url_resolved` is blank or scheme not http/https.
+  - `fun StationApiModel.toStationOrNull(): Station?` in `feature/radio`, returns null when `url_resolved` is blank or scheme is not `https`.
   - `interface StationsRepository { suspend fun getSpanishStations(): Either<RadioError, List<Station>> }`
   - `class StationsRepositoryImpl(api: RadioBrowserApi) : StationsRepository`, maps `IOException` to `NetworkUnavailable`, HTTP and other exceptions to `ServerError`.
 
@@ -143,7 +142,7 @@ Run: same command. Expected: PASS
 
 - [ ] **Step 5: Write failing repository tests**
 
-Test names: `GIVEN the API returns stations with valid and invalid URLs WHEN loading THEN only valid stations are returned`, `GIVEN the API returns an empty list WHEN loading THEN returns an empty right`, `GIVEN an IOException WHEN loading THEN returns NetworkUnavailable`, `GIVEN an HTTP error WHEN loading THEN returns ServerError`.
+Test names: `GIVEN the API returns stations with valid and invalid URLs WHEN loading THEN only valid stations are returned`, `GIVEN a station with an http URL WHEN mapped THEN returns null`, `GIVEN the API returns an empty list WHEN loading THEN returns an empty right`, `GIVEN an IOException WHEN loading THEN returns NetworkUnavailable`, `GIVEN an HTTP error WHEN loading THEN returns ServerError`.
 
 - [ ] **Step 6: Run to verify they fail**
 
