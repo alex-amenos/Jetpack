@@ -58,6 +58,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -496,6 +497,7 @@ private fun formatRemaining(millis: Long): String {
 }
 
 @PreviewLightDark
+@Preview(name = "Landscape", widthDp = 891, heightDp = 411, showBackground = true)
 @Composable
 private fun RadioPlayerScreenPreview() {
     AppTheme {
@@ -516,6 +518,7 @@ private fun RadioPlayerScreenPreview() {
 }
 
 @PreviewLightDark
+@Preview(name = "Landscape", widthDp = 891, heightDp = 411, showBackground = true)
 @Composable
 private fun RadioPlayerScreenErrorPreview() {
     AppTheme {
