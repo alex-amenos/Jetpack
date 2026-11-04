@@ -84,6 +84,7 @@ class GetNavigationItemsUseCase {
             listOf(
                 myPlayground,
                 movies,
+                radioStreaming,
                 posts,
                 fileDownloader,
                 authentication,
@@ -91,7 +92,6 @@ class GetNavigationItemsUseCase {
                 notifications,
                 locationTracker,
                 gameBallClicker,
-                radioStreaming,
             )
     }
 }
