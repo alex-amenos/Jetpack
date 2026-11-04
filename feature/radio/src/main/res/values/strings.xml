@@ -8,7 +8,7 @@
     <string name="radio_stations_empty">No stations available right now.</string>
     <string name="radio_live">LIVE</string>
     <string name="radio_offline_title">No connection</string>
-    <string name="radio_offline_message">The station could not be reached. Check your network.</string>
+    <string name="radio_offline_message">The station could not be reached.\nCheck your network.</string>
     <string name="radio_previous">Previous station</string>
     <string name="radio_next">Next station</string>
     <string name="radio_play">Play</string>

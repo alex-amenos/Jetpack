@@ -22,14 +22,14 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CloudOff
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.SkipNext
-import androidx.compose.material.icons.filled.SkipPrevious
-import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.CloudOff
+import androidx.compose.material.icons.rounded.Pause
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.SkipNext
+import androidx.compose.material.icons.rounded.SkipPrevious
+import androidx.compose.material.icons.rounded.Stop
+import androidx.compose.material.icons.rounded.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -57,10 +57,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.radio.R
 import com.alxnophis.jetpack.radio.playback.PlaybackStatus
 import com.alxnophis.jetpack.radio.ui.contract.PlayerUiState
@@ -101,7 +103,12 @@ internal fun RadioPlayerScreen(
 ) {
     var showTimerSheet by remember { mutableStateOf(false) }
 
-    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+    BoxWithConstraints(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
+    ) {
         val isLandscape = maxWidth > maxHeight
         if (isLandscape) {
             Row(
@@ -240,14 +247,17 @@ private fun BackButton(
     FilledTonalIconButton(
         onClick = onClick,
         modifier = modifier.size(48.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = CircleShape,
     ) {
         Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             contentDescription = stringResource(R.string.radio_back),
         )
     }
 }
+
+private const val ICON_RATIO = 0.45f
+private val PRIMARY_ICON_SIZE = 52.dp
 
 @Composable
 private fun LiveChip() {
@@ -274,7 +284,7 @@ private fun ErrorMessage(onRetry: () -> Unit) {
             modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Icon(imageVector = Icons.Filled.CloudOff, contentDescription = null, tint = MaterialTheme.colorScheme.onErrorContainer)
+            Icon(imageVector = Icons.Rounded.CloudOff, contentDescription = null, tint = MaterialTheme.colorScheme.onErrorContainer)
             Text(
                 text = stringResource(R.string.radio_offline_message),
                 style = MaterialTheme.typography.bodyMedium,
@@ -299,7 +309,7 @@ private fun ControlsRow(
         horizontalArrangement = Arrangement.spacedBy(18.dp),
     ) {
         RoundControl(
-            icon = Icons.Filled.SkipPrevious,
+            icon = Icons.Rounded.SkipPrevious,
             description = stringResource(R.string.radio_previous),
             size = 68.dp,
             enabled = uiState.canPrevious,
@@ -307,7 +317,7 @@ private fun ControlsRow(
         )
         PlayPauseButton(uiState = uiState, onAction = onAction)
         RoundControl(
-            icon = Icons.Filled.SkipNext,
+            icon = Icons.Rounded.SkipNext,
             description = stringResource(R.string.radio_next),
             size = 68.dp,
             enabled = uiState.canNext,
@@ -356,28 +366,28 @@ private fun PlayPauseButton(
 
             isError -> {
                 Icon(
-                    Icons.Filled.PlayArrow,
+                    Icons.Rounded.PlayArrow,
                     stringResource(R.string.radio_retry),
                     tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(64.dp),
+                    modifier = Modifier.size(PRIMARY_ICON_SIZE),
                 )
             }
 
             isPlaying -> {
                 Icon(
-                    Icons.Filled.Pause,
+                    Icons.Rounded.Pause,
                     stringResource(R.string.radio_pause),
                     tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(64.dp),
+                    modifier = Modifier.size(PRIMARY_ICON_SIZE),
                 )
             }
 
             else -> {
                 Icon(
-                    Icons.Filled.PlayArrow,
+                    Icons.Rounded.PlayArrow,
                     stringResource(R.string.radio_play),
                     tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(64.dp),
+                    modifier = Modifier.size(PRIMARY_ICON_SIZE),
                 )
             }
         }
@@ -395,14 +405,14 @@ private fun SecondaryRow(
         horizontalArrangement = Arrangement.spacedBy(18.dp),
     ) {
         RoundControl(
-            icon = Icons.Filled.Stop,
+            icon = Icons.Rounded.Stop,
             description = stringResource(R.string.radio_stop),
             size = 60.dp,
             enabled = uiState.status != PlaybackStatus.Idle,
             onClick = onStop,
         )
         RoundControl(
-            icon = Icons.Filled.Timer,
+            icon = Icons.Rounded.Timer,
             description = stringResource(R.string.radio_sleep_timer),
             size = 60.dp,
             enabled = true,
@@ -428,7 +438,7 @@ private fun RoundControl(
                 .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape),
         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant),
     ) {
-        Icon(imageVector = icon, contentDescription = description, modifier = Modifier.size(32.dp))
+        Icon(imageVector = icon, contentDescription = description, modifier = Modifier.size(size * ICON_RATIO))
     }
 }
 
@@ -463,4 +473,44 @@ private fun SleepTimerSheet(
 private fun formatRemaining(millis: Long): String {
     val totalSeconds = millis / 1_000
     return "%02d:%02d".format(totalSeconds / 60, totalSeconds % 60)
+}
+
+@PreviewLightDark
+@Composable
+private fun RadioPlayerScreenPreview() {
+    AppTheme {
+        RadioPlayerScreen(
+            uiState =
+                PlayerUiState(
+                    stationName = "Catalunya Ràdio",
+                    artworkUri = null,
+                    status = PlaybackStatus.Playing,
+                    canPrevious = true,
+                    canNext = true,
+                    sleepTimerRemainingMillis = 754_000L,
+                ),
+            onBack = {},
+            handleEvent = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun RadioPlayerScreenErrorPreview() {
+    AppTheme {
+        RadioPlayerScreen(
+            uiState =
+                PlayerUiState(
+                    stationName = "Cadena SER",
+                    artworkUri = null,
+                    status = PlaybackStatus.Error,
+                    canPrevious = false,
+                    canNext = false,
+                    sleepTimerRemainingMillis = null,
+                ),
+            onBack = {},
+            handleEvent = {},
+        )
+    }
 }
