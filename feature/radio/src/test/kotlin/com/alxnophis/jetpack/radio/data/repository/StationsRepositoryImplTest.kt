@@ -8,8 +8,8 @@ import com.alxnophis.jetpack.api.jsonplaceholder.model.CallErrorMother
 import com.alxnophis.jetpack.api.radiobrowser.RadioBrowserStationsService
 import com.alxnophis.jetpack.api.radiobrowser.model.StationApiModel
 import com.alxnophis.jetpack.radio.domain.model.RadioError
-import org.amshove.kluent.shouldBeEqualTo
 import kotlinx.coroutines.test.runTest
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
 
 internal class StationsRepositoryImplTest {
@@ -60,6 +60,24 @@ internal class StationsRepositoryImplTest {
         }
 
     @Test
+    fun `GIVEN stations returned by votes WHEN loading THEN they are sorted by name`() =
+        runTest {
+            val service =
+                FakeStationsService(
+                    response =
+                        listOf(
+                            StationApiModel(stationUuid = "1", name = "Rock FM", urlResolved = "https://ok.example.com/1.mp3"),
+                            StationApiModel(stationUuid = "2", name = "cadena SER", urlResolved = "https://ok.example.com/2.mp3"),
+                            StationApiModel(stationUuid = "3", name = "Antena 3", urlResolved = "https://ok.example.com/3.mp3"),
+                        ).right(),
+                )
+
+            val result = StationsRepositoryImpl(service).getSpanishStations()
+
+            result.map { stations -> stations.map { it.name } } shouldBeEqualTo listOf("Antena 3", "cadena SER", "Rock FM").right()
+        }
+
+    @Test
     fun `GIVEN the API returns an empty list WHEN loading THEN returns an empty right`() =
         kotlinx.coroutines.test.runTest {
             val service = FakeStationsService(response = emptyList<StationApiModel>().right())
@@ -72,7 +90,13 @@ internal class StationsRepositoryImplTest {
     @Test
     fun `GIVEN no connectivity WHEN loading THEN returns NetworkUnavailable`() =
         kotlinx.coroutines.test.runTest {
-            val service = FakeStationsService(response = CallErrorMother.noConnectivityError().left())
+            val service =
+                FakeStationsService(
+                    response =
+                        CallErrorMother
+                            .noConnectivityError()
+                            .left(),
+                )
 
             val result = StationsRepositoryImpl(service).getSpanishStations()
 
@@ -82,7 +106,13 @@ internal class StationsRepositoryImplTest {
     @Test
     fun `GIVEN an HTTP error WHEN loading THEN returns ServerError`() =
         kotlinx.coroutines.test.runTest {
-            val service = FakeStationsService(response = CallErrorMother.httpError(code = 500).left())
+            val service =
+                FakeStationsService(
+                    response =
+                        CallErrorMother
+                            .httpError(code = 500)
+                            .left(),
+                )
 
             val result = StationsRepositoryImpl(service).getSpanishStations()
 

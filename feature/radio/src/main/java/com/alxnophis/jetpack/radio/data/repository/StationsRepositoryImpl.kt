@@ -26,6 +26,7 @@ internal class StationsRepositoryImpl(
                     .mapNotNull { it.toStationOrNull() }
                     .distinctBy { it.streamUrl }
                     .take(STATIONS_LIMIT)
+                    .sortedBy { it.name.lowercase() }
             }.mapLeft { error ->
                 Timber.e("GET Spanish stations error: $error")
                 error.toRadioError()
