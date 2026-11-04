@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -90,7 +91,6 @@ private fun NotificationPermissionRequest() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RadioPlayerScreen(
     uiState: PlayerUiState,
@@ -99,54 +99,51 @@ internal fun RadioPlayerScreen(
 ) {
     var showTimerSheet by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding()
-                    .padding(horizontal = 24.dp, vertical = 20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(48.dp, Alignment.CenterVertically),
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                StationIcon(faviconUrl = uiState.artworkUri, size = 200.dp)
-                Spacer(modifier = Modifier.height(24.dp))
-                Text(
-                    text = uiState.stationName.orEmpty(),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurface,
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val isLandscape = maxWidth > maxHeight
+        if (isLandscape) {
+            Row(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .statusBarsPadding()
+                        .padding(horizontal = 24.dp, vertical = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(32.dp),
+            ) {
+                PlayerInfo(
+                    uiState = uiState,
+                    handleEvent = handleEvent,
+                    iconSize = 160.dp,
+                    modifier = Modifier.weight(1f),
                 )
-                Spacer(modifier = Modifier.height(14.dp))
-                LiveChip()
-                if (uiState.status == PlaybackStatus.Error) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    ErrorMessage(onRetry = { handleEvent(RadioPlayerEvent.Retry) })
-                }
+                PlayerControls(
+                    uiState = uiState,
+                    handleEvent = handleEvent,
+                    onTimer = { showTimerSheet = true },
+                    modifier = Modifier.weight(1f),
+                )
             }
-
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                ControlsRow(
+        } else {
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .statusBarsPadding()
+                        .padding(horizontal = 24.dp, vertical = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(48.dp, Alignment.CenterVertically),
+            ) {
+                PlayerInfo(
                     uiState = uiState,
-                    onAction = handleEvent,
+                    handleEvent = handleEvent,
+                    iconSize = 200.dp,
                 )
-                Spacer(modifier = Modifier.height(24.dp))
-                SecondaryRow(
+                PlayerControls(
                     uiState = uiState,
-                    onStop = { handleEvent(RadioPlayerEvent.Stop) },
+                    handleEvent = handleEvent,
                     onTimer = { showTimerSheet = true },
                 )
-                uiState.sleepTimerRemainingMillis?.let { remaining ->
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        text = stringResource(R.string.radio_sleep_remaining, formatRemaining(remaining)),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
             }
         }
 
@@ -168,6 +165,68 @@ internal fun RadioPlayerScreen(
                 showTimerSheet = false
             },
         )
+    }
+}
+
+@Composable
+private fun PlayerInfo(
+    uiState: PlayerUiState,
+    handleEvent: (RadioPlayerEvent) -> Unit,
+    iconSize: Dp,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        StationIcon(faviconUrl = uiState.artworkUri, size = iconSize)
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = uiState.stationName.orEmpty(),
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Spacer(modifier = Modifier.height(14.dp))
+        LiveChip()
+        if (uiState.status == PlaybackStatus.Error) {
+            Spacer(modifier = Modifier.height(16.dp))
+            ErrorMessage(onRetry = { handleEvent(RadioPlayerEvent.Retry) })
+        }
+    }
+}
+
+@Composable
+private fun PlayerControls(
+    uiState: PlayerUiState,
+    handleEvent: (RadioPlayerEvent) -> Unit,
+    onTimer: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        ControlsRow(
+            uiState = uiState,
+            onAction = handleEvent,
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        SecondaryRow(
+            uiState = uiState,
+            onStop = { handleEvent(RadioPlayerEvent.Stop) },
+            onTimer = onTimer,
+        )
+        uiState.sleepTimerRemainingMillis?.let { remaining ->
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = stringResource(R.string.radio_sleep_remaining, formatRemaining(remaining)),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 
