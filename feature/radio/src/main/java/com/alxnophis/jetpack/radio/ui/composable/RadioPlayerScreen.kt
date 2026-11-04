@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -41,6 +42,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -166,6 +168,25 @@ internal fun RadioPlayerScreen(
                     .statusBarsPadding()
                     .padding(start = 16.dp, top = 8.dp),
         )
+
+        if (uiState.status == PlaybackStatus.Error) {
+            ErrorBanner(
+                onRetry = { handleEvent(RadioPlayerEvent.Retry) },
+                modifier =
+                    if (isLandscape) {
+                        Modifier
+                            .align(Alignment.TopCenter)
+                            .statusBarsPadding()
+                            .padding(top = 16.dp)
+                            .widthIn(max = BANNER_MAX_WIDTH)
+                    } else {
+                        Modifier
+                            .align(Alignment.TopCenter)
+                            .statusBarsPadding()
+                            .padding(start = 80.dp, end = 24.dp, top = 16.dp)
+                    },
+            )
+        }
     }
 
     if (showTimerSheet) {
@@ -182,6 +203,7 @@ internal fun RadioPlayerScreen(
 private const val ICON_RATIO = 0.6f
 private val PRIMARY_ICON_SIZE = 64.dp
 private val RIPPLE_CORNER_RADIUS = 16.dp
+private val BANNER_MAX_WIDTH = 420.dp
 
 @Composable
 private fun PlayerInfo(
@@ -205,10 +227,6 @@ private fun PlayerInfo(
         )
         Spacer(modifier = Modifier.height(14.dp))
         LiveChip()
-        if (uiState.status == PlaybackStatus.Error) {
-            Spacer(modifier = Modifier.height(24.dp))
-            ErrorMessage(onRetry = { handleEvent(RadioPlayerEvent.Retry) })
-        }
     }
 }
 
@@ -278,15 +296,19 @@ private fun LiveChip() {
 }
 
 @Composable
-private fun ErrorMessage(onRetry: () -> Unit) {
+private fun ErrorBanner(
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Surface(
+        modifier = modifier,
         shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.errorContainer,
     ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+        Row(
+            modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Icon(
                 imageVector = Icons.Rounded.CloudOff,
@@ -295,11 +317,11 @@ private fun ErrorMessage(onRetry: () -> Unit) {
             )
             Text(
                 text = stringResource(R.string.radio_offline_message),
+                modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onErrorContainer,
             )
-            Button(onClick = onRetry) {
+            TextButton(onClick = onRetry) {
                 Text(text = stringResource(R.string.radio_retry))
             }
         }
