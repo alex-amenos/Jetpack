@@ -32,6 +32,34 @@ internal class StationsRepositoryImplTest {
         }
 
     @Test
+    fun `GIVEN the API returns more than 50 valid stations WHEN loading THEN returns the first 50`() =
+        runTest {
+            val apiStations = (1..80).map { apiModel("$it", "https://ok.example.com/$it.mp3") }
+            val service = FakeStationsService(response = apiStations.right())
+
+            val result = StationsRepositoryImpl(service).getSpanishStations()
+
+            result.map { it.size } shouldBeEqualTo 50.right()
+        }
+
+    @Test
+    fun `GIVEN the API returns duplicate stream urls WHEN loading THEN keeps one station per url`() =
+        runTest {
+            val service =
+                FakeStationsService(
+                    response =
+                        listOf(
+                            apiModel("1", "https://ok.example.com/a.mp3"),
+                            apiModel("2", "https://ok.example.com/a.mp3"),
+                        ).right(),
+                )
+
+            val result = StationsRepositoryImpl(service).getSpanishStations()
+
+            result.map { stations -> stations.map { it.id } } shouldBeEqualTo listOf("1").right()
+        }
+
+    @Test
     fun `GIVEN the API returns an empty list WHEN loading THEN returns an empty right`() =
         kotlinx.coroutines.test.runTest {
             val service = FakeStationsService(response = emptyList<StationApiModel>().right())

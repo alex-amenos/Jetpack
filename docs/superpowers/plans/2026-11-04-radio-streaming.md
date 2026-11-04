@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a "Radio Streaming" feature that lists the 30 most-voted Spanish stations from Radio Browser and plays a selected station as a live stream with Media3, with background playback, notification, previous/next, sleep timer, and manual retry.
+**Goal:** Add a "Radio Streaming" feature that lists the 50 most-voted Spanish stations from Radio Browser and plays a selected station as a live stream with Media3, with background playback, notification, previous/next, sleep timer, and manual retry.
 
 **Architecture:** One new module `feature/radio` (package `com.alxnophis.jetpack.radio`). A Media3 `MediaSessionService` owns `ExoPlayer`, the queue, and the sleep timer. The UI connects through a `MediaController` from MVI ViewModels. Data comes from Radio Browser via Retrofit and is mapped to a domain `Station` model with `Either<RadioError, T>`. The entry point is wired in `:app`.
 
@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - Kotlin 2.4.20; Compose BOM 2026.05.01; Koin 4.2.2; Arrow 2.2.3.
-- Only Spanish stations: `GET https://de1.api.radio-browser.info/json/stations/bycountry/Spain?limit=30&order=votes&reverse=true`.
+- Only Spanish stations: `GET https://de1.api.radio-browser.info/json/stations/bycountry/Spain?limit=100&order=votes&reverse=true`.
 - Buffer: `DefaultLoadControl` with `minBufferMs = 3000` and `bufferForPlaybackMs = 3000`.
 - No `SimpleCache` for the stream.
 - Required permissions: `INTERNET`, `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_MEDIA_PLAYBACK`, `POST_NOTIFICATIONS` (runtime, Android 13+).

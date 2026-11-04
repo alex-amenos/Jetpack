@@ -11,7 +11,7 @@ Success means: a user can start, pause, stop, and recover from network loss on a
 
 ## 2. Goals
 
-- Show the 30 most-voted Spanish stations from Radio Browser, ordered by votes.
+- Show the 50 most-voted Spanish stations from Radio Browser, ordered by votes.
 - Play a station as a live stream with Media3 (`ExoPlayer`, `MediaSessionService`, `MediaController`).
 - Player screen with a large station icon, the station name, a "LIVE" indicator, and controls.
 - Actions in scope:
@@ -29,7 +29,7 @@ Success means: a user can start, pause, stop, and recover from network loss on a
 - Favorites or any local persistence of stations.
 - Sharing a station, showing codec/bitrate in the UI, or searching stations.
 - Countries other than Spain. No country selector.
-- Pagination. Only the first 30 stations are shown.
+- Pagination. Only the first 50 valid stations are shown.
 - Seek, skip-forward/back, playback speed, and progress bar. These do not apply to live streams.
 - Disk caching of the stream. Live streams are unbounded and must not use `SimpleCache`.
 
@@ -53,7 +53,7 @@ Success means: a user can start, pause, stop, and recover from network loss on a
 ## 6. Data source
 
 **Endpoint:**
-`GET https://de1.api.radio-browser.info/json/stations/bycountry/Spain?limit=30&order=votes&reverse=true`
+`GET https://de1.api.radio-browser.info/json/stations/bycountry/Spain?limit=100&order=votes&reverse=true`
 
 No API key is needed.
 

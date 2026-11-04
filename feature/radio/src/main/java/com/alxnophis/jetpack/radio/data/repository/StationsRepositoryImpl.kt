@@ -13,14 +13,20 @@ import com.alxnophis.jetpack.radio.domain.model.Station
 import com.alxnophis.jetpack.radio.domain.repository.StationsRepository
 import timber.log.Timber
 
+private const val STATIONS_LIMIT = 50
+
 internal class StationsRepositoryImpl(
     private val service: RadioBrowserStationsService,
 ) : StationsRepository {
     override suspend fun getSpanishStations(): Either<RadioError, List<Station>> =
         service
             .getSpanishStations()
-            .map { stations -> stations.mapNotNull { it.toStationOrNull() } }
-            .mapLeft { error ->
+            .map { stations ->
+                stations
+                    .mapNotNull { it.toStationOrNull() }
+                    .distinctBy { it.streamUrl }
+                    .take(STATIONS_LIMIT)
+            }.mapLeft { error ->
                 Timber.e("GET Spanish stations error: $error")
                 error.toRadioError()
             }
