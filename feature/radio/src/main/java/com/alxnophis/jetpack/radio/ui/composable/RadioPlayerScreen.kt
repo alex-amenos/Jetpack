@@ -200,7 +200,7 @@ private fun PlayerInfo(
         Spacer(modifier = Modifier.height(14.dp))
         LiveChip()
         if (uiState.status == PlaybackStatus.Error) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             ErrorMessage(onRetry = { handleEvent(RadioPlayerEvent.Retry) })
         }
     }
@@ -281,17 +281,21 @@ private fun ErrorMessage(onRetry: () -> Unit) {
         color = MaterialTheme.colorScheme.errorContainer,
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Icon(imageVector = Icons.Rounded.CloudOff, contentDescription = null, tint = MaterialTheme.colorScheme.onErrorContainer)
+            Icon(
+                imageVector = Icons.Rounded.CloudOff,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onErrorContainer,
+            )
             Text(
                 text = stringResource(R.string.radio_offline_message),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onErrorContainer,
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = onRetry) {
                 Text(text = stringResource(R.string.radio_retry))
             }
