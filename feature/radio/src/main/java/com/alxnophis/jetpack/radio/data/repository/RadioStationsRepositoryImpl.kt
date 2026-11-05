@@ -34,8 +34,20 @@ internal class RadioStationsRepositoryImpl(
 
     private fun CallError.toRadioError(): RadioError =
         when (this) {
-            is IOError -> if (cause is NoConnectivityException) RadioError.NetworkUnavailable else RadioError.ServerError
-            is UnexpectedCallError -> RadioError.ServerError
-            is HttpError -> RadioError.ServerError
+            is IOError -> {
+                if (cause is NoConnectivityException) {
+                    RadioError.NetworkUnavailable
+                } else {
+                    RadioError.ServerError
+                }
+            }
+
+            is UnexpectedCallError -> {
+                RadioError.ServerError
+            }
+
+            is HttpError -> {
+                RadioError.ServerError
+            }
         }
 }
