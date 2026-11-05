@@ -1,0 +1,452 @@
+[
+  {
+    "stationuuid": "b81c57c3-eb05-47ac-a0ea-eb01a6960cc4",
+    "name": "LOS 40 Principales España",
+    "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/Los40.mp3",
+    "favicon": "https://los40es00.epimg.net/iconos/v1.x/v1.0/touch-apple.png",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "b1cae36e-6db3-455c-ab2e-60be72e55b7c",
+    "name": "_80 EXITOS",
+    "url_resolved": "https://80sexitos.stream.laut.fm/80sexitos",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "8cc2da8b-ae85-4e37-9027-9ad765a1ea7a",
+    "name": "Los 40 Urban",
+    "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/LOS40_URBAN.mp3",
+    "favicon": "https://los40es00.epimg.net/iconos/v1.x/v1.0/promos/promo_og_los40.png",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "26edc6b6-d221-4814-a6a9-0dd5d5d365d2",
+    "name": "Pure Ibiza Radio",
+    "url_resolved": "https://pureibizaradio.clubbingradios.com:9518/PureIbizaRadio",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 256,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "b129bdd2-65bc-4363-8f74-14b474bc0500",
+    "name": "Radio Marca",
+    "url_resolved": "https://sonic.mediatelekom.net/9316/stream",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "3fd18c3f-8157-11e9-aa30-52543be04c81",
+    "name": "Café del Mar",
+    "url_resolved": "https://streams.radio.co/se1a320b47/listen",
+    "favicon": "https://cafedelmar.com/apple-touch-icon.png",
+    "codec": "MP3",
+    "bitrate": 192,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "de39fc19-0636-4d05-acbb-2aba2c0d1f7a",
+    "name": "LOS40 Classic",
+    "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/LOS40_CLASSIC.mp3",
+    "favicon": "https://los40es00.epimg.net/estaticos/recursosgraficos/v1/img/app/los40_192.png",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "07dbb40c-f3a8-4f45-925d-c16ef08c7293",
+    "name": "Radio Marca Madrid",
+    "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOMARCA_NACIONAL_SC",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "743889d5-5472-4e9f-ac61-5f0f04e7efa8",
+    "name": "KISS FM",
+    "url_resolved": "https://adhandler.kissfmradio.cires21.com/get_link?url=https://bbkissfm.kissfmradio.cires21.com/bbkissfm.mp3",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 56,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "b8601593-152a-429d-9cb2-5065cf7c0185",
+    "name": "ONDA CERO (España)",
+    "url_resolved": "https://atres-live.ondacero.es/live/ondacero/bitrate_1.m3u8",
+    "favicon": "",
+    "codec": "AAC",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "63dd5d75-855f-4e7e-9570-b8d3b338c016",
+    "name": "Perfect Deep House",
+    "url_resolved": "https://stream.radiojar.com/asngk2sg798uv?1659885393",
+    "favicon": "https://perfect-radio.com/____impro/1/onewebmedia/Logo%20Perfect%20Deephouse.jpg?etag=W%2F%22847e5-619665ca%22&sourceContentType=image%2Fjpeg&ignoreAspectRatio&resize=355%2B372&extract=0%2B0%2B354%2B372&quality=85",
+    "codec": "MP3",
+    "bitrate": 0,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "e34d6ca5-d554-49e1-a673-a04d8930f303",
+    "name": "24h RTVE Televisión",
+    "url_resolved": "https://ztnr.rtve.es/ztnr/1694255.m3u8",
+    "favicon": "https://img2.rtve.es/imagenes/directo-elecciones-cataluna/1504082563113.jpg",
+    "codec": "AAC,H.264",
+    "bitrate": 3012,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "db656299-a63e-4b7b-ac5a-ac2444459ae4",
+    "name": "RNE - R1 --> Madrid",
+    "url_resolved": "https://d121.rndfnk.com/star/crtve/rne1/mad/mp3/128/stream.mp3?cid=01GEM7S23A9B744SKFN04XA893&sid=2HgEg5aD71G8EuEf67MKTba5AnL&token=n_qXJorii6EVsZ_IP-RSzQP8sRamUc8gqb1nDnqiNT8&tvf=HHgasgd8KBdkMTIxLnJuZGZuay5jb20",
+    "favicon": "https://img2.rtve.es/a/3893534/square/?h=320",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "38a33fc0-be05-4c98-8c6a-ba3869575bc1",
+    "name": "RAC1",
+    "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC_1.mp3",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "69bc7084-523c-11ea-be63-52543be04c81",
+    "name": "Catalunya Informació (Catinfo)",
+    "url_resolved": "https://shoutcast.ccma.cat/ccma/catalunyainformacioHD.mp3",
+    "favicon": "https://statics.ccma.cat/img/favicons/catinfo-favicon-96x96.png",
+    "codec": "AAC",
+    "bitrate": 56,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "ffc3c473-6eb2-47f8-a0be-6536a8beda00",
+    "name": "Radio España",
+    "url_resolved": "https://stream-177.surfernetwork.com/7ywx2u45vv8uv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiI3eXd4MnU0NXZ2OHV2IiwiaG9zdCI6InN0cmVhbS0xNzcuc3VyZmVybmV0d29yay5jb20iLCJ0bSI6ZmFsc2UsInJ0dGwiOjUsImp0aSI6IjJGZERDbG5HU3F1WVZNRmtab25BZ1EiLCJpYXQiOjE3OTM0OTExMjQsImV4cCI6MTc5MzQ5MTE4NH0.VzeS9TObbDRKTsFZcLeKfMRiKaKhfSXE6fPR4O0tWAM",
+    "favicon": "https://cdn.onlineradiobox.com/img/l/9/109189.v2.png",
+    "codec": "MP3",
+    "bitrate": 96,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "499f6465-ca83-4ad4-a4cd-18d625281651",
+    "name": "Remember the music FM 96.6",
+    "url_resolved": "https://eu1.lhdserver.es:9041/stream",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "bc5e41ee-51da-454b-993a-56895be3e864",
+    "name": "punk irratia",
+    "url_resolved": "https://punkirratia.net:8443/punk",
+    "favicon": "https://punkirratia.net/punkirratia.jpg",
+    "codec": "MP3",
+    "bitrate": 192,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "d9484397-31a2-45f0-baf8-3db8878e8bc0",
+    "name": "Hit FM",
+    "url_resolved": "https://adhandler.kissfmradio.cires21.com/get_link?url=https://bbhitfm.kissfmradio.cires21.com/bbhitfm.mp3",
+    "favicon": "https://www.hitfm.es/wp-content/uploads/2019/06/cropped-favicon-192x192.png",
+    "codec": "MP3",
+    "bitrate": 56,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "5d6b5573-d661-477a-82fc-1d0d03799679",
+    "name": "Radio Nacional de España - Radio 5 Todo noticias",
+    "url_resolved": "https://d131.rndfnk.com/star/crtve/rne5/main/mp3/128/stream.mp3?aggregator=tunein&cid=01GEP4MW5CAHPYP1EXHVKWFJ8W&sid=2OeE42hivuba6dTGvjnMGjKByQe&token=cdczXcnimVx4AY4iamqYbTMdu3cK7oBxmS2UQN9cWc0&tvf=pdPcDBxuVxdkMTMxLnJuZGZuay5jb20",
+    "favicon": "https://img2.rtve.es/css//rtve.2021/i/rtve-logos/logos_cadenas/radio-5_color.svg",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "2087b4c4-820a-4545-9bd7-eaf28792f44a",
+    "name": "Catalunya Radio",
+    "url_resolved": "https://shoutcast.ccma.cat/ccma/catalunyaradioHD.mp3",
+    "favicon": "",
+    "codec": "AAC",
+    "bitrate": 56,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "a5bf8121-0877-405c-b4dc-ca5c4af496fe",
+    "name": "Marca Valladolid ",
+    "url_resolved": "https://radiomarcavalladolid.streaming-pro.com:6106/radiomarca.mp3",
+    "favicon": "https://radiomarcavalladolid.com/wp-content/uploads/2021/08/cropped-unnamed-180x180.png",
+    "codec": "MP3",
+    "bitrate": 48,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "6ad5e93f-869d-4165-a685-25e8363c1bf4",
+    "name": "Radio Planeta Costa del Sol",
+    "url_resolved": "https://radioplaneta.emitironline.com/radio",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 192,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "928fa2e1-6312-42b2-af33-e7329f681ff8",
+    "name": "Costa Del Mar Smooth Jazz",
+    "url_resolved": "https://radio4.cdm-radio.com:18024/stream-mp3-Smooth",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 96,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "f3081f41-531f-4e38-88bc-8e1a699635c4",
+    "name": "#1 Splash 90s Dance",
+    "url_resolved": "https://c6.auracast.net/radio/8090/radio.mp3",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "ba71845c-3ceb-4278-9bb7-7b2e3cc6bc41",
+    "name": "Flaix FM",
+    "url_resolved": "https://stream.flaixfm.cat/icecast",
+    "favicon": "https://flaixfm.cat/favicon.ico",
+    "codec": "AAC",
+    "bitrate": 125,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "54732c01-db87-4aa2-b313-22fd5fa7eee9",
+    "name": "Free FM 80s",
+    "url_resolved": "https://freefm80.radioca.st/",
+    "favicon": "https://freefmworld.com/assets/img/freefmworld-logo-oficial.jpg",
+    "codec": "MP3",
+    "bitrate": 320,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "55112aa4-5fca-4201-bc53-ae2b467ee087",
+    "name": "EsRadio Principal",
+    "url_resolved": "https://libertaddigital-radio-live1.flumotion.com/libertaddigital/ld-live1-low.mp3",
+    "favicon": "https://s.libertaddigital.com/2024/08/20/1200/627/esradio/esradio-redes.jpg",
+    "codec": "MP3",
+    "bitrate": 56,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "3e4d9cfd-4273-11ea-a95e-52543be04c81",
+    "name": "COPE Albacete",
+    "url_resolved": "https://wecast-bl01.flumotion.com/copesedes/albacete.mp3",
+    "favicon": "https://www.cope.es/favicon/cope/apple-touch-icon-192x192.png",
+    "codec": "MP3",
+    "bitrate": 96,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "6a04d092-c3b7-4295-955b-52ec9589a5ee",
+    "name": "Onda Cero Gijón",
+    "url_resolved": "https://atres-live.ondacero.es/live/delegaciones/oc/gijon/bitrate_1.m3u8",
+    "favicon": "https://static.ondacero.es/img/favicon.ico",
+    "codec": "AAC",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "6e36299b-6a91-4022-9db4-f72a2c8e9fef",
+    "name": "RAC1 +1",
+    "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC_MES_1.mp3",
+    "favicon": "https://www.rac1.cat/apple-touch-icon-120x120.png",
+    "codec": "MP3",
+    "bitrate": 96,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "4ca23be9-ad31-4ac1-9d95-2d9916ecad64",
+    "name": "LOVE RADIO - LOVE.radio",
+    "url_resolved": "https://loveradio.streamingmedia.it/espana",
+    "favicon": "",
+    "codec": "AAC+",
+    "bitrate": 194,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "12197e7c-65c3-477d-8fb3-7c826fb77992",
+    "name": "Intimidad Relax",
+    "url_resolved": "https://eu1.lhdserver.es:9121/stream",
+    "favicon": "https://intimidadradio.com/favicon.ico",
+    "codec": "MP3",
+    "bitrate": 320,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "bf5b804b-45ba-41ed-a1a7-41e0544e08e9",
+    "name": "Radio Nature",
+    "url_resolved": "https://stream.zeno.fm/3ac97ysh6f0uv.aac",
+    "favicon": "https://radionature.weebly.com/uploads/7/4/0/7/74072033/icon-players_orig.png",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "04e50d31-07d9-4e6a-927a-b22fb034eb3c",
+    "name": "Cadena SER - Ràdio Barcelona",
+    "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/SER_BARCELONA.mp3",
+    "favicon": "https://cadenaser00.epimg.net/favicon.png",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "0bfc545c-1927-4402-aee1-b7128d4ea161",
+    "name": "LOS 40 DANCE",
+    "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/LOS40_DANCE.mp3",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "e29ee7e2-8bd6-454d-aae6-f54db3157fbd",
+    "name": "Cadena 100",
+    "url_resolved": "https://cadena100-cope.flumotion.com/chunks.m3u8",
+    "favicon": "https://www.cadena100.es/estaticos/apple-touch-icon-192x192.png",
+    "codec": "UNKNOWN",
+    "bitrate": 0,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "80275338-f9c4-418c-a142-28acf902ef5c",
+    "name": "Radio Libertad",
+    "url_resolved": "https://server9.emitironline.com:19482/stream?cb=1708722000350",
+    "favicon": "https://radiolibertad.es/wp-content/uploads/2022/08/Logo_RadioLibertad_300px.png",
+    "codec": "AAC",
+    "bitrate": 64,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "73e2ad07-cd68-11e9-8502-52543be04c81",
+    "name": "1 Slow-Radio - laut.fm",
+    "url_resolved": "https://1slowradio.stream.laut.fm/1_slowradio",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "488c207c-b9b4-4e67-9f33-7ce9450dd41e",
+    "name": "Loca Progressive House",
+    "url_resolved": "https://s02.fjperezdj.com:8056/live?listening-from-radio-garden=1647634146",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "153777aa-209e-4769-bde5-46abafd375e7",
+    "name": "INFORMA RADIO",
+    "url_resolved": "https://24x7.red:42045/informa",
+    "favicon": "https://informaradio.edatv.news/fav-300x300.png",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "09149337-5dea-4c9d-af18-145febeaf94a",
+    "name": "Mix80Radio",
+    "url_resolved": "https://stream.tunerplay.com/radio/8040/radio.mp3",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 256,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "c4574cc8-ae16-44cb-b3ac-4d4f9d79975d",
+    "name": "C. DIAL Baladas",
+    "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/CADENADIAL_03.mp3",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "c9d75db2-d044-465a-9ec6-ee46c8d20a0b",
+    "name": "RadioBlues Flac",
+    "url_resolved": "https://streams.radiomast.io/radioblues-flac",
+    "favicon": "https://bluesflac.com/wp-content/uploads/2019/11/cropped-skull-1-180x180.png",
+    "codec": "OGG",
+    "bitrate": 1500,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "93db812b-3732-459e-ae33-1af18062066d",
+    "name": "EsRadio (MP3 HQ)",
+    "url_resolved": "https://libertaddigital-radio-live1.flumotion.com/libertaddigital/ld-live1-high.mp3",
+    "favicon": "https://s.libertaddigital.com/2024/08/20/1200/627/esradio/esradio-redes.jpg",
+    "codec": "MP3",
+    "bitrate": 56,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "d8b6ba19-f431-471e-9598-94f42af0d3ac",
+    "name": "RNE Radio 3",
+    "url_resolved": "https://rtvelivestream.rtve.es/rtvesec/rne/rne_r3_main.m3u8",
+    "favicon": "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.rtve.es/play/radio/radio-3/&size=16",
+    "codec": "UNKNOWN",
+    "bitrate": 0,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "bbaa52e1-c9ab-4795-8410-dfbecf85efb6",
+    "name": "Misterio FM",
+    "url_resolved": "https://stream-38.zeno.fm/zr1ntv61fchvv?zs=B6YIARuRSaujjyuQoZxg0g",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "4add5686-dcb7-4fa2-8e21-ef4c09a64fb1",
+    "name": "Radio Vilasound Ibiza 92.7 FM",
+    "url_resolved": "https://s9.citrus3.com:8174/stream",
+    "favicon": "",
+    "codec": "AAC",
+    "bitrate": 128,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "88a2899f-a42f-43ed-b2bc-6d5e40b8131c",
+    "name": "Mariskal Rock",
+    "url_resolved": "https://media.profesionalhosting.com:8047/stream",
+    "favicon": "",
+    "codec": "MP3",
+    "bitrate": 192,
+    "countrycode": "ES"
+  },
+  {
+    "stationuuid": "85f062a8-b68f-4e64-91da-0e4cf71aaf85",
+    "name": "Kiss Music FM",
+    "url_resolved": "https://stream.zeno.fm/aq899a53rs8uv",
+    "favicon": "https://cdn.onlineradiobox.com/img/l/9/102759.v2.png",
+    "codec": "MP3",
+    "bitrate": 128,
+    "countrycode": "ES"
+  }
+]

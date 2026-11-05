@@ -1,0 +1,17 @@
+apply from: "$rootDir/buildSystem/gradle/common-android-feature.gradle"
+
+android {
+    resourcePrefix = 'radio'
+    namespace = 'com.alxnophis.jetpack.radio'
+}
+
+dependencies {
+    implementation project(Modules.SHARED_API)
+    implementation libs.retrofit
+    implementation libs.androidx.media3.exoplayer
+    implementation libs.androidx.media3.exoplayer.hls
+    implementation libs.androidx.media3.session
+
+    testImplementation(libs.bundles.kotest)
+    testImplementation libs.androidx.media3.test.utils
+}

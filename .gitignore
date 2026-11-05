@@ -106,3 +106,4 @@ gen-external-apklibs
 
 ### Gemfile
 Gemfile.lock
+/.superpowers/
