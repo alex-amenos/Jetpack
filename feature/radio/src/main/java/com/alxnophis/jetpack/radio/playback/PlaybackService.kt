@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
@@ -19,6 +20,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@UnstableApi
 class PlaybackService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
     private lateinit var player: ExoPlayer
@@ -66,16 +68,18 @@ class PlaybackService : MediaSessionService() {
 
     private fun openPlayerPendingIntent(): PendingIntent {
         val intent =
-            packageManager.getLaunchIntentForPackage(packageName)?.apply {
-                action = RadioPlayerIntent.ACTION_OPEN_PLAYER
-                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            } ?: Intent()
+            packageManager
+                .getLaunchIntentForPackage(packageName)
+                ?.apply {
+                    action = RadioPlayerIntent.ACTION_OPEN_PLAYER
+                    addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                } ?: Intent()
         return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     private fun publishRemaining(remainingMillis: Long?) {
         val extras = Bundle().apply { remainingMillis?.let { putLong(RadioSessionCommands.KEY_REMAINING_MILLIS, it) } }
-        mediaSession?.setSessionExtras(extras)
+        mediaSession?.sessionExtras = extras
     }
 
     private inner class RadioSessionCallback : MediaSession.Callback {

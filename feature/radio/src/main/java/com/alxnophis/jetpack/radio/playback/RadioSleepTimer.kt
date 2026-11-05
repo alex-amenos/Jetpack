@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class RadioSleepTimer(
     private val scope: CoroutineScope,
@@ -23,7 +24,7 @@ internal class RadioSleepTimer(
                 var remaining = minutes * MILLIS_PER_MINUTE
                 while (remaining > 0) {
                     _remainingMillis.value = remaining
-                    delay(TICK_MILLIS)
+                    delay(TICK_MILLIS.milliseconds)
                     remaining -= TICK_MILLIS
                 }
                 _remainingMillis.value = null
