@@ -24,8 +24,8 @@ internal class RadioPlayerController(
     private val controllerDeferred = CompletableDeferred<MediaController>()
     private var activeController: MediaController? = null
     private var connected = false
-    private val _snapshot = MutableStateFlow(PlayerSnapshot())
-    override val snapshot: StateFlow<PlayerSnapshot> = _snapshot.asStateFlow()
+    private val _snapshot = MutableStateFlow(RadioPlayerSnapshot())
+    override val snapshot: StateFlow<RadioPlayerSnapshot> = _snapshot.asStateFlow()
 
     override fun connect() {
         if (connected) return
@@ -110,7 +110,7 @@ internal class RadioPlayerController(
     private fun publish(controller: MediaController) {
         val remaining = controller.sessionExtras.getLong(RadioSessionCommands.KEY_REMAINING_MILLIS, NO_TIMER)
         _snapshot.value =
-            PlayerSnapshot(
+            RadioPlayerSnapshot(
                 stationId = controller.currentMediaItem?.mediaId,
                 stationName = controller.mediaMetadata.title?.toString(),
                 artworkUri = controller.mediaMetadata.artworkUri,

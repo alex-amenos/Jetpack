@@ -6,13 +6,13 @@ import arrow.core.right
 import arrow.retrofit.adapter.either.networkhandling.CallError
 import com.alxnophis.jetpack.api.jsonplaceholder.model.CallErrorMother
 import com.alxnophis.jetpack.api.radiobrowser.RadioBrowserStationsService
-import com.alxnophis.jetpack.api.radiobrowser.model.StationApiModel
+import com.alxnophis.jetpack.api.radiobrowser.model.RadioStationApiModel
 import com.alxnophis.jetpack.radio.domain.model.RadioError
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
 
-internal class StationsRepositoryImplTest {
+internal class RadioStationsRepositoryImplTest {
     @Test
     fun `GIVEN the API returns stations with valid and invalid URLs WHEN loading THEN only valid stations are returned`() =
         kotlinx.coroutines.test.runTest {
@@ -66,9 +66,9 @@ internal class StationsRepositoryImplTest {
                 FakeStationsService(
                     response =
                         listOf(
-                            StationApiModel(stationUuid = "1", name = "Rock FM", urlResolved = "https://ok.example.com/1.mp3"),
-                            StationApiModel(stationUuid = "2", name = "cadena SER", urlResolved = "https://ok.example.com/2.mp3"),
-                            StationApiModel(stationUuid = "3", name = "Antena 3", urlResolved = "https://ok.example.com/3.mp3"),
+                            RadioStationApiModel(stationUuid = "1", name = "Rock FM", urlResolved = "https://ok.example.com/1.mp3"),
+                            RadioStationApiModel(stationUuid = "2", name = "cadena SER", urlResolved = "https://ok.example.com/2.mp3"),
+                            RadioStationApiModel(stationUuid = "3", name = "Antena 3", urlResolved = "https://ok.example.com/3.mp3"),
                         ).right(),
                 )
 
@@ -80,7 +80,7 @@ internal class StationsRepositoryImplTest {
     @Test
     fun `GIVEN the API returns an empty list WHEN loading THEN returns an empty right`() =
         kotlinx.coroutines.test.runTest {
-            val service = FakeStationsService(response = emptyList<StationApiModel>().right())
+            val service = FakeStationsService(response = emptyList<RadioStationApiModel>().right())
 
             val result = RadioStationsRepositoryImpl(service).getSpanishStations()
 
@@ -122,15 +122,15 @@ internal class StationsRepositoryImplTest {
     private fun apiModel(
         id: String,
         url: String?,
-    ) = StationApiModel(stationUuid = id, name = "RadioStation $id", urlResolved = url)
+    ) = RadioStationApiModel(stationUuid = id, name = "RadioStation $id", urlResolved = url)
 
     private class FakeStationsService(
-        private val response: Either<CallError, List<StationApiModel>>,
+        private val response: Either<CallError, List<RadioStationApiModel>>,
     ) : RadioBrowserStationsService {
         override suspend fun getSpanishStations(
             limit: Int,
             order: String,
             reverse: Boolean,
-        ): Either<CallError, List<StationApiModel>> = response
+        ): Either<CallError, List<RadioStationApiModel>> = response
     }
 }

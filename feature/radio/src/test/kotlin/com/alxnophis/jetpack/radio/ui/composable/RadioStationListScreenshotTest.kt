@@ -3,7 +3,7 @@ package com.alxnophis.jetpack.radio.ui.composable
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onRoot
 import com.alxnophis.jetpack.radio.domain.model.RadioStationMother
-import com.alxnophis.jetpack.radio.ui.contract.ListStatus
+import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListUiState
 import com.alxnophis.jetpack.testing.screenshot.ScreenshotTestUtils.captureScreenshot
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
@@ -27,7 +27,7 @@ internal class RadioStationListScreenshotTest {
     fun stationListContent() {
         val uiState =
             RadioStationListUiState(
-                status = ListStatus.Content,
+                status = RadioStationListStatus.Content,
                 stations =
                     listOf(
                         RadioStationMother.create(id = "1", name = "Cadena SER", faviconUrl = null, bitrate = 128),
@@ -36,14 +36,14 @@ internal class RadioStationListScreenshotTest {
             )
         composeRule.setContent { RadioStationListScreen(uiState, onBack = {}, onStationSelected = {}, handleEvent = {}) }
 
-        composeRule.onRoot().captureScreenshot(screenName = "StationListScreen", stateIndex = 0)
+        composeRule.onRoot().captureScreenshot(screenName = "RadioStationListScreen", stateIndex = 0)
     }
 
     @Test
     fun stationListError() {
-        val uiState = RadioStationListUiState(status = ListStatus.Error, stations = persistentListOf())
+        val uiState = RadioStationListUiState(status = RadioStationListStatus.Error, stations = persistentListOf())
         composeRule.setContent { RadioStationListScreen(uiState, onBack = {}, onStationSelected = {}, handleEvent = {}) }
 
-        composeRule.onRoot().captureScreenshot(screenName = "StationListScreen", stateIndex = 1)
+        composeRule.onRoot().captureScreenshot(screenName = "RadioStationListScreen", stateIndex = 1)
     }
 }

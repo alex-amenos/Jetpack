@@ -6,12 +6,12 @@ import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeNull
 import org.junit.jupiter.api.Test
 
-internal class SleepTimerTest {
+internal class RadioSleepTimerTest {
     @Test
     fun `GIVEN a 1 minute timer WHEN time elapses THEN onExpired is called once`() =
         runTest {
             var expiredCount = 0
-            val timer = SleepTimer(scope = this) { expiredCount++ }
+            val timer = RadioSleepTimer(scope = this) { expiredCount++ }
 
             timer.start(minutes = 1)
             advanceTimeBy(60_001L)
@@ -24,7 +24,7 @@ internal class SleepTimerTest {
     fun `GIVEN an active timer WHEN cancelled THEN onExpired is never called and remaining is null`() =
         runTest {
             var expiredCount = 0
-            val timer = SleepTimer(scope = this) { expiredCount++ }
+            val timer = RadioSleepTimer(scope = this) { expiredCount++ }
 
             timer.start(minutes = 1)
             advanceTimeBy(30_000L)

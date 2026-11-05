@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.onEach
 class PlaybackService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
     private lateinit var player: ExoPlayer
-    private lateinit var sleepTimer: SleepTimer
+    private lateinit var sleepTimer: RadioSleepTimer
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onCreate() {
@@ -39,7 +39,7 @@ class PlaybackService : MediaSessionService() {
                 .setAudioAttributes(audioAttributes, true)
                 .setLoadControl(RadioLoadControl.create())
                 .build()
-        sleepTimer = SleepTimer(serviceScope) { player.stop() }
+        sleepTimer = RadioSleepTimer(serviceScope) { player.stop() }
         mediaSession =
             MediaSession
                 .Builder(this, player)

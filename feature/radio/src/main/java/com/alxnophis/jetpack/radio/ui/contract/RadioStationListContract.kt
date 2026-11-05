@@ -17,7 +17,7 @@ internal sealed interface RadioStationListEvent : UiEvent {
 }
 
 @Immutable
-internal enum class ListStatus {
+internal enum class RadioStationListStatus {
     Loading,
     Content,
     Empty,
@@ -27,13 +27,13 @@ internal enum class ListStatus {
 @optics
 @Immutable
 internal data class RadioStationListUiState(
-    val status: ListStatus,
+    val status: RadioStationListStatus,
     val stations: ImmutableList<RadioStation>,
 ) : UiState {
     internal companion object {
         val initialState =
             RadioStationListUiState(
-                status = ListStatus.Loading,
+                status = RadioStationListStatus.Loading,
                 stations = persistentListOf(),
             )
     }

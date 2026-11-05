@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class StationApiModel(
+data class RadioStationApiModel(
     @SerialName("stationuuid") val stationUuid: String,
     @SerialName("name") val name: String,
     @SerialName("url_resolved") val urlResolved: String? = null,

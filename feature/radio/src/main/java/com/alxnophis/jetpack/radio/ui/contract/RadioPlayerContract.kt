@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
-import com.alxnophis.jetpack.radio.playback.PlaybackStatus
+import com.alxnophis.jetpack.radio.playback.RadioPlaybackStatus
 
 internal sealed interface RadioPlayerEvent : UiEvent {
     data object Play : RadioPlayerEvent
@@ -26,20 +26,20 @@ internal sealed interface RadioPlayerEvent : UiEvent {
 
 @optics
 @Immutable
-internal data class PlayerUiState(
+internal data class RadioPlayerUiState(
     val stationName: String?,
     val artworkUri: String?,
-    val status: PlaybackStatus,
+    val status: RadioPlaybackStatus,
     val canPrevious: Boolean,
     val canNext: Boolean,
     val sleepTimerRemainingMillis: Long?,
 ) : UiState {
     internal companion object {
         val initialState =
-            PlayerUiState(
+            RadioPlayerUiState(
                 stationName = null,
                 artworkUri = null,
-                status = PlaybackStatus.Idle,
+                status = RadioPlaybackStatus.Idle,
                 canPrevious = false,
                 canNext = false,
                 sleepTimerRemainingMillis = null,

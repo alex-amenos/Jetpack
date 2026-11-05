@@ -2,8 +2,8 @@ package com.alxnophis.jetpack.radio.ui.composable
 
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onRoot
-import com.alxnophis.jetpack.radio.playback.PlaybackStatus
-import com.alxnophis.jetpack.radio.ui.contract.PlayerUiState
+import com.alxnophis.jetpack.radio.playback.RadioPlaybackStatus
+import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerUiState
 import com.alxnophis.jetpack.testing.screenshot.ScreenshotTestUtils.captureScreenshot
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import org.junit.Rule
@@ -22,7 +22,7 @@ internal class RadioPlayerScreenshotTest {
 
     @Test
     fun radioPlayerPlaying() {
-        val uiState = uiState(status = PlaybackStatus.Playing, canPrevious = true, canNext = true)
+        val uiState = uiState(status = RadioPlaybackStatus.Playing, canPrevious = true, canNext = true)
         composeRule.setContent { RadioPlayerScreen(uiState, onBack = {}, handleEvent = {}) }
 
         composeRule.onRoot().captureScreenshot(screenName = "RadioPlayerScreen", stateIndex = 0)
@@ -30,17 +30,17 @@ internal class RadioPlayerScreenshotTest {
 
     @Test
     fun radioPlayerError() {
-        val uiState = uiState(status = PlaybackStatus.Error, canPrevious = false, canNext = false)
+        val uiState = uiState(status = RadioPlaybackStatus.Error, canPrevious = false, canNext = false)
         composeRule.setContent { RadioPlayerScreen(uiState, onBack = {}, handleEvent = {}) }
 
         composeRule.onRoot().captureScreenshot(screenName = "RadioPlayerScreen", stateIndex = 1)
     }
 
     private fun uiState(
-        status: PlaybackStatus,
+        status: RadioPlaybackStatus,
         canPrevious: Boolean,
         canNext: Boolean,
-    ) = PlayerUiState(
+    ) = RadioPlayerUiState(
         stationName = "Catalunya Ràdio",
         artworkUri = null,
         status = status,

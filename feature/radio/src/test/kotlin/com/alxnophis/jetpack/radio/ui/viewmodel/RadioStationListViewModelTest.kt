@@ -8,9 +8,9 @@ import com.alxnophis.jetpack.radio.domain.model.RadioStation
 import com.alxnophis.jetpack.radio.domain.model.RadioStationMother
 import com.alxnophis.jetpack.radio.domain.repository.RadioStationsRepository
 import com.alxnophis.jetpack.radio.domain.usecase.GetSpanishStationsUseCase
-import com.alxnophis.jetpack.radio.playback.PlayerSnapshot
+import com.alxnophis.jetpack.radio.playback.RadioPlayerSnapshot
 import com.alxnophis.jetpack.radio.playback.RadioPlayer
-import com.alxnophis.jetpack.radio.ui.contract.ListStatus
+import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,7 +45,7 @@ internal class RadioStationListViewModelTest {
 
         dispatcher.scheduler.advanceUntilIdle()
 
-        viewModel.currentUiState.status shouldBeEqualTo ListStatus.Content
+        viewModel.currentUiState.status shouldBeEqualTo RadioStationListStatus.Content
     }
 
     @Test
@@ -54,7 +54,7 @@ internal class RadioStationListViewModelTest {
 
         dispatcher.scheduler.advanceUntilIdle()
 
-        viewModel.currentUiState.status shouldBeEqualTo ListStatus.Empty
+        viewModel.currentUiState.status shouldBeEqualTo RadioStationListStatus.Empty
     }
 
     @Test
@@ -63,7 +63,7 @@ internal class RadioStationListViewModelTest {
 
         dispatcher.scheduler.advanceUntilIdle()
 
-        viewModel.currentUiState.status shouldBeEqualTo ListStatus.Error
+        viewModel.currentUiState.status shouldBeEqualTo RadioStationListStatus.Error
     }
 
     @Test
@@ -76,7 +76,7 @@ internal class RadioStationListViewModelTest {
         viewModel.handleEvent(RadioStationListEvent.Retry)
         dispatcher.scheduler.advanceUntilIdle()
 
-        viewModel.currentUiState.status shouldBeEqualTo ListStatus.Content
+        viewModel.currentUiState.status shouldBeEqualTo RadioStationListStatus.Content
     }
 
     @Test
@@ -104,7 +104,7 @@ internal class RadioStationListViewModelTest {
     }
 
     private class FakePlayer : RadioPlayer {
-        override val snapshot: StateFlow<PlayerSnapshot> = MutableStateFlow(PlayerSnapshot())
+        override val snapshot: StateFlow<RadioPlayerSnapshot> = MutableStateFlow(RadioPlayerSnapshot())
         var lastQueue: List<RadioStation> = emptyList()
         var lastQueueStart: Int = -1
 

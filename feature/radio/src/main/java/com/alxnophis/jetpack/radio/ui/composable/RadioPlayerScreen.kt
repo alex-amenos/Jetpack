@@ -68,8 +68,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.radio.R
-import com.alxnophis.jetpack.radio.playback.PlaybackStatus
-import com.alxnophis.jetpack.radio.ui.contract.PlayerUiState
+import com.alxnophis.jetpack.radio.playback.RadioPlaybackStatus
+import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerUiState
 import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerEvent
 import com.alxnophis.jetpack.radio.ui.viewmodel.RadioPlayerViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -106,7 +106,7 @@ private fun NotificationPermissionRequest() {
 
 @Composable
 internal fun RadioPlayerScreen(
-    uiState: PlayerUiState,
+    uiState: RadioPlayerUiState,
     onBack: () -> Unit,
     handleEvent: (RadioPlayerEvent) -> Unit,
 ) {
@@ -172,7 +172,7 @@ internal fun RadioPlayerScreen(
                     .padding(start = 16.dp, top = 8.dp),
         )
 
-        if (uiState.status == PlaybackStatus.Error) {
+        if (uiState.status == RadioPlaybackStatus.Error) {
             ErrorBanner(
                 onRetry = { handleEvent(RadioPlayerEvent.Retry) },
                 modifier =
@@ -205,7 +205,7 @@ internal fun RadioPlayerScreen(
 
 @Composable
 private fun PlayerInfo(
-    uiState: PlayerUiState,
+    uiState: RadioPlayerUiState,
     iconSize: Dp,
     modifier: Modifier = Modifier,
 ) {
@@ -213,7 +213,7 @@ private fun PlayerInfo(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        StationIcon(faviconUrl = uiState.artworkUri, size = iconSize)
+        RadioStationIcon(faviconUrl = uiState.artworkUri, size = iconSize)
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = uiState.stationName.orEmpty(),
@@ -229,7 +229,7 @@ private fun PlayerInfo(
 
 @Composable
 private fun PlayerControls(
-    uiState: PlayerUiState,
+    uiState: RadioPlayerUiState,
     handleEvent: (RadioPlayerEvent) -> Unit,
     onTimer: () -> Unit,
     modifier: Modifier = Modifier,
@@ -327,7 +327,7 @@ private fun ErrorBanner(
 
 @Composable
 private fun ControlsRow(
-    uiState: PlayerUiState,
+    uiState: RadioPlayerUiState,
     onAction: (RadioPlayerEvent) -> Unit,
 ) {
     Row(
@@ -354,11 +354,11 @@ private fun ControlsRow(
 
 @Composable
 private fun PlayPauseButton(
-    uiState: PlayerUiState,
+    uiState: RadioPlayerUiState,
     onAction: (RadioPlayerEvent) -> Unit,
 ) {
-    val isPlaying = uiState.status == PlaybackStatus.Playing
-    val isError = uiState.status == PlaybackStatus.Error
+    val isPlaying = uiState.status == RadioPlaybackStatus.Playing
+    val isError = uiState.status == RadioPlaybackStatus.Error
     val onClick: () -> Unit =
         when {
             isError -> {
@@ -387,7 +387,7 @@ private fun PlayPauseButton(
         contentAlignment = Alignment.Center,
     ) {
         when {
-            uiState.status == PlaybackStatus.Buffering -> {
+            uiState.status == RadioPlaybackStatus.Buffering -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(44.dp),
                     color = MaterialTheme.colorScheme.primary,
@@ -426,7 +426,7 @@ private fun PlayPauseButton(
 
 @Composable
 private fun SecondaryRow(
-    uiState: PlayerUiState,
+    uiState: RadioPlayerUiState,
     onStop: () -> Unit,
     onTimer: () -> Unit,
 ) {
@@ -438,7 +438,7 @@ private fun SecondaryRow(
             icon = Icons.Rounded.Stop,
             description = stringResource(R.string.radio_stop),
             size = 60.dp,
-            enabled = uiState.status != PlaybackStatus.Idle,
+            enabled = uiState.status != RadioPlaybackStatus.Idle,
             onClick = onStop,
         )
         RoundControl(
@@ -522,10 +522,10 @@ private fun RadioPlayerScreenPreview() {
     AppTheme {
         RadioPlayerScreen(
             uiState =
-                PlayerUiState(
+                RadioPlayerUiState(
                     stationName = "Catalunya Ràdio",
                     artworkUri = null,
-                    status = PlaybackStatus.Playing,
+                    status = RadioPlaybackStatus.Playing,
                     canPrevious = true,
                     canNext = true,
                     sleepTimerRemainingMillis = 754_000L,
@@ -543,10 +543,10 @@ private fun RadioPlayerScreenErrorPreview() {
     AppTheme {
         RadioPlayerScreen(
             uiState =
-                PlayerUiState(
+                RadioPlayerUiState(
                     stationName = "Cadena SER",
                     artworkUri = null,
-                    status = PlaybackStatus.Error,
+                    status = RadioPlaybackStatus.Error,
                     canPrevious = false,
                     canNext = false,
                     sleepTimerRemainingMillis = null,

@@ -1,8 +1,8 @@
 package com.alxnophis.jetpack.radio.ui.viewmodel
 
 import com.alxnophis.jetpack.radio.domain.model.RadioStation
-import com.alxnophis.jetpack.radio.playback.PlaybackStatus
-import com.alxnophis.jetpack.radio.playback.PlayerSnapshot
+import com.alxnophis.jetpack.radio.playback.RadioPlaybackStatus
+import com.alxnophis.jetpack.radio.playback.RadioPlayerSnapshot
 import com.alxnophis.jetpack.radio.playback.RadioPlayer
 import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerEvent
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +34,7 @@ internal class RadioPlayerViewModelTest {
 
     @Test
     fun `GIVEN first station WHEN snapshot is collected THEN canPrevious is false`() {
-        val player = FakeRadioPlayer(PlayerSnapshot(stationName = "Cadena SER", hasPrevious = false, hasNext = true))
+        val player = FakeRadioPlayer(RadioPlayerSnapshot(stationName = "Cadena SER", hasPrevious = false, hasNext = true))
 
         val viewModel = RadioPlayerViewModel(player)
         dispatcher.scheduler.advanceUntilIdle()
@@ -45,7 +45,7 @@ internal class RadioPlayerViewModelTest {
 
     @Test
     fun `GIVEN last station WHEN snapshot is collected THEN canNext is false`() {
-        val player = FakeRadioPlayer(PlayerSnapshot(stationName = "Cadena SER", hasPrevious = true, hasNext = false))
+        val player = FakeRadioPlayer(RadioPlayerSnapshot(stationName = "Cadena SER", hasPrevious = true, hasNext = false))
 
         val viewModel = RadioPlayerViewModel(player)
         dispatcher.scheduler.advanceUntilIdle()
@@ -55,7 +55,7 @@ internal class RadioPlayerViewModelTest {
 
     @Test
     fun `GIVEN error status WHEN Retry is handled THEN player retry is called`() {
-        val player = FakeRadioPlayer(PlayerSnapshot(status = PlaybackStatus.Error))
+        val player = FakeRadioPlayer(RadioPlayerSnapshot(status = RadioPlaybackStatus.Error))
         val viewModel = RadioPlayerViewModel(player)
 
         viewModel.handleEvent(RadioPlayerEvent.Retry)
@@ -65,7 +65,7 @@ internal class RadioPlayerViewModelTest {
 
     @Test
     fun `GIVEN playing WHEN Stop is handled THEN player stop is called`() {
-        val player = FakeRadioPlayer(PlayerSnapshot(status = PlaybackStatus.Playing))
+        val player = FakeRadioPlayer(RadioPlayerSnapshot(status = RadioPlaybackStatus.Playing))
         val viewModel = RadioPlayerViewModel(player)
 
         viewModel.handleEvent(RadioPlayerEvent.Stop)
@@ -74,10 +74,10 @@ internal class RadioPlayerViewModelTest {
     }
 
     private class FakeRadioPlayer(
-        initial: PlayerSnapshot,
+        initial: RadioPlayerSnapshot,
     ) : RadioPlayer {
         private val _snapshot = MutableStateFlow(initial)
-        override val snapshot: StateFlow<PlayerSnapshot> = _snapshot
+        override val snapshot: StateFlow<RadioPlayerSnapshot> = _snapshot
         var retryCount = 0
         var stopCount = 0
 

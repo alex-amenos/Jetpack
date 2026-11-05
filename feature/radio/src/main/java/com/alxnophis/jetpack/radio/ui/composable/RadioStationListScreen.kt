@@ -42,14 +42,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.alxnophis.jetpack.radio.R
 import com.alxnophis.jetpack.radio.domain.model.RadioStation
-import com.alxnophis.jetpack.radio.ui.contract.ListStatus
+import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListUiState
 import com.alxnophis.jetpack.radio.ui.viewmodel.RadioStationListViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun StationListFeature(
+fun RadioStationListFeature(
     onBack: () -> Unit,
     onStationSelected: () -> Unit,
 ) {
@@ -93,11 +93,11 @@ internal fun RadioStationListScreen(
         },
     ) { innerPadding ->
         when (uiState.status) {
-            ListStatus.Loading -> {
+            RadioStationListStatus.Loading -> {
                 LoadingContent(Modifier.padding(innerPadding))
             }
 
-            ListStatus.Error -> {
+            RadioStationListStatus.Error -> {
                 MessageContent(
                     message = stringResource(R.string.radio_stations_error),
                     actionLabel = stringResource(R.string.radio_retry),
@@ -106,7 +106,7 @@ internal fun RadioStationListScreen(
                 )
             }
 
-            ListStatus.Empty -> {
+            RadioStationListStatus.Empty -> {
                 MessageContent(
                     message = stringResource(R.string.radio_stations_empty),
                     actionLabel = stringResource(R.string.radio_retry),
@@ -115,7 +115,7 @@ internal fun RadioStationListScreen(
                 )
             }
 
-            ListStatus.Content -> {
+            RadioStationListStatus.Content -> {
                 StationsList(
                     stations = uiState.stations,
                     onStationSelected = { index ->
@@ -195,7 +195,7 @@ private fun StationItem(
             modifier = Modifier.padding(14.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            StationIcon(faviconUrl = station.faviconUrl, size = 48.dp)
+            RadioStationIcon(faviconUrl = station.faviconUrl, size = 48.dp)
             Spacer(modifier = Modifier.size(12.dp))
             Column {
                 Text(
@@ -218,7 +218,7 @@ private fun StationItem(
 }
 
 @Composable
-internal fun StationIcon(
+internal fun RadioStationIcon(
     faviconUrl: String?,
     size: Dp,
 ) {

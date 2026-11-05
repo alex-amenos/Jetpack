@@ -4,7 +4,7 @@ import com.alxnophis.jetpack.radio.domain.model.RadioStation
 import kotlinx.coroutines.flow.StateFlow
 
 internal interface RadioPlayer {
-    val snapshot: StateFlow<PlayerSnapshot>
+    val snapshot: StateFlow<RadioPlayerSnapshot>
 
     fun connect()
 

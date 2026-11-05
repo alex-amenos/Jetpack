@@ -38,7 +38,7 @@ import com.alxnophis.jetpack.posts.ui.composable.PostDetailFeature
 import com.alxnophis.jetpack.posts.ui.composable.PostNotSelectedComposable
 import com.alxnophis.jetpack.posts.ui.composable.PostsFeature
 import com.alxnophis.jetpack.radio.ui.composable.RadioPlayerFeature
-import com.alxnophis.jetpack.radio.ui.composable.StationListFeature
+import com.alxnophis.jetpack.radio.ui.composable.RadioStationListFeature
 import com.alxnophis.jetpack.settings.ui.navigation.SettingsFeature
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
@@ -192,7 +192,7 @@ fun Navigation(
                     )
                 }
                 entry<Route.RadioStations> {
-                    StationListFeature(
+                    RadioStationListFeature(
                         onBack = onBack,
                         onStationSelected = { backStack.add(Route.RadioPlayer) },
                     )

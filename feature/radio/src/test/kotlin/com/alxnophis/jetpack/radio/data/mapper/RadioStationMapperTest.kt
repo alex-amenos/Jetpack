@@ -1,11 +1,11 @@
 package com.alxnophis.jetpack.radio.data.mapper
 
-import com.alxnophis.jetpack.api.radiobrowser.model.StationApiModel
+import com.alxnophis.jetpack.api.radiobrowser.model.RadioStationApiModel
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeNull
 import org.junit.jupiter.api.Test
 
-internal class StationMapperTest {
+internal class RadioStationMapperTest {
     @Test
     fun `GIVEN a station with blank url_resolved WHEN mapped THEN returns null`() {
         val apiModel = apiModel(urlResolved = "   ")
@@ -39,7 +39,7 @@ internal class StationMapperTest {
     }
 
     private fun apiModel(urlResolved: String?) =
-        StationApiModel(
+        RadioStationApiModel(
             stationUuid = "uuid-1",
             name = "Cadena SER",
             urlResolved = urlResolved,

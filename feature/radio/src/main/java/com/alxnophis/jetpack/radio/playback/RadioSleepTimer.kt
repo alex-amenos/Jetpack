@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-internal class SleepTimer(
+internal class RadioSleepTimer(
     private val scope: CoroutineScope,
     private val onExpired: () -> Unit,
 ) {

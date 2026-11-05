@@ -2,8 +2,8 @@ package com.alxnophis.jetpack.radio.ui.composable
 
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onRoot
-import com.alxnophis.jetpack.radio.playback.PlaybackStatus
-import com.alxnophis.jetpack.radio.ui.contract.PlayerUiState
+import com.alxnophis.jetpack.radio.playback.RadioPlaybackStatus
+import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerUiState
 import com.alxnophis.jetpack.testing.screenshot.ScreenshotTestUtils.captureScreenshot
 import org.junit.Rule
 import org.junit.Test
@@ -22,10 +22,10 @@ internal class RadioPlayerLandscapeScreenshotTest {
     @Test
     fun radioPlayerLandscape() {
         val uiState =
-            PlayerUiState(
+            RadioPlayerUiState(
                 stationName = "Catalunya Ràdio",
                 artworkUri = null,
-                status = PlaybackStatus.Playing,
+                status = RadioPlaybackStatus.Playing,
                 canPrevious = true,
                 canNext = true,
                 sleepTimerRemainingMillis = null,
