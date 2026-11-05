@@ -3,9 +3,9 @@ package com.alxnophis.jetpack.radio.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import arrow.optics.copy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
-import com.alxnophis.jetpack.radio.domain.model.RadioError
-import com.alxnophis.jetpack.radio.domain.model.RadioStation
-import com.alxnophis.jetpack.radio.domain.usecase.GetSpanishStationsUseCase
+import com.alxnophis.jetpack.radio.data.model.RadioError
+import com.alxnophis.jetpack.radio.data.model.RadioStation
+import com.alxnophis.jetpack.radio.data.repository.RadioStationsRepository
 import com.alxnophis.jetpack.radio.playback.RadioPlayer
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
@@ -16,7 +16,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
 internal class RadioStationListViewModel(
-    private val getSpanishStations: GetSpanishStationsUseCase,
+    private val repository: RadioStationsRepository,
     private val player: RadioPlayer,
     initialUiState: RadioStationListUiState = RadioStationListUiState.initialState,
 ) : BaseViewModel<RadioStationListEvent, RadioStationListUiState>(initialUiState) {
@@ -39,7 +39,7 @@ internal class RadioStationListViewModel(
             }
         }
         viewModelScope.launch {
-            getSpanishStations().fold(
+            repository.getSpanishStations().fold(
                 ifLeft = { showError() },
                 ifRight = { stations -> showStations(stations) },
             )

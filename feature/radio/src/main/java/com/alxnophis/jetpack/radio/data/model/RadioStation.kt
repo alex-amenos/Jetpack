@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.radio.domain.model
+package com.alxnophis.jetpack.radio.data.model
 
 internal data class RadioStation(
     val id: String,

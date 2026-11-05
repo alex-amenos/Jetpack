@@ -1,8 +1,7 @@
 package com.alxnophis.jetpack.radio.di
 
 import com.alxnophis.jetpack.radio.data.repository.RadioStationsRepositoryImpl
-import com.alxnophis.jetpack.radio.domain.repository.RadioStationsRepository
-import com.alxnophis.jetpack.radio.domain.usecase.GetSpanishStationsUseCase
+import com.alxnophis.jetpack.radio.data.repository.RadioStationsRepository
 import com.alxnophis.jetpack.radio.playback.RadioPlayer
 import com.alxnophis.jetpack.radio.playback.RadioPlayerController
 import com.alxnophis.jetpack.radio.ui.viewmodel.RadioPlayerViewModel
@@ -17,7 +16,6 @@ val radioModule: Module =
     module {
         single { RadioPlayerController(androidContext()) } bind RadioPlayer::class
         single<RadioStationsRepository> { RadioStationsRepositoryImpl(get()) }
-        factory { GetSpanishStationsUseCase(get()) }
 
         viewModel { RadioStationListViewModel(get(), get()) }
         viewModel { RadioPlayerViewModel(get()) }

@@ -8,9 +8,9 @@ import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
 import com.alxnophis.jetpack.api.exception.NoConnectivityException
 import com.alxnophis.jetpack.api.radiobrowser.RadioBrowserStationsService
 import com.alxnophis.jetpack.radio.data.mapper.toRadioStationOrNull
-import com.alxnophis.jetpack.radio.domain.model.RadioError
-import com.alxnophis.jetpack.radio.domain.model.RadioStation
-import com.alxnophis.jetpack.radio.domain.repository.RadioStationsRepository
+import com.alxnophis.jetpack.radio.data.model.RadioError
+import com.alxnophis.jetpack.radio.data.model.RadioStation
+import com.alxnophis.jetpack.radio.data.repository.RadioStationsRepository
 import timber.log.Timber
 
 private const val STATIONS_LIMIT = 50

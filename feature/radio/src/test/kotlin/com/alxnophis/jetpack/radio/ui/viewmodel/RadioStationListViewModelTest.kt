@@ -3,11 +3,10 @@ package com.alxnophis.jetpack.radio.ui.viewmodel
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.alxnophis.jetpack.radio.domain.model.RadioError
-import com.alxnophis.jetpack.radio.domain.model.RadioStation
-import com.alxnophis.jetpack.radio.domain.model.RadioStationMother
-import com.alxnophis.jetpack.radio.domain.repository.RadioStationsRepository
-import com.alxnophis.jetpack.radio.domain.usecase.GetSpanishStationsUseCase
+import com.alxnophis.jetpack.radio.data.model.RadioError
+import com.alxnophis.jetpack.radio.data.model.RadioStation
+import com.alxnophis.jetpack.radio.data.model.RadioStationMother
+import com.alxnophis.jetpack.radio.data.repository.RadioStationsRepository
 import com.alxnophis.jetpack.radio.playback.RadioPlayerSnapshot
 import com.alxnophis.jetpack.radio.playback.RadioPlayer
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
@@ -95,7 +94,7 @@ internal class RadioStationListViewModelTest {
     private fun viewModel(
         repository: RadioStationsRepository,
         player: RadioPlayer = FakePlayer(),
-    ) = RadioStationListViewModel(GetSpanishStationsUseCase(repository), player)
+    ) = RadioStationListViewModel(repository, player)
 
     private class FakeStationsRepository(
         var result: Either<RadioError, List<RadioStation>>,

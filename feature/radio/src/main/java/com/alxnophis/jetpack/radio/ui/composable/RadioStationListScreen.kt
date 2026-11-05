@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.alxnophis.jetpack.radio.R
-import com.alxnophis.jetpack.radio.domain.model.RadioStation
+import com.alxnophis.jetpack.radio.data.model.RadioStation
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListUiState

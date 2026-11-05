@@ -1,6 +1,6 @@
 package com.alxnophis.jetpack.radio.playback
 
-import com.alxnophis.jetpack.radio.domain.model.RadioStation
+import com.alxnophis.jetpack.radio.data.model.RadioStation
 import kotlinx.coroutines.flow.StateFlow
 
 internal interface RadioPlayer {

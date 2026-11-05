@@ -1,4 +1,4 @@
-package com.alxnophis.jetpack.radio.domain.model
+package com.alxnophis.jetpack.radio.data.model
 
 internal object RadioStationMother {
     fun create(

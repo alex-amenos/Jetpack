@@ -1,6 +1,6 @@
 package com.alxnophis.jetpack.radio.ui.viewmodel
 
-import com.alxnophis.jetpack.radio.domain.model.RadioStation
+import com.alxnophis.jetpack.radio.data.model.RadioStation
 import com.alxnophis.jetpack.radio.playback.RadioPlaybackStatus
 import com.alxnophis.jetpack.radio.playback.RadioPlayerSnapshot
 import com.alxnophis.jetpack.radio.playback.RadioPlayer

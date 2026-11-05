@@ -1,7 +1,7 @@
 package com.alxnophis.jetpack.radio.data.mapper
 
 import com.alxnophis.jetpack.api.radiobrowser.model.RadioStationApiModel
-import com.alxnophis.jetpack.radio.domain.model.RadioStation
+import com.alxnophis.jetpack.radio.data.model.RadioStation
 
 private const val HTTPS_SCHEME = "https"
 

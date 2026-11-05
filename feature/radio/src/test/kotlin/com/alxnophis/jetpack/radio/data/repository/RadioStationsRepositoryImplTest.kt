@@ -7,7 +7,7 @@ import arrow.retrofit.adapter.either.networkhandling.CallError
 import com.alxnophis.jetpack.api.jsonplaceholder.model.CallErrorMother
 import com.alxnophis.jetpack.api.radiobrowser.RadioBrowserStationsService
 import com.alxnophis.jetpack.api.radiobrowser.model.RadioStationApiModel
-import com.alxnophis.jetpack.radio.domain.model.RadioError
+import com.alxnophis.jetpack.radio.data.model.RadioError
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
