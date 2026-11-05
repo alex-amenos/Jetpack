@@ -3,11 +3,11 @@ package com.alxnophis.jetpack.radio.playback
 import android.net.Uri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import com.alxnophis.jetpack.radio.domain.model.Station
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
 
 private const val ARTIST = "Radio Browser - Spain"
 
-internal fun Station.toMediaItem(): MediaItem =
+internal fun RadioStation.toMediaItem(): MediaItem =
     MediaItem
         .Builder()
         .setMediaId(id)

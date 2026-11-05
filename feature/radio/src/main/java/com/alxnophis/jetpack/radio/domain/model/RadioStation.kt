@@ -1,6 +1,6 @@
 package com.alxnophis.jetpack.radio.domain.model
 
-internal data class Station(
+internal data class RadioStation(
     val id: String,
     val name: String,
     val streamUrl: String,

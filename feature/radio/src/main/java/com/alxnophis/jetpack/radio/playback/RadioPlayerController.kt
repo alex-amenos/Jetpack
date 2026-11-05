@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import com.alxnophis.jetpack.radio.domain.model.Station
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -66,7 +66,7 @@ internal class RadioPlayerController(
     }
 
     override fun playQueue(
-        stations: List<Station>,
+        stations: List<RadioStation>,
         startIndex: Int,
     ) = withController { controller ->
         controller.setMediaItems(stations.map { it.toMediaItem() }, startIndex, 0L)

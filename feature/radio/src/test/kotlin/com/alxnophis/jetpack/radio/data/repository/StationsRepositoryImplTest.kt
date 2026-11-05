@@ -26,7 +26,7 @@ internal class StationsRepositoryImplTest {
                         ).right(),
                 )
 
-            val result = StationsRepositoryImpl(service).getSpanishStations()
+            val result = RadioStationsRepositoryImpl(service).getSpanishStations()
 
             result.map { stations -> stations.map { it.id } } shouldBeEqualTo listOf("1").right()
         }
@@ -37,7 +37,7 @@ internal class StationsRepositoryImplTest {
             val apiStations = (1..80).map { apiModel("$it", "https://ok.example.com/$it.mp3") }
             val service = FakeStationsService(response = apiStations.right())
 
-            val result = StationsRepositoryImpl(service).getSpanishStations()
+            val result = RadioStationsRepositoryImpl(service).getSpanishStations()
 
             result.map { it.size } shouldBeEqualTo 50.right()
         }
@@ -54,7 +54,7 @@ internal class StationsRepositoryImplTest {
                         ).right(),
                 )
 
-            val result = StationsRepositoryImpl(service).getSpanishStations()
+            val result = RadioStationsRepositoryImpl(service).getSpanishStations()
 
             result.map { stations -> stations.map { it.id } } shouldBeEqualTo listOf("1").right()
         }
@@ -72,7 +72,7 @@ internal class StationsRepositoryImplTest {
                         ).right(),
                 )
 
-            val result = StationsRepositoryImpl(service).getSpanishStations()
+            val result = RadioStationsRepositoryImpl(service).getSpanishStations()
 
             result.map { stations -> stations.map { it.name } } shouldBeEqualTo listOf("Antena 3", "cadena SER", "Rock FM").right()
         }
@@ -82,7 +82,7 @@ internal class StationsRepositoryImplTest {
         kotlinx.coroutines.test.runTest {
             val service = FakeStationsService(response = emptyList<StationApiModel>().right())
 
-            val result = StationsRepositoryImpl(service).getSpanishStations()
+            val result = RadioStationsRepositoryImpl(service).getSpanishStations()
 
             result shouldBeEqualTo emptyList<Any>().right()
         }
@@ -98,7 +98,7 @@ internal class StationsRepositoryImplTest {
                             .left(),
                 )
 
-            val result = StationsRepositoryImpl(service).getSpanishStations()
+            val result = RadioStationsRepositoryImpl(service).getSpanishStations()
 
             result shouldBeEqualTo RadioError.NetworkUnavailable.left()
         }
@@ -114,7 +114,7 @@ internal class StationsRepositoryImplTest {
                             .left(),
                 )
 
-            val result = StationsRepositoryImpl(service).getSpanishStations()
+            val result = RadioStationsRepositoryImpl(service).getSpanishStations()
 
             result shouldBeEqualTo RadioError.ServerError.left()
         }
@@ -122,7 +122,7 @@ internal class StationsRepositoryImplTest {
     private fun apiModel(
         id: String,
         url: String?,
-    ) = StationApiModel(stationUuid = id, name = "Station $id", urlResolved = url)
+    ) = StationApiModel(stationUuid = id, name = "RadioStation $id", urlResolved = url)
 
     private class FakeStationsService(
         private val response: Either<CallError, List<StationApiModel>>,

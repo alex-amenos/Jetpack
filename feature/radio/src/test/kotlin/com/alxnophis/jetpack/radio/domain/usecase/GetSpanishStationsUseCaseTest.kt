@@ -4,9 +4,9 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import com.alxnophis.jetpack.radio.domain.model.RadioError
-import com.alxnophis.jetpack.radio.domain.model.Station
-import com.alxnophis.jetpack.radio.domain.model.StationMother
-import com.alxnophis.jetpack.radio.domain.repository.StationsRepository
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
+import com.alxnophis.jetpack.radio.domain.model.RadioStationMother
+import com.alxnophis.jetpack.radio.domain.repository.RadioStationsRepository
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
@@ -15,7 +15,7 @@ internal class GetSpanishStationsUseCaseTest {
     @Test
     fun `GIVEN repository returns stations WHEN invoked THEN returns them`() =
         runTest {
-            val stations = listOf(StationMother.create())
+            val stations = listOf(RadioStationMother.create())
             val useCase = GetSpanishStationsUseCase(FakeRepository(stations.right()))
 
             useCase() shouldBeEqualTo stations.right()
@@ -30,8 +30,8 @@ internal class GetSpanishStationsUseCaseTest {
         }
 
     private class FakeRepository(
-        private val result: Either<RadioError, List<Station>>,
-    ) : StationsRepository {
+        private val result: Either<RadioError, List<RadioStation>>,
+    ) : RadioStationsRepository {
         override suspend fun getSpanishStations() = result
     }
 }

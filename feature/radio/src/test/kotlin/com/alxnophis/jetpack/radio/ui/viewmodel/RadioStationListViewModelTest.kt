@@ -4,14 +4,14 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import com.alxnophis.jetpack.radio.domain.model.RadioError
-import com.alxnophis.jetpack.radio.domain.model.Station
-import com.alxnophis.jetpack.radio.domain.model.StationMother
-import com.alxnophis.jetpack.radio.domain.repository.StationsRepository
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
+import com.alxnophis.jetpack.radio.domain.model.RadioStationMother
+import com.alxnophis.jetpack.radio.domain.repository.RadioStationsRepository
 import com.alxnophis.jetpack.radio.domain.usecase.GetSpanishStationsUseCase
 import com.alxnophis.jetpack.radio.playback.PlayerSnapshot
 import com.alxnophis.jetpack.radio.playback.RadioPlayer
 import com.alxnophis.jetpack.radio.ui.contract.ListStatus
-import com.alxnophis.jetpack.radio.ui.contract.StationListEvent
+import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class StationListViewModelTest {
+internal class RadioStationListViewModelTest {
     private val dispatcher = StandardTestDispatcher()
 
     @BeforeEach
@@ -41,7 +41,7 @@ internal class StationListViewModelTest {
 
     @Test
     fun `GIVEN use case returns stations WHEN loaded THEN status is Content`() {
-        val viewModel = viewModel(FakeStationsRepository(listOf(StationMother.create()).right()))
+        val viewModel = viewModel(FakeStationsRepository(listOf(RadioStationMother.create()).right()))
 
         dispatcher.scheduler.advanceUntilIdle()
 
@@ -50,7 +50,7 @@ internal class StationListViewModelTest {
 
     @Test
     fun `GIVEN use case returns empty list WHEN loaded THEN status is Empty`() {
-        val viewModel = viewModel(FakeStationsRepository(emptyList<Station>().right()))
+        val viewModel = viewModel(FakeStationsRepository(emptyList<RadioStation>().right()))
 
         dispatcher.scheduler.advanceUntilIdle()
 
@@ -72,8 +72,8 @@ internal class StationListViewModelTest {
         val viewModel = viewModel(repository)
         dispatcher.scheduler.advanceUntilIdle()
 
-        repository.result = listOf(StationMother.create()).right()
-        viewModel.handleEvent(StationListEvent.Retry)
+        repository.result = listOf(RadioStationMother.create()).right()
+        viewModel.handleEvent(RadioStationListEvent.Retry)
         dispatcher.scheduler.advanceUntilIdle()
 
         viewModel.currentUiState.status shouldBeEqualTo ListStatus.Content
@@ -81,37 +81,37 @@ internal class StationListViewModelTest {
 
     @Test
     fun `GIVEN loaded stations WHEN a station is selected THEN the queue starts at its index`() {
-        val stations = listOf(StationMother.create(id = "a"), StationMother.create(id = "b"))
+        val stations = listOf(RadioStationMother.create(id = "a"), RadioStationMother.create(id = "b"))
         val player = FakePlayer()
         val viewModel = viewModel(FakeStationsRepository(stations.right()), player)
         dispatcher.scheduler.advanceUntilIdle()
 
-        viewModel.handleEvent(StationListEvent.Select(index = 1))
+        viewModel.handleEvent(RadioStationListEvent.Select(index = 1))
 
         player.lastQueueStart shouldBeEqualTo 1
         player.lastQueue shouldBeEqualTo stations
     }
 
     private fun viewModel(
-        repository: StationsRepository,
+        repository: RadioStationsRepository,
         player: RadioPlayer = FakePlayer(),
-    ) = StationListViewModel(GetSpanishStationsUseCase(repository), player)
+    ) = RadioStationListViewModel(GetSpanishStationsUseCase(repository), player)
 
     private class FakeStationsRepository(
-        var result: Either<RadioError, List<Station>>,
-    ) : StationsRepository {
+        var result: Either<RadioError, List<RadioStation>>,
+    ) : RadioStationsRepository {
         override suspend fun getSpanishStations() = result
     }
 
     private class FakePlayer : RadioPlayer {
         override val snapshot: StateFlow<PlayerSnapshot> = MutableStateFlow(PlayerSnapshot())
-        var lastQueue: List<Station> = emptyList()
+        var lastQueue: List<RadioStation> = emptyList()
         var lastQueueStart: Int = -1
 
         override fun connect() = Unit
 
         override fun playQueue(
-            stations: List<Station>,
+            stations: List<RadioStation>,
             startIndex: Int,
         ) {
             lastQueue = stations

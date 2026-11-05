@@ -1,6 +1,6 @@
 package com.alxnophis.jetpack.radio.ui.viewmodel
 
-import com.alxnophis.jetpack.radio.domain.model.Station
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
 import com.alxnophis.jetpack.radio.playback.PlaybackStatus
 import com.alxnophis.jetpack.radio.playback.PlayerSnapshot
 import com.alxnophis.jetpack.radio.playback.RadioPlayer
@@ -84,7 +84,7 @@ internal class RadioPlayerViewModelTest {
         override fun connect() = Unit
 
         override fun playQueue(
-            stations: List<Station>,
+            stations: List<RadioStation>,
             startIndex: Int,
         ) = Unit
 

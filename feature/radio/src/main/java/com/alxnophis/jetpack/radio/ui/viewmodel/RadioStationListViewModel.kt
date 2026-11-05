@@ -4,38 +4,38 @@ import androidx.lifecycle.viewModelScope
 import arrow.optics.copy
 import com.alxnophis.jetpack.core.ui.viewmodel.BaseViewModel
 import com.alxnophis.jetpack.radio.domain.model.RadioError
-import com.alxnophis.jetpack.radio.domain.model.Station
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
 import com.alxnophis.jetpack.radio.domain.usecase.GetSpanishStationsUseCase
 import com.alxnophis.jetpack.radio.playback.RadioPlayer
 import com.alxnophis.jetpack.radio.ui.contract.ListStatus
-import com.alxnophis.jetpack.radio.ui.contract.StationListEvent
-import com.alxnophis.jetpack.radio.ui.contract.StationListUiState
+import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
+import com.alxnophis.jetpack.radio.ui.contract.RadioStationListUiState
 import com.alxnophis.jetpack.radio.ui.contract.stations
 import com.alxnophis.jetpack.radio.ui.contract.status
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
-internal class StationListViewModel(
+internal class RadioStationListViewModel(
     private val getSpanishStations: GetSpanishStationsUseCase,
     private val player: RadioPlayer,
-    initialUiState: StationListUiState = StationListUiState.initialState,
-) : BaseViewModel<StationListEvent, StationListUiState>(initialUiState) {
+    initialUiState: RadioStationListUiState = RadioStationListUiState.initialState,
+) : BaseViewModel<RadioStationListEvent, RadioStationListUiState>(initialUiState) {
     init {
         player.connect()
         load()
     }
 
-    override fun handleEvent(event: StationListEvent) {
+    override fun handleEvent(event: RadioStationListEvent) {
         when (event) {
-            StationListEvent.Retry -> load()
-            is StationListEvent.Select -> player.playQueue(currentUiState.stations, event.index)
+            RadioStationListEvent.Retry -> load()
+            is RadioStationListEvent.Select -> player.playQueue(currentUiState.stations, event.index)
         }
     }
 
     private fun load() {
         updateUiState {
             copy {
-                StationListUiState.status set ListStatus.Loading
+                RadioStationListUiState.status set ListStatus.Loading
             }
         }
         viewModelScope.launch {
@@ -46,11 +46,11 @@ internal class StationListViewModel(
         }
     }
 
-    private fun showStations(stations: List<Station>) {
+    private fun showStations(stations: List<RadioStation>) {
         updateUiState {
             copy {
-                StationListUiState.stations set stations.toImmutableList()
-                StationListUiState.status set if (stations.isEmpty()) ListStatus.Empty else ListStatus.Content
+                RadioStationListUiState.stations set stations.toImmutableList()
+                RadioStationListUiState.status set if (stations.isEmpty()) ListStatus.Empty else ListStatus.Content
             }
         }
     }
@@ -58,7 +58,7 @@ internal class StationListViewModel(
     private fun showError() {
         updateUiState {
             copy {
-                StationListUiState.status set ListStatus.Error
+                RadioStationListUiState.status set ListStatus.Error
             }
         }
     }

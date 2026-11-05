@@ -10,28 +10,28 @@ internal class StationMapperTest {
     fun `GIVEN a station with blank url_resolved WHEN mapped THEN returns null`() {
         val apiModel = apiModel(urlResolved = "   ")
 
-        apiModel.toStationOrNull().shouldBeNull()
+        apiModel.toRadioStationOrNull().shouldBeNull()
     }
 
     @Test
     fun `GIVEN a station with null url_resolved WHEN mapped THEN returns null`() {
         val apiModel = apiModel(urlResolved = null)
 
-        apiModel.toStationOrNull().shouldBeNull()
+        apiModel.toRadioStationOrNull().shouldBeNull()
     }
 
     @Test
     fun `GIVEN a station with http url WHEN mapped THEN returns null`() {
         val apiModel = apiModel(urlResolved = "http://example.com:8000/stream")
 
-        apiModel.toStationOrNull().shouldBeNull()
+        apiModel.toRadioStationOrNull().shouldBeNull()
     }
 
     @Test
     fun `GIVEN a station with https url WHEN mapped THEN returns station with same id, name and stream url`() {
         val apiModel = apiModel(urlResolved = "https://example.com/stream.mp3")
 
-        val station = apiModel.toStationOrNull()
+        val station = apiModel.toRadioStationOrNull()
 
         station?.id shouldBeEqualTo "uuid-1"
         station?.name shouldBeEqualTo "Cadena SER"

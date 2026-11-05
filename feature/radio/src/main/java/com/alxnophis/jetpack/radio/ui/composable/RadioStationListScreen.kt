@@ -41,11 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.alxnophis.jetpack.radio.R
-import com.alxnophis.jetpack.radio.domain.model.Station
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
 import com.alxnophis.jetpack.radio.ui.contract.ListStatus
-import com.alxnophis.jetpack.radio.ui.contract.StationListEvent
-import com.alxnophis.jetpack.radio.ui.contract.StationListUiState
-import com.alxnophis.jetpack.radio.ui.viewmodel.StationListViewModel
+import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
+import com.alxnophis.jetpack.radio.ui.contract.RadioStationListUiState
+import com.alxnophis.jetpack.radio.ui.viewmodel.RadioStationListViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -53,8 +53,8 @@ fun StationListFeature(
     onBack: () -> Unit,
     onStationSelected: () -> Unit,
 ) {
-    val viewModel = koinViewModel<StationListViewModel>()
-    StationListScreen(
+    val viewModel = koinViewModel<RadioStationListViewModel>()
+    RadioStationListScreen(
         uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
         onBack = onBack,
         onStationSelected = onStationSelected,
@@ -64,11 +64,11 @@ fun StationListFeature(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun StationListScreen(
-    uiState: StationListUiState,
+internal fun RadioStationListScreen(
+    uiState: RadioStationListUiState,
     onBack: () -> Unit,
     onStationSelected: () -> Unit,
-    handleEvent: (StationListEvent) -> Unit,
+    handleEvent: (RadioStationListEvent) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -101,7 +101,7 @@ internal fun StationListScreen(
                 MessageContent(
                     message = stringResource(R.string.radio_stations_error),
                     actionLabel = stringResource(R.string.radio_retry),
-                    onAction = { handleEvent(StationListEvent.Retry) },
+                    onAction = { handleEvent(RadioStationListEvent.Retry) },
                     modifier = Modifier.padding(innerPadding),
                 )
             }
@@ -110,7 +110,7 @@ internal fun StationListScreen(
                 MessageContent(
                     message = stringResource(R.string.radio_stations_empty),
                     actionLabel = stringResource(R.string.radio_retry),
-                    onAction = { handleEvent(StationListEvent.Retry) },
+                    onAction = { handleEvent(RadioStationListEvent.Retry) },
                     modifier = Modifier.padding(innerPadding),
                 )
             }
@@ -119,7 +119,7 @@ internal fun StationListScreen(
                 StationsList(
                     stations = uiState.stations,
                     onStationSelected = { index ->
-                        handleEvent(StationListEvent.Select(index))
+                        handleEvent(RadioStationListEvent.Select(index))
                         onStationSelected()
                     },
                     modifier = Modifier.padding(innerPadding),
@@ -165,7 +165,7 @@ private fun MessageContent(
 
 @Composable
 private fun StationsList(
-    stations: List<Station>,
+    stations: List<RadioStation>,
     onStationSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -182,7 +182,7 @@ private fun StationsList(
 
 @Composable
 private fun StationItem(
-    station: Station,
+    station: RadioStation,
     onClick: () -> Unit,
 ) {
     Card(

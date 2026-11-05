@@ -7,23 +7,23 @@ import arrow.retrofit.adapter.either.networkhandling.IOError
 import arrow.retrofit.adapter.either.networkhandling.UnexpectedCallError
 import com.alxnophis.jetpack.api.exception.NoConnectivityException
 import com.alxnophis.jetpack.api.radiobrowser.RadioBrowserStationsService
-import com.alxnophis.jetpack.radio.data.mapper.toStationOrNull
+import com.alxnophis.jetpack.radio.data.mapper.toRadioStationOrNull
 import com.alxnophis.jetpack.radio.domain.model.RadioError
-import com.alxnophis.jetpack.radio.domain.model.Station
-import com.alxnophis.jetpack.radio.domain.repository.StationsRepository
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
+import com.alxnophis.jetpack.radio.domain.repository.RadioStationsRepository
 import timber.log.Timber
 
 private const val STATIONS_LIMIT = 50
 
-internal class StationsRepositoryImpl(
+internal class RadioStationsRepositoryImpl(
     private val service: RadioBrowserStationsService,
-) : StationsRepository {
-    override suspend fun getSpanishStations(): Either<RadioError, List<Station>> =
+) : RadioStationsRepository {
+    override suspend fun getSpanishStations(): Either<RadioError, List<RadioStation>> =
         service
             .getSpanishStations()
             .map { stations ->
                 stations
-                    .mapNotNull { it.toStationOrNull() }
+                    .mapNotNull { it.toRadioStationOrNull() }
                     .distinctBy { it.streamUrl }
                     .take(STATIONS_LIMIT)
                     .sortedBy { it.name.lowercase() }

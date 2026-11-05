@@ -2,11 +2,11 @@ package com.alxnophis.jetpack.radio.domain.usecase
 
 import arrow.core.Either
 import com.alxnophis.jetpack.radio.domain.model.RadioError
-import com.alxnophis.jetpack.radio.domain.model.Station
-import com.alxnophis.jetpack.radio.domain.repository.StationsRepository
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
+import com.alxnophis.jetpack.radio.domain.repository.RadioStationsRepository
 
 internal class GetSpanishStationsUseCase(
-    private val repository: StationsRepository,
+    private val repository: RadioStationsRepository,
 ) {
-    suspend operator fun invoke(): Either<RadioError, List<Station>> = repository.getSpanishStations()
+    suspend operator fun invoke(): Either<RadioError, List<RadioStation>> = repository.getSpanishStations()
 }

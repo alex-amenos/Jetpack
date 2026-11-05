@@ -4,30 +4,35 @@ import androidx.compose.runtime.Immutable
 import arrow.optics.optics
 import com.alxnophis.jetpack.core.ui.viewmodel.UiEvent
 import com.alxnophis.jetpack.core.ui.viewmodel.UiState
-import com.alxnophis.jetpack.radio.domain.model.Station
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-internal sealed interface StationListEvent : UiEvent {
-    data object Retry : StationListEvent
+internal sealed interface RadioStationListEvent : UiEvent {
+    data object Retry : RadioStationListEvent
 
     data class Select(
         val index: Int,
-    ) : StationListEvent
+    ) : RadioStationListEvent
 }
 
 @Immutable
-internal enum class ListStatus { Loading, Content, Empty, Error }
+internal enum class ListStatus {
+    Loading,
+    Content,
+    Empty,
+    Error,
+}
 
 @optics
 @Immutable
-internal data class StationListUiState(
+internal data class RadioStationListUiState(
     val status: ListStatus,
-    val stations: ImmutableList<Station>,
+    val stations: ImmutableList<RadioStation>,
 ) : UiState {
     internal companion object {
         val initialState =
-            StationListUiState(
+            RadioStationListUiState(
                 status = ListStatus.Loading,
                 stations = persistentListOf(),
             )

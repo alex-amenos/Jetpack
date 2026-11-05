@@ -1,6 +1,6 @@
 package com.alxnophis.jetpack.radio.playback
 
-import com.alxnophis.jetpack.radio.domain.model.Station
+import com.alxnophis.jetpack.radio.domain.model.RadioStation
 import kotlinx.coroutines.flow.StateFlow
 
 internal interface RadioPlayer {
@@ -9,7 +9,7 @@ internal interface RadioPlayer {
     fun connect()
 
     fun playQueue(
-        stations: List<Station>,
+        stations: List<RadioStation>,
         startIndex: Int,
     )
 
