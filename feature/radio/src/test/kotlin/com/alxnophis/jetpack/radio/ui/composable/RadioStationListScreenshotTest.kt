@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.radio.ui.composable
 
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onRoot
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.radio.domain.model.RadioStationMother
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListUiState
@@ -30,20 +31,55 @@ internal class RadioStationListScreenshotTest {
                 status = RadioStationListStatus.Content,
                 stations =
                     listOf(
-                        RadioStationMother.create(id = "1", name = "Cadena SER", faviconUrl = null, bitrate = 128),
-                        RadioStationMother.create(id = "2", name = "Catalunya Ràdio", faviconUrl = null, bitrate = 96),
+                        RadioStationMother.create(
+                            id = "1",
+                            name = "Cadena SER",
+                            faviconUrl = null,
+                            bitrate = 128,
+                        ),
+                        RadioStationMother.create(
+                            id = "2",
+                            name = "Catalunya Ràdio",
+                            faviconUrl = null,
+                            bitrate = 96,
+                        ),
                     ).toImmutableList(),
             )
-        composeRule.setContent { RadioStationListScreen(uiState, onBack = {}, onStationSelected = {}, handleEvent = {}) }
+        composeRule.setContent {
+            AppTheme {
+                RadioStationListScreen(
+                    uiState,
+                    onBack = {},
+                    onStationSelected = {},
+                    handleEvent = {},
+                )
+            }
+        }
 
-        composeRule.onRoot().captureScreenshot(screenName = "RadioStationListScreen", stateIndex = 0)
+        composeRule
+            .onRoot()
+            .captureScreenshot(
+                screenName = "RadioStationListScreen",
+                stateIndex = 0,
+            )
     }
 
     @Test
     fun stationListError() {
         val uiState = RadioStationListUiState(status = RadioStationListStatus.Error, stations = persistentListOf())
-        composeRule.setContent { RadioStationListScreen(uiState, onBack = {}, onStationSelected = {}, handleEvent = {}) }
+        composeRule.setContent {
+            AppTheme {
+                RadioStationListScreen(
+                    uiState,
+                    onBack = {},
+                    onStationSelected = {},
+                    handleEvent = {},
+                )
+            }
+        }
 
-        composeRule.onRoot().captureScreenshot(screenName = "RadioStationListScreen", stateIndex = 1)
+        composeRule
+            .onRoot()
+            .captureScreenshot(screenName = "RadioStationListScreen", stateIndex = 1)
     }
 }

@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.radio.ui.composable
 
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onRoot
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.radio.playback.RadioPlaybackStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerUiState
 import com.alxnophis.jetpack.testing.screenshot.ScreenshotTestUtils.captureScreenshot
@@ -22,18 +23,44 @@ internal class RadioPlayerScreenshotTest {
 
     @Test
     fun radioPlayerPlaying() {
-        val uiState = uiState(status = RadioPlaybackStatus.Playing, canPrevious = true, canNext = true)
-        composeRule.setContent { RadioPlayerScreen(uiState, onBack = {}, handleEvent = {}) }
+        val uiState =
+            uiState(
+                status = RadioPlaybackStatus.Playing,
+                canPrevious = true,
+                canNext = true,
+            )
+        composeRule.setContent {
+            AppTheme {
+                RadioPlayerScreen(
+                    uiState,
+                    onBack = {},
+                    handleEvent = {},
+                )
+            }
+        }
 
-        composeRule.onRoot().captureScreenshot(screenName = "RadioPlayerScreen", stateIndex = 0)
+        composeRule
+            .onRoot()
+            .captureScreenshot(screenName = "RadioPlayerScreen", stateIndex = 0)
     }
 
     @Test
     fun radioPlayerError() {
-        val uiState = uiState(status = RadioPlaybackStatus.Error, canPrevious = false, canNext = false)
-        composeRule.setContent { RadioPlayerScreen(uiState, onBack = {}, handleEvent = {}) }
+        val uiState =
+            uiState(
+                status = RadioPlaybackStatus.Error,
+                canPrevious = false,
+                canNext = false,
+            )
+        composeRule.setContent {
+            AppTheme {
+                RadioPlayerScreen(uiState, onBack = {}, handleEvent = {})
+            }
+        }
 
-        composeRule.onRoot().captureScreenshot(screenName = "RadioPlayerScreen", stateIndex = 1)
+        composeRule
+            .onRoot()
+            .captureScreenshot(screenName = "RadioPlayerScreen", stateIndex = 1)
     }
 
     private fun uiState(

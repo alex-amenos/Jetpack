@@ -2,6 +2,7 @@ package com.alxnophis.jetpack.radio.ui.composable
 
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onRoot
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.radio.playback.RadioPlaybackStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerUiState
 import com.alxnophis.jetpack.testing.screenshot.ScreenshotTestUtils.captureScreenshot
@@ -30,7 +31,11 @@ internal class RadioPlayerLandscapeScreenshotTest {
                 canNext = true,
                 sleepTimerRemainingMillis = null,
             )
-        composeRule.setContent { RadioPlayerScreen(uiState, onBack = {}, handleEvent = {}) }
+        composeRule.setContent {
+            AppTheme {
+                RadioPlayerScreen(uiState, onBack = {}, handleEvent = {})
+            }
+        }
 
         composeRule
             .onRoot()
