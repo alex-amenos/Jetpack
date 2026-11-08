@@ -78,6 +78,9 @@ import org.koin.androidx.compose.koinViewModel
 
 private const val ICON_RATIO = 0.6f
 private const val TITLE_MAX_LINES = 2
+private const val LANDSCAPE_ICON_HEIGHT_RATIO = 0.4f
+private val MIN_LANDSCAPE_ICON_SIZE = 96.dp
+private val MAX_LANDSCAPE_ICON_SIZE = 160.dp
 private val PRIMARY_ICON_SIZE = 64.dp
 private val RIPPLE_CORNER_RADIUS = 16.dp
 private val BANNER_MAX_WIDTH = 420.dp
@@ -107,6 +110,7 @@ internal fun RadioPlayerScreen(
                 .background(MaterialTheme.colorScheme.surface),
     ) {
         val isLandscape = maxWidth > maxHeight
+        val landscapeIconSize = (maxHeight * LANDSCAPE_ICON_HEIGHT_RATIO).coerceIn(MIN_LANDSCAPE_ICON_SIZE, MAX_LANDSCAPE_ICON_SIZE)
         if (isLandscape) {
             Row(
                 modifier =
@@ -119,7 +123,7 @@ internal fun RadioPlayerScreen(
             ) {
                 PlayerInfo(
                     uiState = uiState,
-                    iconSize = 160.dp,
+                    iconSize = landscapeIconSize,
                     modifier = Modifier.weight(1f),
                 )
                 PlayerControls(
@@ -591,6 +595,46 @@ private fun RadioPlayerScreenErrorPreview() {
                     canPrevious = false,
                     canNext = false,
                     sleepTimerRemainingMillis = null,
+                ),
+            onBack = {},
+            handleEvent = {},
+        )
+    }
+}
+
+@Preview(name = "Landscape small", widthDp = 640, heightDp = 320, showBackground = true)
+@Composable
+private fun RadioPlayerScreenSmallLandscapePreview() {
+    AppTheme {
+        RadioPlayerScreen(
+            uiState =
+                RadioPlayerUiState(
+                    stationName = "The Very Long Name of an International Radio Station for Two Lines",
+                    artworkUri = null,
+                    status = RadioPlaybackStatus.Playing,
+                    canPrevious = true,
+                    canNext = true,
+                    sleepTimerRemainingMillis = 754_000L,
+                ),
+            onBack = {},
+            handleEvent = {},
+        )
+    }
+}
+
+@Preview(name = "Landscape large font", widthDp = 891, heightDp = 411, fontScale = 1.5f, showBackground = true)
+@Composable
+private fun RadioPlayerScreenLargeFontLandscapePreview() {
+    AppTheme {
+        RadioPlayerScreen(
+            uiState =
+                RadioPlayerUiState(
+                    stationName = "Catalunya Ràdio",
+                    artworkUri = null,
+                    status = RadioPlaybackStatus.Playing,
+                    canPrevious = true,
+                    canNext = true,
+                    sleepTimerRemainingMillis = 754_000L,
                 ),
             onBack = {},
             handleEvent = {},
