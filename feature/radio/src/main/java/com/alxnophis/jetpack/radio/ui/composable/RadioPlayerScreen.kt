@@ -235,7 +235,7 @@ private fun PlayerControls(
             onTimer = onTimer,
         )
         uiState.sleepTimerRemainingMillis?.let { remaining ->
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = stringResource(R.string.radio_sleep_remaining, formatRemaining(remaining)),
                 style = MaterialTheme.typography.bodyLarge,
@@ -273,8 +273,8 @@ private fun PlaybackStatusChip(status: RadioPlaybackStatus) {
         }
     val pulseAlpha by rememberInfiniteTransition(label = "livePulse").animateFloat(
         initialValue = 1f,
-        targetValue = 0.3f,
-        animationSpec = infiniteRepeatable(tween(durationMillis = 900), RepeatMode.Reverse),
+        targetValue = 0.25f,
+        animationSpec = infiniteRepeatable(tween(durationMillis = 700), RepeatMode.Reverse),
         label = "livePulseAlpha",
     )
     val dotAlpha = if (status == RadioPlaybackStatus.Playing) pulseAlpha else 1f
