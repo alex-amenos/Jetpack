@@ -44,6 +44,7 @@ class PlaybackService : MediaSessionService() {
                 .Builder(this)
                 .setAudioAttributes(audioAttributes, true)
                 .setLoadControl(RadioLoadControl.create())
+                .setHandleAudioBecomingNoisy(true)
                 .build()
         sleepTimer = RadioSleepTimer(serviceScope) { player.stop() }
         mediaSession =

@@ -4,6 +4,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.media3.common.C
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
@@ -69,7 +71,7 @@ internal class RadioPlayerController(
         stations: List<RadioStation>,
         startIndex: Int,
     ) = withController { controller ->
-        controller.setMediaItems(stations.map { it.toMediaItem() }, startIndex, 0L)
+        controller.setMediaItems(stations.map { it.toMediaItem() }, startIndex, C.TIME_UNSET)
         controller.prepare()
         controller.play()
     }
@@ -90,6 +92,9 @@ internal class RadioPlayerController(
 
     override fun retry() =
         withController { controller ->
+            if (controller.playerError?.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
+                controller.seekToDefaultPosition()
+            }
             controller.prepare()
             controller.play()
         }
