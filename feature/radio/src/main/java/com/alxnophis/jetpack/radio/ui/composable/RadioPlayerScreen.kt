@@ -44,6 +44,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,8 +62,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.radio.R
 import com.alxnophis.jetpack.radio.playback.RadioPlaybackStatus
-import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerUiState
 import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerEvent
+import com.alxnophis.jetpack.radio.ui.contract.RadioPlayerUiState
 import com.alxnophis.jetpack.radio.ui.viewmodel.RadioPlayerViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -87,7 +88,7 @@ internal fun RadioPlayerScreen(
     onBack: () -> Unit,
     handleEvent: (RadioPlayerEvent) -> Unit,
 ) {
-    var showTimerSheet by remember { mutableStateOf(false) }
+    var showTimerSheet by rememberSaveable { mutableStateOf(false) }
 
     BoxWithConstraints(
         modifier =
@@ -189,17 +190,17 @@ private fun PlayerInfo(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
     ) {
         RadioStationIcon(faviconUrl = uiState.artworkUri, size = iconSize)
-        Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = uiState.stationName.orEmpty(),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.fillMaxWidth(),
         )
-        Spacer(modifier = Modifier.height(14.dp))
         LiveChip()
     }
 }
@@ -229,7 +230,7 @@ private fun PlayerControls(
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = stringResource(R.string.radio_sleep_remaining, formatRemaining(remaining)),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -261,8 +262,8 @@ private fun LiveChip() {
         color = MaterialTheme.colorScheme.surfaceVariant,
     ) {
         Text(
-            text = "● " + stringResource(R.string.radio_live),
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+            text = "●  " + stringResource(R.string.radio_live),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.primary,
         )
