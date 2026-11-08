@@ -55,11 +55,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
@@ -74,6 +77,7 @@ import com.alxnophis.jetpack.radio.ui.viewmodel.RadioPlayerViewModel
 import org.koin.androidx.compose.koinViewModel
 
 private const val ICON_RATIO = 0.6f
+private const val TITLE_MAX_LINES = 2
 private val PRIMARY_ICON_SIZE = 64.dp
 private val RIPPLE_CORNER_RADIUS = 16.dp
 private val BANNER_MAX_WIDTH = 420.dp
@@ -199,14 +203,30 @@ private fun PlayerInfo(
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
     ) {
         RadioStationIcon(faviconUrl = uiState.artworkUri, size = iconSize)
-        Text(
-            text = uiState.stationName.orEmpty(),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurface,
+        Box(
             modifier = Modifier.fillMaxWidth(),
-        )
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = uiState.stationName.orEmpty(),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                minLines = TITLE_MAX_LINES,
+                maxLines = TITLE_MAX_LINES,
+                color = Color.Transparent,
+                modifier = Modifier.clearAndSetSemantics {},
+            )
+            Text(
+                text = uiState.stationName.orEmpty(),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                maxLines = TITLE_MAX_LINES,
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
         if (uiState.status != RadioPlaybackStatus.Idle && uiState.status != RadioPlaybackStatus.Error) {
             PlaybackStatusChip(status = uiState.status)
         }
