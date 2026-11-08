@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.radio.playback
 
+import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -22,7 +23,7 @@ internal class RadioSleepTimer(
         job =
             scope.launch {
                 var remaining = minutes * MILLIS_PER_MINUTE
-                while (remaining > 0) {
+                while (remaining > ZERO_INT) {
                     _remainingMillis.value = remaining
                     delay(TICK_MILLIS.milliseconds)
                     remaining -= TICK_MILLIS
