@@ -1,5 +1,10 @@
 package com.alxnophis.jetpack.radio.ui.composable
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -48,6 +53,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -201,7 +207,9 @@ private fun PlayerInfo(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.fillMaxWidth(),
         )
-        LiveChip()
+        if (uiState.status != RadioPlaybackStatus.Idle && uiState.status != RadioPlaybackStatus.Error) {
+            PlaybackStatusChip(status = uiState.status)
+        }
     }
 }
 
@@ -256,17 +264,42 @@ private fun BackButton(
 }
 
 @Composable
-private fun LiveChip() {
+private fun PlaybackStatusChip(status: RadioPlaybackStatus) {
+    val label =
+        when (status) {
+            RadioPlaybackStatus.Playing -> stringResource(R.string.radio_status_live)
+            RadioPlaybackStatus.Paused -> stringResource(R.string.radio_status_paused)
+            else -> stringResource(R.string.radio_status_connecting)
+        }
+    val pulseAlpha by rememberInfiniteTransition(label = "livePulse").animateFloat(
+        initialValue = 1f,
+        targetValue = 0.3f,
+        animationSpec = infiniteRepeatable(tween(durationMillis = 900), RepeatMode.Reverse),
+        label = "livePulseAlpha",
+    )
+    val dotAlpha = if (status == RadioPlaybackStatus.Playing) pulseAlpha else 1f
     Surface(
         shape = RoundedCornerShape(50),
         color = MaterialTheme.colorScheme.surfaceVariant,
     ) {
-        Text(
-            text = "●  " + stringResource(R.string.radio_live),
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
-        )
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Box(
+                modifier =
+                    Modifier
+                        .size(8.dp)
+                        .alpha(dotAlpha)
+                        .background(MaterialTheme.colorScheme.primary, CircleShape),
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
     }
 }
 
