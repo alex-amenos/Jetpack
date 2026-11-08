@@ -38,13 +38,36 @@ internal class RadioStationMapperTest {
         station?.streamUrl shouldBeEqualTo "https://example.com/stream.mp3"
     }
 
-    private fun apiModel(urlResolved: String?) =
-        RadioStationApiModel(
-            stationUuid = "uuid-1",
-            name = "Cadena SER",
-            urlResolved = urlResolved,
-            favicon = "https://example.com/ser.png",
-            codec = "MP3",
-            bitrate = 128,
-        )
+    @Test
+    fun `GIVEN a station with https favicon WHEN mapped THEN keeps the favicon url`() {
+        val apiModel = apiModel(urlResolved = "https://example.com/stream.mp3", favicon = "https://example.com/ser.png")
+
+        apiModel.toRadioStationOrNull()?.faviconUrl shouldBeEqualTo "https://example.com/ser.png"
+    }
+
+    @Test
+    fun `GIVEN a station with http favicon WHEN mapped THEN drops the favicon url`() {
+        val apiModel = apiModel(urlResolved = "https://example.com/stream.mp3", favicon = "http://example.com/ser.png")
+
+        apiModel.toRadioStationOrNull()?.faviconUrl.shouldBeNull()
+    }
+
+    @Test
+    fun `GIVEN a station with blank favicon WHEN mapped THEN drops the favicon url`() {
+        val apiModel = apiModel(urlResolved = "https://example.com/stream.mp3", favicon = " ")
+
+        apiModel.toRadioStationOrNull()?.faviconUrl.shouldBeNull()
+    }
+
+    private fun apiModel(
+        urlResolved: String?,
+        favicon: String? = "https://example.com/ser.png",
+    ) = RadioStationApiModel(
+        stationUuid = "uuid-1",
+        name = "Cadena SER",
+        urlResolved = urlResolved,
+        favicon = favicon,
+        codec = "MP3",
+        bitrate = 128,
+    )
 }

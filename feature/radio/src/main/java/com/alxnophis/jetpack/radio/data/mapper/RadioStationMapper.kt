@@ -12,7 +12,7 @@ internal fun RadioStationApiModel.toRadioStationOrNull(): RadioStation? {
         id = stationUuid,
         name = name,
         streamUrl = url,
-        faviconUrl = favicon?.takeIf { it.isNotBlank() },
+        faviconUrl = favicon?.takeIf { it.isNotBlank() && it.startsWith("$HTTPS_SCHEME://", ignoreCase = true) },
         codec = codec?.takeIf { it.isNotBlank() },
         bitrate = bitrate,
     )

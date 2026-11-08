@@ -33,13 +33,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.alxnophis.jetpack.radio.R
 import com.alxnophis.jetpack.radio.data.model.RadioStation
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
@@ -224,23 +225,9 @@ internal fun RadioStationIcon(
 ) {
     val shape = RoundedCornerShape(size / 4)
     if (faviconUrl == null) {
-        Box(
-            modifier =
-                Modifier
-                    .size(size)
-                    .clip(shape)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Radio,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(size * 0.5f),
-            )
-        }
+        RadioIconFallback(size = size, shape = shape)
     } else {
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = faviconUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -248,6 +235,30 @@ internal fun RadioStationIcon(
                 Modifier
                     .size(size)
                     .clip(shape),
+            loading = { RadioIconFallback(size = size, shape = shape) },
+            error = { RadioIconFallback(size = size, shape = shape) },
+        )
+    }
+}
+
+@Composable
+private fun RadioIconFallback(
+    size: Dp,
+    shape: Shape,
+) {
+    Box(
+        modifier =
+            Modifier
+                .size(size)
+                .clip(shape)
+                .background(MaterialTheme.colorScheme.primaryContainer),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Radio,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.size(size * 0.5f),
         )
     }
 }
