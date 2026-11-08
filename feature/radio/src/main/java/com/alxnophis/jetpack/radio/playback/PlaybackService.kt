@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.radio.playback
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +15,6 @@ import androidx.media3.session.SessionResult
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
-import io.github.santimattius.structured.annotations.StructuredScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -28,7 +28,7 @@ class PlaybackService : MediaSessionService() {
     private lateinit var player: ExoPlayer
     private lateinit var sleepTimer: RadioSleepTimer
 
-    @StructuredScope
+    @SuppressLint("InlineCoroutineScope")
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onCreate() {
@@ -78,7 +78,12 @@ class PlaybackService : MediaSessionService() {
                     action = RadioPlayerIntent.ACTION_OPEN_PLAYER
                     addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 } ?: Intent()
-        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(
+            this,
+            ZERO_INT,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+        )
     }
 
     private fun publishRemaining(remainingMillis: Long?) {
