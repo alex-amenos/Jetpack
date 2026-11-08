@@ -11,8 +11,10 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionResult
+import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
+import io.github.santimattius.structured.annotations.StructuredScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -25,6 +27,8 @@ class PlaybackService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
     private lateinit var player: ExoPlayer
     private lateinit var sleepTimer: RadioSleepTimer
+
+    @StructuredScope
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onCreate() {
@@ -107,8 +111,12 @@ class PlaybackService : MediaSessionService() {
         ): ListenableFuture<SessionResult> {
             when (customCommand) {
                 RadioSessionCommands.SET_SLEEP_TIMER -> {
-                    val minutes = args.getInt(RadioSessionCommands.KEY_MINUTES, 0)
-                    if (minutes > 0) sleepTimer.start(minutes) else sleepTimer.cancel()
+                    val minutes = args.getInt(RadioSessionCommands.KEY_MINUTES, ZERO_INT)
+                    if (minutes > ZERO_INT) {
+                        sleepTimer.start(minutes)
+                    } else {
+                        sleepTimer.cancel()
+                    }
                 }
 
                 RadioSessionCommands.CANCEL_SLEEP_TIMER -> {
