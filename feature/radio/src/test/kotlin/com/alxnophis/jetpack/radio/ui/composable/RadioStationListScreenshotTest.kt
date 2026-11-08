@@ -65,6 +65,46 @@ internal class RadioStationListScreenshotTest {
     }
 
     @Test
+    fun stationListContentDark() {
+        val uiState =
+            RadioStationListUiState(
+                status = RadioStationListStatus.Content,
+                stations =
+                    listOf(
+                        RadioStationMother.create(
+                            id = "1",
+                            name = "Cadena SER",
+                            faviconUrl = null,
+                            bitrate = 128,
+                        ),
+                        RadioStationMother.create(
+                            id = "2",
+                            name = "Catalunya Ràdio",
+                            faviconUrl = null,
+                            bitrate = 96,
+                        ),
+                    ).toImmutableList(),
+            )
+        composeRule.setContent {
+            AppTheme(darkTheme = true) {
+                RadioStationListScreen(
+                    uiState,
+                    onBack = {},
+                    onStationSelected = {},
+                    handleEvent = {},
+                )
+            }
+        }
+
+        composeRule
+            .onRoot()
+            .captureScreenshot(
+                screenName = "RadioStationListScreenDark",
+                stateIndex = 0,
+            )
+    }
+
+    @Test
     fun stationListError() {
         val uiState = RadioStationListUiState(status = RadioStationListStatus.Error, stations = persistentListOf())
         composeRule.setContent {

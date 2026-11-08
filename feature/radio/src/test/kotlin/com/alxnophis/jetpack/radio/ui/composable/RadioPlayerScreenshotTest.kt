@@ -45,6 +45,29 @@ internal class RadioPlayerScreenshotTest {
     }
 
     @Test
+    fun radioPlayerPlayingDark() {
+        val uiState =
+            uiState(
+                status = RadioPlaybackStatus.Playing,
+                canPrevious = true,
+                canNext = true,
+            )
+        composeRule.setContent {
+            AppTheme(darkTheme = true) {
+                RadioPlayerScreen(
+                    uiState,
+                    onBack = {},
+                    handleEvent = {},
+                )
+            }
+        }
+
+        composeRule
+            .onRoot()
+            .captureScreenshot(screenName = "RadioPlayerScreenDark", stateIndex = 0)
+    }
+
+    @Test
     fun radioPlayerError() {
         val uiState =
             uiState(
