@@ -528,13 +528,23 @@ private fun SleepTimerSheet(
                     .padding(horizontal = 24.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text(text = stringResource(R.string.radio_sleep_title), style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = stringResource(R.string.radio_sleep_title),
+                style = MaterialTheme.typography.titleLarge,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             listOf(15, 30, 60).forEach { minutes ->
-                OutlinedButton(onClick = { onSelect(minutes) }, modifier = Modifier.fillMaxWidth()) {
+                OutlinedButton(
+                    onClick = { onSelect(minutes) },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
                     Text(text = stringResource(R.string.radio_sleep_minutes, minutes))
                 }
             }
-            Button(onClick = { onSelect(null) }, modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = { onSelect(null) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
                 Text(text = stringResource(R.string.radio_sleep_off))
             }
         }

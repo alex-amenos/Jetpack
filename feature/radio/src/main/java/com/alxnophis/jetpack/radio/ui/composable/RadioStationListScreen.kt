@@ -43,8 +43,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.alxnophis.jetpack.radio.R
 import com.alxnophis.jetpack.radio.data.model.RadioStation
-import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
+import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListUiState
 import com.alxnophis.jetpack.radio.ui.viewmodel.RadioStationListViewModel
 import org.koin.androidx.compose.koinViewModel
