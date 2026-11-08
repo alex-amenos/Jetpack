@@ -33,12 +33,19 @@ internal class RadioPlayerLandscapeScreenshotTest {
             )
         composeRule.setContent {
             AppTheme {
-                RadioPlayerScreen(uiState, onBack = {}, handleEvent = {})
+                RadioPlayerScreen(
+                    uiState,
+                    onBack = {},
+                    handleEvent = {},
+                )
             }
         }
 
         composeRule
             .onRoot()
-            .captureScreenshot(screenName = "RadioPlayerScreenLandscape", stateIndex = 0)
+            .captureScreenshot(
+                screenName = "RadioPlayerScreenLandscape",
+                stateIndex = 0,
+            )
     }
 }
