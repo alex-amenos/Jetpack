@@ -94,7 +94,7 @@ class PlaybackService : MediaSessionService() {
                     .add(RadioSessionCommands.CANCEL_SLEEP_TIMER)
                     .build()
             return MediaSession.ConnectionResult
-                .AcceptedResultBuilder(session)
+                .AcceptedResultBuilder(session, controller)
                 .setAvailableSessionCommands(commands)
                 .build()
         }
