@@ -1,5 +1,6 @@
 package com.alxnophis.jetpack.radio.playback
 
+import android.os.SystemClock
 import com.alxnophis.jetpack.kotlin.constants.ZERO_INT
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -12,6 +13,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 internal class RadioSleepTimer(
     private val scope: CoroutineScope,
+    private val clock: () -> Long = { SystemClock.elapsedRealtime() },
     private val onExpired: () -> Unit,
 ) {
     private var job: Job? = null
@@ -22,11 +24,15 @@ internal class RadioSleepTimer(
         job?.cancel()
         job =
             scope.launch {
-                var remaining = minutes * MILLIS_PER_MINUTE
-                while (remaining > ZERO_INT) {
+                val durationMillis = minutes * MILLIS_PER_MINUTE
+                val deadline = clock() + durationMillis
+                while (true) {
+                    val remaining = deadline - clock()
+                    if (remaining <= ZERO_INT) {
+                        break
+                    }
                     _remainingMillis.value = remaining
-                    delay(TICK_MILLIS.milliseconds)
-                    remaining -= TICK_MILLIS
+                    delay(minOf(TICK_MILLIS, remaining).milliseconds)
                 }
                 _remainingMillis.value = null
                 onExpired()
