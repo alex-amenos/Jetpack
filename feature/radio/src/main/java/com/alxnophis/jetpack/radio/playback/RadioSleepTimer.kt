@@ -17,24 +17,21 @@ internal class RadioSleepTimer(
     private val onExpired: () -> Unit,
 ) {
     private var job: Job? = null
-    private val _remainingMillis = MutableStateFlow<Long?>(null)
-    val remainingMillis: StateFlow<Long?> = _remainingMillis.asStateFlow()
+    private val _deadlineMillis = MutableStateFlow<Long?>(null)
+    val deadlineMillis: StateFlow<Long?> = _deadlineMillis.asStateFlow()
 
     fun start(minutes: Int) {
         job?.cancel()
         job =
             scope.launch {
-                val durationMillis = minutes * MILLIS_PER_MINUTE
-                val deadline = clock() + durationMillis
-                while (true) {
-                    val remaining = deadline - clock()
-                    if (remaining <= ZERO_INT) {
-                        break
-                    }
-                    _remainingMillis.value = remaining
+                val deadline = clock() + minutes * MILLIS_PER_MINUTE
+                _deadlineMillis.value = deadline
+                var remaining = deadline - clock()
+                while (remaining > ZERO_INT) {
                     delay(minOf(TICK_MILLIS, remaining).milliseconds)
+                    remaining = deadline - clock()
                 }
-                _remainingMillis.value = null
+                _deadlineMillis.value = null
                 onExpired()
             }
     }
@@ -42,7 +39,7 @@ internal class RadioSleepTimer(
     fun cancel() {
         job?.cancel()
         job = null
-        _remainingMillis.value = null
+        _deadlineMillis.value = null
     }
 
     private companion object {

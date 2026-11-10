@@ -14,6 +14,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldBeNull
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -71,6 +72,47 @@ internal class RadioPlayerViewModelTest {
         viewModel.handleEvent(RadioPlayerEvent.Stop)
 
         player.stopCount shouldBeEqualTo 1
+    }
+
+    @Test
+    fun `GIVEN a sleep deadline WHEN time elapses THEN countdown is updated only when the displayed minute changes`() {
+        val player = FakeRadioPlayer(RadioPlayerSnapshot(sleepTimerDeadlineMillis = 180_000L))
+        val viewModel = RadioPlayerViewModel(player, clock = { dispatcher.scheduler.currentTime })
+
+        dispatcher.scheduler.runCurrent()
+        viewModel.currentUiState.sleepTimerRemainingMillis shouldBeEqualTo 180_000L
+
+        dispatcher.scheduler.advanceTimeBy(1L)
+        dispatcher.scheduler.runCurrent()
+        viewModel.currentUiState.sleepTimerRemainingMillis shouldBeEqualTo 179_999L
+
+        dispatcher.scheduler.advanceTimeBy(59_999L)
+        dispatcher.scheduler.runCurrent()
+        viewModel.currentUiState.sleepTimerRemainingMillis shouldBeEqualTo 179_999L
+
+        dispatcher.scheduler.advanceTimeBy(1L)
+        dispatcher.scheduler.runCurrent()
+        viewModel.currentUiState.sleepTimerRemainingMillis shouldBeEqualTo 119_999L
+    }
+
+    @Test
+    fun `GIVEN a sleep deadline WHEN the deadline passes THEN remaining countdown is null`() {
+        val player = FakeRadioPlayer(RadioPlayerSnapshot(sleepTimerDeadlineMillis = 3_000L))
+        val viewModel = RadioPlayerViewModel(player, clock = { dispatcher.scheduler.currentTime })
+
+        dispatcher.scheduler.advanceUntilIdle()
+
+        viewModel.currentUiState.sleepTimerRemainingMillis.shouldBeNull()
+    }
+
+    @Test
+    fun `GIVEN no sleep deadline WHEN snapshot is collected THEN remaining countdown is null`() {
+        val player = FakeRadioPlayer(RadioPlayerSnapshot(stationName = "Cadena SER"))
+        val viewModel = RadioPlayerViewModel(player, clock = { dispatcher.scheduler.currentTime })
+
+        dispatcher.scheduler.advanceUntilIdle()
+
+        viewModel.currentUiState.sleepTimerRemainingMillis.shouldBeNull()
     }
 
     private class FakeRadioPlayer(

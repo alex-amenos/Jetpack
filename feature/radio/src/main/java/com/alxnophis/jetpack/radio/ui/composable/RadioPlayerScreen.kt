@@ -555,9 +555,14 @@ private fun SleepTimerSheet(
     }
 }
 
+@Composable
 private fun formatRemaining(millis: Long): String {
-    val totalSeconds = millis / 1_000
-    return "%02d:%02d".format(totalSeconds / 60, totalSeconds % 60)
+    val minutes = millis / 60_000
+    return if (minutes == 0L) {
+        stringResource(R.string.radio_sleep_remaining_under_minute)
+    } else {
+        stringResource(R.string.radio_sleep_remaining_minutes, minutes)
+    }
 }
 
 @PreviewLightDark

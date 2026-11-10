@@ -53,8 +53,8 @@ class PlaybackService : MediaSessionService() {
                 .setCallback(RadioSessionCallback())
                 .setSessionActivity(openPlayerPendingIntent())
                 .build()
-        sleepTimer.remainingMillis
-            .onEach { remaining -> publishRemaining(remaining) }
+        sleepTimer.deadlineMillis
+            .onEach { deadline -> publishSleepDeadline(deadline) }
             .launchIn(serviceScope)
     }
 
@@ -87,8 +87,11 @@ class PlaybackService : MediaSessionService() {
         )
     }
 
-    private fun publishRemaining(remainingMillis: Long?) {
-        val extras = Bundle().apply { remainingMillis?.let { putLong(RadioSessionCommands.KEY_REMAINING_MILLIS, it) } }
+    private fun publishSleepDeadline(deadlineMillis: Long?) {
+        val extras =
+            Bundle().apply {
+                deadlineMillis?.let { putLong(RadioSessionCommands.KEY_SLEEP_DEADLINE_MILLIS, it) }
+            }
         mediaSession?.sessionExtras = extras
     }
 

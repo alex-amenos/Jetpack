@@ -9,5 +9,5 @@ internal data class RadioPlayerSnapshot(
     val status: RadioPlaybackStatus = RadioPlaybackStatus.Idle,
     val hasPrevious: Boolean = false,
     val hasNext: Boolean = false,
-    val sleepTimerRemainingMillis: Long? = null,
+    val sleepTimerDeadlineMillis: Long? = null,
 )

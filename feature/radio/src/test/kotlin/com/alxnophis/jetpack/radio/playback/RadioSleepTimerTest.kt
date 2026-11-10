@@ -24,11 +24,11 @@ internal class RadioSleepTimerTest {
             advanceTimeBy(60_001L.milliseconds)
 
             expiredCount shouldBeEqualTo 1
-            timer.remainingMillis.value.shouldBeNull()
+            timer.deadlineMillis.value.shouldBeNull()
         }
 
     @Test
-    fun `GIVEN an active timer WHEN cancelled THEN onExpired is never called and remaining is null`() =
+    fun `GIVEN an active timer WHEN cancelled THEN onExpired is never called and deadline is null`() =
         runTest {
             var expiredCount = 0
             val timer =
@@ -43,11 +43,11 @@ internal class RadioSleepTimerTest {
             advanceTimeBy(60_000L.milliseconds)
 
             expiredCount shouldBeEqualTo 0
-            timer.remainingMillis.value.shouldBeNull()
+            timer.deadlineMillis.value.shouldBeNull()
         }
 
     @Test
-    fun `GIVEN an active timer WHEN clock advances with drift THEN remainingMillis reflects actual elapsed time`() =
+    fun `GIVEN a 1 minute timer WHEN started THEN deadline is now plus one minute`() =
         runTest {
             var currentTime = 10_000L
             val timer =
@@ -58,11 +58,33 @@ internal class RadioSleepTimerTest {
 
             timer.start(minutes = 1)
             testScheduler.runCurrent()
+
+            timer.deadlineMillis.value shouldBeEqualTo 70_000L
+            timer.cancel()
+        }
+
+    @Test
+    fun `GIVEN an active timer WHEN clock advances with drift THEN onExpired waits for the real deadline`() =
+        runTest {
+            var currentTime = 10_000L
+            var expiredCount = 0
+            val timer =
+                RadioSleepTimer(
+                    scope = this,
+                    clock = { currentTime },
+                ) { expiredCount++ }
+
+            timer.start(minutes = 1)
+            testScheduler.runCurrent()
             currentTime += 15_000L
             advanceTimeBy(1_001L.milliseconds)
 
-            timer.remainingMillis.value shouldBeEqualTo 45_000L
-            timer.cancel()
+            expiredCount shouldBeEqualTo 0
+
+            currentTime = 70_000L
+            advanceTimeBy(1_001L.milliseconds)
+
+            expiredCount shouldBeEqualTo 1
         }
 
     @Test
@@ -82,6 +104,6 @@ internal class RadioSleepTimerTest {
             advanceTimeBy(1_001L.milliseconds)
 
             expiredCount shouldBeEqualTo 1
-            timer.remainingMillis.value.shouldBeNull()
+            timer.deadlineMillis.value.shouldBeNull()
         }
 }

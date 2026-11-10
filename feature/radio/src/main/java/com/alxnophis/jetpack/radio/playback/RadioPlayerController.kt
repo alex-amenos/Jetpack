@@ -138,7 +138,7 @@ internal class RadioPlayerController(
     }
 
     private fun publish(controller: MediaController) {
-        val remaining = controller.sessionExtras.getLong(RadioSessionCommands.KEY_REMAINING_MILLIS, NO_TIMER)
+        val deadline = controller.sessionExtras.getLong(RadioSessionCommands.KEY_SLEEP_DEADLINE_MILLIS, NO_TIMER)
         _snapshot.value =
             RadioPlayerSnapshot(
                 stationId = controller.currentMediaItem?.mediaId,
@@ -152,7 +152,7 @@ internal class RadioPlayerController(
                     ),
                 hasPrevious = controller.hasPreviousMediaItem(),
                 hasNext = controller.hasNextMediaItem(),
-                sleepTimerRemainingMillis = remaining.takeIf { it != NO_TIMER },
+                sleepTimerDeadlineMillis = deadline.takeIf { it != NO_TIMER },
             )
     }
 
