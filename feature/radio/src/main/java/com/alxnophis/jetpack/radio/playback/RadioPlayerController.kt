@@ -3,27 +3,34 @@ package com.alxnophis.jetpack.radio.playback
 import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
+import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
 import androidx.media3.common.C
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import arrow.core.Either.Companion.catch
 import com.alxnophis.jetpack.radio.data.model.RadioStation
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
+@OptIn(UnstableApi::class)
 internal class RadioPlayerController(
     private val context: Context,
 ) : RadioPlayer {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private val controllerDeferred = CompletableDeferred<MediaController>()
+    private var scope: CoroutineScope? = null
+    private var controllerDeferred = CompletableDeferred<MediaController>()
     private var activeController: MediaController? = null
     private var connected = false
     private val _snapshot = MutableStateFlow(RadioPlayerSnapshot())
@@ -32,6 +39,10 @@ internal class RadioPlayerController(
     override fun connect() {
         if (connected) return
         connected = true
+        val connectionScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val deferred = CompletableDeferred<MediaController>()
+        scope = connectionScope
+        controllerDeferred = deferred
         val token = SessionToken(context, ComponentName(context, PlaybackService::class.java))
         val future =
             MediaController
@@ -48,20 +59,32 @@ internal class RadioPlayerController(
                 ).buildAsync()
         future.addListener(
             {
-                val controller = future.get()
-                controller.addListener(
-                    object : Player.Listener {
-                        override fun onEvents(
-                            player: Player,
-                            events: Player.Events,
-                        ) {
+                catch { future.get() }.fold(
+                    { error ->
+                        deferred.completeExceptionally(error)
+                        connected = false
+                        publishError()
+                    },
+                    { controller ->
+                        if (connectionScope.isActive) {
+                            controller.addListener(
+                                object : Player.Listener {
+                                    override fun onEvents(
+                                        player: Player,
+                                        events: Player.Events,
+                                    ) {
+                                        publish(controller)
+                                    }
+                                },
+                            )
+                            activeController = controller
+                            deferred.complete(controller)
                             publish(controller)
+                        } else {
+                            controller.release()
                         }
                     },
                 )
-                activeController = controller
-                controllerDeferred.complete(controller)
-                publish(controller)
             },
             ContextCompat.getMainExecutor(context),
         )
@@ -107,6 +130,8 @@ internal class RadioPlayerController(
         }
 
     override fun release() {
+        scope?.cancel()
+        scope = null
         activeController?.release()
         activeController = null
         connected = false
@@ -131,9 +156,21 @@ internal class RadioPlayerController(
             )
     }
 
+    private fun publishError() {
+        _snapshot.value = _snapshot.value.copy(status = RadioPlaybackStatus.Error)
+    }
+
     private fun withController(action: (MediaController) -> Unit) {
-        scope.launch {
-            action(controllerDeferred.await())
+        val currentScope = scope ?: return
+        val deferred = controllerDeferred
+        currentScope.launch {
+            try {
+                action(deferred.await())
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (_: Exception) {
+                publishError()
+            }
         }
     }
 
