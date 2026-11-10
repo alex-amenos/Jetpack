@@ -1,0 +1,180 @@
+package com.alxnophis.jetpack.radio.playback
+
+import android.content.ComponentName
+import android.content.Context
+import android.os.Bundle
+import androidx.annotation.OptIn
+import androidx.core.content.ContextCompat
+import androidx.media3.common.C
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
+import arrow.core.Either.Companion.catch
+import com.alxnophis.jetpack.radio.data.model.RadioStation
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+
+@OptIn(UnstableApi::class)
+internal class RadioPlayerController(
+    private val context: Context,
+) : RadioPlayer {
+    private var scope: CoroutineScope? = null
+    private var controllerDeferred = CompletableDeferred<MediaController>()
+    private var activeController: MediaController? = null
+    private var connected = false
+    private val _snapshot = MutableStateFlow(RadioPlayerSnapshot())
+    override val snapshot: StateFlow<RadioPlayerSnapshot> = _snapshot.asStateFlow()
+
+    override fun connect() {
+        if (connected) return
+        connected = true
+        val connectionScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val deferred = CompletableDeferred<MediaController>()
+        scope = connectionScope
+        controllerDeferred = deferred
+        val token = SessionToken(context, ComponentName(context, PlaybackService::class.java))
+        val future =
+            MediaController
+                .Builder(context, token)
+                .setListener(
+                    object : MediaController.Listener {
+                        override fun onExtrasChanged(
+                            controller: MediaController,
+                            extras: Bundle,
+                        ) {
+                            publish(controller)
+                        }
+                    },
+                ).buildAsync()
+        future.addListener(
+            {
+                catch { future.get() }.fold(
+                    { error ->
+                        deferred.completeExceptionally(error)
+                        connected = false
+                        publishError()
+                    },
+                    { controller ->
+                        if (connectionScope.isActive) {
+                            controller.addListener(
+                                object : Player.Listener {
+                                    override fun onEvents(
+                                        player: Player,
+                                        events: Player.Events,
+                                    ) {
+                                        publish(controller)
+                                    }
+                                },
+                            )
+                            activeController = controller
+                            deferred.complete(controller)
+                            publish(controller)
+                        } else {
+                            controller.release()
+                        }
+                    },
+                )
+            },
+            ContextCompat.getMainExecutor(context),
+        )
+    }
+
+    override fun playQueue(
+        stations: List<RadioStation>,
+        startIndex: Int,
+    ) = withController { controller ->
+        controller.setMediaItems(stations.map { it.toMediaItem() }, startIndex, C.TIME_UNSET)
+        controller.prepare()
+        controller.play()
+    }
+
+    override fun play() =
+        withController { controller ->
+            if (controller.playbackState == Player.STATE_IDLE) controller.prepare()
+            controller.play()
+        }
+
+    override fun pause() = withController { it.pause() }
+
+    override fun stop() = withController { it.stop() }
+
+    override fun next() = withController { it.seekToNextMediaItem() }
+
+    override fun previous() = withController { it.seekToPreviousMediaItem() }
+
+    override fun retry() =
+        withController { controller ->
+            if (controller.playerError?.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
+                controller.seekToDefaultPosition()
+            }
+            controller.prepare()
+            controller.play()
+        }
+
+    override fun setSleepTimer(minutes: Int?) =
+        withController { controller ->
+            val command = if (minutes == null) RadioSessionCommands.CANCEL_SLEEP_TIMER else RadioSessionCommands.SET_SLEEP_TIMER
+            val args = Bundle().apply { putInt(RadioSessionCommands.KEY_MINUTES, minutes ?: 0) }
+            controller.sendCustomCommand(command, args)
+        }
+
+    override fun release() {
+        scope?.cancel()
+        scope = null
+        activeController?.release()
+        activeController = null
+        connected = false
+    }
+
+    private fun publish(controller: MediaController) {
+        val deadline = controller.sessionExtras.getLong(RadioSessionCommands.KEY_SLEEP_DEADLINE_MILLIS, NO_TIMER)
+        _snapshot.value =
+            RadioPlayerSnapshot(
+                stationId = controller.currentMediaItem?.mediaId,
+                stationName = controller.mediaMetadata.title?.toString(),
+                artworkUri = controller.mediaMetadata.artworkUri,
+                status =
+                    mapPlaybackState(
+                        playbackState = controller.playbackState,
+                        isPlaying = controller.isPlaying,
+                        hasError = controller.playerError != null,
+                    ),
+                hasPrevious = controller.hasPreviousMediaItem(),
+                hasNext = controller.hasNextMediaItem(),
+                sleepTimerDeadlineMillis = deadline.takeIf { it != NO_TIMER },
+            )
+    }
+
+    private fun publishError() {
+        _snapshot.value = _snapshot.value.copy(status = RadioPlaybackStatus.Error)
+    }
+
+    private fun withController(action: (MediaController) -> Unit) {
+        val currentScope = scope ?: return
+        val deferred = controllerDeferred
+        currentScope.launch {
+            try {
+                action(deferred.await())
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (_: Exception) {
+                publishError()
+            }
+        }
+    }
+
+    private companion object {
+        const val NO_TIMER = -1L
+    }
+}

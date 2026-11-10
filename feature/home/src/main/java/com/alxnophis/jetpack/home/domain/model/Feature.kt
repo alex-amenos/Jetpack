@@ -18,4 +18,6 @@ sealed interface Feature {
     data object Posts : Feature
 
     data object Settings : Feature
+
+    data object RadioStreaming : Feature
 }

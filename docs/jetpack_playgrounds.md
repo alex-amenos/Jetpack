@@ -77,6 +77,32 @@ More experiment info:<br>
   </tr>
 </table>
 
+## Radio streaming
+
+Live Spanish radio stations from the [Radio Browser](https://www.radio-browser.info/) API, played in the background with Media3.<br><br>
+More experiment info:<br>
+
+- **Playback**: `MediaSessionService` with ExoPlayer and a `MediaController` bridge. Keeps playing when the app is in the background, with a media notification that opens the player screen.
+- **Streams**: HTTPS only, including HLS (`.m3u8`) streams. Live-tuned buffer of 3 seconds.
+- **Data**: Up to 50 Spanish stations, sorted by name, from Radio Browser. Retrofit client with a custom `User-Agent`.
+- **Player**: Play, pause, previous and next station, stop, retry on error, and a sleep timer (15, 30 or 60 minutes) with a live countdown.
+- **Architecture**: MVI for the station list and player screens. The domain models and repository contract live in the data layer, and `RadioPlayer` hides Media3 from the UI.
+- **Testing**: Unit tests with JUnit 5 and Turbine, fixture tests with a recorded station list, and Compose snapshot testing using Roborazzi.
+
+<table>
+  <tr>
+    <td><img alt="Radio stations list light theme" src="./images/radio_station_list_1.png" width="300" /></td>
+    <td><img alt="Radio stations list dark theme" src="./images/radio_station_list_dark_1.png" width="300" /></td>
+  </tr>
+  <tr>
+    <td><img alt="Radio player light theme" src="./images/radio_player_screen_1.png" width="300" /></td>
+    <td><img alt="Radio player dark theme" src="./images/radio_player_screen_dark_1.png" width="300" /></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img alt="Radio player in landscape" src="./images/radio_player_screen_landscape_1.png" width="500" /></td>
+  </tr>
+</table>
+
 ## Location tracker
 
 User location tracking with an integrated Google Maps UI, custom UI overlays, and automatic camera framing.
