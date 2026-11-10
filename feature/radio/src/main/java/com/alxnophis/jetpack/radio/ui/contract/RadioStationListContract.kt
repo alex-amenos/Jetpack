@@ -29,6 +29,7 @@ internal enum class RadioStationListStatus {
 internal data class RadioStationListUiState(
     val status: RadioStationListStatus,
     val stations: ImmutableList<RadioStation>,
+    val currentStationId: String? = null,
 ) : UiState {
     internal companion object {
         val initialState =

@@ -10,9 +10,12 @@ import com.alxnophis.jetpack.radio.playback.RadioPlayer
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListUiState
+import com.alxnophis.jetpack.radio.ui.contract.currentStationId
 import com.alxnophis.jetpack.radio.ui.contract.stations
 import com.alxnophis.jetpack.radio.ui.contract.status
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 internal class RadioStationListViewModel(
@@ -23,6 +26,18 @@ internal class RadioStationListViewModel(
     init {
         player.connect()
         load()
+        viewModelScope.launch {
+            player.snapshot
+                .map { it.stationId }
+                .distinctUntilChanged()
+                .collect { stationId ->
+                    updateUiState {
+                        copy {
+                            RadioStationListUiState.currentStationId set stationId
+                        }
+                    }
+                }
+        }
     }
 
     override fun handleEvent(event: RadioStationListEvent) {

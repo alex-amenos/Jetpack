@@ -91,6 +91,18 @@ internal class RadioStationListViewModelTest {
         player.lastQueue shouldBeEqualTo stations
     }
 
+    @Test
+    fun `GIVEN a station is playing WHEN the snapshot is collected THEN it is marked as current`() {
+        val player = FakePlayer()
+        val viewModel = viewModel(FakeStationsRepository(listOf(RadioStationMother.create(id = "a")).right()), player)
+        dispatcher.scheduler.advanceUntilIdle()
+
+        player.snapshotState.value = RadioPlayerSnapshot(stationId = "a")
+        dispatcher.scheduler.advanceUntilIdle()
+
+        viewModel.currentUiState.currentStationId shouldBeEqualTo "a"
+    }
+
     private fun viewModel(
         repository: RadioStationsRepository,
         player: RadioPlayer = FakePlayer(),
@@ -103,7 +115,8 @@ internal class RadioStationListViewModelTest {
     }
 
     private class FakePlayer : RadioPlayer {
-        override val snapshot: StateFlow<RadioPlayerSnapshot> = MutableStateFlow(RadioPlayerSnapshot())
+        val snapshotState = MutableStateFlow(RadioPlayerSnapshot())
+        override val snapshot: StateFlow<RadioPlayerSnapshot> = snapshotState
         var lastQueue: List<RadioStation> = emptyList()
         var lastQueueStart: Int = -1
 

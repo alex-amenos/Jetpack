@@ -1,6 +1,7 @@
 package com.alxnophis.jetpack.radio.ui.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -119,10 +119,12 @@ internal fun RadioStationListScreen(
             RadioStationListStatus.Content -> {
                 StationsList(
                     stations = uiState.stations,
+                    currentStationId = uiState.currentStationId,
                     onStationSelected = { index ->
                         handleEvent(RadioStationListEvent.Select(index))
                         onStationSelected()
                     },
+                    onPinnedStationClick = onStationSelected,
                     modifier = Modifier.padding(innerPadding),
                 )
             }
@@ -167,16 +169,64 @@ private fun MessageContent(
 @Composable
 private fun StationsList(
     stations: List<RadioStation>,
+    currentStationId: String?,
     onStationSelected: (Int) -> Unit,
+    onPinnedStationClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+    val currentStation = stations.firstOrNull { it.id == currentStationId }
+    Column(modifier = modifier.fillMaxSize()) {
+        if (currentStation != null) {
+            PinnedStationItem(
+                station = currentStation,
+                onClick = onPinnedStationClick,
+            )
+        }
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            stations.forEachIndexed { index, station ->
+                if (station.id != currentStationId) {
+                    item(key = station.id) {
+                        StationItem(station = station, onClick = { onStationSelected(index) })
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PinnedStationItem(
+    station: RadioStation,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .clickable(onClick = onClick)
+                .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        itemsIndexed(stations, key = { _, station -> station.id }) { index, station ->
-            StationItem(station = station, onClick = { onStationSelected(index) })
+        RadioStationIcon(faviconUrl = station.faviconUrl, size = 40.dp)
+        Spacer(modifier = Modifier.size(12.dp))
+        Column {
+            Text(
+                text = stringResource(R.string.radio_now_playing),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+            Text(
+                text = station.name,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
         }
     }
 }
