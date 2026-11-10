@@ -37,12 +37,17 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
+import com.alxnophis.jetpack.core.ui.theme.AppTheme
 import com.alxnophis.jetpack.radio.R
 import com.alxnophis.jetpack.radio.data.model.RadioStation
+import com.alxnophis.jetpack.radio.ui.composable.provider.RadioStationListPreviewProvider
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListEvent
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListStatus
 import com.alxnophis.jetpack.radio.ui.contract.RadioStationListUiState
@@ -309,6 +314,21 @@ private fun RadioIconFallback(
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.size(size * 0.5f),
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun RadioStationListScreenPreview(
+    @PreviewParameter(RadioStationListPreviewProvider::class) uiState: RadioStationListUiState,
+) {
+    AppTheme {
+        RadioStationListScreen(
+            uiState = uiState,
+            onBack = {},
+            onStationSelected = {},
+            handleEvent = {},
         )
     }
 }
